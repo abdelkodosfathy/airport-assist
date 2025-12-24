@@ -14,7 +14,7 @@ export default function LanguageSelect() {
 
   const icons: Record<string, string> = {
     USD: "/icons/usd.png",
-    EUR: "/icons/EUR.webp",
+    EUR: "/icons/eur.webp",
     GBP: "/icons/gbp.png",
   };
 
