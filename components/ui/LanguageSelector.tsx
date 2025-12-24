@@ -41,7 +41,7 @@ export default function LanguageSelect() {
 
         <SelectItem value="EUR">
           <div className="flex items-center gap-3">
-            <img src="/icons/EUR.webp" className="w-8 h-8 object-contain" />
+            <img src="/icons/eur.webp" className="w-8 h-8 object-contain" />
             EUR
           </div>
         </SelectItem>
