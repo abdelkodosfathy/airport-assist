@@ -47,7 +47,7 @@ export default function HomePage() {
 
           {/* Right Text */}
           <div className="flex-1 h-full">
-            <p className="font-[Manrope] font-normal max-w-140 text-[1rem] leading-[150%] text-[#959595] max-w-md:">
+            <p className="font-[Manrope] font-normal max-w-140 text-md leading-[150%] text-[#959595] max-w-md:">
               AIRPORT Assists Private Travel Division provides discreet, luxury
               concierge travel for VIP clients worldwide.
             </p>
@@ -86,10 +86,10 @@ export default function HomePage() {
       <PopularDestinations />
       <PrivateSuites />
       <section className="min-h-screen px-28 py-16 flex flex-col items-center">
-        <h2 className="font-manrope text-center font-normal text-[56px] leading-[100%] tracking-[10px] uppercase">
+        <h2 className="font-manrope text-center font-normal text-4xl leading-[100%] tracking-[10px] uppercase">
           Discover exclusive content
         </h2>
-        <p className="font-manrope mx-auto w-[776px] pt-6 text-[rgb(122,122,122)] font-normal text-[28px] leading-[150%] tracking-[0.1em] text-center">
+        <p className="font-manrope mx-auto w-[776px] pt-6 text-[rgb(122,122,122)] font-normal text-lg leading-[150%] tracking-[0.1em] text-center">
           Receive insider tips on VIP airport services, fast-track travel
           advice, and exclusive updates.
         </p>
