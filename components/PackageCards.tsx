@@ -65,37 +65,36 @@ export default function PackageCards() {
   const cardsRef = useRef<HTMLDivElement[]>([]);
 
   useLayoutEffect(() => {
-  if (!cardsRef.current) return;
+    if (!cardsRef.current) return;
 
-  cardsRef.current.forEach((card, index) => {
-    card.addEventListener("mouseenter", () => {
-      cardsRef.current.forEach((c, i) => {
-        if (i === index) {
-          gsap.to(c, { flex: "1.2 1 0%", duration: 0.5 });
-        } else {
-          gsap.to(c, { flex: "0.9 1 0%", duration: 0.5 });
-        }
+    cardsRef.current.forEach((card, index) => {
+      card.addEventListener("mouseenter", () => {
+        cardsRef.current.forEach((c, i) => {
+          if (i === index) {
+            gsap.to(c, { flex: "1.2 1 0%", duration: 0.5 });
+          } else {
+            gsap.to(c, { flex: "0.9 1 0%", duration: 0.5 });
+          }
+        });
+      });
+
+      card.addEventListener("mouseleave", () => {
+        cardsRef.current.forEach((c) => {
+          gsap.to(c, { flex: "1 1 0%", duration: 0.5 });
+        });
       });
     });
-
-    card.addEventListener("mouseleave", () => {
-      cardsRef.current.forEach((c) => {
-        gsap.to(c, { flex: "1 1 0%", duration: 0.5 });
-      });
-    });
-  });
-}, []);
-
+  }, []);
 
   return (
     <div className="flex gap-6 mt-8">
       {packages.map((pkg, i) => (
         <Card
-        key={`card-${i}`}
+          key={`card-${i}`}
           ref={(el) => {
             cardsRef.current[i] = el!;
           }}
-          className="group overflow-hidden bg-white p-0 border-gray-200"
+          className="group overflow-hidden bg-white p-0 gap-0 border-gray-200"
           style={{ flex: "1 1 0%" }}
         >
           {/* Image */}
@@ -109,23 +108,19 @@ export default function PackageCards() {
           </div>
 
           {/* Content */}
-          <div className="p-6">
-            <h3 className="font-[Nunito] font-bold text-[40px] leading-[115%] tracking-[0.06em] mb-2">
+          <div className="p-6 flex-1 flex flex-col">
+            <h3 className="font-[Nunito] font-bold text-4xl leading-[115%] tracking-[0.06em] mb-2">
               {pkg.heading}
             </h3>
-            <p className="font-[Manrope] font-bold text-[17.86px] leading-[150%] tracking-[0%] text-gray-600 mb-4">
+            <p className="font-[Manrope] font-bold text-md leading-[150%] w-[80%] tracking-[0%] text-gray-600 mb-4">
               {pkg.description}
             </p>
 
-            <div className="mb-4">
-              <span className="font-[Nunito] font-bold text-[19.03px] leading-[115%] tracking-[0.06em] text-gray-500">
-                From
-              </span>
-              <p className="font-[Manrope] font-bold text-[55px] leading-[115%] tracking-[0%] text-gray-900">
-                {pkg.price}
-              </p>
-            </div>
+            <p className="font-[Manrope] font-bold text-3xl leading-[115%] tracking-[0%] text-gray-900 flex flex-col">
+              <span className="font-[Nunito] font-bold text-lg leading-[115%] tracking-[0.06em] text-gray-500">From</span> {pkg.price}
+            </p>
 
+            <span className="w-full bg-gray-300 h-0.5 mb-6 mt-auto block"></span>
             <ul className="space-y-2 mb-6">
               {pkg.features.map((feature, index) => (
                 <li key={index} className="flex items-start gap-4">

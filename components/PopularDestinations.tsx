@@ -124,7 +124,7 @@ export default function PopularDestinations() {
       </div>
 
       {/* ------------ CARDS GRID ------------ */}
-      <div className="flex flex-1 flex-col gap-4">
+      <div className="flex flex-2 flex-col gap-4">
         <div
           ref={scrollRef}
           className="flex-1 flex overflow-x-auto gap-4 scrollbar-none scroll-smooth"
@@ -133,7 +133,7 @@ export default function PopularDestinations() {
             <DestinationCard key={i} {...item} />
           ))}
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-2  [@media(min-width:1921px)]:hidden">
           <span
             className={`bg-white/22 rounded-full ${
               !scrolled ? "w-16" : "w-2"
@@ -155,7 +155,7 @@ type CardProps = Destination;
 function DestinationCard({ title, content, img, price }: CardProps) {
   return (
     <Card
-      className="shrink-0 w-2/5
+      className="shrink-0 w-2/5  [@media(min-width:1921px)]:shrink [@media(min-width:1921px)]:shrink 
       bg-white border border-[#333] rounded-2xl overflow-hidden p-0
       hover:shadow-xl hover:shadow-black/40 transition-all duration-300
     "
@@ -175,7 +175,7 @@ function DestinationCard({ title, content, img, price }: CardProps) {
           {title}
         </h3>
 
-        <p className="text-[#c0c0c0] font-manrope text-[16px] leading-[150%] mt-3">
+        <p className="text-[#7a7a7a] font-manrope text-[16px] leading-[150%] mt-3">
           {content}
         </p>
 
@@ -183,7 +183,7 @@ function DestinationCard({ title, content, img, price }: CardProps) {
           From £250
         </p>
 
-        <Button variant="outline" className="w-max mb-6 border-black">
+        <Button variant="outline" className="w-max mb-6 border-black hover:bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)] hover:text-white hover:border-none duration-0">
           Book now <ArrowUpRight/>
         </Button>
       </div>

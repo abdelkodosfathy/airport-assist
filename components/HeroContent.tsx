@@ -33,10 +33,11 @@ export default function HeroContent() {
   return (
     <div
       ref={containerRef}
-      className="w-full flex flex-col items-center justify-center text-center mt-32 px-28"
+      // className="w-full flex flex-col items-center justify-center text-center mt-32 px-28"
+      className="w-full flex flex-col items-center justify-center text-center px-28"
     >
       {/* شيل opacity-0 من هنا */}
-      <h1 className="font-[Manrope] font-normal leading-[150%] tracking-[9%] text-[40px] max-w-225 opacity-0">
+      <h1 className="font-[Manrope] font-normal leading-[150%] tracking-[9%] text-4xl max-w-225 opacity-0">
         WELCOME TO AIRPORT ASSIST
       </h1>
       <p className="hero-text font-[Manrope] text-[#A8A8A8] font-light mt-4 leading-[150%] tracking-[9%] text-[29px] max-w-225 opacity-0">

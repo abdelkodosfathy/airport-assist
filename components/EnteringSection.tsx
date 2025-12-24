@@ -84,38 +84,41 @@ export default function AirportInvitation({
 
   return (
     <section
-      className={`w-full px-28 py-16 flex ${
-        left ? "flex-row-reverse" : ""
-      } gap-14 items-center overflow-hidden`}
+      className="px-28 py-16 flex items-center"
     >
-      {/* ------------ LEFT TEXT ------------ */}
-      <div className="flex-3">
-        <h2 className="font-[Manrope] font-normal text-[40px] leading-[128%] tracking-[10px] uppercase">
-          {heading}
-        </h2>
+      <div className={`flex max-w-360 mx-auto ${
+        left ? "flex-row-reverse" : ""
+      } gap-14 items-center overflow-hidden`}>
 
-        <p className="mt-6 font-[Manrope] font-normal text-[24px] leading-[150%] tracking-[9%] text-[#555] max-w-[520px]">
-          {content}
-        </p>
-      </div>
+        {/* ------------ LEFT TEXT ------------ */}
+        <div className="flex-3">
+          <h2 className="font-[Manrope] font-normal text-[40px] leading-[128%] tracking-[10px] uppercase">
+            {heading}
+          </h2>
 
-      {/* ------------ RIGHT IMAGES ------------ */}
-      <div className="flex flex-4 gap-4">
-        {/* الصورة الأولى */}
-        <div ref={img1Ref} className="overflow-hidden rounded-2xl h-64">
-          <img
-            // src="/sections/img1.jpg"
-            src={imgOne}
-            className="w-full h-full object-cover rounded-2xl"
-          />
+          <p className="mt-6 font-[Manrope] font-normal text-[24px] leading-[150%] tracking-[9%] text-[#555] max-w-[520px]">
+            {content}
+          </p>
         </div>
 
-        {/* الصورة الثانية */}
-        <div ref={img2Ref} className="overflow-hidden rounded-2xl h-64">
-          <img
-            src={imgTwo}
-            className="w-full h-full object-cover rounded-2xl"
-          />
+        {/* ------------ RIGHT IMAGES ------------ */}
+        <div className="flex flex-4 gap-4">
+          {/* الصورة الأولى */}
+          <div ref={img1Ref} className="overflow-hidden rounded-2xl h-64">
+            <img
+              // src="/sections/img1.jpg"
+              src={imgOne}
+              className="w-full h-full object-cover rounded-2xl"
+            />
+          </div>
+
+          {/* الصورة الثانية */}
+          <div ref={img2Ref} className="overflow-hidden rounded-2xl h-64">
+            <img
+              src={imgTwo}
+              className="w-full h-full object-cover rounded-2xl"
+            />
+          </div>
         </div>
       </div>
     </section>

@@ -101,7 +101,9 @@ export default function PrivateSuites() {
   }, [scrolled]);
 
   return (
-    <section className="h-[800px] p-28 flex bg-[#1a1a1a] text-white gap-14 overflow-hidden">
+    <section className="h-[800px] p-28 bg-[#1a1a1a] text-white overflow-hidden">
+      <div className="mx-auto flex gap-10 h-full max-w-360">
+
       {/* ------------ LEFT TEXT ------------ */}
       <div className="flex-1 relative">
         <span
@@ -123,7 +125,7 @@ export default function PrivateSuites() {
       </div>
 
       {/* ------------ CARDS GRID ------------ */}
-      <div className="flex flex-1 flex-row gap-4">
+      <div className="flex flex-1 flex-row gap-2">
         <div
           ref={scrollRef}
           className="flex-1 flex flex-col overflow-y-auto gap-4 scrollbar-none scroll-smooth"
@@ -132,7 +134,7 @@ export default function PrivateSuites() {
             <DestinationCard key={i} {...item} />
           ))}
         </div>
-        <div className="flex flex-col gap-2 mt-auto">
+        <div className="flex flex-col gap-2 mt-auto ">
           <span
             className={`bg-white/22 rounded-full ${
               !scrolled ? "h-16" : "h-2"
@@ -145,6 +147,8 @@ export default function PrivateSuites() {
           ></span>
         </div>
       </div>
+      </div>
+
     </section>
   );
 }
@@ -176,7 +180,7 @@ function DestinationCard({ title, content, img, price }: CardProps) {
             {title}
           </h3>
 
-          <p className="text-[#c0c0c0] font-manrope text-[16px] leading-[150%] mt-3">
+          <p className="text-[#7a7a7a] font-manrope text-[16px] leading-[150%] mt-3">
             {content}
           </p>
         </div>
@@ -187,7 +191,7 @@ function DestinationCard({ title, content, img, price }: CardProps) {
 
         <Button
           variant="outline"
-          className="border-black w-max text-black hover:bg-black hover:text-white"
+          className="border-black w-max text-black hover:bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)] hover:text-white hover:border-none duration-0"
         >
           Book now <ArrowUpRight/>
         </Button>
