@@ -12,9 +12,9 @@ export default function Header() {
 
   return (
     <header
-      className="
-        pointer-events-none fixed top-0 z-50 hidden w-full justify-center 
-        border-b border-b-transparent lg:flex
+      className="flex
+        pointer-events-none fixed top-0 z-50 w-full justify-center 
+        border-b border-b-transparent
       "
     >
       <div className="pointer-events-auto mx-auto flex w-full px-20 py-4 items-center justify-between">

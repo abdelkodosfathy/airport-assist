@@ -36,7 +36,8 @@ export default function HomePage() {
         {/* Hero section */}
         <HeroContent />
       </section>
-      <section className="min-h-118.75 px-28 flex items-center">
+      {/* <section className="min-h-118.75 px-28 flex items-center"> */}
+      <section className="min-h-118.75 gap-4 py-28 px-8 flex items-center xl:px-10 2xl:px-16 overflow-hidden">
         <div className="max-w-360 mx-auto flex items-center gap-10">
           {/* Left Text */}
           <div className="flex-2">
@@ -53,16 +54,21 @@ export default function HomePage() {
             </p>
             <Button
               variant="outline"
-              className="hover:bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)] hover:text-white hover:border-none hover:mb-10.5  border-black mx-auto my-10 py-6 px-6 rounded-xl duration-0 "
+              className="mt-6 w-max mb-6 border-black hover:bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)] hover:text-white hover:border-none duration-0"
             >
+              {/* <Button
+              variant="outline"
+              className="hover:bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)] hover:text-white hover:border-none hover:mb-10.5  border-black mx-auto my-10 py-6 px-6 rounded-xl duration-0 "
+
+            > */}
               <p>About Us</p>
               <ArrowUpRight className="size-md" />
             </Button>
           </div>
         </div>
       </section>
-      <section className="bg-neutral-900">
-        <div className="max-w-360 mx-auto h-200 flex items-center py-8">
+      <section className="bg-neutral-900 py-28 px-8 xl:px-10 2xl:px-16">
+        <div className="max-w-360 mx-auto h-200 flex items-center">
           <HoverExpandCards />
         </div>
       </section>
@@ -93,10 +99,16 @@ export default function HomePage() {
           Receive insider tips on VIP airport services, fast-track travel
           advice, and exclusive updates.
         </p>
+
+        <Button
+          variant="outline"
+          className=" my-10  w-max mb-6 border-black hover:bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)] hover:text-white hover:border-none duration-0"
+        >
+          {/* 
         <Button
           variant="outline"
           className="hover:bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)] hover:text-white hover:border-none hover:mb-10.5  border-black mx-auto my-10 py-6 px-6 rounded-xl duration-0 "
-        >
+        > */}
           <p className="text-xl">Read more</p>
           <ArrowUpRight />
         </Button>

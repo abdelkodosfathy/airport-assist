@@ -65,14 +65,14 @@ export const DatePickerWithIconDemo = () => {
   const [date, setDate] = useState<Date | undefined>(undefined);
 
   return (
-    <div className="w-full h-full max-w-56.25 space-y-2">
+    <div className="w-full h-full space-y-2">
         
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
             variant="outline"
             id="date"
-            className="w-full h-full rounded-none justify-between font-normal"
+            className="w-full h-full rounded-xl lg:rounded-none justify-between font-normal"
           >
             <span className="flex items-center">
               <CalendarIcon className="mr-2" />

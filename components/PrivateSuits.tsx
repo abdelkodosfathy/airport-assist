@@ -101,11 +101,11 @@ export default function PrivateSuites() {
   }, [scrolled]);
 
   return (
-    <section className="h-[800px] p-28 bg-[#1a1a1a] text-white overflow-hidden">
-      <div className="mx-auto flex gap-10 h-full max-w-360">
+    <section className="h-[800px] p-28 px-8 xl:px-10 2xl:px-16 bg-[#1a1a1a] text-white overflow-hidden">
+      <div className="mx-auto flex gap-6 h-full max-w-360">
 
       {/* ------------ LEFT TEXT ------------ */}
-      <div className="flex-1 relative">
+      <div className="w-2/5 relative">
         <span
           className="
             absolute left-0 right-0 -top-8 h-1 rounded-full
@@ -114,18 +114,18 @@ export default function PrivateSuites() {
           "
         />
 
-        <h2 className="font-manrope font-normal text-5xl leading-[128%] tracking-[10px] uppercase">
+        <h2 className="font-manrope font-normal text-3xl leading-[128%] tracking-[10px] uppercase">
           PRIVATE SUITS
         </h2>
 
-        <p className="font-manrope font-normal text-md leading-8 w-150 text-[#959595] mt-6">
+        <p className="font-manrope font-normal text-md leading-8 text-[#959595] mt-6">
           Our most exclusive service, delivering the highest level of luxury
           airport assistance in over 500 destinations worldwide.
         </p>
       </div>
 
       {/* ------------ CARDS GRID ------------ */}
-      <div className="flex flex-1 flex-row gap-2">
+      <div className="w-3/5 flex flex-row gap-2">
         <div
           ref={scrollRef}
           className="flex-1 flex flex-col overflow-y-auto gap-4 scrollbar-none scroll-smooth"
@@ -158,7 +158,7 @@ type CardProps = Destination;
 function DestinationCard({ title, content, img, price }: CardProps) {
   return (
     <Card
-      className="shrink-0 flex flex-row
+      className="shrink-0 flex flex-row gap-0
       bg-white border border-[#333] rounded-2xl overflow-hidden p-0
       hover:shadow-xl hover:shadow-black/40 transition-all duration-300
       h-3/7
@@ -174,18 +174,18 @@ function DestinationCard({ title, content, img, price }: CardProps) {
       </div>
 
       {/* TEXT CONTENT - RIGHT */}
-      <div className="w-5/9 py-6 px-2  flex flex-col">
+      <div className="w-5/9 flex flex-col px-4 py-6">
         <div>
-          <h3 className="font-manrope font-bold text-[24px] leading-[100%] tracking-[31%] text-black">
+          <h3 className="font-manrope font-bold text-md leading-[100%] tracking-[31%] text-black">
             {title}
           </h3>
 
-          <p className="text-[#7a7a7a] font-manrope text-[16px] leading-[150%] mt-3">
+          <p className="text-[#7a7a7a] font-manrope text-sm leading-[150%] mt-3">
             {content}
           </p>
         </div>
 
-        <p className="font-manrope my-auto font-bold text-[18px] leading-[100%] tracking-[31%] text-black">
+        <p className="font-manrope mt-auto mb-4 font-bold text-[18px] leading-[100%] tracking-[31%] text-black">
           From {price}
         </p>
 

@@ -103,7 +103,7 @@ export default function HoverExpandCards() {
   }, [activeIndex, isPaused, cards.length]);
 
   return (
-    <div className="w-full h-full max-h-[620px] max-w-[1440px] mx-auto flex flex-nowrap gap-4 p-4">
+    <div className="w-full h-full max-h-[620px] max-w-[1440px] mx-auto flex flex-nowrap gap-4">
       {cards.map((card, index) => (
         <div
           key={card.id}

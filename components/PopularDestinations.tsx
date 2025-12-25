@@ -101,9 +101,11 @@ export default function PopularDestinations() {
   }, [scrolled]);
 
   return (
-    <section className="h-[800px] p-28 flex bg-[#1a1a1a] text-white gap-14 overflow-hidden">
+    <section className="bg-[#1a1a1a]">
+    <div className="w-full h-[800px] gap-4 py-28 px-8 flex xl:px-10 2xl:px-16 bg-[#1a1a1a] text-white overflow-hidden">
+
       {/* ------------ LEFT TEXT ------------ */}
-      <div className="flex-1 relative">
+      <div className="w-3/8 relative">
         <span
           className="
             absolute left-0 right-0 -top-8 h-1 rounded-full
@@ -112,11 +114,11 @@ export default function PopularDestinations() {
           "
         />
 
-        <h2 className="font-manrope font-normal text-5xl leading-[128%] tracking-[10px] uppercase">
+        <h2 className="font-manrope font-normal text-3xl leading-[128%] tracking-[10px] uppercase">
           Popular Destinations
         </h2>
 
-        <p className="font-manrope font-normal text-md leading-8 w-162.5 text-[#959595] mt-6">
+        <p className="font-manrope font-normal text-md leading-8 text-[#959595] mt-6">
           Travel in comfort with our VIP Airport Meet & Greet service, featuring
           fast-track security & immigration and dedicated airport concierge
           assistance from curbside to gate.
@@ -124,7 +126,7 @@ export default function PopularDestinations() {
       </div>
 
       {/* ------------ CARDS GRID ------------ */}
-      <div className="flex flex-2 flex-col gap-4">
+      <div className="w-5/8 flex flex-col gap-4">
         <div
           ref={scrollRef}
           className="flex-1 flex overflow-x-auto gap-4 scrollbar-none scroll-smooth"
@@ -133,7 +135,7 @@ export default function PopularDestinations() {
             <DestinationCard key={i} {...item} />
           ))}
         </div>
-        <div className="flex gap-2  [@media(min-width:1921px)]:hidden">
+        <div className="flex gap-2 [@media(min-width:1921px)]:hidden">
           <span
             className={`bg-white/22 rounded-full ${
               !scrolled ? "w-16" : "w-2"
@@ -146,6 +148,7 @@ export default function PopularDestinations() {
           ></span>
         </div>
       </div>
+    </div>
     </section>
   );
 }
@@ -171,15 +174,15 @@ function DestinationCard({ title, content, img, price }: CardProps) {
 
       {/* TEXT CONTENT */}
       <div className="px-6 h-full flex flex-col">
-        <h3 className="font-manrope font-bold text-[24px] leading-[100%] tracking-[31%] text-black">
+        <h3 className="font-manrope font-bold text-lg h-10 leading-[100%] tracking-[31%] text-black">
           {title}
         </h3>
 
-        <p className="text-[#7a7a7a] font-manrope text-[16px] leading-[150%] mt-3">
+        <p className="text-[#7a7a7a] font-manrope leading-[150%] mt-3">
           {content}
         </p>
 
-        <p className="my-auto font-manrope font-bold text-[18px] leading-[100%] tracking-[31%]">
+        <p className="mt-auto mb-4 font-manrope font-bold text-[18px] leading-[100%] tracking-[31%]">
           From £250
         </p>
 

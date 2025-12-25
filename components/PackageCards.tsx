@@ -87,18 +87,18 @@ export default function PackageCards() {
   }, []);
 
   return (
-    <div className="flex gap-6 mt-8">
+    <div className="flex gap-6 justify-center mt-8 px-4">
       {packages.map((pkg, i) => (
         <Card
           key={`card-${i}`}
           ref={(el) => {
             cardsRef.current[i] = el!;
           }}
-          className="group overflow-hidden bg-white p-0 gap-0 border-gray-200"
+          className="group p-0 gap-0 flex overflow-hidden border border-outline-base bg-neutral-base  min-h-[588px] flex-col min-w-auto"
           style={{ flex: "1 1 0%" }}
         >
           {/* Image */}
-          <div className="relative h-[373px] w-full">
+          <div className="relative w-full overflow-hidden max-h-[273px] min-h-[273px]">
             <Image
               src={pkg.image}
               alt={pkg.heading}
@@ -109,25 +109,52 @@ export default function PackageCards() {
 
           {/* Content */}
           <div className="p-6 flex-1 flex flex-col">
-            <h3 className="font-[Nunito] font-bold text-4xl leading-[115%] tracking-[0.06em] mb-2">
-              {pkg.heading}
-            </h3>
-            <p className="font-[Manrope] font-bold text-md leading-[150%] w-[80%] tracking-[0%] text-gray-600 mb-4">
-              {pkg.description}
+            <div>
+              <h3
+                className="font-[Manrope]"
+                style={{
+                  fontFamily: "",
+                  fontSize: "1.125rem",
+                  lineHeight: "150%",
+                  fontWeight: "400",
+                  letterSpacing: "0.3em",
+                  textTransform: "uppercase",
+                }}
+              >
+                {pkg.heading}
+                {/* INTERNATIONAL ARRIVAL */}
+              </h3>
+              <p
+                className="font-[Manrope] mt-4"
+                style={{
+                  fontSize: "0.875rem",
+                  lineHeight: "150%",
+                  fontWeight: "400",
+                  minHeight:"42px",
+                  color: "#61686e",
+                }}
+              >
+                {pkg.description} 
+              </p>
+            </div>
+
+            <p className="font-[Manrope]font-bold text-3xl leading-[115%] tracking-[0%] text-gray-900 flex flex-col" style={{
+                  marginTop:"auto",
+            }}>
+              <span className="font-[Nunito] font-bold text-lg leading-[115%] tracking-[0.06em] truncate">
+                From
+              </span>{" "}
+              {pkg.price}
             </p>
 
-            <p className="font-[Manrope] font-bold text-3xl leading-[115%] tracking-[0%] text-gray-900 flex flex-col">
-              <span className="font-[Nunito] font-bold text-lg leading-[115%] tracking-[0.06em] text-gray-500">From</span> {pkg.price}
-            </p>
-
-            <span className="w-full bg-gray-300 h-0.5 mb-6 mt-auto block"></span>
+            <span className="w-full bg-gray-300 h-0.5 mb-6 block"></span>
             <ul className="space-y-2 mb-6">
               {pkg.features.map((feature, index) => (
                 <li key={index} className="flex items-start gap-4">
                   <div className="flex items-center justify-center w-6 h-6 rounded-full bg-black group-hover:bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)] transition-all duration-300 flex-shrink-0">
                     <Check className="w-3.5 h-3.5 text-white stroke-[3]" />
                   </div>
-                  <span className="font-[Manrope] text-sm text-gray-700">
+                  <span className="font-[Manrope] text-sm text-gray-700 truncate">
                     {feature}
                   </span>
                 </li>
