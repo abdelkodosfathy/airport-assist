@@ -1,20 +1,19 @@
 'use client'
 
-import React, { useState } from 'react';
-import { ChevronDown } from 'lucide-react';
+// import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from './ui/button';
 import LanguageSelect from './ui/LanguageSelector';
 
 export default function Header() {
-  const [isLanguageOpen, setIsLanguageOpen] = useState(false);
+  // const [isLanguageOpen, setIsLanguageOpen] = useState(false);
 
   return (
     <header
-      className="flex
-        pointer-events-none fixed top-0 z-50 w-full justify-center 
-        border-b border-b-transparent
+      className="
+        pointer-events-none absolute top-0 z-50 hidden w-full justify-center 
+        border-b border-b-transparent lg:flex
       "
     >
       <div className="pointer-events-auto mx-auto flex w-full px-20 py-4 items-center justify-between">
