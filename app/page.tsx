@@ -114,7 +114,7 @@ export default function HomePage() {
         </Button>
         <div className="gap-4 w-full flex">
           {/* Card 1 */}
-          <div className="flex-1">
+          <div className="flex-1 flex flex-col">
             <div className="overflow-hidden rounded-lg aspect-square group">
               <img
                 src="/sections/river.jpg"
@@ -122,19 +122,19 @@ export default function HomePage() {
                 className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
               />
             </div>
-            <div className="mt-4">
-              <h3 className="font-manrope font-extrabold text-[22px] tracking-[0.27em]">
+            {/* <div className="mt-4"> */}
+              <h3 className="mt-4 font-manrope font-bold text-xl tracking-[0.4rem]">
                 VIP Fast Track at Heathrow
               </h3>
-              <p className="text-[rgb(100,96,125)] font-manrope font-medium text-[22px] leading-[168%] tracking-[-0.02em]">
+              <p className="text-[rgb(100,96,125)] mt-auto  font-manrope font-medium text-lg leading-[168%] tracking-[-0.02em]">
                 Experience Ultimate Luxury and Convenience with VIP Services at
                 London Heathrow Airport
               </p>
-            </div>
+            {/* </div> */}
           </div>
 
           {/* Card 2 */}
-          <div className="flex-1">
+          <div className="flex-1 flex flex-col">
             <div className="overflow-hidden rounded-lg aspect-square group">
               <img
                 src="/sections/river.jpg"
@@ -142,15 +142,15 @@ export default function HomePage() {
                 className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
               />
             </div>
-            <div className="mt-4">
-              <h3 className="font-manrope font-extrabold text-[22px] tracking-[0.27em]">
+            {/* <div className="mt-4"> */}
+              <h3 className="mt-4 font-manrope font-bold text-xl tracking-[0.4rem]">
                 VIP Fast Track at Charles de Gaulle Airport
               </h3>
-              <p className="text-[rgb(100,96,125)] font-manrope font-medium text-[22.9px] leading-[168%] tracking-[-0.02em]">
+              <p className="text-[rgb(100,96,125)] mt-auto  font-manrope font-medium text-lg leading-[168%] tracking-[-0.02em]">
                 Avoid long waits at security and immigration with Airport
                 Assist’s CDG Fast Track
               </p>
-            </div>
+            {/* </div> */}
           </div>
 
           <ServicesList />

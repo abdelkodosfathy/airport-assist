@@ -41,7 +41,6 @@ export default function PrivateSuites() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [scrolled, setScrolled] = useState(false);
 
-  
   useLayoutEffect(() => {
     if (!scrollRef.current) return;
 
@@ -58,14 +57,12 @@ export default function PrivateSuites() {
     // الصورة الأولى: تبدأ 80% → 100%
     tl.fromTo(
       scrollRef.current,
-      { y:"100%", opacity: 0 },{ y:"0%", opacity: 1 },0
+      { y: "100%", opacity: 0 },
+      { y: "0%", opacity: 1 },
+      0
     );
-    tl.fromTo(
-      scrollRef.current,
-      { height:"150%" },{ height:"100%"},0.4
-    );
+    tl.fromTo(scrollRef.current, { height: "150%" }, { height: "100%" }, 0.4);
   }, []);
-
 
   useEffect(() => {
     const el = scrollRef.current;
@@ -102,53 +99,52 @@ export default function PrivateSuites() {
 
   return (
     <section className="h-[800px] p-28 px-8 xl:px-10 2xl:px-16 bg-[#1a1a1a] text-white overflow-hidden">
-      <div className="mx-auto flex gap-6 h-full max-w-360">
-
-      {/* ------------ LEFT TEXT ------------ */}
-      <div className="w-2/5 relative">
-        <span
-          className="
+      {/* <div className="mx-auto flex gap-6 h-full max-w-360"> */}
+      <div className="w-full h-[800px] mx-auto max-w-400 gap-2 xl:gap-4 py-28 px-6 flex xl:px-10 2xl:px-16 bg-[#1a1a1a] text-white overflow-hidden">
+        {/* ------------ LEFT TEXT ------------ */}
+        <div className="w-2/5 relative">
+          <span
+            className="
             absolute left-0 right-0 -top-8 h-1 rounded-full
             transition-opacity duration-300 opacity-100
             bg-[linear-gradient(90deg,rgba(153,120,95,0)_0%,rgba(171,155,144,0.4)_50%,rgba(153,120,95,0)_100%)]
           "
-        />
+          />
 
-        <h2 className="font-manrope font-normal text-3xl leading-[128%] tracking-[10px] uppercase">
-          PRIVATE SUITS
-        </h2>
+          <h2 className="font-manrope font-normal text-3xl leading-[128%] tracking-[10px] uppercase">
+            PRIVATE SUITS
+          </h2>
 
-        <p className="font-manrope font-normal text-md leading-8 text-[#959595] mt-6">
-          Our most exclusive service, delivering the highest level of luxury
-          airport assistance in over 500 destinations worldwide.
-        </p>
-      </div>
-
-      {/* ------------ CARDS GRID ------------ */}
-      <div className="w-3/5 flex flex-row gap-2">
-        <div
-          ref={scrollRef}
-          className="flex-1 flex flex-col overflow-y-auto gap-4 scrollbar-none scroll-smooth"
-        >
-          {data.map((item, i) => (
-            <DestinationCard key={i} {...item} />
-          ))}
+          <p className="font-manrope font-normal text-md leading-8 text-[#959595] mt-6">
+            Our most exclusive service, delivering the highest level of luxury
+            airport assistance in over 500 destinations worldwide.
+          </p>
         </div>
-        <div className="flex flex-col gap-2 mt-auto ">
-          <span
-            className={`bg-white/22 rounded-full ${
-              !scrolled ? "h-16" : "h-2"
-            } duration-300 w-2`}
-          ></span>
-          <span
-            className={`bg-white/22 rounded-3xl ${
-              scrolled ? "h-16" : "h-2"
-            } duration-300 w-2`}
-          ></span>
+
+        {/* ------------ CARDS GRID ------------ */}
+        <div className="w-3/5 flex flex-row gap-2">
+          <div
+            ref={scrollRef}
+            className="flex-1 flex flex-col overflow-y-auto gap-4 scrollbar-none scroll-smooth"
+          >
+            {data.map((item, i) => (
+              <DestinationCard key={i} {...item} />
+            ))}
+          </div>
+          <div className="flex flex-col gap-2 mt-auto ">
+            <span
+              className={`bg-white/22 rounded-full ${
+                !scrolled ? "h-16" : "h-2"
+              } duration-300 w-2`}
+            ></span>
+            <span
+              className={`bg-white/22 rounded-3xl ${
+                scrolled ? "h-16" : "h-2"
+              } duration-300 w-2`}
+            ></span>
+          </div>
         </div>
       </div>
-      </div>
-
     </section>
   );
 }
@@ -193,7 +189,7 @@ function DestinationCard({ title, content, img, price }: CardProps) {
           variant="outline"
           className="border-black w-max text-black hover:bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)] hover:text-white hover:border-none duration-0"
         >
-          Book now <ArrowUpRight/>
+          Book now <ArrowUpRight />
         </Button>
       </div>
     </Card>

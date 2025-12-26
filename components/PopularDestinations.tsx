@@ -102,7 +102,7 @@ export default function PopularDestinations() {
 
   return (
     <section className="bg-[#1a1a1a]">
-    <div className="w-full h-[800px] gap-4 py-28 px-8 flex xl:px-10 2xl:px-16 bg-[#1a1a1a] text-white overflow-hidden">
+    <div className="w-full h-[800px] mx-auto max-w-400 gap-2 xl:gap-4 py-28 px-6 flex xl:px-10 2xl:px-16 bg-[#1a1a1a] text-white overflow-hidden">
 
       {/* ------------ LEFT TEXT ------------ */}
       <div className="w-3/8 relative">
