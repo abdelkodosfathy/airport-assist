@@ -93,7 +93,7 @@ export default function AirportInvitation({
 
         {/* ------------ LEFT TEXT ------------ */}
         <div className="flex-3">
-          <h2 className="font-[Manrope] font-normal text-3xl leading-[128%] tracking-[10px] uppercase">
+          <h2 className="font-[Manrope] font-normal text-xl leading-[128%] tracking-[10px] uppercase">
             {heading}
           </h2>
 
