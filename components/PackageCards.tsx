@@ -87,7 +87,7 @@ export default function PackageCards() {
   }, []);
 
   return (
-    <div className="flex gap-6 justify-center mt-8 px-4">
+    <div className="flex gap-6 justify-center mt-8">
       {packages.map((pkg, i) => (
         <Card
           key={`card-${i}`}

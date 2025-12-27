@@ -44,8 +44,8 @@ const ServiceItem = ({
         />
       </div>
       <div className="flex-2 flex flex-col justify-center">
-        <p className="font-manrope text-[rgb(100,96,125)] text-md">{title}</p>
-        <p className=" font-manrope text-lg font-bold">{description}</p>
+        <p className="font-[manrope] text-gray-500 text-md">{title}</p>
+        <p className=" font-[manrope] text-lg font-bold">{description}</p>
       </div>
     </div>
   );

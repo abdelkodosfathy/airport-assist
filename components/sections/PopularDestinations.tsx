@@ -102,7 +102,7 @@ export default function PopularDestinations() {
 
   return (
     <section className="bg-[#1a1a1a]">
-    <div className="w-full h-[800px] mx-auto max-w-400 gap-2 xl:gap-4 py-28 px-6 flex xl:px-10 2xl:px-16 bg-[#1a1a1a] text-white overflow-hidden">
+    <div className="w-full mx-auto max-w-400 gap-2 xl:gap-4 pt-28 pb-16 px-6 flex xl:px-10 2xl:px-16 bg-[#1a1a1a] text-white overflow-hidden">
 
       {/* ------------ LEFT TEXT ------------ */}
       <div className="w-3/8 relative">
@@ -114,11 +114,11 @@ export default function PopularDestinations() {
           "
         />
 
-        <h2 className="font-manrope font-normal text-3xl leading-[128%] tracking-[10px] uppercase">
+        <h2 className="font-manrope font-normal text-4xl leading-[128%] tracking-[10px] uppercase">
           Popular Destinations
         </h2>
 
-        <p className="font-manrope font-normal text-md leading-8 text-[#959595] mt-6">
+        <p className="font-manrope font-normal text-lg leading-8 text-[#959595] mt-6">
           Travel in comfort with our VIP Airport Meet & Greet service, featuring
           fast-track security & immigration and dedicated airport concierge
           assistance from curbside to gate.

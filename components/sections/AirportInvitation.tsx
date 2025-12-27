@@ -28,14 +28,14 @@ export default function AirportInvitation({
       defaults: { duration: 1, ease: "power3.out" },
       scrollTrigger: {
         trigger: img1Ref.current.parentElement, // الكونتينر العام للصور
-        start: "top 80%", // يبدأ الانيميشن عندما يصل أعلى الكونتينر إلى 75% من الشاشة
+        start: "top 80%", // يبدأ الانيميشن عندما يصل أعلى الكونتينر إلى 80% من الشاشة
         end: "bottom top",
         toggleActions: "play reverse play reverse", // كل مرة يدخل/يخرج
         invalidateOnRefresh: true,
       },
     });
 
-    // الصورة الأولى: تبدأ 80% → 100%
+    // الصورة الأولى: تبدأ 65% → 100%
     tl.fromTo(
       img1Ref.current,
       { width: left ? "65%" : "100%", x: left ? "-100%" : "100%", opacity: 0 },
@@ -84,7 +84,8 @@ export default function AirportInvitation({
 
   return (
     <section
-      className="min-h-118.75 gap-4 py-28 px-8 flex items-center xl:px-10 2xl:px-16 overflow-hidden"
+      // className="min-h-118.75 gap-4 py-28 px-8 flex items-center xl:px-10 2xl:px-16  overflow-hidden"
+      className="min-h-118.75 gap-4 py-28 px-26 flex items-center overflow-hidden"
     >
 
       <div className={`flex max-w-360 mx-auto ${
@@ -93,11 +94,11 @@ export default function AirportInvitation({
 
         {/* ------------ LEFT TEXT ------------ */}
         <div className="flex-3">
-          <h2 className="font-[Manrope] font-normal text-xl leading-[128%] tracking-[10px] uppercase">
+          <h2 className="font-[Manrope] font-normal text-4xl leading-[128%] tracking-[10px] uppercase">
             {heading}
           </h2>
 
-          <p className="mt-6 font-[Manrope] font-normal text-md leading-[150%] tracking-[9%] text-[#555] max-w-[520px]">
+          <p className="mt-6 font-[Manrope] font-normal text-xl leading-[150%] tracking-[9%] text-[#555] max-w-130">
             {content}
           </p>
         </div>
@@ -105,19 +106,19 @@ export default function AirportInvitation({
         {/* ------------ RIGHT IMAGES ------------ */}
         <div className="flex flex-4 gap-4">
           {/* الصورة الأولى */}
-          <div ref={img1Ref} className="overflow-hidden rounded-2xl h-64">
+          <div ref={img1Ref} className="overflow-hidden rounded-md h-64">
             <img
               // src="/sections/img1.jpg"
               src={imgOne}
-              className="w-full h-full object-cover rounded-2xl"
+              className="w-full h-full object-cover"
             />
           </div>
 
           {/* الصورة الثانية */}
-          <div ref={img2Ref} className="overflow-hidden rounded-2xl h-64">
+          <div ref={img2Ref} className="overflow-hidden rounded-md h-64">
             <img
               src={imgTwo}
-              className="w-full h-full object-cover rounded-2xl"
+              className="w-full h-full object-cover"
             />
           </div>
         </div>

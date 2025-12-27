@@ -133,3 +133,10 @@
   }
   touch-action: auto;
 }
+
+
+.booking-form{
+    will-change: opacity, transform, filter, backdrop-filter;
+    --tw-backdrop-blur:blur(12px);
+    backdrop-filter: blur(12px);
+}

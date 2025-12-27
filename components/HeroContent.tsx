@@ -15,7 +15,7 @@ export default function HeroContent() {
     );
 
     gsap.set(elements, { opacity: 0, y: 50 });
-    gsap.set(".booking-form", { backgroundColor: "rgba(255,255,255,0)" });
+    // gsap.set(".booking-form", { backgroundColor: "rgba(255,255,255,0)" });
 
     const tl = gsap.timeline({
       defaults: { duration: 0.8, ease: "power3.out" },
@@ -61,9 +61,7 @@ export default function HeroContent() {
         Luxury Airport VIP Concierge — seamless, private, stress-free travel.
       </p>
 
-      <div className="w-full booking-form opacity-0 max-w-[1280px] mx-auto">
         <BookingForm />
-      </div>
     </div>
   );
 }

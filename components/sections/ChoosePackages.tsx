@@ -1,4 +1,4 @@
-import PackageCards from "./PackageCards";
+import PackageCards from "../PackageCards";
 
 type Props = {};
 

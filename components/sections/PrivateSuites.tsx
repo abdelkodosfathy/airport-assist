@@ -98,9 +98,9 @@ export default function PrivateSuites() {
   }, [scrolled]);
 
   return (
-    <section className="h-[800px] p-28 px-8 xl:px-10 2xl:px-16 bg-[#1a1a1a] text-white overflow-hidden">
+    <section className=" px-8 xl:px-10 2xl:px-16 bg-[#1a1a1a] text-white overflow-hidden">
       {/* <div className="mx-auto flex gap-6 h-full max-w-360"> */}
-      <div className="w-full h-[800px] mx-auto max-w-400 gap-2 xl:gap-4 py-28 px-6 flex xl:px-10 2xl:px-16 bg-[#1a1a1a] text-white overflow-hidden">
+      <div className="w-full mx-auto max-w-400 gap-2 xl:gap-4 py-28 px-6 flex xl:px-10 2xl:px-16 bg-[#1a1a1a] text-white overflow-hidden">
         {/* ------------ LEFT TEXT ------------ */}
         <div className="w-2/5 relative">
           <span
@@ -111,11 +111,11 @@ export default function PrivateSuites() {
           "
           />
 
-          <h2 className="font-manrope font-normal text-3xl leading-[128%] tracking-[10px] uppercase">
+          <h2 className="font-manrope font-normal text-4xl leading-[128%] tracking-[10px] uppercase">
             PRIVATE SUITS
           </h2>
 
-          <p className="font-manrope font-normal text-md leading-8 text-[#959595] mt-6">
+          <p className="font-manrope font-normal text-lg leading-8 text-[#959595] mt-6">
             Our most exclusive service, delivering the highest level of luxury
             airport assistance in over 500 destinations worldwide.
           </p>

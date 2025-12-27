@@ -49,9 +49,6 @@ export default function HoverExpandCards() {
   // ------------------------------------------
   // GSAP overlay animation refs
   // ------------------------------------------
-  // const overlayRefs = useRef<(HTMLDivElement | null)[]>([]);
-  // const timelines = useRef<gsap.core.Timeline[]>([]);
-
   const textRefs = useRef<(HTMLDivElement | null)[]>([]);
   const timelines = useRef<gsap.core.Timeline[]>([]);
 
@@ -103,78 +100,84 @@ export default function HoverExpandCards() {
   }, [activeIndex, isPaused, cards.length]);
 
   return (
-    <div className="w-full h-full max-h-[620px] max-w-[1440px] mx-auto flex flex-nowrap gap-4">
-      {cards.map((card, index) => (
-        <div
-          key={card.id}
-          className="flex flex-col gap-3"
-          style={{
-            alignSelf: index % 2 === 0 ? "flex-end" : "flex-start",
-            flexGrow: index === activeIndex ? 5 : 1,
-            flexBasis: 0,
-            transition: "flex-grow 500ms ease-in-out",
-            minWidth: "60px",
-          }}
-        >
-          <div
-            onMouseEnter={() => handleMouseEnter(index)}
-            onMouseLeave={() => handleMouseLeave(index)}
-            className="relative overflow-hidden h-125 cursor-pointer"
-          >
-            <div className="w-full h-full relative">
-              <img
-                src={card.image}
-                alt={card.title}
-                className="w-full h-full object-cover"
-              />
-
-              {/* Overlay — أضف ref هنا */}
+    <section className="bg-neutral-900 py-28 px-8 xl:px-10 2xl:px-16">
+      <div className="max-w-360 mx-auto h-200 flex items-center">
+        <div className="w-full h-full max-h-[620px] max-w-[1440px] mx-auto flex flex-nowrap gap-4">
+          {cards.map((card, index) => (
+            <div
+              key={card.id}
+              className="flex flex-col gap-3"
+              style={{
+                alignSelf: index % 2 === 0 ? "flex-end" : "flex-start",
+                flexGrow: index === activeIndex ? 5 : 1,
+                flexBasis: 0,
+                transition: "flex-grow 500ms ease-in-out",
+                minWidth: "60px",
+              }}
+            >
               <div
-                className="absolute bottom-0 left-0 w-full text-white p-10 pt-12 
-             bg-gradient-to-t from-black to-transparent"
+                onMouseEnter={() => handleMouseEnter(index)}
+                onMouseLeave={() => handleMouseLeave(index)}
+                className="relative overflow-hidden h-125 cursor-pointer"
               >
-                {/* Container النصوص — اللي عليه الأنيميشن بس */}
-                <div
-                  ref={(el) => {textRefs.current[index] = el}}
-                  style={{ opacity: 0 }}
-                >
-                  <h2 className="text-xl tracking-[0.3em] mb-10 w-120">
-                    {card.title}
-                  </h2>
+                <div className="w-full h-full relative">
+                  <img
+                    src={card.image}
+                    alt={card.title}
+                    className="w-full h-full object-cover"
+                  />
 
-                  <p className="w-150">{card.textContent}</p>
+                  {/* Overlay — أضف ref هنا */}
+                  <div
+                    className="absolute bottom-0 left-0 w-full text-white p-10 pt-12 
+             bg-gradient-to-t from-black to-transparent"
+                  >
+                    {/* Container النصوص — اللي عليه الأنيميشن بس */}
+                    <div
+                      ref={(el) => {
+                        textRefs.current[index] = el;
+                      }}
+                      style={{ opacity: 0 }}
+                    >
+                      <h2 className="text-xl tracking-[0.3em] mb-10 w-120">
+                        {card.title}
+                      </h2>
+
+                      <p className="w-150">{card.textContent}</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Timeline bar */}
+                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-white/20">
+                  {index === activeIndex && (
+                    <div
+                      key={key}
+                      className="h-full bg-white"
+                      style={{
+                        animation: isPaused
+                          ? "none"
+                          : "fillTimeline 3s linear forwards",
+                      }}
+                    />
+                  )}
                 </div>
               </div>
+
+              <p className="text-white max-w-38 m-auto text-center px-2">
+                {card.title}
+              </p>
             </div>
+          ))}
 
-            {/* Timeline bar */}
-            <div className="absolute bottom-0 left-0 w-full h-0.5 bg-white/20">
-              {index === activeIndex && (
-                <div
-                  key={key}
-                  className="h-full bg-white"
-                  style={{
-                    animation: isPaused
-                      ? "none"
-                      : "fillTimeline 3s linear forwards",
-                  }}
-                />
-              )}
-            </div>
-          </div>
-
-          <p className="text-white max-w-38 m-auto text-center px-2">
-            {card.title}
-          </p>
-        </div>
-      ))}
-
-      <style>{`
+          <style>{`
         @keyframes fillTimeline {
           from { width: 0%; }
           to   { width: 100%; }
         }
       `}</style>
-    </div>
+        </div>
+      </div>
+    </section>
   );
 }

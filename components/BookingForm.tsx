@@ -13,69 +13,71 @@ export default function BookingForm() {
   );
 
   return (
-    <Card
-      className="
+      <Card
+        className="
+        booking-form opacity-0 max-w-7xl mx-auto
+        
         backdrop-blur-md bg-white/10 border-white/20 
         w-full 
         p-6 sm:p-10 lg:p-12 
         mt-8 md:mt-12
       "
-    >
-      {/* Tabs */}
-      <div
-        className="
+      >
+        {/* Tabs */}
+        <div
+          className="
           flex flex-wrap gap-2 sm:gap-4 
           justify-center sm:justify-start
         "
-      >
-        <Button
-          variant={"ghost"}
-          onClick={() => setActiveTab("vip")}
-          className="
+        >
+          <Button
+            variant={"ghost"}
+            onClick={() => setActiveTab("vip")}
+            className="
             cursor-pointer relative px-3 sm:px-4 py-2 
             text-white font-medium text-base sm:text-lg
             hover:bg-transparent
             hover:text-[#AB9B90]
           "
-        >
-          VIP Meet & Greet Service
-          <span
-            className={clsx(
-              "absolute left-0 right-0 -bottom-2 h-1 rounded-full transition-opacity duration-300",
-              activeTab === "vip"
-                ? "opacity-100 bg-linear-to-r from-[#99785F00]/0 via-[#AB9B90] to-[#99785F00]/0"
-                : "opacity-0"
-            )}
-          />
-        </Button>
+          >
+            VIP Meet & Greet Service
+            <span
+              className={clsx(
+                "absolute left-0 right-0 -bottom-2 h-1 rounded-full transition-opacity duration-300",
+                activeTab === "vip"
+                  ? "opacity-100 bg-linear-to-r from-[#99785F00]/0 via-[#AB9B90] to-[#99785F00]/0"
+                  : "opacity-0"
+              )}
+            />
+          </Button>
 
-        <span className="inline-block w-px h-7 rounded-3xl bg-white/40"></span>
+          <span className="inline-block w-px h-7 rounded-3xl bg-white/40"></span>
 
-        <Button
-          variant={"ghost"}
-          onClick={() => setActiveTab("chauffeur-services")}
-          className="
+          <Button
+            variant={"ghost"}
+            onClick={() => setActiveTab("chauffeur-services")}
+            className="
             cursor-pointer relative px-3 sm:px-4 py-2 
             text-white font-medium text-base sm:text-lg
             hover:bg-transparent
             hover:text-[#AB9B90]
           "
-        >
-          Chauffeur Services
-          <span
-            className={clsx(
-              "absolute left-0 right-0 -bottom-2 h-1 rounded-full transition-opacity duration-300",
-              activeTab === "chauffeur-services"
-                ? "opacity-100 bg-linear-to-r from-[#99785F00]/0 via-[#AB9B90] to-[#99785F00]/0"
-                : "opacity-0"
-            )}
-          />
-        </Button>
-      </div>
+          >
+            Chauffeur Services
+            <span
+              className={clsx(
+                "absolute left-0 right-0 -bottom-2 h-1 rounded-full transition-opacity duration-300",
+                activeTab === "chauffeur-services"
+                  ? "opacity-100 bg-linear-to-r from-[#99785F00]/0 via-[#AB9B90] to-[#99785F00]/0"
+                  : "opacity-0"
+              )}
+            />
+          </Button>
+        </div>
 
-      {/* Form Inputs */}
-      <div
-        className="
+        {/* Form Inputs */}
+        <div
+          className="
           grid 
           grid-cols-1 
           sm:grid-cols-2 
@@ -83,39 +85,45 @@ export default function BookingForm() {
           gap-3 sm:gap-4 lg:gap-1 
           mt-6
         "
-      >
-        {activeTab === "vip" ? (
-          <>
-            <Input
-              placeholder="From Airport"
-              className="bg-white rounded-xl lg:rounded-none lg:rounded-l-3xl lg:h-full"
-            />
-            <Input placeholder="Drop Off" className="bg-white rounded-xl lg:rounded-none lg:h-full" />
-            <DatePickerWithIconDemo />
-            <Input
-              type="number"
-              placeholder="Pickup Time"
-              className="bg-white rounded-xl h-full lg:rounded-none "
-            />
-          </>
-        ) : (
-          <>
-            <Input
-              placeholder="From"
-              className="bg-white lg:h-full rounded-xl lg:rounded-none lg:rounded-l-3xl"
-            />
-            <Input placeholder="To" className="bg-white lg:h-full rounded-xl lg:rounded-none" />
-            <DatePickerWithIconDemo />
-            <Input
-              type="number"
-              placeholder="Pickup Time"
-              className="bg-white rounded-xl h-full lg:rounded-none "
-            />
-          </>
-        )}
+        >
+          {activeTab === "vip" ? (
+            <>
+              <Input
+                placeholder="From Airport"
+                className="bg-white rounded-xl lg:rounded-none lg:rounded-l-3xl lg:h-full"
+              />
+              <Input
+                placeholder="Drop Off"
+                className="bg-white rounded-xl lg:rounded-none lg:h-full"
+              />
+              <DatePickerWithIconDemo />
+              <Input
+                type="number"
+                placeholder="Pickup Time"
+                className="bg-white rounded-xl h-full lg:rounded-none "
+              />
+            </>
+          ) : (
+            <>
+              <Input
+                placeholder="From"
+                className="bg-white lg:h-full rounded-xl lg:rounded-none lg:rounded-l-3xl"
+              />
+              <Input
+                placeholder="To"
+                className="bg-white lg:h-full rounded-xl lg:rounded-none"
+              />
+              <DatePickerWithIconDemo />
+              <Input
+                type="number"
+                placeholder="Pickup Time"
+                className="bg-white rounded-xl h-full lg:rounded-none "
+              />
+            </>
+          )}
 
-        <Button
-          className="
+          <Button
+            className="
             w-full 
             h-full
             rounded-xl lg:rounded-none lg:rounded-r-3xl 
@@ -125,10 +133,10 @@ export default function BookingForm() {
             hover:opacity-90 
             mt-2 sm:mt-0 col-span-2 lg:col-span-1
           "
-        >
-          Book Now
-        </Button>
-      </div>
-    </Card>
+          >
+            Book Now
+          </Button>
+        </div>
+      </Card>
   );
 }
