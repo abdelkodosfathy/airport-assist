@@ -94,10 +94,10 @@ export default function PackageCards() {
       ref={(el) => {
         cardsRef.current[i] = el!;
       }}
-      className="group flex flex-col min-w-[0] p-0 gap-0 overflow-hidden border border-outline-base bg-neutral-base flex-1"
+      className="group flex flex-col p-0 gap-0 overflow-hidden border border-outline-base bg-neutral-base flex-1"
     >
       {/* Image */}
-      <div className="relative w-full h-[273px] overflow-hidden">
+      <div className="relative w-full h-[180px] 2xl:h-[273px] overflow-hidden">
         <Image
           src={pkg.image}
           alt={pkg.heading}
@@ -112,27 +112,27 @@ export default function PackageCards() {
           <h3 className="font-manrope text-xl font-semibold leading-[150%] tracking-widest uppercase">
             {pkg.heading}
           </h3>
-          <p className="font-manrope mt-2 text-md leading-[150%] font-normal text-[#61686e] min-h-10.5">
+          <p className="font-manrope mt-2 text-sm 2xl:text-md leading-[150%] font-normal text-[#61686e] min-h-10.5">
             {pkg.description}
           </p>
         </div>
 
         <p className="flex flex-col mt-auto text-gray-900">
-          <span className="font-nunito font-bold text-lg leading-[115%] tracking-[0.06em] truncate">
+          <span className="font-nunito font-bold text-sm 2xl:text-lg leading-[115%] tracking-[0.06em] truncate">
             From
           </span>
-          <span className="font-manrope font-bold text-3xl leading-[115%] tracking-[0%]">
+          <span className="font-manrope font-bold 2xl:text-3xl leading-[115%] tracking-[0%]">
             {pkg.price}
           </span>
         </p>
 
         <span className="w-full h-[0.5px] bg-gray-300 mb-4 block"></span>
 
-        <ul className="space-y-2 mb-4">
+        <ul className="space-y-1 2xl:space-y-2 mb-4">
           {pkg.features.map((feature, index) => (
-            <li key={index} className="flex items-start gap-4">
-              <div className="flex items-center justify-center w-6 h-6 rounded-full bg-black group-hover:bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)] transition-all duration-300 flex-shrink-0">
-                <Check className="w-3.5 h-3.5 text-white stroke-3" />
+            <li key={index} className="flex items-start gap-2 2xl:gap-4">
+              <div className="flex items-center justify-center w-4 h-4 2xl:w-6 2xl:h-6 rounded-full bg-black group-hover:bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)] transition-all duration-300 flex-shrink-0">
+                <Check className="w-2 h-2 2xl:w-4 2xl:h-4 text-white stroke-3" />
               </div>
               <span className="font-manrope text-sm text-gray-700 truncate">
                 {feature}

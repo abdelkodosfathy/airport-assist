@@ -101,7 +101,7 @@ export default function PopularDestinations() {
   }, [scrolled]);
 
   return (
-    <section className="bg-[#1a1a1a]">
+    <section className="bg-[#1a1a1a] ">
     {/* <div className="w-full mx-auto max-w-360 px-28  gap-2 2xl:gap-4 pt-28 pb-16  flex bg-[#1a1a1a] text-white overflow-hidden"> */}
     <div className="w-full mx-auto px-28  gap-2 2xl:gap-4 pt-28 pb-16  flex bg-[#1a1a1a] text-white overflow-hidden">
 
