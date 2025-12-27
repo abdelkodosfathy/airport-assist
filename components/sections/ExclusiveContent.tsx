@@ -4,7 +4,8 @@ import { Button } from "../ui/button";
 
 const ExclusiveContent = () => {
   return (
-    <section className="min-h-screen px-28 py-16 flex flex-col items-center">
+    // <section className="min-h-screen px-28 py-16 flex flex-col items-center">
+    <section className=" px-28 py-16 flex flex-col items-center">
       <h2 className="font-manrope text-center font-normal text-4xl leading-[100%] tracking-[10px] uppercase">
         Discover exclusive content
       </h2>
