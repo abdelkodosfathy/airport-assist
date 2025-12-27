@@ -98,9 +98,10 @@ export default function PrivateSuites() {
   }, [scrolled]);
 
   return (
-    <section className=" px-8 xl:px-10 2xl:px-16 bg-[#1a1a1a] text-white overflow-hidden">
+    // <section className=" px-8 xl:px-10 2xl:px-16 bg-[#1a1a1a] text-white overflow-hidden">
+    <section className=" bg-[#1a1a1a]">
       {/* <div className="mx-auto flex gap-6 h-full max-w-360"> */}
-      <div className="w-full mx-auto max-w-400 gap-2 xl:gap-4 py-28 px-6 flex xl:px-10 2xl:px-16 bg-[#1a1a1a] text-white overflow-hidden">
+    <div className="w-full mx-auto max-w-360 px-28  gap-2 2xl:gap-4 pt-28 pb-16  flex bg-[#1a1a1a] text-white overflow-hidden">
         {/* ------------ LEFT TEXT ------------ */}
         <div className="w-2/5 relative">
           <span
@@ -172,16 +173,16 @@ function DestinationCard({ title, content, img, price }: CardProps) {
       {/* TEXT CONTENT - RIGHT */}
       <div className="w-5/9 flex flex-col px-4 py-6">
         <div>
-          <h3 className="font-manrope font-bold text-md leading-[100%] tracking-[31%] text-black">
+          <h3 className="font-[manrope] font-bold text-lg leading-[100%] tracking-[31%] text-black">
             {title}
           </h3>
 
-          <p className="text-[#7a7a7a] font-manrope text-sm leading-[150%] mt-3">
+          <p className="text-[#7a7a7a] font-[manrope] text-md leading-[150%] mt-3">
             {content}
           </p>
         </div>
 
-        <p className="font-manrope mt-auto mb-4 font-bold text-[18px] leading-[100%] tracking-[31%] text-black">
+        <p className="font-[manrope] mt-auto mb-4 font-bold text-[18px] leading-[100%] tracking-[31%] text-black">
           From {price}
         </p>
 

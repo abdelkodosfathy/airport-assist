@@ -100,7 +100,7 @@ export default function HoverExpandCards() {
   }, [activeIndex, isPaused, cards.length]);
 
   return (
-    <section className="bg-neutral-900 py-28 px-8 xl:px-10 2xl:px-16">
+    <section className="bg-neutral-900 p-28">
       <div className="max-w-360 mx-auto h-200 flex items-center">
         <div className="w-full h-full max-h-[620px] max-w-[1440px] mx-auto flex flex-nowrap gap-4">
           {cards.map((card, index) => (

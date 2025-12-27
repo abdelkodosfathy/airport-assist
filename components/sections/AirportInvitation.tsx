@@ -90,7 +90,7 @@ export default function AirportInvitation({
 
       <div className={`flex max-w-360 mx-auto ${
         left ? "flex-row-reverse" : ""
-      } gap-14 items-center overflow-hidden`}>
+      } gap-6 2xl:gap-10 items-center overflow-hidden`}>
 
         {/* ------------ LEFT TEXT ------------ */}
         <div className="flex-3">

@@ -87,89 +87,70 @@ export default function PackageCards() {
   }, []);
 
   return (
-    <div className="flex gap-6 justify-center mt-8">
-      {packages.map((pkg, i) => (
-        <Card
-          key={`card-${i}`}
-          ref={(el) => {
-            cardsRef.current[i] = el!;
-          }}
-          className="group p-0 gap-0 flex overflow-hidden border border-outline-base bg-neutral-base  min-h-[588px] flex-col min-w-auto"
-          style={{ flex: "1 1 0%" }}
+    <div className="flex gap-6 justify-center mt-8 px-28 flex-wrap">
+  {packages.map((pkg, i) => (
+    <Card
+      key={`card-${i}`}
+      ref={(el) => {
+        cardsRef.current[i] = el!;
+      }}
+      className="group flex flex-col min-w-[0] p-0 gap-0 overflow-hidden border border-outline-base bg-neutral-base flex-1"
+    >
+      {/* Image */}
+      <div className="relative w-full h-[273px] overflow-hidden">
+        <Image
+          src={pkg.image}
+          alt={pkg.heading}
+          fill
+          className="object-cover transition-transform duration-500 group-hover:scale-105"
+        />
+      </div>
+
+      {/* Content */}
+      <div className="flex flex-col flex-1 p-4 2xl:p-6">
+        <div>
+          <h3 className="font-manrope text-xl font-semibold leading-[150%] tracking-widest uppercase">
+            {pkg.heading}
+          </h3>
+          <p className="font-manrope mt-2 text-md leading-[150%] font-normal text-[#61686e] min-h-10.5">
+            {pkg.description}
+          </p>
+        </div>
+
+        <p className="flex flex-col mt-auto text-gray-900">
+          <span className="font-nunito font-bold text-lg leading-[115%] tracking-[0.06em] truncate">
+            From
+          </span>
+          <span className="font-manrope font-bold text-3xl leading-[115%] tracking-[0%]">
+            {pkg.price}
+          </span>
+        </p>
+
+        <span className="w-full h-[0.5px] bg-gray-300 mb-4 block"></span>
+
+        <ul className="space-y-2 mb-4">
+          {pkg.features.map((feature, index) => (
+            <li key={index} className="flex items-start gap-4">
+              <div className="flex items-center justify-center w-6 h-6 rounded-full bg-black group-hover:bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)] transition-all duration-300 flex-shrink-0">
+                <Check className="w-3.5 h-3.5 text-white stroke-3" />
+              </div>
+              <span className="font-manrope text-sm text-gray-700 truncate">
+                {feature}
+              </span>
+            </li>
+          ))}
+        </ul>
+
+        <Button
+          variant="outline"
+          className="w-max cursor-pointer border-black text-black group-hover:border-0 group-hover:bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)] group-hover:text-white hover:text-white duration-0"
         >
-          {/* Image */}
-          <div className="relative w-full overflow-hidden max-h-[273px] min-h-[273px]">
-            <Image
-              src={pkg.image}
-              alt={pkg.heading}
-              fill
-              className="object-cover transition-transform duration-500 group-hover:scale-105"
-            />
-          </div>
+          Book Now <ArrowUpRight />
+        </Button>
+      </div>
+    </Card>
+  ))}
+</div>
 
-          {/* Content */}
-          <div className="p-6 flex-1 flex flex-col">
-            <div>
-              <h3
-                className="font-[Manrope]"
-                style={{
-                  fontFamily: "",
-                  fontSize: "1.125rem",
-                  lineHeight: "150%",
-                  fontWeight: "400",
-                  letterSpacing: "0.3em",
-                  textTransform: "uppercase",
-                }}
-              >
-                {pkg.heading}
-                {/* INTERNATIONAL ARRIVAL */}
-              </h3>
-              <p
-                className="font-[Manrope] mt-4"
-                style={{
-                  fontSize: "0.875rem",
-                  lineHeight: "150%",
-                  fontWeight: "400",
-                  minHeight:"42px",
-                  color: "#61686e",
-                }}
-              >
-                {pkg.description} 
-              </p>
-            </div>
-
-            <p className="font-[Manrope]font-bold text-3xl leading-[115%] tracking-[0%] text-gray-900 flex flex-col" style={{
-                  marginTop:"auto",
-            }}>
-              <span className="font-[Nunito] font-bold text-lg leading-[115%] tracking-[0.06em] truncate">
-                From
-              </span>{" "}
-              {pkg.price}
-            </p>
-
-            <span className="w-full bg-gray-300 h-0.5 mb-6 block"></span>
-            <ul className="space-y-2 mb-6">
-              {pkg.features.map((feature, index) => (
-                <li key={index} className="flex items-start gap-4">
-                  <div className="flex items-center justify-center w-6 h-6 rounded-full bg-black group-hover:bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)] transition-all duration-300 flex-shrink-0">
-                    <Check className="w-3.5 h-3.5 text-white stroke-[3]" />
-                  </div>
-                  <span className="font-[Manrope] text-sm text-gray-700 truncate">
-                    {feature}
-                  </span>
-                </li>
-              ))}
-            </ul>
-
-            <Button
-              variant={"outline"}
-              className="w-max cursor-pointer border-black text-black group-hover:border-0 group-hover:bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)] group-hover:text-white hover:text-white duration-0"
-            >
-              Book Now <ArrowUpRight />
-            </Button>
-          </div>
-        </Card>
-      ))}
-    </div>
   );
 }
