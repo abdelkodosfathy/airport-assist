@@ -161,10 +161,10 @@ const ServiceSection = ({left} : {left?: boolean}) => {
         {/* Text & Gradient Box */}
         <div className="flex-1 space-y-6">
           <div ref={textsRef}>
-            <h3 className="font-[Manrope] font-normal text-[16px] leading-[46px] tracking-[4.6px] uppercase mb-6 text-gray-500">
+            <h3 className="font-[Manrope] font-normal text-[1rem] leading-11.5 tracking-[4.6px] uppercase mb-6 text-gray-500">
               Service Name
             </h3>
-            <p className="font-[Manrope] font-normal text-[21px] leading-[39px] mb-8 text-gray-700 max-w-[525px]">
+            <p className="font-[Manrope] font-normal  text-[1.1rem] leading-9.75 mb-8 text-gray-700 max-w-[525px]">
               Carefully constructed with style and sophistication – each of our
               private lounges are designed to help you unwind, concentrate on
               work or relax with your invited guest or family. The beautiful
