@@ -39,11 +39,11 @@ export default function HeroContent() {
     >
       <h1
         className="
-          font-[Manrope] font-normal leading-[140%] tracking-[9%] 
-          text-2xl sm:text-3xl md:text-4xl 
-          max-w-[90%] sm:max-w-[600px] 
+          font-[Manrope] font-normal leading-[140%] tracking-[2.7px] 
+          text-[30px] 
           opacity-0
-        "
+          "
+          // sm:text-3xl md:text-4xl 
       >
         WELCOME TO AIRPORT ASSIST
       </h1>
@@ -51,12 +51,13 @@ export default function HeroContent() {
       <p
         className="
           hero-text font-[Manrope] text-[#A8A8A8] font-light leading-[150%] 
-          tracking-[4%] sm:tracking-[6%] md:tracking-[9%]
-          text-base sm:text-sm md:text-xl lg:text-2xl
+          tracking-[2px] sm:tracking-[6%] md:tracking-[9%]
           mt-4 sm:mt-5
-          max-w-[90%] sm:max-w-[650px]
           opacity-0
-        "
+          text-[21.75px]
+          "
+          // text-base sm:text-sm md:text-xl lg:text-2xl
+          // max-w-[90%] sm:max-w-[650px]
       >
         Luxury Airport VIP Concierge — seamless, private, stress-free travel.
       </p>
