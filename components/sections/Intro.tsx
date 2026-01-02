@@ -9,7 +9,7 @@ const Intro = (props: Props) => {
       <div className="max-w-360 mx-auto flex items-center gap-10">
         {/* Left Text */}
         <div className="flex-2">
-          <h2 className="uppercase flex flex-col tracking-[0.3em] leading-[150%] text-[2rem] whitespace-normal justify-start">
+          <h2 className="uppercase flex flex-col tracking-[0.3em] leading-[150%] text-3xl whitespace-normal justify-start">
             <span className="">Airport Concierge</span>
             <span>Luxurious & tailored For you.</span>
           </h2>

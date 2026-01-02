@@ -6,10 +6,10 @@ const ExclusiveContent = () => {
   return (
     // <section className="min-h-screen px-28 py-16 flex flex-col items-center">
     <section className=" px-28 py-16 flex flex-col items-center">
-      <h2 className="font-manrope text-center font-normal text-4xl leading-[100%] tracking-[10px] uppercase">
+      <h2 className="font-manrope text-center font-normal text-3xl leading-[100%] tracking-[10px] uppercase">
         Discover exclusive content
       </h2>
-      <p className="mx-auto pt-6 text-gray-500 font-normal text-lg leading-[150%] tracking-widest text-center font-[manrope] max-w-xl">
+      <p className="mx-auto pt-6 text-gray-500 font-normal text-normal leading-[150%] tracking-widest text-center font-[manrope] max-w-xl">
         Receive insider tips on VIP airport services, fast-track travel advice,
         and exclusive updates.
       </p>
@@ -35,7 +35,7 @@ const ExclusiveContent = () => {
           <h3 className="mt-6 font-[manrope] font-semibold text-xl tracking-[4px]">
             VIP Fast Track at Heathrow
           </h3>
-          <p className="text-[rgb(100,96,125)] mt-auto  font-[manrope] font-medium text-lg">
+          <p className="text-[rgb(100,96,125)] mt-auto  font-[manrope] font-medium text-normal">
             Experience Ultimate Luxury and Convenience with VIP Services at
             London Heathrow Airport
           </p>

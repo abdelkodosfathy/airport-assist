@@ -109,7 +109,7 @@ export default function PackageCards() {
       {/* Content */}
       <div className="flex flex-col flex-1 p-4 2xl:p-6">
         <div className="mb-4">
-          <h3 className="font-manrope text-xl font-semibold leading-[150%] tracking-widest uppercase">
+          <h3 className="font-manrope text-xl 4xl:text-2xl font-semibold leading-[150%] tracking-widest uppercase">
             {pkg.heading}
           </h3>
           <p className="font-manrope mt-2 text-sm 2xl:text-md leading-[150%] font-normal text-[#61686e] min-h-10.5">

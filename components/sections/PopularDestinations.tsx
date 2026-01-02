@@ -115,11 +115,11 @@ export default function PopularDestinations() {
           "
         />
 
-        <h2 className="font-manrope font-normal text-4xl leading-[128%] tracking-[10px] uppercase">
+        <h2 className="font-manrope font-normal text-3xl leading-[128%] tracking-[10px] uppercase">
           Popular Destinations
         </h2>
 
-        <p className="font-manrope font-normal text-lg leading-8 text-[#959595] mt-6">
+        <p className="font-manrope font-normal text-normal leading-8 text-[#959595] mt-6">
           Travel in comfort with our VIP Airport Meet & Greet service, featuring
           fast-track security & immigration and dedicated airport concierge
           assistance from curbside to gate.

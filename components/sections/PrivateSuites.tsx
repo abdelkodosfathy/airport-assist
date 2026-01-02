@@ -112,11 +112,11 @@ export default function PrivateSuites() {
           "
           />
 
-          <h2 className="font-manrope font-normal text-4xl leading-[128%] tracking-[10px] uppercase">
+          <h2 className="font-manrope font-normal text-3xl leading-[128%] tracking-[10px] uppercase">
             PRIVATE SUITS
           </h2>
 
-          <p className="font-manrope font-normal text-lg leading-8 text-[#959595] mt-6">
+          <p className="font-manrope font-normal text-normal leading-8 text-[#959595] mt-6">
             Our most exclusive service, delivering the highest level of luxury
             airport assistance in over 500 destinations worldwide.
           </p>
