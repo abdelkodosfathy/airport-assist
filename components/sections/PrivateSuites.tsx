@@ -173,7 +173,7 @@ function DestinationCard({ title, content, img, price }: CardProps) {
       {/* TEXT CONTENT - RIGHT */}
       <div className="w-5/9 flex flex-col px-4 py-6">
         <div>
-          <h3 className="font-[manrope] font-bold text-lg leading-[100%] tracking-[31%] text-black">
+          <h3 className="font-[Manrope] font-bold text-normal leading-[100%] tracking-[3PX] text-black">
             {title}
           </h3>
 
@@ -182,7 +182,7 @@ function DestinationCard({ title, content, img, price }: CardProps) {
           </p>
         </div>
 
-        <p className="font-[manrope] mt-auto mb-4 font-bold text-[18px] leading-[100%] tracking-[31%] text-black">
+        <p className="font-[Manrope] mt-auto mb-4 font-bold text-[18px] leading-[100%] tracking-[31%] text-[#7B5A41]">
           From {price}
         </p>
 

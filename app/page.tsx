@@ -13,12 +13,12 @@ import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 export default function HomePage() {
   return (
-    <main>
+    <main className="font-[Manrope]">
       <Header />
       <Hero/>
       <Intro/>
       <HoverExpandCards />
-      <section className="pb-6">
+      <section className="py-20">
         <AirportInvitation
           heading="Airport by Invitation"
           content="It is our most exclusive service, delivering the highest level of luxury airport assistance in over 100 destinations worldwide"

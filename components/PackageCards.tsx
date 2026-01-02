@@ -97,7 +97,7 @@ export default function PackageCards() {
       className="group flex flex-col p-0 gap-0 overflow-hidden border border-outline-base bg-neutral-base flex-1"
     >
       {/* Image */}
-      <div className="relative w-full h-[180px] 2xl:h-[273px] overflow-hidden">
+      <div className="font-[Manrope] relative w-full h-[180px] 2xl:h-[273px] overflow-hidden">
         <Image
           src={pkg.image}
           alt={pkg.heading}
@@ -118,11 +118,12 @@ export default function PackageCards() {
         </div>
 
         <p className="flex flex-col mt-auto text-gray-900">
-          <span className="font-nunito font-bold text-sm 2xl:text-lg leading-[115%] tracking-[0.06em] truncate">
+          <span className="font-nunito text-sm 2xl:text-lg leading-[115%] tracking-[0.06em] truncate">
             From
           </span>
-          <span className="font-manrope font-bold 2xl:text-3xl leading-[115%] tracking-[0%]">
+          <span className="font-[Manrope] text-2xl leading-[115%] tracking-[0%]">
             {pkg.price}
+            
           </span>
         </p>
 

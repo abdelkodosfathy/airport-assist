@@ -66,9 +66,9 @@ const SearchWithDropdown = ({
   };
 
   return (
-    <div className="w-full">
-      <div className="relative" ref={wrapperRef}>
-        <div className="relative">
+    <div className="w-full col-span-2">
+      <div className="relative h-full" ref={wrapperRef}>
+        <div className="relative h-full">
           {/* <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" /> */}
           <Input
             id={id}

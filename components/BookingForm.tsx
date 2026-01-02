@@ -12,6 +12,7 @@ import Calender from "./custom icons/calender";
 import Adults from "./custom icons/adults";
 import Autocomplete from "./custom inputs/Autocomplete";
 import { Search } from "lucide-react";
+import SearchWithDropdown from "./custom inputs/search";
 
 const airports = [
   { id: 1, label: "JFK – John F. Kennedy Intl" },
@@ -107,17 +108,23 @@ export default function BookingForm() {
           sm:grid-cols-2 
           lg:grid-cols-6
           gap-3 sm:gap-4 lg:gap-1 
-          mt-6
-        "
+          h-12
+          "
       >
         {activeTab === "vip" ? (
           <>
-            <IconInput
+            {/* <IconInput
               icon={<Plane />}
               placeholder="Select Airport"
               className="col-span-2"
               inputClassName="bg-white rounded-lg lg:rounded-none lg:rounded-l-xl lg:h-full col-span-2"
-              />
+              /> */}
+            <SearchWithDropdown
+              id="firstName"
+              placeholder="First Name"
+              // className="pl-4 pr-10 bg-[#F4F4F4] border border-[#E0E0E0]"
+              className=" h-full bg-white rounded-lg lg:rounded-none lg:rounded-l-xl lg:h-full col-span-2"
+            />
             {/* <Autocomplete
               icon={<Plane />}
               placeholder="Select Airport"
@@ -138,17 +145,24 @@ export default function BookingForm() {
             {/* <DatePickerWithIconDemo /> */}
             <IconInput
               icon={<Adults />}
+              type="number"
               placeholder="1 Adult - 0 Children"
               inputClassName="bg-white rounded-lg lg:rounded-none lg:rounded-none lg:h-full"
             />
           </>
         ) : (
           <>
-            <IconInput
+            {/* <IconInput
               icon={<Plane />}
               placeholder="Select Airport"
               className="col-span-2"
               inputClassName="bg-white rounded-lg lg:rounded-none lg:rounded-l-2xl lg:h-full col-span-2"
+            /> */}
+            <SearchWithDropdown
+              id="firstName"
+              placeholder="First Name"
+              // className="pl-4 pr-10 bg-[#F4F4F4] border border-[#E0E0E0]"
+              className=" h-full bg-white rounded-lg lg:rounded-none lg:rounded-l-xl lg:h-full col-span-2"
             />
             <Input
               placeholder="Service Type"
@@ -174,7 +188,7 @@ export default function BookingForm() {
             h-full
             rounded-lg lg:rounded-none lg:rounded-r-xl 
             border text-lg font-light border-white/30 text-white 
-            px-6 py-4 
+            px-6 py-3
             bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)] 
             hover:opacity-90 
             mt-2 sm:mt-0 col-span-2 lg:col-span-1

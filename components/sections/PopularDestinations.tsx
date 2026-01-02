@@ -103,7 +103,7 @@ export default function PopularDestinations() {
   return (
     <section className="bg-[#1a1a1a] ">
     {/* <div className="w-full mx-auto max-w-360 px-28  gap-2 2xl:gap-4 pt-28 pb-16  flex bg-[#1a1a1a] text-white overflow-hidden"> */}
-    <div className="w-full mx-auto px-28  gap-2 2xl:gap-4 pt-28 pb-16  flex bg-[#1a1a1a] text-white overflow-hidden">
+    <div className="w-full max-w-360 mx-auto pl-19  gap-2 2xl:gap-4 pt-28 pb-10  flex bg-[#1a1a1a] text-white">
 
       {/* ------------ LEFT TEXT ------------ */}
       <div className="w-3/8 relative">
@@ -175,15 +175,15 @@ function DestinationCard({ title, content, img, price }: CardProps) {
 
       {/* TEXT CONTENT */}
       <div className="px-6 flex flex-col">
-        <h3 className="font-manrope font-bold text-lg h-10 leading-[100%] tracking-[31%] text-black">
+        <h3 className="font-[Manrope] font-semibold text-normal h-10 leading-[130%] tracking-[3px] text-black">
           {title}
         </h3>
 
-        <p className="text-[#7a7a7a] font-manrope leading-[150%] mt-3">
+        <p className="text-[#7a7a7a] font-manrope leading-[150%] mt-3 text-sm">
           {content}
         </p>
 
-        <p className="mt-4 mb-4 font-manrope font-bold text-[18px] leading-[100%] tracking-[31%]">
+        <p className="mt-4 mb-4 font-manrope font-bold text-[#7B5A41] text-[18px] leading-[100%] tracking-[31%]">
           From £250
         </p>
 

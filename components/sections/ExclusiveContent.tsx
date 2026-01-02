@@ -16,9 +16,9 @@ const ExclusiveContent = () => {
 
       <Button
         variant="outline"
-        className=" my-10  w-max mb-6 py-6 px-10 border-black hover:bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)] hover:text-white hover:border-white duration-0"
+        className="my-10 min-w-[140px] mb-6 py-5 border-black hover:bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)] hover:text-white hover:border-white duration-0"
       >
-        <p className="text-xl">Read more</p>
+        <p className="text-sm">Read more</p>
         <ArrowUpRight />
       </Button>
 

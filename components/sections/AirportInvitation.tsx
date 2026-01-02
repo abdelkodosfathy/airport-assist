@@ -84,8 +84,7 @@ export default function AirportInvitation({
 
   return (
     <section
-      // className="min-h-118.75 gap-4 py-28 px-8 flex items-center xl:px-10 2xl:px-16  overflow-hidden"
-      className="min-h-118.75 gap-4 py-28 px-26 flex items-center overflow-hidden"
+      className="py-6 gap-4 px-26 flex items-center overflow-hidden"
     >
 
       <div className={`flex max-w-360 mx-auto ${
