@@ -5,19 +5,29 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import clsx from "clsx";
-import { DatePickerWithIconDemo } from "./DateTimeInputs";
 
-
-import { Search } from "lucide-react";
 import IconInput from "@/components/custom inputs/customInput";
 import Plane from "./custom icons/plane";
 import Calender from "./custom icons/calender";
 import Adults from "./custom icons/adults";
+import Autocomplete from "./custom inputs/Autocomplete";
+import { Search } from "lucide-react";
+
+const airports = [
+  { id: 1, label: "JFK – John F. Kennedy Intl" },
+  { id: 2, label: "LAX – Los Angeles Intl" },
+  { id: 3, label: "DXB – Dubai Intl" },
+  // …
+];
 
 export default function BookingForm() {
   const [activeTab, setActiveTab] = useState<"vip" | "chauffeur-services">(
     "vip"
   );
+
+  const handleSelect = (airport: { id: number; label: string }) => {
+    console.log("Selected:", airport);
+  };
 
   return (
     <Card
@@ -56,15 +66,15 @@ export default function BookingForm() {
           VIP Meet & Greet Service
           <span
             className={clsx(
-              "absolute left-0 right-0 -bottom-2 h-1 rounded-full transition-opacity duration-300",
+              "absolute left-0 right-0 -bottom-2 h-0.75 rounded-full transition-opacity duration-300",
               activeTab === "vip"
-                ? "opacity-100 bg-linear-to-r from-[#99785F00]/0 via-[#AB9B90] to-[#99785F00]/0"
+                ? "opacity-100 bg-linear-to-r from-[#99785F00]/0 via-[#EBA068] to-[#99785F00]/0"
                 : "opacity-0"
             )}
           />
         </Button>
 
-        <span className="inline-block w-px h-7 rounded-3xl bg-white/40"></span>
+        <span className="inline-block w-0.75 h-9 rounded-3xl bg-linear-to-b from-white to-white/10"></span>
 
         <Button
           variant={"ghost"}
@@ -80,9 +90,9 @@ export default function BookingForm() {
           Chauffeur Services
           <span
             className={clsx(
-              "absolute left-0 right-0 -bottom-2 h-1 rounded-full transition-opacity duration-300",
+              "absolute left-0 right-0 -bottom-2 h-0.75 rounded-full transition-opacity duration-300",
               activeTab === "chauffeur-services"
-                ? "opacity-100 bg-linear-to-r from-[#99785F00]/0 via-[#AB9B90] to-[#99785F00]/0"
+                ? "opacity-100 bg-linear-to-r from-[#99785F00]/0 via-[#EBA068] to-[#99785F00]/0"
                 : "opacity-0"
             )}
           />
@@ -103,49 +113,57 @@ export default function BookingForm() {
         {activeTab === "vip" ? (
           <>
             <IconInput
-              icon={<Plane/>}
+              icon={<Plane />}
               placeholder="Select Airport"
               className="col-span-2"
-              inputClassName="bg-white rounded-xl lg:rounded-none lg:rounded-l-2xl lg:h-full col-span-2"
-            />
+              inputClassName="bg-white rounded-lg lg:rounded-none lg:rounded-l-xl lg:h-full col-span-2"
+              />
+            {/* <Autocomplete
+              icon={<Plane />}
+              placeholder="Select Airport"
+              className="col-span-2"
+              inputClassName="bg-white rounded-lg lg:rounded-none lg:rounded-l-xl lg:h-full col-span-2"
+              // options={airports}
+              onSelect={(airport) => console.log("Selected:", airport)}
+            /> */}
             <Input
               placeholder="Service Type"
-              className="bg-white rounded-xl lg:rounded-none lg:h-full"
+              className="bg-white col-span-2 lg:col-span-1 rounded-lg lg:rounded-none lg:h-full"
             />
             <IconInput
-              icon={<Calender/>}
+              icon={<Calender />}
               placeholder="Select Date"
-              inputClassName="bg-white rounded-xl lg:rounded-none lg:rounded-none lg:h-full"
+              inputClassName="bg-white rounded-lg lg:rounded-none lg:rounded-none lg:h-full"
             />
             {/* <DatePickerWithIconDemo /> */}
             <IconInput
-              icon={<Adults/>}
+              icon={<Adults />}
               placeholder="1 Adult - 0 Children"
-              inputClassName="bg-white rounded-xl lg:rounded-none lg:rounded-none lg:h-full"
+              inputClassName="bg-white rounded-lg lg:rounded-none lg:rounded-none lg:h-full"
             />
           </>
         ) : (
           <>
             <IconInput
-              icon={<Plane/>}
+              icon={<Plane />}
               placeholder="Select Airport"
               className="col-span-2"
-              inputClassName="bg-white rounded-xl lg:rounded-none lg:rounded-l-2xl lg:h-full col-span-2"
+              inputClassName="bg-white rounded-lg lg:rounded-none lg:rounded-l-2xl lg:h-full col-span-2"
             />
             <Input
               placeholder="Service Type"
-              className="bg-white rounded-xl lg:rounded-none lg:h-full"
+              className="bg-white rounded-lg lg:rounded-none lg:h-full "
             />
             <IconInput
-              icon={<Calender/>}
+              icon={<Calender />}
               placeholder="Select Date"
-              inputClassName="bg-white rounded-xl lg:rounded-none lg:rounded-none lg:h-full"
+              inputClassName="bg-white rounded-lg lg:rounded-none lg:rounded-none lg:h-full"
             />
             {/* <DatePickerWithIconDemo /> */}
             <IconInput
-              icon={<Adults/>}
+              icon={<Adults />}
               placeholder="1 Adult - 0 Children"
-              inputClassName="bg-white rounded-xl lg:rounded-none lg:rounded-none lg:h-full"
+              inputClassName="bg-white rounded-lg lg:rounded-none lg:rounded-none lg:h-full"
             />
           </>
         )}
@@ -154,7 +172,7 @@ export default function BookingForm() {
           className="
             w-full 
             h-full
-            rounded-xl lg:rounded-none lg:rounded-r-2xl 
+            rounded-lg lg:rounded-none lg:rounded-r-xl 
             border text-lg font-light border-white/30 text-white 
             px-6 py-4 
             bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)] 
@@ -163,7 +181,7 @@ export default function BookingForm() {
             cursor-pointer
           "
         >
-            <p className="text-normal font-light">BOOK NOW</p>
+          <p className="text-normal font-light">BOOK NOW</p>
         </Button>
       </div>
     </Card>
