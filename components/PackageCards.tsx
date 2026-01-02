@@ -121,9 +121,8 @@ export default function PackageCards() {
           <span className="font-nunito text-sm 2xl:text-lg leading-[115%] tracking-[0.06em] truncate">
             From
           </span>
-          <span className="font-[Manrope] text-2xl leading-[115%] tracking-[0%]">
+          <span className="font-[Manrope] text-2xl mb-3 leading-[115%] tracking-[0%]">
             {pkg.price}
-            
           </span>
         </p>
 
