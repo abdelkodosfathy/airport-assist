@@ -8,8 +8,9 @@ import hero from "@/public/our-sercives-hero.jpg";
 import Image from "next/image";
 import ChooseService from "./components/choose-service";
 import { Mail } from "lucide-react";
+import Link from "next/link";
 
-export default function ChooseServices () {
+export default function ChooseServices() {
   return (
     <main className="bg-[#F7F7F6] font-[Manrope]">
       <Header />
@@ -201,22 +202,26 @@ export default function ChooseServices () {
           </div>
         </div>
         <Button
+          asChild
           variant="outline"
           className="
-          mt-6
-          w-max 
-          cursor-pointer 
-          border-black 
-          text-black 
-          hover:border-[#664F31]  
-          hover:bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)] 
-          hover:text-white 
-          duration-0"
+            mt-6
+            w-max 
+            cursor-pointer 
+            border-black 
+            text-black 
+            hover:border-[#664F31]  
+            hover:bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)] 
+            hover:text-white 
+            duration-0
+          "
         >
-          <p className="text-lg font-normal font-[Manrope]">Continue</p>
+          <Link href="/choose-services/flight-information">
+            <p className="text-lg font-normal font-[Manrope]">Continue</p>
+          </Link>
         </Button>
       </section>
       <Footer />
     </main>
   );
-};
+}

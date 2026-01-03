@@ -139,9 +139,9 @@ export default function FlightInformation() {
               <h4 className="font-[Manrope] font-semibold">Steps</h4>
               <ul className="space-y-2 mt-2">
                 {/* current tap */}
-                <li className="p-2 flex items-center bg-[#7B5A4133] rounded-md">
+                <li className="p-2 flex items-center">
                   <p>
-                    <span className="inline-block text-center rounded-full w-6 h-6 mr-2 bg-[#7B5A41] text-white">
+                    <span className="inline-block text-center rounded-full w-6 h-6 mr-2 bg-[#F4F4F4] text-[#7a7a7a]">
                       1
                     </span>{" "}
                     Choose Service
@@ -156,9 +156,9 @@ export default function FlightInformation() {
                     Flight Information
                   </p>
                 </li>
-                <li className="p-2 flex items-center">
+                <li className="p-2 flex items-center bg-[#7B5A4133] rounded-md">
                   <p>
-                    <span className="inline-block text-center rounded-full w-6 h-6 mr-2 bg-[#F4F4F4] text-[#7a7a7a]">
+                    <span className="inline-block text-center rounded-full w-6 h-6 mr-2 bg-[#7B5A41] text-white">
                       3
                     </span>
                     Passengers details

@@ -13,7 +13,7 @@ import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 export default function HomePage() {
   return (
-    <main className="font-[Manrope]">
+    <main className="font-[Manrope] max-w-screen overflow-hidden">
       <Header />
       <Hero/>
       <Intro/>
