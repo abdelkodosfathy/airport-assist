@@ -13,6 +13,7 @@ import Adults from "./custom icons/adults";
 import Autocomplete from "./custom inputs/Autocomplete";
 import { Search } from "lucide-react";
 import SearchWithDropdown from "./custom inputs/search";
+import Link from "next/link";
 
 const airports = [
   { id: 1, label: "JFK – John F. Kennedy Intl" },
@@ -182,7 +183,8 @@ export default function BookingForm() {
           </>
         )}
 
-        <Button
+        <Link
+        href={"/choose-services"}
           className="
             w-full 
             h-full
@@ -196,7 +198,7 @@ export default function BookingForm() {
           "
         >
           <p className="text-normal font-light">BOOK NOW</p>
-        </Button>
+        </Link>
       </div>
     </Card>
   );
