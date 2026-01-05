@@ -147,10 +147,10 @@ const FlightForm = ({ onFocus }: StepsProps) => {
           />
           <Label
             htmlFor="fastTrack"
-            className="text-sm leading-relaxed cursor-pointer"
+            className="font-medium leading-relaxed cursor-pointer"
           >
             Include Fast Track Service{" "}
-            <span className="text-muted-foreground">(+£25.00, Per PAX)</span>
+            <span>(+£25.00, Per PAX)</span>
           </Label>
         </div>
       </div>
@@ -284,8 +284,8 @@ const ChauffeurServices = ({ onFocus }: StepsProps) => {
           </p>
         </div>
       </div>
-      <div className="mb-2 flex gap-2 rounded-lg bg-[#FFFBEF] px-4 py-3 border border-[#7B5A414D] text-[#7B5A41]">
-        <div className="w-6 h-6 bg-[#7B5A41] rounded-full grid place-content-center">
+      <div className="mb-4 flex gap-4 rounded-lg bg-[#FFFBEF] px-4 py-3 border border-[#7B5A414D] text-[#7B5A41]">
+        <div className="min-w-6 min-h-6 w-6 h-6 bg-[#7B5A41] rounded-full grid place-content-center">
           <Clock4 className="w-5 h-5 text-white" />
         </div>
         <p>Chauffeur will wait 15 minutes free of charge</p>
@@ -323,8 +323,8 @@ const AdditionalServices = ({ onFocus }: StepsProps) => {
       </h4>
       <span className="inline-block w-full h-0.5 bg-[#CFCFCF]" />
       <div className="space-y-4 mt-4">
-        <div className="p-4 bg-[#F4F4F4] border border-[#E0E0E0] rounded-lg">
-          <p>
+        <div className="p-4 space-y-4 bg-[#F4F4F4] border border-[#E0E0E0] rounded-lg">
+          <p className="text-sm">
             Please download the passenger data form, fill it out, and upload it
             below:
           </p>
@@ -345,8 +345,8 @@ const AdditionalServices = ({ onFocus }: StepsProps) => {
             Choose File <UploadCloud />
           </Button>
         </div>
-        <div className="p-4 bg-[#F4F4F4] border border-[#E0E0E0] rounded-lg">
-          <p>
+        <div className="p-4 space-y-4 bg-[#F4F4F4] border border-[#E0E0E0] rounded-lg">
+          <p className="text-sm">
             Please download the passenger data form, fill it out, and upload it
             below:
           </p>
@@ -379,17 +379,16 @@ const AdditionalServices = ({ onFocus }: StepsProps) => {
             Wheelchair requested from the airline
           </Label>
         </div>
-        <div className="flex gap-2 rounded-lg bg-[#FFFBEF] px-4 py-3 border border-[#7B5A414D] text-[#7B5A41]">
-          <div className="w-6 h-6 text-lg bg-[#7B5A41] rounded-full grid place-content-center">
+        <div className="flex items-center gap-4 rounded-lg bg-[#FFFBEF] px-4 py-3 border border-[#7B5A414D] text-[#7B5A41]">
+          <div className="min-w-6 w-6 min-h-6 h-6 text-lg bg-[#7B5A41] rounded-full grid place-content-center">
             <p className="text-white">!</p>
           </div>
-          <p>Chauffeur will wait 15 minutes free of charge</p>
+          <p>Wheelchair assistance must be arranged directly with your airline. By ticking this box, you confirm that you have selected wheelchair assistance on your flight booking.</p>
         </div>
 
         <div className="space-y-2 md:col-span-2">
-          <Label>
-            Additional requirements{" "}
-            <span className="text-sm text-muted-foreground">(optional)</span>
+          <Label className="gap-0">
+            Additional requirements<span className="text-sm text-muted-foreground">(optional)</span>
           </Label>
           <Textarea
             placeholder="Any Special Notes"
