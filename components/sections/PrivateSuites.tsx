@@ -101,32 +101,32 @@ export default function PrivateSuites() {
     // <section className=" px-8 xl:px-10 2xl:px-16 bg-[#1a1a1a] text-white overflow-hidden">
     <section className=" bg-[#1a1a1a]">
       {/* <div className="mx-auto flex gap-6 h-full max-w-360"> */}
-    <div className="w-full mx-auto max-w-360 px-28  gap-2 2xl:gap-4 pt-28 pb-16  flex bg-[#1a1a1a] text-white overflow-hidden">
+    <div className="w-full mx-auto pl-20 pt-28 pb-16  flex bg-[#1a1a1a] text-white overflow-hidden">
         {/* ------------ LEFT TEXT ------------ */}
-        <div className="w-2/5 relative">
+        <div className="w-1/2 relative">
           <span
             className="
-            absolute left-0 right-0 -top-8 h-1 rounded-full
+            absolute left-0 right-0 -top-8 h-0.75 rounded-full
             transition-opacity duration-300 opacity-100
             bg-[linear-gradient(90deg,rgba(153,120,95,0)_0%,rgba(171,155,144,0.4)_50%,rgba(153,120,95,0)_100%)]
           "
           />
 
-          <h2 className="font-manrope font-normal text-3xl leading-[128%] tracking-[10px] uppercase">
+          <h2 className="text-3xl leading-[128%] tracking-[10px] uppercase">
             PRIVATE SUITS
           </h2>
 
-          <p className="font-manrope font-normal text-normal leading-8 text-[#959595] mt-6">
+          <p className="leading-8 text-[#959595] mt-6 max-w-125">
             Our most exclusive service, delivering the highest level of luxury
             airport assistance in over 500 destinations worldwide.
           </p>
         </div>
 
         {/* ------------ CARDS GRID ------------ */}
-        <div className="w-3/5 flex flex-row gap-2">
+        <div className="w-1/2 max-h-[650px] pr-18 flex flex-row gap-2">
           <div
             ref={scrollRef}
-            className="flex-1 flex flex-col overflow-y-auto gap-4 scrollbar-none scroll-smooth"
+            className="flex-1 flex flex-col overflow-y-auto gap-4  scrollbar-none scroll-smooth"
           >
             {data.map((item, i) => (
               <DestinationCard key={i} {...item} />
@@ -155,11 +155,14 @@ type CardProps = Destination;
 function DestinationCard({ title, content, img, price }: CardProps) {
   return (
     <Card
-      className="shrink-0 flex flex-row gap-0
+      className="shrink-0 flex flex-row gap-0 
       bg-white border border-[#333] rounded-2xl overflow-hidden p-0
       hover:shadow-xl hover:shadow-black/40 transition-all duration-300
-      h-3/7
-    "
+      "
+      style={{
+        height:"calc(50% - 16px)"
+      }}
+      // h-3/7
     >
       {/* IMAGE - LEFT */}
       <div className="w-4/9 overflow-hidden">
@@ -173,16 +176,16 @@ function DestinationCard({ title, content, img, price }: CardProps) {
       {/* TEXT CONTENT - RIGHT */}
       <div className="w-5/9 flex flex-col px-4 py-6">
         <div>
-          <h3 className="font-[Manrope] font-bold text-normal leading-[100%] tracking-[3PX] text-black">
+          <h3 className="leading-[130%] font-semibold tracking-[3px] text-black">
             {title}
           </h3>
 
-          <p className="text-[#7a7a7a] font-[manrope] text-md leading-[150%] mt-3">
+          <p className="text-[#7a7a7a] font-[manrope] text-sm leading-[150%] mt-3 max-w-90">
             {content}
           </p>
         </div>
 
-        <p className="font-[Manrope] mt-auto mb-4 font-bold text-[18px] leading-[100%] tracking-[31%] text-[#7B5A41]">
+        <p className="font-[Manrope] mt-auto mb-4 text-[18px] leading-[100%] tracking-[31%] text-[#7B5A41]">
           From {price}
         </p>
 

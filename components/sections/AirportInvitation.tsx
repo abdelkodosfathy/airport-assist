@@ -93,7 +93,7 @@ export default function AirportInvitation({
 
         {/* ------------ LEFT TEXT ------------ */}
         <div className="flex-3">
-          <h2 className="font-[Manrope] font-normal text-3xl leading-[128%] tracking-[10px] uppercase">
+          <h2 className="font-[Manrope] max-w-116 font-normal text-3xl leading-[128%] tracking-[10px] uppercase">
             {heading}
           </h2>
 
@@ -105,7 +105,7 @@ export default function AirportInvitation({
         {/* ------------ RIGHT IMAGES ------------ */}
         <div className="flex flex-4 gap-4">
           {/* الصورة الأولى */}
-          <div ref={img1Ref} className="overflow-hidden rounded-md h-64">
+          <div ref={img1Ref} className="overflow-hidden rounded-md h-64 2xl:h-70">
             <img
               // src="/sections/img1.jpg"
               src={imgOne}
@@ -114,7 +114,7 @@ export default function AirportInvitation({
           </div>
 
           {/* الصورة الثانية */}
-          <div ref={img2Ref} className="overflow-hidden rounded-md h-64">
+          <div ref={img2Ref} className="overflow-hidden rounded-md h-64 2xl:h-70">
             <img
               src={imgTwo}
               className="w-full h-full object-cover"

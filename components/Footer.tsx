@@ -114,8 +114,8 @@ const Footer = () => {
               </div>
             </div>
           </div>
-          <div className="flex justify-between">
-            <div>
+          <div className="relative grid grid-cols-2 md:grid-cols-4 gap-8 pb-4">
+            <div className="col-span-3">
               <p className="text-[rgb(138,131,124)] my-4">
                 Airport Assist is a proud BTA, AMAC, BBCA and EBAA member.
               </p>
@@ -132,6 +132,7 @@ const Footer = () => {
                   width={147}
                   height={38}
                   src={payments}
+                  className="grayscale"
                   alt="we do accept payments"
                 />
               </div>

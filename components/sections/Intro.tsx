@@ -23,17 +23,7 @@ const Intro = (props: Props) => {
           </p>
           <Button
             variant="outline"
-            // className="mt-6 w-max mb-6 border-black hover:bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)] hover:text-white hover:border-none duration-0"
-            className="
-            rounded-md 
-            border text-lg font-light border-white/30 text-white 
-            px-6 py-4 
-            bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)] 
-            hover:opacity-90 
-            mt-2 sm:mt-0 col-span-2 lg:col-span-1
-            hover:text-white
-            cursor-pointer
-            "
+            className="my-10 min-w-[140px] mb-6 py-5 border-black hover:bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)] hover:text-white hover:border-white duration-0"
           >
             <p>About Us</p>
             <ArrowUpRight className="size-md" />

@@ -90,19 +90,23 @@ export default function HoverExpandCards() {
   // ------------------------------------------
   useEffect(() => {
     if (isPaused) return;
-
+    // timelines.current[key]?.play()
     const timer = setTimeout(() => {
-      setActiveIndex((prev) => (prev + 1) % cards.length);
+      setActiveIndex((prev) => {
+        // timelines.current[key]?.reverse()
+        return ((prev + 1) % cards.length)
+      })
       setKey((prev) => prev + 1);
+
     }, 3000);
 
     return () => clearTimeout(timer);
   }, [activeIndex, isPaused, cards.length]);
 
   return (
-    <section className="bg-neutral-900 p-28">
+    <section className="bg-neutral-900">
       <div className="max-w-360 mx-auto h-200 flex items-center">
-        <div className="w-full h-full max-h-[620px] max-w-[1440px] mx-auto flex flex-nowrap gap-4">
+        <div className="w-full h-full max-h-[620px]  mx-auto flex flex-nowrap gap-4">
           {cards.map((card, index) => (
             <div
               key={card.id}
@@ -118,7 +122,7 @@ export default function HoverExpandCards() {
               <div
                 onMouseEnter={() => handleMouseEnter(index)}
                 onMouseLeave={() => handleMouseLeave(index)}
-                className="relative overflow-hidden h-125 cursor-pointer"
+                className="relative overflow-hidden h-125 rounded-md cursor-pointer"
               >
                 <div className="w-full h-full relative">
                   <img
@@ -130,7 +134,7 @@ export default function HoverExpandCards() {
                   {/* Overlay — أضف ref هنا */}
                   <div
                     className="absolute bottom-0 left-0 w-full text-white p-10 pt-12 
-             bg-gradient-to-t from-black to-transparent"
+                      bg-gradient-to-t from-black to-transparent"
                   >
                     {/* Container النصوص — اللي عليه الأنيميشن بس */}
                     <div
@@ -149,7 +153,7 @@ export default function HoverExpandCards() {
                 </div>
 
                 {/* Timeline bar */}
-                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-white/20">
+                <div className="absolute bottom-1 left-5 right-5 rounded-full  h-0.5 bg-white/20">
                   {index === activeIndex && (
                     <div
                       key={key}
@@ -165,6 +169,7 @@ export default function HoverExpandCards() {
               </div>
 
               <p className="text-white max-w-38 m-auto text-center px-2">
+                {/* {index !== activeIndex && card.title} */}
                 {card.title}
               </p>
             </div>

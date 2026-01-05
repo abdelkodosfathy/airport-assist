@@ -35,7 +35,7 @@ const ExclusiveContent = () => {
           <h3 className="mt-6 font-[manrope] font-semibold text-xl tracking-[4px]">
             VIP Fast Track at Heathrow
           </h3>
-          <p className="text-[rgb(100,96,125)] mt-auto  font-[manrope] font-medium text-normal">
+          <p className="text-[#6D6D6D] mt-auto  font-[manrope] font-medium text-normal">
             Experience Ultimate Luxury and Convenience with VIP Services at
             London Heathrow Airport
           </p>
@@ -53,7 +53,7 @@ const ExclusiveContent = () => {
           <h3 className="mt-6 font-[manrope] font-semibold text-xl tracking-[4px]">
             VIP Fast Track at Charles de Gaulle Airport
           </h3>
-          <p className="text-gray-500 mt-auto  font-[manrope] font-medium text-lg">
+          <p className="text-[#6D6D6D] mt-auto  font-[manrope] font-medium text-lg">
             Avoid long waits at security and immigration with Airport Assist’s
             CDG Fast Track
           </p>

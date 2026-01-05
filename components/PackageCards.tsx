@@ -97,7 +97,7 @@ export default function PackageCards() {
       className="group flex flex-col p-0 gap-0 overflow-hidden border border-outline-base bg-neutral-base flex-1"
     >
       {/* Image */}
-      <div className="font-[Manrope] relative w-full h-[180px] 2xl:h-[273px] overflow-hidden">
+      <div className="font-[Manrope] relative w-full h-[260px] 2xl:h-[290px] overflow-hidden">
         <Image
           src={pkg.image}
           alt={pkg.heading}

@@ -97,18 +97,18 @@ export default function ChooseServices() {
           <ChooseService />
           <div className="h-full flex-1 space-y-4">
             <div className="bg-[#7B5A411C] rounded-2xl p-5">
-              <h4 className="font-[Manrope] font-semibold">
+              <h4 className="font-[Manrope] ">
                 Quote for Elite Package{" "}
               </h4>
               <span className="block w-full h-0.5 my-2 bg-[#CFCFCF]"></span>
               <ul className="space-y-3">
-                <li className="font-semibold text-[#62697D] my-2">
+                <li className=" text-[#62697D] my-2">
                   London Gatwick Airport - LGW{" "}
                 </li>
-                <li className="flex gap-2 items-center font-semibold text-[#62697D]">
+                <li className="flex gap-2 items-center  text-[#62697D]">
                   <Arraival /> Arraival
                 </li>
-                <li className="flex gap-2 items-center font-semibold text-[#62697D]">
+                <li className="flex gap-2 items-center  text-[#62697D]">
                   <Calender /> 30 Nov 2025
                 </li>
               </ul>

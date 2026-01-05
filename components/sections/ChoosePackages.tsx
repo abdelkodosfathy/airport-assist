@@ -11,7 +11,7 @@ export default function ChoosePackages (props: Props) {
       <p className="font-[Manrope] font-normal text-md leading-[150%] tracking-[0.09em] text-center text-[#6D6D6D]">
         Elevate Your Journey with VIP Concierge, Fast-Track, Meet & Greet
       </p>
-      <div className="max-w-300 2xl:max-w-400 py-16 m-auto">
+      <div className="py-16 m-auto">
         <PackageCards/>
       </div>
     </section>
