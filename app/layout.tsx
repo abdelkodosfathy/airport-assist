@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
-import {Manrope, Nunito } from "next/font/google";
+import { Manrope, Nunito } from "next/font/google";
 import "./globals.css";
+import Providers from "./providers";
 
 const nunito = Nunito({
   variable: "--font-nuito",
   subsets: ["latin"],
-})
+});
 
 const manrope = Manrope({
   variable: "--font-manrope",
@@ -13,7 +14,8 @@ const manrope = Manrope({
 });
 
 export const metadata: Metadata = {
-  title: "Airport Assist | VIP Meet & Greet, Fast Track & Luxury Airport Concierge",
+  title:
+    "Airport Assist | VIP Meet & Greet, Fast Track & Luxury Airport Concierge",
   description:
     "Premium VIP Airport Concierge offering Meet & Greet, Fast Track immigration & security, private entrances, chauffeur service, and seamless luxury travel assistance in over 100+ destinations worldwide.",
   alternates: {
@@ -37,7 +39,6 @@ export const metadata: Metadata = {
   },
 };
 
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -45,10 +46,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${manrope.variable} ${nunito.variable}antialiased`}
-      >
-        {children}
+      <body className={`${manrope.variable} ${nunito.variable}antialiased`}>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
