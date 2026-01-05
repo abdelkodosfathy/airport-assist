@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
+// import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import clsx from "clsx";
 
@@ -10,26 +10,26 @@ import IconInput from "@/components/custom inputs/customInput";
 import Plane from "./custom icons/plane";
 import Calender from "./custom icons/calender";
 import Adults from "./custom icons/adults";
-import Autocomplete from "./custom inputs/Autocomplete";
-import { Search } from "lucide-react";
+// import Autocomplete from "./custom inputs/Autocomplete";
+// import { Search } from "lucide-react";
 import SearchWithDropdown from "./custom inputs/search";
 import Link from "next/link";
 
-const airports = [
-  { id: 1, label: "JFK – John F. Kennedy Intl" },
-  { id: 2, label: "LAX – Los Angeles Intl" },
-  { id: 3, label: "DXB – Dubai Intl" },
-  // …
-];
+// const airports = [
+//   { id: 1, label: "JFK – John F. Kennedy Intl" },
+//   { id: 2, label: "LAX – Los Angeles Intl" },
+//   { id: 3, label: "DXB – Dubai Intl" },
+//   // …
+// ];
 
 export default function BookingForm() {
   const [activeTab, setActiveTab] = useState<"vip" | "chauffeur-services">(
     "vip"
   );
 
-  const handleSelect = (airport: { id: number; label: string }) => {
-    console.log("Selected:", airport);
-  };
+  // const handleSelect = (airport: { id: number; label: string }) => {
+  //   console.log("Selected:", airport);
+  // };
 
   return (
     <Card
@@ -44,8 +44,6 @@ export default function BookingForm() {
         max-w-[1272px]
         p-7.5
         "
-      // p-6 sm:p-10 lg:p-12
-      // max-w-7xl
     >
       {/* Tabs */}
       <div
@@ -63,12 +61,11 @@ export default function BookingForm() {
             hover:bg-transparent
             hover:text-[#AB9B90]
             "
-          // sm:text-lg
         >
           VIP Meet & Greet Service
           <span
             className={clsx(
-              "absolute left-0 right-0 -bottom-2 h-0.75 rounded-full transition-opacity duration-300",
+              "absolute left-0 right-0 -bottom-2 h-0.5 rounded-full transition-opacity duration-300",
               activeTab === "vip"
                 ? "opacity-100 bg-linear-to-r from-[#99785F00]/0 via-[#EBA068] to-[#99785F00]/0"
                 : "opacity-0"
@@ -87,12 +84,11 @@ export default function BookingForm() {
             hover:bg-transparent
             hover:text-[#AB9B90]
             "
-          // sm:text-lg
         >
           Chauffeur Services
           <span
             className={clsx(
-              "absolute left-0 right-0 -bottom-2 h-0.75 rounded-full transition-opacity duration-300",
+              "absolute left-0 right-0 -bottom-2 h-0.5 rounded-full transition-opacity duration-300",
               activeTab === "chauffeur-services"
                 ? "opacity-100 bg-linear-to-r from-[#99785F00]/0 via-[#EBA068] to-[#99785F00]/0"
                 : "opacity-0"
@@ -107,84 +103,73 @@ export default function BookingForm() {
           grid 
           grid-cols-1 
           sm:grid-cols-2 
-          lg:grid-cols-6
+          lg:grid-cols-20
           gap-3 sm:gap-4 lg:gap-1 
           h-12
           "
       >
         {activeTab === "vip" ? (
           <>
-            {/* <IconInput
-              icon={<Plane />}
+            <SearchWithDropdown
+              icon={<Plane/>}
+              id="firstName"
               placeholder="Select Airport"
-              className="col-span-2"
-              inputClassName="bg-white rounded-lg lg:rounded-none lg:rounded-l-xl lg:h-full col-span-2"
-              /> */}
+              inputClassName="rounded-lg lg:rounded-none lg:rounded-l-xl"
+              className="h-full bg-white lg:h-full rounded-lg lg:rounded-none lg:rounded-l-xl  col-span-6"
+            />
             <SearchWithDropdown
               id="firstName"
-              placeholder="First Name"
-              // className="pl-4 pr-10 bg-[#F4F4F4] border border-[#E0E0E0]"
-              className=" h-full bg-white rounded-lg lg:rounded-none lg:rounded-l-xl lg:h-full col-span-2"
-            />
-            {/* <Autocomplete
-              icon={<Plane />}
-              placeholder="Select Airport"
-              className="col-span-2"
-              inputClassName="bg-white rounded-lg lg:rounded-none lg:rounded-l-xl lg:h-full col-span-2"
-              // options={airports}
-              onSelect={(airport) => console.log("Selected:", airport)}
-            /> */}
-            <Input
               placeholder="Service Type"
-              className="bg-white col-span-2 lg:col-span-1 rounded-lg lg:rounded-none lg:h-full"
+              inputClassName="rounded-lg lg:rounded-none"
+              className="h-full bg-white lg:h-full rounded-lg lg:rounded-none  col-span-4"
             />
             <IconInput
               icon={<Calender />}
               placeholder="Select Date"
+              className="col-span-3"
               inputClassName="bg-white rounded-lg lg:rounded-none lg:rounded-none lg:h-full"
             />
-            {/* <DatePickerWithIconDemo /> */}
             <IconInput
               icon={<Adults />}
               type="number"
               placeholder="1 Adult - 0 Children"
+              className="col-span-3"
               inputClassName="bg-white rounded-lg lg:rounded-none lg:rounded-none lg:h-full"
             />
           </>
         ) : (
           <>
-            {/* <IconInput
-              icon={<Plane />}
-              placeholder="Select Airport"
-              className="col-span-2"
-              inputClassName="bg-white rounded-lg lg:rounded-none lg:rounded-l-2xl lg:h-full col-span-2"
-            /> */}
             <SearchWithDropdown
               id="firstName"
-              placeholder="First Name"
-              // className="pl-4 pr-10 bg-[#F4F4F4] border border-[#E0E0E0]"
-              className=" h-full bg-white rounded-lg lg:rounded-none lg:rounded-l-xl lg:h-full col-span-2"
+              placeholder="Pick Up from"
+              inputClassName="rounded-lg lg:rounded-none lg:rounded-l-xl"
+              className="h-full bg-white lg:h-full rounded-lg lg:rounded-none lg:rounded-l-xl  col-span-5"
             />
-            <Input
-              placeholder="Service Type"
-              className="bg-white rounded-lg lg:rounded-none lg:h-full "
+            <SearchWithDropdown
+              id="firstName"
+              placeholder="Drop off"
+              inputClassName="rounded-lg lg:rounded-none"
+              className="h-full bg-white lg:h-full rounded-lg lg:rounded-none  col-span-5"
             />
             <IconInput
               icon={<Calender />}
               placeholder="Select Date"
+              className="col-span-3"
               inputClassName="bg-white rounded-lg lg:rounded-none lg:rounded-none lg:h-full"
             />
-            {/* <DatePickerWithIconDemo /> */}
             <IconInput
               icon={<Adults />}
-              placeholder="1 Adult - 0 Children"
+              type="number"
+              className="col-span-3"
+              // placeholder="1 Adult - 0 Children"
+              placeholder="Pickup Time"
               inputClassName="bg-white rounded-lg lg:rounded-none lg:rounded-none lg:h-full"
             />
           </>
         )}
 
         <Link
-        href={"/choose-services"}
+          href={activeTab === "vip" ? "/choose-services" : "/chauffeur-services"}
           className="
             w-full 
             h-full
@@ -193,8 +178,9 @@ export default function BookingForm() {
             px-6 py-3
             bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)] 
             hover:opacity-90 
-            mt-2 sm:mt-0 col-span-2 lg:col-span-1
+            mt-2 sm:mt-0 
             cursor-pointer
+            col-span-1 lg:col-span-4 
           "
         >
           <p className="text-normal font-light">BOOK NOW</p>

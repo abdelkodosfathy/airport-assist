@@ -21,7 +21,7 @@ const Footer = () => {
             alt="Company Logo"
             width={200}
             height={80}
-            className="object-contain"
+            className="object-contain mx-auto"
           />
         </div>
         <div className="md:flex-3">
@@ -154,6 +154,12 @@ const Footer = () => {
         <p className="text-gray-300">
           Terms & Conductions | Private Policy | Cookies Policy{" "}
         </p>
+        <a
+          href="https://smartlines-eg.com/"
+          className="text-gray-300 no-underline hover:no-underline"
+        >
+          Powered by Smart lines
+        </a>
       </div>
     </footer>
   );
@@ -162,7 +168,7 @@ const Footer = () => {
 export default Footer;
 
 const CurrentYear = () => {
-  const time = new Date
+  const time = new Date();
   const current_year = time.getFullYear();
   return <span>© {current_year}</span>;
 };

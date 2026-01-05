@@ -27,11 +27,12 @@ const ChooseService = (props: Props) => {
     "elite" | "elite_plus" | "signature"
   >("elite");
   return (
+    <div className="flex-2 h-full">
     <div
       style={{
         boxShadow: "0px 11.48px 114.76px 0px #A7A7A73D",
       }}
-      className="px-10 py-6 bg-white rounded-2xl h-full flex-2"
+      className="px-10 py-6 bg-white rounded-2xl h-full "
     >
       <h4 className="text-normal">
         Kindly review the service descriptions below and confirm your selection.
@@ -46,6 +47,7 @@ const ChooseService = (props: Props) => {
           />
         );
       })}
+    </div>
     </div>
   );
 };

@@ -108,6 +108,45 @@ export default function ServiceCard({
         </div>
         <div className="flex gap-2.5">
           <div className="bg-black w-12 h-12 rounded-lg grid place-content-center">
+            <Person />
+          </div>
+          <div className="space-y-1">
+            <p className="tracking-0 font-[Manrope] font-bold">
+              Personal Greeting
+            </p>
+            <p className="text-sm text-[#7A7A7A]">
+              at the arrival gate with a name sign
+            </p>
+          </div>
+        </div>
+        <div className="flex gap-2.5">
+          <div className="bg-black w-12 h-12 rounded-lg grid place-content-center">
+            <Person />
+          </div>
+          <div className="space-y-1">
+            <p className="tracking-0 font-[Manrope] font-bold">
+              Personal Greeting
+            </p>
+            <p className="text-sm text-[#7A7A7A]">
+              at the arrival gate with a name sign
+            </p>
+          </div>
+        </div>
+        <div className="flex gap-2.5">
+          <div className="bg-black w-12 h-12 rounded-lg grid place-content-center">
+            <Person />
+          </div>
+          <div className="space-y-1">
+            <p className="tracking-0 font-[Manrope] font-bold">
+              Personal Greeting
+            </p>
+            <p className="text-sm text-[#7A7A7A]">
+              at the arrival gate with a name sign
+            </p>
+          </div>
+        </div>
+        <div className="flex gap-2.5">
+          <div className="bg-black w-12 h-12 rounded-lg grid place-content-center">
             <FastTrack />
           </div>
           <div className="space-y-1">

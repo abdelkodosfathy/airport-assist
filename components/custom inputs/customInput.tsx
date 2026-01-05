@@ -27,7 +27,7 @@ export default function IconInput({
 
       <Input
         className={cn(
-          icon && iconPosition === "left" && "pl-10",
+          icon && iconPosition === "left" && "pl-10 pr-2",
           icon && iconPosition === "right" && "pr-10 pl-4",
           inputClassName
         )}

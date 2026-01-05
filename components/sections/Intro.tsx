@@ -6,7 +6,7 @@ type Props = {};
 const Intro = (props: Props) => {
   return (
     <section className="min-h-118.75 gap-4  flex items-center px-26 overflow-hidden">
-      <div className="max-w-360 mx-auto flex items-center gap-10">
+      <div className="w-full max-w-360 mx-auto flex items-center gap-10">
         {/* Left Text */}
         <div className="flex-2">
           <h2 className="uppercase flex flex-col tracking-[0.3em] leading-[150%] text-3xl whitespace-normal justify-start">
@@ -17,7 +17,7 @@ const Intro = (props: Props) => {
 
         {/* Right Text */}
         <div className="flex-1 h-full">
-          <p className="font-[Manrope] font-normal max-w-140 text-normal leading-[150%] text-[#959595] mb-8">
+          <p className="font-[Manrope] font-normal max-w-90 text-normal leading-[150%] text-[#959595] mb-8">
             AIRPORT Assists Private Travel Division provides discreet, luxury
             concierge travel for VIP clients worldwide.
           </p>
