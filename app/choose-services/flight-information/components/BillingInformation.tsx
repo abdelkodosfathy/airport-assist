@@ -1,7 +1,8 @@
-'use client'
+"use client";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { PhoneInput } from "@/components/ui/phone-input";
 import { useState } from "react";
 
 const BillingInformation = () => {
@@ -17,9 +18,7 @@ const BillingInformation = () => {
       <h4 className="font-manrope font-medium text-[18.75px] leading-[1.3]">
         Billing Information
       </h4>
-      <p className="mb-4">
-        Main point of communication for this reservation
-      </p>
+      <p className="mb-4">Main point of communication for this reservation</p>
 
       <span className="inline-block w-full h-0.5 bg-[#CFCFCF]" />
 
@@ -35,7 +34,6 @@ const BillingInformation = () => {
         />
 
         <Label
-
           htmlFor="same_as_primary"
           className="text-sm leading-relaxed cursor-pointer"
         >
@@ -87,12 +85,18 @@ const BillingInformation = () => {
 
         <div className="space-y-2">
           <Label htmlFor="phone">Phone</Label>
-          <Input
+          {/* <Input
             id="phone"
             placeholder="Phone"
             disabled={sameAsPrimary}
             className="pl-4 pr-10 bg-[#F4F4F4] border border-[#E0E0E0]
             disabled:opacity-50 disabled:cursor-not-allowed"
+            /> */}
+          <PhoneInput
+            disabled={sameAsPrimary}
+            id="phone"
+            placeholder="0101 434 3413"
+            className="bg-[#F4F4F4] rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
           />
         </div>
       </div>

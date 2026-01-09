@@ -94,7 +94,7 @@ export default function BillingInformationPage() {
                 className="pl-4 pr-10 bg-[#F4F4F4] border border-[#E0E0E0]"
               />
             </div>
-            <div className="space-y-2 col-span-1 mb-6">
+            <div className="space-y-2 col-span-2 mb-6">
               <Label htmlFor="last-name">Post Code</Label>
               <Input
                 id="post-code"
@@ -106,7 +106,7 @@ export default function BillingInformationPage() {
         </div>
       </div>
       <div className=" w-5/11">
-        <div className="rounded-lg bg-white p-4">
+        <div className="shadow-md rounded-lg bg-white p-4">
           <h3 className="font-bold">
             Mercedes S-Class <span className="text-sm font-light">( New Shape )</span>
           </h3>
@@ -131,6 +131,7 @@ export default function BillingInformationPage() {
           asChild
           variant="outline"
           className="
+          
             col-span-2
             mt-4
             w-full
