@@ -2,16 +2,30 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
-import { ArrowLeft, Mail, Phone, User } from "lucide-react";
+import {
+  ArrowLeft,
+  Calendar,
+  Clock3,
+  Clock4,
+  Flag,
+  Gauge,
+  Info,
+  Mail,
+  MapPin,
+  Phone,
+  User,
+} from "lucide-react";
 import Link from "next/link";
 import StrokeBag from "@/components/custom icons/strokeBag";
 import FigmaMessage from "@/components/custom icons/adults copy";
 import Separator from "@/components/ui/formSeparator";
 import Image from "next/image";
+import car1 from "@/public/car1.png";
+import InnerToast from "@/components/ui/InnerToast";
 import IconInput from "@/components/custom inputs/customInput";
 import payments from "@/public/payments.png";
 
-export default function FlightInformation() {
+export default function Checkout() {
   return (
     <div>
       <Link
@@ -47,46 +61,40 @@ export default function FlightInformation() {
             </div>
           </div>
           <div
-            className="px-10 py-6 w-full bg-white rounded-2xl"
+            className="px-10 py-6 w-full bg-white rounded-2xl space-y-4"
             style={{
               boxShadow: "0px 11.48px 114.76px 0px #A7A7A73D",
             }}
           >
             <h2 className="text-[18.75px] mb-4 font-semibold">
-              London Gatwick Arrival Elite
+              One Way Transfer
             </h2>
-            <div className="space-y-2 *:hover:bg-gray-100">
-              <p className=" flex justify-between">
-                <span className="flex-1">Booking Date :</span>
-                <span className="flex-1">December 25, 2025</span>
+            <div className="flex w-full">
+              <p className="flex gap-2 flex-1">
+                <Calendar color="#7B5A41" />
+                Dec 03, 2025
               </p>
-              <p className="flex justify-between">
-                <span className="flex-1">Flight Number :</span>
-                <span className="flex-1">MS 777</span>
+              <p className="flex gap-2 flex-1">
+                <Clock4 color="#7B5A41" />
+                2:50 PM
               </p>
-              <p className="flex justify-between">
-                <span className="flex-1">Flight Time :</span>
-                <span className="flex-1">12:30 PM</span>
+            </div>
+            <p className="flex gap-2">
+              <MapPin color="#7B5A41" />
+              SSS Ranch Napa, Mountain Home Ranch Road, Calistoga, CA, USA
+            </p>
+            <p className="flex gap-2">
+              <Flag color="#7B5A41" />
+              SSAM K-BBQ &BAR, Hopyard Road, Pleasanton, CA, USA
+            </p>
+            <div className="flex w-full">
+              <p className="flex gap-2 flex-1">
+                <Gauge color="#7B5A41" />
+                138.57 km / 86.10 mi
               </p>
-              <p className="flex justify-between">
-                <span className="flex-1">Number of Passengers :</span>
-                <span className="flex-1">2 Adults</span>
-              </p>
-              <p className="flex justify-between">
-                <span className="flex-1">Number of Children :</span>
-                <span className="flex-1">2 Child</span>
-              </p>
-              <p className="flex justify-between">
-                <span className="flex-1">Number of bags :</span>
-                <span className="flex-1">1-4</span>
-              </p>
-              <p className="flex justify-between">
-                <span className="flex-1">Fast Track :</span>
-                <span className="flex-1">Include Fast Track Service</span>
-              </p>
-              <p className="flex justify-between">
-                <span className="flex-1">Special Requests :</span>
-                <span className="flex-1">Wheelchair</span>
+              <p className="flex gap-2 flex-1">
+                <Clock3 color="#7B5A41" />
+                1h 40m
               </p>
             </div>
           </div>
@@ -96,9 +104,42 @@ export default function FlightInformation() {
               boxShadow: "0px 11.48px 114.76px 0px #A7A7A73D",
             }}
           >
+            <div className="flex gap-2 mb-2">
+              <Image width={216} height={108.75} src={car1} alt="car image" />
+              <div>
+                <p className="flex gap-8 mb-2 font-semibold items-center">
+                  S-Class Mercedes <Info className="w-5 h-5 text-[#99A1AF]" />
+                </p>
+                <p className="text-sm text-[#4A5565]">
+                  Cadillac Escalade, Mercedes S-Class, or similar.
+                </p>
+              </div>
+
+              {/* <div className="mb-4 flex gap-4 rounded-lg bg-[#FFFBEF] px-4 py-3 border border-[#7B5A414D] text-[#7B5A41]">
+                <div className="min-w-6 min-h-6 w-6 h-6 bg-[#7B5A41] rounded-full grid place-content-center">
+                  <Clock4 className="w-5 h-5 text-white" />
+                </div>
+                <p>Chauffeur will wait 15 minutes free of charge</p>
+              </div> */}
+            </div>
+            <InnerToast
+              icon={
+                <div className="min-w-6 min-h-6 w-6 h-6 bg-[#7B5A41] rounded-full grid place-content-center">
+                  <Clock4 className="w-5 h-5 text-white" />
+                </div>
+              }
+              text="Chauffeur will wait 15 minutes free of charge"
+            />
+          </div>
+          <div
+            className="px-10 py-6 w-full bg-white rounded-2xl"
+            style={{
+              boxShadow: "0px 11.48px 114.76px 0px #A7A7A73D",
+            }}
+          >
             <div className="flex gap-2 items-center text-[#364153]">
               <StrokeBag />
-              <p>Luggage assistance: Yes Porter Services</p>
+              <p>Luggage assistance: $50</p>
             </div>
           </div>
           <div
@@ -118,23 +159,31 @@ export default function FlightInformation() {
               boxShadow: "0px 11.48px 114.76px 0px #A7A7A73D",
             }}
           >
-            <p className="text-sm flex justify-between">Base fare <span>$1,486.25</span></p>
-            <p className="text-sm flex justify-between">Meet & greet<span>$50.00</span></p>
-            <p className="text-sm flex justify-between">Transactio fee<span>$64.65</span></p>
-            <Separator/>
-            <p className="text-lg flex justify-between">Total <span>$1,600.90</span></p>
+            <p className="text-sm flex justify-between">
+              Base fare <span>$1,486.25</span>
+            </p>
+            <p className="text-sm flex justify-between">
+              Meet & greet<span>$50.00</span>
+            </p>
+            <p className="text-sm flex justify-between">
+              Transactio fee<span>$64.65</span>
+            </p>
+            <Separator />
+            <p  className="text-lg flex justify-between">
+              Total <span>$1,600.90</span>
+            </p>
           </div>
         </div>
         <div className="h-full flex-1 space-y-4 sticky top-4">
           <div className="bg-white rounded-2xl p-5">
             <div className="font-[Manrope] flex items-center justify-between">
               <p className="text-[18.75px]">Total</p>
-              <p  className="font-bold font-[Arial]">
+              <p className="font-bold font-[Arial]">
                 $1,600.90 <span className="font-light text-[#6A7282]">USD</span>
               </p>
             </div>
           </div>
-                    <form className="bg-white rounded-2xl p-5 grid gap-2 space-y-2">
+          <form className="bg-white rounded-2xl p-5 grid gap-2 space-y-2">
             {/* <h4 className="font-[Manrope] font-semibold"></h4> */}
             <div className="space-y-2 col-span-2">
               <Label htmlFor="cardNumber">Card Number</Label>
@@ -224,7 +273,7 @@ export default function FlightInformation() {
 								px-7
 								"
 						>
-              <p  className="text-sm font-normal font-[Manrope]">
+              <p className="text-sm font-normal font-[Manrope]">
                 Proceed To Checkout{" "}
               </p>
             </Button>
@@ -233,32 +282,11 @@ export default function FlightInformation() {
               <span className="font-bold">stripe</span>
             </p>
           </form>
-          
 
           {/* <SideInfo /> */}
         </div>
       </div>
-      <Button
-        variant="outline"
-        className="
-          mt-6
-          w-max 
-          cursor-pointer 
-          border-black 
-          text-black 
-          hover:border-[#664F31]  
-          hover:bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)] 
-          hover:text-white 
-          duration-0
-          rounded-xl
-          py-5
-          px-7
-          "
-      >
-        <p className="text-sm font-normal font-[Manrope]">
-          Proceed To Checkout{" "}
-        </p>
-      </Button>
+
     </div>
   );
 }

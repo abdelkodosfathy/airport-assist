@@ -17,6 +17,7 @@ import {
 import Link from "next/link";
 import SideInfo from "../components/side-info";
 import { useState } from "react";
+import InnerToast from "@/components/ui/InnerToast";
 
 enum Steps {
   Flight = 2,
@@ -25,16 +26,14 @@ enum Steps {
   Additional = 5,
 }
 
-
 export default function FlightInformation() {
   const [currentStep, setCurrentStep] = useState(1);
-  
+
   const handleStepChange = (step: number) => {
-  setCurrentStep(step - 1);
-};
+    setCurrentStep(step - 1);
+  };
 
-console.log(currentStep);
-
+  console.log(currentStep);
 
   return (
     <div className="">
@@ -48,9 +47,15 @@ console.log(currentStep);
       <div className="flex gap-4">
         <form className="flex-2 space-y-4 h-auto">
           <FlightForm onFocus={() => handleStepChange(Steps.Flight)} />
-          <PrimaryPassengerForm onFocus={() => handleStepChange(Steps.Passenger)} />
-          <ChauffeurServices onFocus={() => handleStepChange(Steps.Chauffeur)} />
-          <AdditionalServices onFocus={() => handleStepChange(Steps.Additional)} />
+          <PrimaryPassengerForm
+            onFocus={() => handleStepChange(Steps.Passenger)}
+          />
+          <ChauffeurServices
+            onFocus={() => handleStepChange(Steps.Chauffeur)}
+          />
+          <AdditionalServices
+            onFocus={() => handleStepChange(Steps.Additional)}
+          />
         </form>
         <SideInfo focusedStep={currentStep} />
       </div>
@@ -149,8 +154,7 @@ const FlightForm = ({ onFocus }: StepsProps) => {
             htmlFor="fastTrack"
             className="font-medium leading-relaxed cursor-pointer"
           >
-            Include Fast Track Service{" "}
-            <span>(+£25.00, Per PAX)</span>
+            Include Fast Track Service <span>(+£25.00, Per PAX)</span>
           </Label>
         </div>
       </div>
@@ -284,12 +288,20 @@ const ChauffeurServices = ({ onFocus }: StepsProps) => {
           </p>
         </div>
       </div>
-      <div className="mb-4 flex gap-4 rounded-lg bg-[#FFFBEF] px-4 py-3 border border-[#7B5A414D] text-[#7B5A41]">
+      {/* <div className="mb-4 flex gap-4 rounded-lg bg-[#FFFBEF] px-4 py-3 border border-[#7B5A414D] text-[#7B5A41]">
         <div className="min-w-6 min-h-6 w-6 h-6 bg-[#7B5A41] rounded-full grid place-content-center">
           <Clock4 className="w-5 h-5 text-white" />
         </div>
         <p>Chauffeur will wait 15 minutes free of charge</p>
-      </div>
+      </div> */}
+      <InnerToast
+        icon={
+          <div className="min-w-6 min-h-6 w-6 h-6 bg-[#7B5A41] rounded-full grid place-content-center">
+            <Clock4 className="w-5 h-5 text-white" />
+          </div>
+        }
+        text="Chauffeur will wait 15 minutes free of charge"
+      />
 
       <Button
         style={{
@@ -383,12 +395,17 @@ const AdditionalServices = ({ onFocus }: StepsProps) => {
           <div className="min-w-6 w-6 min-h-6 h-6 text-lg bg-[#7B5A41] rounded-full grid place-content-center">
             <p className="text-white">!</p>
           </div>
-          <p>Wheelchair assistance must be arranged directly with your airline. By ticking this box, you confirm that you have selected wheelchair assistance on your flight booking.</p>
+          <p>
+            Wheelchair assistance must be arranged directly with your airline.
+            By ticking this box, you confirm that you have selected wheelchair
+            assistance on your flight booking.
+          </p>
         </div>
 
         <div className="space-y-2 md:col-span-2">
           <Label className="gap-0">
-            Additional requirements<span className="text-sm text-muted-foreground">(optional)</span>
+            Additional requirements
+            <span className="text-sm text-muted-foreground">(optional)</span>
           </Label>
           <Textarea
             placeholder="Any Special Notes"

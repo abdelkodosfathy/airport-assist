@@ -1,10 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
 import SideInfo from "../../components/side-info";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+import BillingInformation from "../components/BillingInformation";
 
 export default function FlightInformation() {
   return (
@@ -50,78 +50,7 @@ export default function FlightInformation() {
   );
 }
 
-const BillingInformation = () => {
-  return (
-    <div
-      className="px-10 py-6 bg-white rounded-2xl"
-      style={{
-        boxShadow: "0px 11.48px 114.76px 0px #A7A7A73D",
-      }}
-    >
-      <h4 className="font-manrope font-medium text-[18.75px] leading-[1.3] tracking-normal">
-        Billing Information
-      </h4>
-      <p className="mb-4">Main point of communication for this reservation</p>
-      <span className="inline-block w-full h-0.5 bg-[#CFCFCF]" />
-      <div className="flex items-start gap-3 my-4">
-        {/* <Checkbox id="same_as_primary" /> */}
-        <Checkbox
-          id="same_as_primary"
-          className="w-6 h-6 rounded-md bg-[#F4F4F4] data-[state=checked]:bg-[#664F31] data-[state=checked]:border-[#664F31]"
-        />
-        <Label
-          htmlFor="same_as_primary"
-          className="text-sm leading-relaxed cursor-pointer"
-        >
-          Same as a primary passenger
-        </Label>
-      </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-6 w-full">
-        <div className="space-y-2">
-          <Label htmlFor="firstName">First Name</Label>
-          {/* <SearchWithDropdown
-            id="firstName"
-            placeholder="First Name"
-            className="pl-4 pr-10 bg-[#F4F4F4] border border-[#E0E0E0]"
-          /> */}
-          <Input
-            id="firstName"
-            placeholder="First Name"
-            className="pl-4 pr-10 bg-[#F4F4F4] border border-[#E0E0E0]"
-          />
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="lastName">Last Name</Label>
-          <Input
-            id="lastName"
-            placeholder="Last Name"
-            className="pl-4 pr-10 bg-[#F4F4F4] border border-[#E0E0E0]"
-          />
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="email">Email</Label>
-          <Input
-            id="email"
-            placeholder="Email address"
-            className="pl-4 pr-10 bg-[#F4F4F4] border border-[#E0E0E0]"
-          />
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="phone">Phone</Label>
-          <Input
-            id="phone"
-            placeholder="Phone"
-            className="pl-4 pr-10 bg-[#F4F4F4] border border-[#E0E0E0]"
-          />
-        </div>
-      </div>
-    </div>
-  );
-};
 const BillingAddress = () => {
   return (
     <div

@@ -15,6 +15,7 @@ import { useState } from "react";
 import clsx from "clsx";
 import Separator from "@/components/ui/formSeparator";
 import Link from "next/link";
+import InnerToast from "@/components/ui/InnerToast";
 
 type ServiceType = "one-way" | "round-trip" | "hourly";
 type Props = {};
@@ -27,7 +28,7 @@ const Pickup = (props: Props) => {
     <div className="flex-2 h-full">
       <div className="flex gap-3.5 mb-4">
         <Button
-        onClick={() => setSelectedService("one-way")}
+          onClick={() => setSelectedService("one-way")}
           variant="outline"
           className={clsx(
             " mt-6 w-max  cursor-pointer  border-[#D1D1D1]  text-[#7A7A7A]  bg-[#ECECEC] hover:border-[#664F31]   hover:bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)]  hover:text-white  duration-0",
@@ -39,7 +40,7 @@ const Pickup = (props: Props) => {
           On a way
         </Button>
         <Button
-        onClick={() => setSelectedService("round-trip")}
+          onClick={() => setSelectedService("round-trip")}
           variant="outline"
           className={clsx(
             " mt-6 w-max  cursor-pointer  border-[#D1D1D1]  text-[#7A7A7A]  bg-[#ECECEC] hover:border-[#664F31]   hover:bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)]  hover:text-white  duration-0",
@@ -51,7 +52,7 @@ const Pickup = (props: Props) => {
           Round Trip
         </Button>
         <Button
-        onClick={() => setSelectedService("hourly")}
+          onClick={() => setSelectedService("hourly")}
           variant="outline"
           className={clsx(
             " mt-6 w-max  cursor-pointer  border-[#D1D1D1]  text-[#7A7A7A]  bg-[#ECECEC] hover:border-[#664F31]   hover:bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)]  hover:text-white  duration-0",
@@ -66,60 +67,7 @@ const Pickup = (props: Props) => {
       <InnerToast text="One-way is a professional chauffeur service from point A to point B." />
       <div className="flex gap-4 ">
         <PickupForm serviceType={selectedService} />
-
-        <div className="grid grid-cols-2 gap-3 w-5/11">
-          <CarCard
-            title="Mercedes V-Class"
-            desc="Premium SUV – Elegant comfort for up to 7 passengers."
-            image={car2}
-          />
-          <CarCard
-            title="Mercedes Jet-Class"
-            desc="Premium SUV – Elegant comfort for up to 4 passengers."
-            image={car2}
-          />
-          <CarCard
-            isNew
-            title="Mercedes S-Class"
-            desc="Premium Sedan – Elegant comfort for up to 2 passengers."
-            image={car1}
-          />
-          <CarCard
-            title="Range Rover Vogue"
-            desc="Premium SUV – Elegant comfort for up to 4 passengers."
-            image={car2}
-          />
-          <CarCard
-            title="Range Rover Vogue"
-            desc="Premium SUV – Elegant comfort for up to 4 passengers."
-            image={car2}
-          />
-          <CarCard
-            title="Range Rover Vogue"
-            desc="Premium SUV – Elegant comfort for up to 4 passengers."
-            image={car2}
-          />
-
-          <Button
-          asChild
-            variant="outline"
-            className="
-            col-span-2
-            cursor-pointer 
-            border-[#D1D1D1] 
-            text-[#7A7A7A] 
-            bg-[#ECECEC]
-            hover:border-[#664F31]  
-            hover:bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)] 
-            hover:text-white 
-            duration-0
-          "
-          >
-            <Link href={"/chauffeur-services/billing-information"}>
-            Continue
-            </Link>
-          </Button>
-        </div>
+        <CardPicker />
       </div>
     </div>
   );
@@ -279,7 +227,7 @@ const PickupForm = ({ serviceType }: { serviceType?: ServiceType }) => {
         <NumberInput title="Passengers" />
         <NumberInput title="Luggage" />
       </div>
-      <Separator/>
+      <Separator />
       <div>
         <div className="flex justify-between p-4 items-center bg-[#F2F3F5] rounded-md my-4">
           <p className="flex gap-2 text-lg items-center">
@@ -301,35 +249,94 @@ const PickupForm = ({ serviceType }: { serviceType?: ServiceType }) => {
   );
 };
 
+const NumberInput = ({ title }: { title: string }) => {
+  const [value, setValue] = useState(0);
 
-const NumberInput = ({ title }: { title: string }) => (
-  <div className="flex flex-1 justify-between items-center">
-    <p className="font-semibold">{title}</p>
-    <div className="flex gap-2 items-center">
-      <div className="grid place-content-center rounded-full w-8 h-8 text-white bg-[#7B5A41] opacity-50">
-        <Minus />
-      </div>
-      <Input
-        min={0}
-        type="number"
-        className="rounded-lg text-center min-w-0 w-16 bg-[#F2F3F5]"
-      />
-      <div className="grid place-content-center rounded-full w-8 h-8 text-white bg-[#7B5A41]">
-        <Plus />
+  const increment = () => setValue((v) => v + 1);
+  const decrement = () => setValue((v) => Math.max(0, v - 1));
+
+  return (
+    <div className="flex flex-1 justify-between items-center">
+      <p className="font-semibold">{title}</p>
+
+      <div className="flex gap-2 items-center">
+        {/* Minus */}
+        <button
+          type="button"
+          onClick={decrement}
+          disabled={value === 0}
+          className="grid place-content-center rounded-full w-8 h-8
+          text-white bg-[#7B5A41]
+          disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          <Minus size={14} />
+        </button>
+
+        {/* Input */}
+        <Input
+          type="number"
+          min={0}
+          value={value}
+          onChange={(e) => setValue(Math.max(0, Number(e.target.value)))}
+          className="rounded-lg text-center w-16 bg-[#F2F3F5]
+          appearance-none
+          [&::-webkit-outer-spin-button]:appearance-none
+          [&::-webkit-inner-spin-button]:appearance-none
+          [&::-moz-appearance]:textfield"
+        />
+
+        {/* Plus */}
+        <button
+          type="button"
+          onClick={increment}
+          className="grid place-content-center rounded-full w-8 h-8
+          text-white bg-[#7B5A41]"
+        >
+          <Plus size={14} />
+        </button>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 type CarCardProps = {
   title: string;
   desc: string;
   isNew?: boolean;
   image: StaticImageData | string;
+  selected?: boolean;
+  onSelect?: () => void;
 };
 
-const CarCard = ({ title, desc, image, isNew }: CarCardProps) => (
-  <div className="bg-white rounded-lg p-4 shadow-md hover:shadow-xl duration-300  cursor-pointer">
+const CarCard = ({
+  title,
+  desc,
+  image,
+  isNew,
+  selected = false,
+  onSelect,
+}: CarCardProps) => (
+  <div
+    onClick={onSelect}
+    className={`
+      bg-white rounded-lg p-4 shadow-md hover:shadow-xl duration-300 cursor-pointer relative
+      ${selected ? "border-2 border-[#664F31]" : "border-2 border-white"}
+    `}
+  >
+    {/* Radio-like indicator */}
+    <div
+      className={`
+        absolute grid place-items-center top-4 right-4 w-5 h-5 rounded-full border 
+        ${selected ? " border-[#664F31]" : "border-[#D5D6DB]"}
+      `}
+    >
+      {selected ? (
+        <span className="block w-4 h-4 rounded-full bg-[#664F31]" />
+      ) : (
+        ""
+      )}
+    </div>
+
     <div className="flex justify-between">
       <p className="font-bold text-[#101828]">
         {title}{" "}
@@ -337,10 +344,8 @@ const CarCard = ({ title, desc, image, isNew }: CarCardProps) => (
           <span className="text-[0.625rem] font-light">(new shape)</span>
         )}
       </p>
-
-      <span className="inline-block w-6 h-6 rounded-full border border-[#D5D6DB]"></span>
-      {/* <Radio selected={car.id === selectedCarId} /> */}
     </div>
+
     <p className="text-[0.625rem] max-w-44 text-[#7a7a7a] mb-3">{desc}</p>
 
     <Image
@@ -350,6 +355,7 @@ const CarCard = ({ title, desc, image, isNew }: CarCardProps) => (
       height={120}
       className="rounded-lg h-[120px] w-[230px] object-contain mx-auto"
     />
+
     <div className="flex justify-between text-[0.625rem] items-end pb-1 mb-1 border-b border-[#E5E5E5]">
       <div className="flex gap-2 ">
         <p className="flex gap-1 items-center">
@@ -363,6 +369,7 @@ const CarCard = ({ title, desc, image, isNew }: CarCardProps) => (
       </div>
       <p className="text-[#74747A]">Includes up to 18 miles</p>
     </div>
+
     <div>
       <p className="text-[0.675rem] flex justify-between">
         Price Per Mile<span>£4.00</span>
@@ -377,25 +384,84 @@ const CarCard = ({ title, desc, image, isNew }: CarCardProps) => (
   </div>
 );
 
-interface RadioProps {
-  selected?: boolean;
-}
+function CardPicker() {
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
-function Radio({ selected }: RadioProps) {
+  const cars = [
+    {
+      title: "Mercedes V-Class",
+      desc: "Premium SUV – Elegant comfort for up to 7 passengers.",
+      image: car2,
+    },
+    {
+      title: "Mercedes Jet-Class",
+      desc: "Premium SUV – Elegant comfort for up to 4 passengers.",
+      image: car2,
+    },
+    {
+      title: "Mercedes S-Class",
+      desc: "Premium Sedan – Elegant comfort for up to 2 passengers.",
+      image: car1,
+      isNew: true,
+    },
+    {
+      title: "Range Rover Vogue",
+      desc: "Premium SUV – Elegant comfort for up to 4 passengers.",
+      image: car2,
+    },
+    {
+      title: "Range Rover Vogue",
+      desc: "Premium SUV – Elegant comfort for up to 4 passengers.",
+      image: car2,
+    },
+    {
+      title: "Range Rover Vogue",
+      desc: "Premium SUV – Elegant comfort for up to 4 passengers.",
+      image: car2,
+    },
+  ];
+
   return (
-    <div
-      className={`min-w-6 min-h-6 rounded-full border-2 flex items-center justify-center border-[#7A7A7A] cursor-pointer`}
-    >
-      {selected && <span className="w-4 h-4 rounded-full bg-[#7A7A7A]"></span>}
+    <div className="grid grid-cols-2 gap-3 w-5/11">
+      {cars.map((car, index) => (
+        <CarCard
+          key={index}
+          title={car.title}
+          desc={car.desc}
+          image={car.image}
+          isNew={car.isNew}
+          selected={selectedIndex === index}
+          onSelect={() => setSelectedIndex(index)}
+        />
+      ))}
+
+      <Button
+        asChild
+        variant="outline"
+        className="
+          col-span-2
+          cursor-pointer 
+          border-[#D1D1D1] 
+          text-[#7A7A7A] 
+          bg-[#ECECEC]
+          hover:border-[#664F31]  
+          hover:bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)] 
+          hover:text-white 
+          duration-0
+        "
+      >
+        <Link href={"/chauffeur-services/billing-information"}>Continue</Link>
+      </Button>
     </div>
   );
 }
 
-const InnerToast = ({ text }: { text: string }) => (
-  <div className="flex items-center mb-4 gap-4 rounded-lg bg-[#FFFBEF] px-4 py-3 border border-[#7B5A414D] text-[#7B5A41]">
-    <div className="min-w-6 w-6 min-h-6 h-6 text-lg bg-[#7B5A41] rounded-full grid place-content-center">
-      <p className="text-white">!</p>
-    </div>
-    <p>{text}</p>
-  </div>
-);
+// function Radio({ selected }: RadioProps) {
+//   return (
+//     <div
+//       className={`min-w-6 min-h-6 rounded-full border-2 flex items-center justify-center border-[#7A7A7A] cursor-pointer`}
+//     >
+//       {selected && <span className="w-4 h-4 rounded-full bg-[#7A7A7A]"></span>}
+//     </div>
+//   );
+// }
