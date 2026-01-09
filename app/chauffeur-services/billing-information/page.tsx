@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import Separator from "@/components/ui/formSeparator";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { PhoneInput } from "@/components/ui/phone-input";
 import car1 from "@/public/car1.png";
 import Image from "next/image";
 import Link from "next/link";
@@ -54,10 +55,10 @@ export default function BillingInformationPage() {
             </div>
             <div className="space-y-2 col-span-1 mb-6">
               <Label htmlFor="last-name">Phone</Label>
-              <Input
+              <PhoneInput
                 id="phone"
                 placeholder="0101 434 3413"
-                className="pl-4 pr-10 bg-[#F4F4F4] border border-[#E0E0E0]"
+                className="bg-[#F4F4F4] rounded-lg"
               />
             </div>
           </div>
