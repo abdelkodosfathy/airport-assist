@@ -574,7 +574,7 @@ function CardPicker() {
       title: "Mercedes S-Class",
       desc: "Premium Sedan – Elegant comfort for up to 2 passengers.",
       image: car2,
-      
+      isNew: true,
     },
     {
       title: "Range Rover Vogue",
