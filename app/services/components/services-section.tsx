@@ -9,7 +9,7 @@ import serviceImage from "@/public/services-image.jpg";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const ServiceSection = ({left} : {left?: boolean}) => {
+const ServiceSection = ({ left }: { left?: boolean }) => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const starRef = useRef<SVGSVGElement>(null);
   const imagesBoxRef = useRef<HTMLDivElement>(null);
@@ -32,7 +32,7 @@ const ServiceSection = ({left} : {left?: boolean}) => {
           ease: "power2.inOut",
           scrollTrigger: {
             trigger: sectionRef.current,
-            start: "top 60%",
+            start: "top 70%",
             toggleActions: "play reverse play reverse",
           },
         }
@@ -42,34 +42,49 @@ const ServiceSection = ({left} : {left?: boolean}) => {
       const imagesTl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: "top 60%",
+          start: "top 80%",
           toggleActions: "play reverse play reverse",
         },
       });
 
       // Gradient container box slide in from right
       imagesTl.from(imagesBoxRef.current, {
-        x: left ? -200 : 200,
-        opacity: 0,
         duration: 0.8,
         ease: "power3.out",
+        onUpdate: function () {
+          const progress = this.progress(); // 0 → 1
+          const startAngle = 210; // زاوية البداية
+          const endAngle = startAngle + -90; // زاوية النهاية +90
+          const rotateAngle = startAngle + (endAngle - startAngle) * progress;
+
+          imagesBoxRef.current!.style.background = `linear-gradient(${rotateAngle}deg, rgba(161,101,56,1) 0%, #f2f1ef 15%, #f2f1ef 85%, rgba(161,101,56,1) 100%)`;
+        },
+        opacity: 0, // لو عايز fade
       });
 
       // First image slide in from top-left
-      imagesTl.from(firstImageRef.current, {
-        x: left ? 150 :-150,
-        opacity: 0,
-        duration: 0.8,
-        ease: "power3.out",
-      }, "-=0.4");
+      imagesTl.from(
+        firstImageRef.current,
+        {
+          x: left ? 150 : -150,
+          opacity: 0,
+          duration: 0.8,
+          ease: "power3.out",
+        },
+        "-=0.4"
+      );
 
       // Second image slide in from top-left
-      imagesTl.from(secondImageRef.current, {
-        x: left ? 150 : -150,
-        opacity: 0,
-        duration: 0.8,
-        ease: "power3.out",
-      }, "-=0.6");
+      imagesTl.from(
+        secondImageRef.current,
+        {
+          x: left ? 150 : -150,
+          opacity: 0,
+          duration: 0.8,
+          ease: "power3.out",
+        },
+        "-=0.6"
+      );
 
       // Texts slide in from right to left
       gsap.from(textsRef.current, {
@@ -78,14 +93,14 @@ const ServiceSection = ({left} : {left?: boolean}) => {
         duration: 1,
         ease: "power3.out",
         scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 60%",
-            toggleActions: "play reverse play reverse",
+          trigger: sectionRef.current,
+          start: "top 80%",
+          toggleActions: "play reverse play reverse",
         },
-    });
-    
-    // Features grid slide in from right to left
-    gsap.from(boxRef.current, {
+      });
+
+      // Features grid slide in from right to left
+      gsap.from(boxRef.current, {
         x: left ? -100 : 100,
         opacity: 0,
         duration: 1,
@@ -114,7 +129,11 @@ const ServiceSection = ({left} : {left?: boolean}) => {
         Section 1
       </h2>
 
-      <div className={`flex ${left ? "flex-row-reverse" : "flex-row"} gap-8 lg:gap-28 relative`}>
+      <div
+        className={`flex ${
+          left ? "flex-row-reverse" : "flex-row"
+        } gap-8 lg:gap-28 relative`}
+      >
         {/* Images */}
         <div className="flex-1 relative">
           <div
@@ -126,11 +145,11 @@ const ServiceSection = ({left} : {left?: boolean}) => {
             }}
           >
             <div
-              className="relative w-[315px] h-[625px]"
-              style={{
-                background:
-                  "linear-gradient(179.26deg, #f9f9fa 0.64%, #fefcfa 223.79%)",
-              }}
+              className="relative w-[315px] h-[625px] bg-[#f2f1ef]"
+              // style={{
+              //   background:
+              //     "linear-gradient(179.26deg, #f9f9fa 0.64%, #fefcfa 223.79%)",
+              // }}
             >
               <Image
                 ref={firstImageRef}
@@ -202,7 +221,14 @@ const ServiceSection = ({left} : {left?: boolean}) => {
 export default ServiceSection;
 
 const Star = ({ ref }: any) => (
-  <svg ref={ref} width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg
+    ref={ref}
+    width="44"
+    height="44"
+    viewBox="0 0 44 44"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
     <path
       d="M27.8425 29.032L23.1906 41.9901C23.0767 42.301 22.8713 42.5697 22.6021 42.7601C22.3329 42.9505 22.0127 43.0534 21.6847 43.055C21.3566 43.0567 21.0363 42.9569 20.7669 42.7692C20.4974 42.5815 20.2917 42.3148 20.1773 42.005L15.508 29.0929C15.4265 28.8704 15.298 28.6685 15.1314 28.5013C14.9648 28.3341 14.7641 28.2056 14.5431 28.1245L1.72326 23.4842C1.41562 23.3705 1.15022 23.1644 0.962723 22.8935C0.775224 22.6226 0.674605 22.2999 0.674382 21.9688C0.67416 21.6377 0.774346 21.314 0.96148 21.0413C1.14861 20.7685 1.41373 20.5598 1.72122 20.443L14.5347 15.6761C14.7556 15.5928 14.9561 15.4623 15.1225 15.2934C15.2889 15.1246 15.4171 14.9215 15.4983 14.6981L20.1503 1.74003C20.2642 1.42906 20.4696 1.16034 20.7388 0.969961C21.008 0.779583 21.3281 0.67667 21.6562 0.675049C21.9843 0.673428 22.3046 0.773175 22.574 0.960891C22.8435 1.14861 23.0492 1.4153 23.1636 1.72514L27.8329 14.6372C27.9144 14.8597 28.0429 15.0616 28.2095 15.2288C28.3761 15.3959 28.5768 15.5245 28.7978 15.6056L41.6176 20.2459C41.9253 20.3596 42.1907 20.5657 42.3782 20.8366C42.5657 21.1075 42.6663 21.4302 42.6665 21.7613C42.6667 22.0924 42.5665 22.416 42.3794 22.6888C42.1923 22.9615 41.9272 23.1703 41.6197 23.287L28.8062 28.054C28.5853 28.1373 28.3848 28.2678 28.2184 28.4367C28.052 28.6055 27.9238 28.8086 27.8425 29.032Z"
       fill="white"
