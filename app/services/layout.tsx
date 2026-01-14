@@ -1,16 +1,21 @@
+// app/choose-services/layout.tsx
+import React from "react";
 import Header from "@/components/Header";
-import hero from "@/public/our-sercives-hero.jpg";
+import Footer from "@/components/Footer";
 import Image from "next/image";
-import ServiceSection from "./components/services-section";
-
-const page = () => {
+import hero from "@/public/our-sercives-hero.jpg";
+export default function ServicesLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <main>
+    <main className="bg-[#F7F7F6] font-[Manrope]">
       <Header />
 
-      <section className="relative w-full h-[456px] text-white flex items-center justify-center overflow-hidden">
+      <section className="relative w-full h-114 text-white flex items-center justify-center overflow-hidden">
         {/* Background Image */}
-        <div className="absolute inset-0 -z-10">
+        <div className="absolute inset-0">
           <Image
             src={hero}
             alt="background"
@@ -31,37 +36,17 @@ const page = () => {
 
         {/* Hero content */}
         <div className="relative z-10">
-          <h1
-            className="
-    font-[Manrope]
-    font-bold
-    text-[42px]
-    leading-[130%]
-    tracking-[8.25px]
-    text-center
-    mb-4.25
-  "
-          >
-            VIP Meet & Greet Services
+          <h1 className=" font-[Manrope] font-bold text-[42px] leading-[130%] tracking-[8.25px] text-center mb-4.25">
+            Our Services
           </h1>
 
-          <p
-            className="
-    font-[Manrope]
-    font-normal
-    text-[18px]
-    leading-[100%]
-    tracking-[0px]
-    text-center
-    text-[rgb(200,200,200)]
-  "
-          >
-            Home / Our Services
+          <p className=" font-[Manrope] font-normal text-[18px] leading-[100%] tracking-[0px] text-center text-[rgb(200,200,200)]">
+            chauffeur services
           </p>
         </div>
       </section>
       <section>
-        <div className="max-w-[1130px] flex items-center gap-2 pt-10 mx-auto">
+        <div className="max-w-282.5 flex items-center gap-2 pt-10 mx-auto">
           {/* Item 1 */}
           <p className="font-[Manrope] font-normal text-[20px] leading-[160%] tracking-[0.01em] text-right">
             VIP Meet & Greet Services
@@ -69,13 +54,7 @@ const page = () => {
 
           {/* Gradient Line */}
           <span
-            className="
-      block
-      w-23.25
-      h-[4.5px]
-      rounded-[106.29px]
-      opacity-100
-    "
+            className=" block w-23.25 h-[4.5px] rounded-[106.29px] opacity-100"
             style={{
               background:
                 "linear-gradient(269.95deg, rgba(255,255,255,0.3) 11.88%, rgba(162,127,95,0.5) 51.11%, rgba(255,255,255,0.3) 90.35%)",
@@ -87,13 +66,7 @@ const page = () => {
             VIP Private Suite Service
           </p>
           <span
-            className="
-      block
-      w-23.25
-      h-[4.5px]
-      rounded-[106.29px]
-      opacity-100
-    "
+            className=" block w-23.25 h-[4.5px] rounded-[106.29px] opacity-100"
             style={{
               background:
                 "linear-gradient(269.95deg, rgba(255,255,255,0.3) 11.88%, rgba(162,127,95,0.5) 51.11%, rgba(255,255,255,0.3) 90.35%)",
@@ -104,13 +77,7 @@ const page = () => {
             Professional Chauffeurs
           </p>
           <span
-            className="
-      block
-      w-23.25
-      h-[4.5px]
-      rounded-[106.29px]
-      opacity-100
-    "
+            className=" block w-23.25 h-[4.5px] rounded-[106.29px] opacity-100"
             style={{
               background:
                 "linear-gradient(269.95deg, rgba(255,255,255,0.3) 11.88%, rgba(162,127,95,0.5) 51.11%, rgba(255,255,255,0.3) 90.35%)",
@@ -122,38 +89,9 @@ const page = () => {
           </p>
         </div>
       </section>
-      <ServiceSection />
-      <ServiceSection left />
-      <ServiceSection />
+
+      <>{children}</>
+      <Footer />
     </main>
   );
-};
-
-export default page;
-
-          {/* 
-            <button className=" border-1 border-[rgb(150,107,75)] rounded-[16px] text-white font-normal text-base"
-            style={{
-              background:"linear-gradient(0deg, #7B5A41 0.64%, #DFB08D 223.79%)",
-            }}>
-              <div
-              className="w-full mt-[6px] px-[40px] py-0.75 rounded-[16px]"
-                style={{
-                  background:
-                    "linear-gradient(179.26deg, #7B5A41 0.64%, #DFB08D 223.79%)",
-                }}
-              >
-                <p
-                  style={{
-                    fontFamily: "Manrope",
-                    fontWeight: "400",
-                    fontStyle: "Regular",
-                    fontSize: "16px",
-                    lineHeight: "40.34px",
-                    letterSpacing: "0px",
-                  }}
-                >
-                  Book Now
-                </p>
-              </div>
-            </button> */}
+}
