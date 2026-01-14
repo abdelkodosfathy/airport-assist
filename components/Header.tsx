@@ -154,7 +154,7 @@ const ServiceList = () => {
         Services
       </Button>
 
-      <ul
+      {/* <ul
         className={`
           absolute left-0 w-max mt-2 bg-white rounded-2xl shadow-lg
           transition-all duration-300 ease-out
@@ -180,7 +180,7 @@ const ServiceList = () => {
         <li className="px-4 py-2">
           <Link href="/services/private-jet">Private Jet</Link>
         </li>
-      </ul>
+      </ul> */}
     </div>
   );
 };
