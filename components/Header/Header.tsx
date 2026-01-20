@@ -12,7 +12,7 @@ export default function Header() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="animated-header fixed top-0 z-50 w-full border-b border-transparent">
+    <header className="animated-header fixed  z-50 w-full border-b border-transparent">
       <div className="mx-auto max-w-360 flex items-center justify-between px-6 lg:px-20 py-1">
         {/* Logo */}
         <Link href="/" className="shrink-0">

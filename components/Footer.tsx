@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import payments from "@/public/footer_payments.png";
+import Link from "next/link";
 
 const Footer = () => {
   return (
@@ -97,7 +98,7 @@ const Footer = () => {
                   <p>Contact Us</p>
                 </li>
                 <li>
-                  <p>FAQs</p>
+                  <Link href={"/frequently-asked-questions"}>FAQs</Link>
                 </li>
               </ul>
             </div>

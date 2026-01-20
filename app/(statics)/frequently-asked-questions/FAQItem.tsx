@@ -49,7 +49,7 @@ export default function FAQItem({ question, answer }: FAQItemProps) {
       <div
         className={`flex gap-8 items-center duration-300 ${open ? "mt-6" : ""}`}
       >
-        <Button variant="ghost" className="p-0 hover:bg-transparent" onClick={toggle}>
+        <Button variant="ghost" className="p-0 cursor-pointer hover:bg-transparent" onClick={toggle}>
           <div
             className={`w-12 h-12 grid place-content-center  rounded-full ${
               open ? "bg-white" : "bg-[#E6E6E66B]"

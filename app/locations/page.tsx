@@ -12,7 +12,7 @@ import IconInput from "@/components/custom inputs/customInput";
 
 export default function Locations() {
   return (
-    <main className="font-[Manrope] max-w-screen overflow-hidden">
+    <main className="relative font-[Manrope] max-w-screen overflow-hidden">
       <Header />
       <section className="relative w-full h-114 text-white flex items-center justify-center overflow-hidden">
         {/* Background Image */}
