@@ -63,13 +63,12 @@ export default function page(props: Props) {
           WHERE EVERY DETAIL TRANSFORMS THE JOURNEY
         </h3>
 
-        <p className="font-[Manrope] font-normal mb-8 md:mb-12 lg:mb-15 text-xs sm:text-sm md:text-[14px] leading-[170%] text-[#C8C8C8]">
-          <span className="block sm:inline">
+        <p className="font-[Manrope] font-normal flex-col mb-8 md:mb-12 lg:mb-15 text-xs sm:text-sm md:text-[14px] leading-[170%] text-[#C8C8C8]">
+          <span className="block">
             Thoughtfully designed with understated elegance, our services offer
             a refined setting to relax, work, or spend
           </span>
-          <span className="block sm:inline">
-            {" "}
+          <span className="block">
             meaningful time with guests and family.
           </span>
         </p>
@@ -80,13 +79,7 @@ export default function page(props: Props) {
           <CarCard className="max-w-[426px]" />
         </div> */}
         <div className="relative flex gap-6">
-          <span
-            className="
-            absolute left-0 right-0 -top-16 h-0.75 rounded-full
-            transition-opacity duration-300 opacity-100
-            bg-[linear-gradient(90deg,rgba(153,120,95,0)_0%,rgba(171,155,144,0.4)_50%,rgba(153,120,95,0)_100%)]
-          "
-          />
+
           <CarCard className="flex-1"/>
           <CarCard className="flex-1"/>
           <CarCard className="flex-1"/>
