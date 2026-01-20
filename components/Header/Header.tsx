@@ -2,17 +2,18 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { Button } from "./ui/button";
-import LanguageSelect from "./ui/LanguageSelector";
+import { Button } from "../ui/button";
+import LanguageSelect from "../ui/LanguageSelector";
 import { Menu, X } from "lucide-react";
-import CurrncySelector from "./ui/CurrncySelector";
+import CurrncySelector from "../ui/CurrncySelector";
+import "./header.css"
 
 export default function Header() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="absolute top-0 z-50 w-full border-b border-transparent">
-      <div className="mx-auto max-w-360 flex items-center justify-between px-6 lg:px-20 py-4">
+    <header className="animated-header fixed top-0 z-50 w-full border-b border-transparent">
+      <div className="mx-auto max-w-360 flex items-center justify-between px-6 lg:px-20 py-1">
         {/* Logo */}
         <Link href="/" className="shrink-0">
           <Image
@@ -108,7 +109,6 @@ export default function Header() {
             <LanguageSelect />
 
             <a
-              // className="block text-lg font-light"
               style={{
                 fontFamily: "Manrope",
                 fontWeight: "400",
@@ -143,7 +143,7 @@ const ServiceList = () => {
 
   return (
     <div
-      className="relative pb-2 mt-2"
+      className="pb-2 mt-2"
       onMouseEnter={() => setOpen(true)}
       onMouseLeave={() => setOpen(false)}
     >

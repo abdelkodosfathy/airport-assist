@@ -1,0 +1,17 @@
+.animated-header {
+  animation: scroll-transition linear;
+  animation-timeline: scroll(y);
+  animation-range: 0px 200px;
+  animation-fill-mode: both;
+}
+
+@keyframes scroll-transition {
+  0% {
+    background-color: rgba(0, 0, 0, 0);
+    backdrop-filter: blur(0px);
+  }
+  100% {
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+  }
+}

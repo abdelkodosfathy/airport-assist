@@ -26,44 +26,43 @@ type Props = {
   }[];
 };
 
-const Section = ({ name, sectionHeader, services, className }: Props) => {
+const DarkSection = ({ name, sectionHeader, services, className }: Props) => {
   return (
-    <section className={`font-[Manrope] bg-[#f7f7f6] py-20 ${className}`}>
+    <section className={`font-[Manrope] bg-[#1a1a1a] py-20 ${className}`}>
       <div className="overflow-visible max-w-310 mx-auto mt-20 mb-26 relative">
-        <p className="text-[#8E8E93] font-medium text-[22px] mb-3.5 leading-[130%] tracking-[0px]">
+        {/* <p className="text-[#8E8E93] font-medium text-[22px] mb-3.5 leading-[130%] tracking-[0px]">
           {name}
         </p>
         <h2 className="font-normal text-[22.6px] mb-5 tracking-[7.06px] uppercase">
           {sectionHeader}
-        </h2>
+        </h2> */}
         <div className="space-y-16">
           <CarPreview />
           <CarPreview left />
-          <CarPreview />
-          <CarPreview left />
         </div>
+
       </div>
     </section>
   );
 };
 
-export default Section;
+export default DarkSection;
 interface CarPreviewProps {
   left?: boolean;
 }
 
 const CarPreview = ({ left = false }: CarPreviewProps) => {
   return (
-    <div className="relative">
+    <div className="relative text-white">
       {/* Text Content */}
       <div
-        className={`${left ? "mr-auto" : "ml-auto"} w-[867px] p-[2px] bg-[linear-gradient(125deg,#A16538a8_0%,#f4f4f2_10%,#f4f4f2_90%,#A16538a8_100%)]`}
+        className={`${left ? "mr-auto" : "ml-auto"} w-[867px] p-[2px] bg-[linear-gradient(125deg,#FFFFFF98_0%,#1a1a1a_10%,#1a1a1a_90%,#ffffff98_100%)]`}
       >
-        <div className="bg-[#f4f4f2] py-8 flex justify-end">
+        <div className="bg-[#1a1a1a]  py-8 flex justify-end">
           <div
             className={`w-[470px] ${left ? "mr-auto ml-37.5" : "ml-auto mr-37.5"}`}
           >
-            <h3 className="mb-6 font-bold text-[25px] text-black">
+            <h3 className="mb-6 font-bold text-[25px] ">
               {/* {serviceName} */}
               Mercedes V-Class
             </h3>
@@ -125,7 +124,7 @@ const CarPreview = ({ left = false }: CarPreviewProps) => {
               variant="outline"
               className="w-max py-4 px-10 rounded-3xl border-black hover:bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)] hover:text-white hover:border-[#664F31] duration-0"
             >
-              <p className="font-[Manrope] leading-10 text-normal">
+              <p className="font-[Manrope] leading-10 text-normal text-black hover:text-white cursor-pointer">
                 Select Now
               </p>
             </Button>
@@ -136,7 +135,7 @@ const CarPreview = ({ left = false }: CarPreviewProps) => {
         <Image
           src={vclass}
           alt={"v class car"}
-          className={`h-[376px] w-[542px] absolute z-10 border border-[#E0E0E0] object-cover ${left ? "right-0" : "left-0"} top-1/2 -translate-y-1/2`}
+          className={`h-[376px] w-[542px] absolute z-10 object-cover ${left ? "right-0" : "left-0"} top-1/2 -translate-y-1/2`}
           priority
         />
       </div>

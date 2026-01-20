@@ -13,7 +13,8 @@ import payments from "@/public/footer_payments.png";
 const Footer = () => {
   return (
     <footer className="bg-[#1a1a1a] py-12 px-8">
-      <div className="relative max-w-360 mx-auto flex flex-col md:flex-row gap-8 py-6">
+      {/* <div className="relative max-w-360 mx-auto flex flex-col md:flex-row gap-8 py-6"> */}
+      <div className="relative mx-auto flex flex-col md:flex-row gap-8 py-6">
         {/* Left Logo */}
         <div className="md:flex-1 flex items-center justify-center md:justify-start">
           <Image

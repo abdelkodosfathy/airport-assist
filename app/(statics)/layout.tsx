@@ -1,5 +1,5 @@
 // app/choose-services/layout.tsx
-import Header from "@/components/Header";
+import Header from "@/components/Header/Header";
 import Footer from "@/components/Footer";
 import Image from "next/image";
 import hero from "@/public/our-sercives-hero.jpg";

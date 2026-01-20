@@ -4,10 +4,14 @@ import React, { useState, useRef, useEffect, ReactNode } from "react";
 import { Search, Clock, ChevronDown } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+import Arraival from "../custom icons/arraival";
+import Depature from "../custom icons/depature";
+import Connection from "../custom icons/connection";
 
 export interface OptionType {
   label: string;
   value: string;
+  icon?: ReactNode;
 }
 
 interface SearchWithDropdownProps {
@@ -45,9 +49,9 @@ const SearchWithDropdown = ({
 
   // Default recent searches (fallback)
   const defaultRecentSearches: OptionType[] = [
-    { label: "Arrival", value: "Arrival" },
-    { label: "Depature", value: "Depature" },
-    { label: "Connection", value: "Connection" },
+    { label: "Arrival", value: "Arrival", icon:<Arraival/> },
+    { label: "Depature", value: "Depature", icon:<Depature/> },
+    { label: "Connection", value: "Connection", icon:<Connection/> },
   ];
 
   // Use provided options or fall back to default recent searches
@@ -147,11 +151,11 @@ const SearchWithDropdown = ({
               </div>
             ) : (
               <div className="py-2">
-                {!search && showRecentSearches && options.length === 0 && (
+                {/* {!search && showRecentSearches && options.length === 0 && (
                   <div className="px-3 py-2 text-xs font-semibold text-gray-500 uppercase">
                     Recent Searches
                   </div>
-                )}
+                )} */}
 
                 {search && (
                   <div className="px-3 py-2 text-xs font-semibold text-gray-500 uppercase">
@@ -166,7 +170,7 @@ const SearchWithDropdown = ({
                     className="w-full px-3 py-2 text-left hover:bg-gray-100 flex items-center gap-2 transition-colors"
                   >
                     {!search && showRecentSearches && options.length === 0 ? (
-                      <Clock className="h-4 w-4 text-gray-400 flex-shrink-0" />
+                      option.icon
                     ) : (
                       <Search className="h-4 w-4 text-gray-400 flex-shrink-0" />
                     )}

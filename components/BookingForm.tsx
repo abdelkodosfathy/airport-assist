@@ -13,11 +13,16 @@ import SearchWithDropdown, { OptionType } from "./custom inputs/search";
 import Link from "next/link";
 import { useAirports } from "@/lib/hooks/useAirports";
 import { Loader2 } from "lucide-react";
+import Arraival from "./custom icons/arraival";
+import DatePickerInput from "./custom inputs/DatePickerInputs";
+import AdultsPicker from "./custom inputs/AdultsPicker";
 
 export default function BookingForm() {
-  const [activeTab, setActiveTab] = useState<"vip" | "chauffeur-services">("vip");
+  const [activeTab, setActiveTab] = useState<"vip" | "chauffeur-services">(
+    "vip",
+  );
   const [selectedAirport, setSelectedAirport] = useState<string>("");
-  
+
   const { data, isLoading, isError, error } = useAirports();
 
   if (isError) {
@@ -25,10 +30,11 @@ export default function BookingForm() {
   }
 
   // Convert airports to options format
-  const airportOptions: OptionType[] = data?.data.airports.map((airport) => ({
-    label: `${airport.airport_name} (${airport.airport_code})`,
-    value: airport.airport_id.toString(),
-  })) || [];
+  const airportOptions: OptionType[] =
+    data?.data.airports.map((airport) => ({
+      label: `${airport.airport_name} (${airport.airport_code})`,
+      value: airport.airport_id.toString(),
+    })) || [];
 
   const handleAirportSelect = (option: OptionType) => {
     setSelectedAirport(option.value);
@@ -50,7 +56,7 @@ export default function BookingForm() {
               "absolute left-0 right-0 -bottom-2 h-0.5 rounded-full transition-opacity duration-300",
               activeTab === "vip"
                 ? "opacity-100 bg-linear-to-r from-[#99785F00]/0 via-[#EBA068] to-[#99785F00]/0"
-                : "opacity-0"
+                : "opacity-0",
             )}
           />
         </Button>
@@ -68,7 +74,7 @@ export default function BookingForm() {
               "absolute left-0 right-0 -bottom-2 h-0.5 rounded-full transition-opacity duration-300",
               activeTab === "chauffeur-services"
                 ? "opacity-100 bg-linear-to-r from-[#99785F00]/0 via-[#EBA068] to-[#99785F00]/0"
-                : "opacity-0"
+                : "opacity-0",
             )}
           />
         </Button>
@@ -95,15 +101,22 @@ export default function BookingForm() {
               inputClassName="rounded-lg lg:rounded-none"
               className="h-full bg-white lg:h-full rounded-lg lg:rounded-none col-span-4"
             />
-            <IconInput
+            {/* <IconInput
               icon={<Calender />}
               placeholder="Select Date"
               className="col-span-3"
               inputClassName="bg-white rounded-lg lg:rounded-none lg:rounded-none lg:h-full"
-            />
-            <IconInput
+            /> */}
+            <DatePickerInput className="col-span-3" />
+            {/* <IconInput
               icon={<Adults />}
               type="number"
+              placeholder="1 Adult - 0 Children"
+              className="col-span-3"
+              inputClassName="bg-white rounded-lg lg:rounded-none lg:rounded-none lg:h-full"
+            /> */}
+            <AdultsPicker
+              icon={<Adults />}
               placeholder="1 Adult - 0 Children"
               className="col-span-3"
               inputClassName="bg-white rounded-lg lg:rounded-none lg:rounded-none lg:h-full"
@@ -140,7 +153,9 @@ export default function BookingForm() {
         )}
 
         <Link
-          href={activeTab === "vip" ? "/choose-services" : "/chauffeur-services"}
+          href={
+            activeTab === "vip" ? "/choose-services" : "/chauffeur-services"
+          }
           className="w-full h-full rounded-lg lg:rounded-none lg:rounded-r-xl border text-lg font-light border-white/30 text-white px-6 py-3 bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)] hover:opacity-90 mt-2 sm:mt-0 cursor-pointer col-span-1 lg:col-span-4"
         >
           <p className="text-normal font-light flex items-center justify-center gap-2">
