@@ -3,7 +3,7 @@ import React from "react";
 import Header from "@/components/Header/Header";
 import Footer from "@/components/Footer";
 import Image from "next/image";
-import hero from "@/public/our-sercives-hero.jpg";
+import hero from "@/public/chauffeuring.jpg";
 export default function ServicesLayout({
   children,
 }: {
@@ -20,7 +20,7 @@ export default function ServicesLayout({
             src={hero}
             alt="background"
             fill
-            className="object-cover w-full h-full"
+            className="object-cover object-[50%_20%] w-full h-full"
             priority
           />
 

@@ -101,7 +101,7 @@ export default function PrivateSuites() {
     // <section className=" px-8 xl:px-10 2xl:px-16 bg-[#1a1a1a] text-white overflow-hidden">
     <section className=" bg-[#1a1a1a]">
       {/* <div className="mx-auto flex gap-6 h-full max-w-360"> */}
-    <div className="w-full mx-auto pl-20 pt-28 pb-16  flex bg-[#1a1a1a] text-white overflow-hidden">
+    <div className="w-full mx-auto  p-6 2xl:pl-20 pt-28 pb-16  flex bg-[#1a1a1a] text-white overflow-hidden">
         {/* ------------ LEFT TEXT ------------ */}
         <div className="w-1/2 relative">
           <span
@@ -123,7 +123,7 @@ export default function PrivateSuites() {
         </div>
 
         {/* ------------ CARDS GRID ------------ */}
-        <div className="w-1/2 max-h-[650px] pr-18 flex flex-row gap-2">
+        <div className="w-1/2 max-h-[650px] 2xl:pr-18 flex flex-row gap-2">
           <div
             ref={scrollRef}
             className="flex-1 flex flex-col overflow-y-auto gap-4  scrollbar-none scroll-smooth"

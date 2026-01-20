@@ -166,19 +166,24 @@ const ServiceList = () => {
         `}
       >
         <li className="px-4 py-2 border-b border-[#D5D5D5]">
-          <Link href="/services/chauffeuring">Chauffeuring</Link>
+          {/* <Link href="/services/chauffeuring">Chauffeuring</Link> */}
+          <Link href="/our-services/chauffeuring">Chauffeuring</Link>
         </li>
         <li className="px-4 py-2 border-b border-[#D5D5D5]">
-          <Link href="/services/hotel">Hotel Service</Link>
+          {/* <Link href="/services/hotel">Hotel Service</Link> */}
+          <Link href="/our-services/hotel">Hotel Service</Link>
         </li>
         <li className="px-4 py-2 border-b border-[#D5D5D5]">
-          <Link href="/services/vip-meet-and-greet">VIP Meet & Greet</Link>
+          {/* <Link href="/services/vip-meet-and-greet">VIP Meet & Greet</Link> */}
+          <Link href="/our-services/vip-meet-and-greet">VIP Meet & Greet</Link>
         </li>
         <li className="px-4 py-2 border-b border-[#D5D5D5]">
-          <Link href="/services/private-suite">Private Suite</Link>
+          {/* <Link href="/services/private-suite">Private Suite</Link> */}
+          <Link href="/our-services/private-suite">Private Suite</Link>
         </li>
         <li className="px-4 py-2">
-          <Link href="/services/private-jet">Private Jet</Link>
+          {/* <Link href="/services/private-jet">Private Jet</Link> */}
+          <Link href="/our-services/private-jet">Private Jet</Link>
         </li>
       </ul>
     </div>

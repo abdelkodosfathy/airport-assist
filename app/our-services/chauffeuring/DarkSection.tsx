@@ -30,12 +30,6 @@ const DarkSection = ({ name, sectionHeader, services, className }: Props) => {
   return (
     <section className={`font-[Manrope] bg-[#1a1a1a] py-20 ${className}`}>
       <div className="overflow-visible max-w-310 mx-auto mt-20 mb-26 relative">
-        {/* <p className="text-[#8E8E93] font-medium text-[22px] mb-3.5 leading-[130%] tracking-[0px]">
-          {name}
-        </p>
-        <h2 className="font-normal text-[22.6px] mb-5 tracking-[7.06px] uppercase">
-          {sectionHeader}
-        </h2> */}
         <div className="space-y-16">
           <CarPreview />
           <CarPreview left />
@@ -56,7 +50,7 @@ const CarPreview = ({ left = false }: CarPreviewProps) => {
     <div className="relative text-white">
       {/* Text Content */}
       <div
-        className={`${left ? "mr-auto" : "ml-auto"} w-[867px] p-[2px] bg-[linear-gradient(125deg,#FFFFFF98_0%,#1a1a1a_10%,#1a1a1a_90%,#ffffff98_100%)]`}
+        className={`${left ? "mr-auto" : "ml-auto"} w-[867px] p-[2px] bg-[linear-gradient(170deg,#FFFFFF98_0%,#1a1a1a_10%,#1a1a1a_90%,#ffffff98_100%)]`}
       >
         <div className="bg-[#1a1a1a]  py-8 flex justify-end">
           <div
