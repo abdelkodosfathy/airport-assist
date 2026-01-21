@@ -183,7 +183,7 @@ const ServiceList = () => {
         </li>
         <li className="px-4 py-2">
           {/* <Link href="/services/private-jet">Private Jet</Link> */}
-          <Link href="/our-services/private-jet">Private Jet</Link>
+          <Link href="/private-jet">Private Jet</Link>
         </li>
       </ul>
     </div>
