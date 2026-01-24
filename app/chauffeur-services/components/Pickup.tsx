@@ -39,7 +39,7 @@ const Pickup = (props: Props) => {
         >
           On a way
         </Button>
-        <Button
+        {/* <Button
           onClick={() => setSelectedService("round-trip")}
           variant="outline"
           className={clsx(
@@ -50,7 +50,7 @@ const Pickup = (props: Props) => {
           )}
         >
           Round Trip
-        </Button>
+        </Button> */}
         <Button
           onClick={() => setSelectedService("hourly")}
           variant="outline"
@@ -98,14 +98,14 @@ const PickupForm = ({ serviceType }: { serviceType?: ServiceType }) => {
             />
           </div>
 
-          <div className="col-span-2 flex justify-end my-2">
+          {/* <div className="col-span-2 flex justify-end my-2">
             <Button
               variant={"ghost"}
               className="cursor-pointer align-end p-0 hover:bg-white hover:text-[#614631] text-end font-semibold text-[#7B5A41]"
             >
               + Add stop
             </Button>
-          </div>
+          </div> */}
           <div className="space-y-2 col-span-1">
             {/* <Label htmlFor="pickup-date">Pickup date</Label> */}
             <Input
@@ -150,14 +150,14 @@ const PickupForm = ({ serviceType }: { serviceType?: ServiceType }) => {
                 />
               </div>
 
-              <div className="col-span-2 flex justify-end my-2">
+              {/* <div className="col-span-2 flex justify-end my-2">
                 <Button
                   variant={"ghost"}
                   className="cursor-pointer p-0 hover:bg-white hover:text-[#7B5A41] text-end font-semibold text-[#7B5A41]"
                 >
                   + Add stop
                 </Button>
-              </div>
+              </div> */}
               <div className="space-y-2 col-span-1">
                 {/* <Label htmlFor="pickup-date">Pickup date</Label> */}
                 <Input

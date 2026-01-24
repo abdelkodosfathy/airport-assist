@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect, ReactNode } from "react";
-import { Search, Clock, ChevronDown } from "lucide-react";
+import { Search, ChevronDown } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import Arraival from "../custom icons/arraival";
@@ -49,9 +49,9 @@ const SearchWithDropdown = ({
 
   // Default recent searches (fallback)
   const defaultRecentSearches: OptionType[] = [
-    { label: "Arrival", value: "Arrival", icon:<Arraival/> },
-    { label: "Depature", value: "Depature", icon:<Depature/> },
-    { label: "Connection", value: "Connection", icon:<Connection/> },
+    { label: "Arrival", value: "Arrival", icon: <Arraival /> },
+    { label: "Depature", value: "Depature", icon: <Depature /> },
+    { label: "Connection", value: "Connection", icon: <Connection /> },
   ];
 
   // Use provided options or fall back to default recent searches
@@ -60,7 +60,7 @@ const SearchWithDropdown = ({
   // Filter options based on search input
   const filteredOptions = search
     ? availableOptions.filter((item) =>
-        item.label.toLowerCase().includes(search.toLowerCase())
+        item.label.toLowerCase().includes(search.toLowerCase()),
       )
     : availableOptions;
 
@@ -123,7 +123,7 @@ const SearchWithDropdown = ({
               icon && iconPosition === "left" && "pl-10",
               icon && iconPosition === "right" && "pr-10",
               disabled && "cursor-not-allowed opacity-60",
-              inputClassName
+              inputClassName,
             )}
           />
 
@@ -137,7 +137,7 @@ const SearchWithDropdown = ({
           <ChevronDown
             className={cn(
               "absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 h-5 w-5 pointer-events-none transition-transform",
-              isOpen && "rotate-180"
+              isOpen && "rotate-180",
             )}
           />
         </div>
@@ -151,12 +151,6 @@ const SearchWithDropdown = ({
               </div>
             ) : (
               <div className="py-2">
-                {/* {!search && showRecentSearches && options.length === 0 && (
-                  <div className="px-3 py-2 text-xs font-semibold text-gray-500 uppercase">
-                    Recent Searches
-                  </div>
-                )} */}
-
                 {search && (
                   <div className="px-3 py-2 text-xs font-semibold text-gray-500 uppercase">
                     {options.length > 0 ? "Results" : "Suggestions"}

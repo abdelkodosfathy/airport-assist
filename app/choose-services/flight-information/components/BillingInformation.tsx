@@ -85,13 +85,6 @@ const BillingInformation = () => {
 
         <div className="space-y-2">
           <Label htmlFor="phone">Phone</Label>
-          {/* <Input
-            id="phone"
-            placeholder="Phone"
-            disabled={sameAsPrimary}
-            className="pl-4 pr-10 bg-[#F4F4F4] border border-[#E0E0E0]
-            disabled:opacity-50 disabled:cursor-not-allowed"
-            /> */}
           <PhoneInput
             disabled={sameAsPrimary}
             id="phone"
