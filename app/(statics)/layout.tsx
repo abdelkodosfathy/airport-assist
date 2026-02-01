@@ -1,4 +1,4 @@
-// app/choose-services/layout.tsx
+// app/meet-and-greet/layout.tsx
 import Header from "@/components/Header/Header";
 import Footer from "@/components/Footer";
 import Image from "next/image";

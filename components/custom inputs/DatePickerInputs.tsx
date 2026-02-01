@@ -337,17 +337,46 @@ const DatePickerInput = ({
     onDateChange?.(newValue);
   };
 
+  // const handleDateSelect = (date: Date) => {
+  //   const formatted = date.toLocaleDateString("en-US", {
+  //     year: "numeric",
+  //     month: "short",
+  //     day: "numeric",
+  //   });
+  //   setCurrentMonthPage(date.getMonth());
+  //   setSelectedDate(formatted);
+  //   setIsOpen(false);
+  //   onChange?.(formatted);
+  //   onDateChange?.(formatted);
+  //   onSelect?.(date);
+  // };
+  // Convert a Date object to "YYYY-MM-DD HH:mm"
+  function formatDateForAPI(date: Date): string {
+    const pad = (n: number) => n.toString().padStart(2, "0");
+    const year = date.getFullYear();
+    const month = pad(date.getMonth() + 1); // 0-indexed
+    const day = pad(date.getDate());
+    const hours = pad(date.getHours());
+    const minutes = pad(date.getMinutes());
+    return `${year}-${month}-${day} ${hours}:${minutes}`;
+  }
+
   const handleDateSelect = (date: Date) => {
-    const formatted = date.toLocaleDateString("en-US", {
+    const formattedDisplay = date.toLocaleDateString("en-US", {
       year: "numeric",
       month: "short",
       day: "numeric",
     });
+
+    const formattedAPI = formatDateForAPI(date); // ✅ API-ready format
+
     setCurrentMonthPage(date.getMonth());
-    setSelectedDate(formatted);
+    setSelectedDate(formattedDisplay); // what the user sees
     setIsOpen(false);
-    onChange?.(formatted);
-    onDateChange?.(formatted);
+
+    // call your callbacks
+    onChange?.(formattedAPI); // send API format
+    onDateChange?.(formattedAPI); // send API format
     onSelect?.(date);
   };
 

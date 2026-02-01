@@ -8,7 +8,7 @@ import { usePathname } from "next/navigation";
 
 const SideInfo = ({focusedStep = 5}: {focusedStep?: number}) => {
   const pathname = usePathname();
-  const isMainPage = pathname === "/choose-services";
+  const isMainPage = pathname === "/meet-and-greet";
 
 
   return (
@@ -80,6 +80,7 @@ const Steps = ({currentStep = 0}: {currentStep: number}) => {
     "Chauffeur Services",
     "Additional Services",
     "Billing Information",
+    "Private Suite Services",
   ];
   return (
     <div className="bg-white rounded-2xl p-5">

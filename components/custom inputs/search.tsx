@@ -9,13 +9,14 @@ import Depature from "../custom icons/depature";
 import Connection from "../custom icons/connection";
 
 export interface OptionType {
-  label: string;
-  value: string;
+  label: string | null | undefined;
+  value: string | null | undefined;
   icon?: ReactNode;
 }
 
 interface SearchWithDropdownProps {
   id?: string;
+  name?: string;
   placeholder?: string;
   className?: string;
   disabled?: boolean;
@@ -23,13 +24,15 @@ interface SearchWithDropdownProps {
   icon?: ReactNode;
   iconPosition?: "left" | "right";
   options?: OptionType[];
-  value?: string;
-  onChange?: (value: string) => void;
+  // value?: {value:number, label: string};
+  value?: OptionType | null;
+  onChange?: (text: string) => void;
   onSelect?: (option: OptionType) => void;
   showRecentSearches?: boolean;
 }
 
 const SearchWithDropdown = ({
+  name = "",
   id,
   placeholder,
   className,
@@ -43,15 +46,15 @@ const SearchWithDropdown = ({
   onSelect,
   showRecentSearches = true,
 }: SearchWithDropdownProps) => {
-  const [search, setSearch] = useState(controlledValue || "");
+  const [search, setSearch] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   // Default recent searches (fallback)
   const defaultRecentSearches: OptionType[] = [
-    { label: "Arrival", value: "Arrival", icon: <Arraival /> },
-    { label: "Depature", value: "Depature", icon: <Depature /> },
-    { label: "Connection", value: "Connection", icon: <Connection /> },
+    { label: "Arrival", value: "arrival", icon: <Arraival /> },
+    { label: "departure", value: "departure", icon: <Depature /> },
+    { label: "Connection", value: "connection", icon: <Connection /> },
   ];
 
   // Use provided options or fall back to default recent searches
@@ -60,14 +63,14 @@ const SearchWithDropdown = ({
   // Filter options based on search input
   const filteredOptions = search
     ? availableOptions.filter((item) =>
-        item.label.toLowerCase().includes(search.toLowerCase()),
+        item.label!.toLowerCase().includes(search.toLowerCase()),
       )
     : availableOptions;
 
   // Sync with controlled value
   useEffect(() => {
-    if (controlledValue !== undefined) {
-      setSearch(controlledValue);
+    if (controlledValue?.label !== undefined && controlledValue.label !== null) {
+      setSearch(controlledValue.label);
     }
   }, [controlledValue]);
 
@@ -94,9 +97,8 @@ const SearchWithDropdown = ({
   };
 
   const handleSelect = (option: OptionType) => {
-    setSearch(option.label);
+    setSearch(option.label!);
     setIsOpen(false);
-    onChange?.(option.label);
     onSelect?.(option);
   };
 
@@ -112,10 +114,11 @@ const SearchWithDropdown = ({
           )}
 
           <Input
+            name={name}
             disabled={disabled}
             id={id}
-            value={search}
             placeholder={placeholder}
+            value={search}
             onChange={handleInputChange}
             onFocus={() => !disabled && setIsOpen(true)}
             className={cn(

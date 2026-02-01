@@ -1,4 +1,3 @@
-// app/choose-services/layout.tsx
 import React from "react";
 import Header from "@/components/Header/Header";
 import Footer from "@/components/Footer";

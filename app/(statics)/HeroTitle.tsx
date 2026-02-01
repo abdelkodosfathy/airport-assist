@@ -9,11 +9,13 @@ export default function HeroTitle() {
   const titleMap: Record<string, string> = {
     "frequently-asked-questions": "Frequently Asked Questions",
     "contact-us": "Contact Us",
+    "private-suite": "Private Suite Services",
   };
-
+  
   const breadcrumbMap: Record<string, string> = {
     "frequently-asked-questions": "Home / FAQ",
     "contact-us": "Home / Contact Us",
+    "private-suite": "For the discerning traveller, the Private Suite experience is the ultimate way to travel.",
   };
 
   return (
@@ -22,7 +24,7 @@ export default function HeroTitle() {
         {titleMap[segment ?? ""] ?? ""}
       </h1>
 
-      <p className="font-normal text-2xl text-center text-[rgb(200,200,200)]">
+      <p className="font-[Manrope] text-[21.75px] max-w-250 text-center tracking-[1.09] text-[rgb(200,200,200)]">
         {breadcrumbMap[segment ?? ""] ?? ""}
       </p>
     </>

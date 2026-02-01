@@ -4,19 +4,25 @@ import { useLayoutEffect, useRef } from "react";
 import Image from "next/image";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
-import { Check } from "lucide-react";
 import serviceImage from "@/public/services-image.jpg";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const ServiceSection = ({ left }: { left?: boolean }) => {
+const ServiceSection = ({
+  left,
+  title,
+  content,
+}: {
+  left?: boolean;
+  title: string;
+  content: string;
+}) => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const starRef = useRef<SVGSVGElement>(null);
-  const imagesBoxRef = useRef<HTMLDivElement>(null);
-  const boxRef = useRef<HTMLDivElement>(null);
+  // const imagesBoxRef = useRef<HTMLDivElement>(null);
+  // const boxRef = useRef<HTMLDivElement>(null);
   const textsRef = useRef<HTMLDivElement>(null);
   const firstImageRef = useRef<HTMLImageElement>(null);
-  const secondImageRef = useRef<HTMLImageElement>(null);
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
@@ -35,7 +41,7 @@ const ServiceSection = ({ left }: { left?: boolean }) => {
             start: "top 70%",
             toggleActions: "play reverse play reverse",
           },
-        }
+        },
       );
 
       // Timeline للصور
@@ -48,19 +54,19 @@ const ServiceSection = ({ left }: { left?: boolean }) => {
       });
 
       // Gradient container box slide in from right
-      imagesTl.from(imagesBoxRef.current, {
-        duration: 0.8,
-        ease: "power3.out",
-        onUpdate: function () {
-          const progress = this.progress(); // 0 → 1
-          const startAngle = 210; // زاوية البداية
-          const endAngle = startAngle + -90; // زاوية النهاية +90
-          const rotateAngle = startAngle + (endAngle - startAngle) * progress;
+      // imagesTl.from(imagesBoxRef.current, {
+      //   duration: 0.8,
+      //   ease: "power3.out",
+      //   onUpdate: function () {
+      //     const progress = this.progress(); // 0 → 1
+      //     const startAngle = 210; // زاوية البداية
+      //     const endAngle = startAngle + -90; // زاوية النهاية +90
+      //     const rotateAngle = startAngle + (endAngle - startAngle) * progress;
 
-          imagesBoxRef.current!.style.background = `linear-gradient(${rotateAngle}deg, rgba(161,101,56,1) 0%, #f2f1ef 15%, #f2f1ef 85%, rgba(161,101,56,1) 100%)`;
-        },
-        opacity: 0, // لو عايز fade
-      });
+      //     imagesBoxRef.current!.style.background = `linear-gradient(${rotateAngle}deg, rgba(161,101,56,1) 0%, #f2f1ef 15%, #f2f1ef 85%, rgba(161,101,56,1) 100%)`;
+      //   },
+      //   opacity: 0, // لو عايز fade
+      // });
 
       // First image slide in from top-left
       imagesTl.from(
@@ -71,19 +77,7 @@ const ServiceSection = ({ left }: { left?: boolean }) => {
           duration: 0.8,
           ease: "power3.out",
         },
-        "-=0.4"
-      );
-
-      // Second image slide in from top-left
-      imagesTl.from(
-        secondImageRef.current,
-        {
-          x: left ? 150 : -150,
-          opacity: 0,
-          duration: 0.8,
-          ease: "power3.out",
-        },
-        "-=0.6"
+        "-=0.4",
       );
 
       // Texts slide in from right to left
@@ -94,127 +88,72 @@ const ServiceSection = ({ left }: { left?: boolean }) => {
         ease: "power3.out",
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: "top 80%",
+          start: "top 72%",
           toggleActions: "play reverse play reverse",
         },
       });
 
       // Features grid slide in from right to left
-      gsap.from(boxRef.current, {
-        x: left ? -100 : 100,
-        opacity: 0,
-        duration: 1,
-        delay: 0.2,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 60%",
-          toggleActions: "play reverse play reverse",
-        },
-      });
+      // gsap.from(boxRef.current, {
+      //   x: left ? -100 : 100,
+      //   opacity: 0,
+      //   duration: 1,
+      //   delay: 0.2,
+      //   ease: "power3.out",
+      //   scrollTrigger: {
+      //     trigger: sectionRef.current,
+      //     start: "top 72%",
+      //     toggleActions: "play reverse play reverse",
+      //   },
+      // });
     }, sectionRef);
 
     return () => ctx.revert();
   }, []);
 
   return (
-    <section
-      ref={sectionRef}
-      className="overflow-hidden w-full max-w-[1214px] mx-auto mt-20 mb-26 px-4 lg:px-0 relative"
-    >
-      <p className="font-[Manrope] font-medium text-[15.53px] leading-[130%] text-gray-400 mb-3">
-        Name
-      </p>
-      <h2 className="font-[Manrope] font-normal text-[22.6px] leading-[100%] tracking-[7.06px] uppercase mb-6">
-        Section 1
-      </h2>
-
-      <div
-        className={`flex ${
-          left ? "flex-row-reverse" : "flex-row"
-        } gap-8 lg:gap-28 relative`}
+      <section
+        ref={sectionRef}
+        className="overflow-hidden w-full max-w-340 relative"
       >
-        {/* Images */}
-        <div className="flex-1 relative">
-          <div
-            ref={imagesBoxRef}
-            className="w-max p-[2px]"
-            style={{
-              background:
-                "linear-gradient(120deg, rgba(161, 101, 56) 0%, rgba(0,0,0,0) 15%, rgba(0,0,0,0) 85%, rgba(161,101,56,1) 100%)",
-            }}
-          >
-            <div
-              className="relative w-[315px] h-[625px] bg-[#f2f1ef]"
-              // style={{
-              //   background:
-              //     "linear-gradient(179.26deg, #f9f9fa 0.64%, #fefcfa 223.79%)",
-              // }}
-            >
-              <Image
-                ref={firstImageRef}
-                alt="service image"
-                src={serviceImage}
-                width={427.42}
-                height={390.75}
-                className="absolute top-[99.38px] left-[88.76px] w-[427.42px] h-[390.75px] object-cover border border-gray-300"
-              />
-              <Image
-                ref={secondImageRef}
-                alt="service image"
-                src={serviceImage}
-                width={427.42}
-                height={390.75}
-                className="absolute top-[303.92px] left-[270px] w-[283.77px] h-[259.43px] object-cover border border-gray-300"
-              />
+        <div
+          className={`flex py-15.75 ${
+            left ? "flex-row-reverse" : "flex-row"
+          } lg:gap-40 gap-20 relative`}
+        >
+          {/* Images */}
+          <div className="flex-1 flex relative">
+            <Image
+              ref={firstImageRef}
+              alt="service image"
+              src={serviceImage}
+              width={427.42}
+              height={390.75}
+              className="w-full aspect-116/69 m-auto rounded-lg object-cover border border-gray-300"
+              // className={`w-full max-w-116  aspect-116/69 ${left ? "ml-auto" : "mr-auto"} rounded-lg object-cover border border-gray-300 `}
+            />
+          </div>
+
+          {/* Star */}
+          <div className="absolute left-1/2 top-0 flex items-center h-full -translate-x-1/2 z-10">
+            <span className="absolute top-0 left-1/2 -translate-x-1/2 h-[160%] w-px bg-gray-300 -z-10"></span>
+            <Star ref={starRef} />
+          </div>
+
+          {/* Text & Gradient Box */}
+          <div className="flex-1 space-y-6">
+            <div ref={textsRef}>
+              <h3 className="font-[Manrope] text-[#7B5A41] font-normal leading-11.5 tracking-[4.6px] uppercase mb-6">
+                {title}
+              </h3>
+              <p className="font-[Manrope] font-normal leading-9.75 mb-8 text-black max-w-131.25">
+                {content}
+              </p>
             </div>
+
           </div>
         </div>
-
-        {/* Star */}
-        <div className="absolute left-1/2 top-0 flex items-center h-full -translate-x-1/2 z-10">
-          <span className="absolute top-0 left-1/2 -translate-x-1/2 h-full w-px bg-gray-300 -z-10"></span>
-          <Star ref={starRef} />
-        </div>
-
-        {/* Text & Gradient Box */}
-        <div className="flex-1 space-y-6">
-          <div ref={textsRef}>
-            <h3 className="font-[Manrope] font-normal text-[1rem] leading-11.5 tracking-[4.6px] uppercase mb-6 text-gray-500">
-              Service Name
-            </h3>
-            <p className="font-[Manrope] font-normal  text-[1.1rem] leading-9.75 mb-8 text-gray-700 max-w-[525px]">
-              Carefully constructed with style and sophistication – each of our
-              private lounges are designed to help you unwind, concentrate on
-              work or relax with your invited guest or family. The beautiful
-              artwork is curated by our partner
-            </p>
-          </div>
-
-          <div ref={boxRef} className="grid grid-cols-2 gap-4 mb-8">
-            {[
-              "Professional Drivers",
-              "Always on Time",
-              "Luxury Vehicles",
-              "Smooth rides",
-            ].map((feature, idx) => (
-              <div key={idx} className="flex items-start gap-2">
-                <div className="flex items-center justify-center w-8 h-8 rounded-full bg-black group-hover:bg-gradient-to-b from-[#664F31] to-[#DFB08D] transition-all duration-300 flex-shrink-0">
-                  <Check className="w-5 h-5 text-white stroke-3" />
-                </div>
-                <span className="font-[Manrope] text-[16px] leading-[160%] text-gray-600">
-                  {feature}
-                </span>
-              </div>
-            ))}
-          </div>
-
-          <button className="px-10 py-2 rounded-[16px] border-2 border-[rgb(150,107,75)] text-white font-normal text-base bg-gradient-to-b from-[rgb(123,90,65)] to-[rgb(201,139,92)]">
-            Book Now
-          </button>
-        </div>
-      </div>
-    </section>
+      </section>
   );
 };
 

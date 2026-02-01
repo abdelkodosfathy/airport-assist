@@ -35,7 +35,7 @@ const ServiceSection = ({ left }: { left?: boolean }) => {
             start: "top 70%",
             toggleActions: "play reverse play reverse",
           },
-        }
+        },
       );
 
       // Timeline للصور
@@ -71,7 +71,7 @@ const ServiceSection = ({ left }: { left?: boolean }) => {
           duration: 0.8,
           ease: "power3.out",
         },
-        "-=0.4"
+        "-=0.4",
       );
 
       // Second image slide in from top-left
@@ -83,7 +83,7 @@ const ServiceSection = ({ left }: { left?: boolean }) => {
           duration: 0.8,
           ease: "power3.out",
         },
-        "-=0.6"
+        "-=0.6",
       );
 
       // Texts slide in from right to left
@@ -94,7 +94,7 @@ const ServiceSection = ({ left }: { left?: boolean }) => {
         ease: "power3.out",
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: "top 80%",
+          start: "top 72%",
           toggleActions: "play reverse play reverse",
         },
       });
@@ -108,7 +108,7 @@ const ServiceSection = ({ left }: { left?: boolean }) => {
         ease: "power3.out",
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: "top 60%",
+          start: "top 72%",
           toggleActions: "play reverse play reverse",
         },
       });
@@ -123,10 +123,10 @@ const ServiceSection = ({ left }: { left?: boolean }) => {
       className="overflow-hidden w-full max-w-[1214px] mx-auto mt-20 mb-26 px-4 lg:px-0 relative"
     >
       <p className="font-[Manrope] font-medium text-[15.53px] leading-[130%] text-gray-400 mb-3">
-        Name
+        Services
       </p>
       <h2 className="font-[Manrope] font-normal text-[22.6px] leading-[100%] tracking-[7.06px] uppercase mb-6">
-        Section 1
+        Departure
       </h2>
 
       <div
