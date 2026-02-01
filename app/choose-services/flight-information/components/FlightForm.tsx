@@ -13,7 +13,7 @@ interface StepsProps {
 }
 
 const FlightForm = ({ onFocus }: StepsProps) => {
-  const [selectedAirport, setSelectedAirport] = useState<string>("");
+  const [selectedAirport, setSelectedAirport] = useState<string | null | undefined>("");
 
   const { data, isLoading, isError, error } = useAirlines();
 

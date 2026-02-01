@@ -169,7 +169,7 @@ const SearchWithDropdown = ({
                     {!search && showRecentSearches && options.length === 0 ? (
                       option.icon
                     ) : (
-                      <Search className="h-4 w-4 text-gray-400 flex-shrink-0" />
+                      <Search className="h-4 w-4 text-gray-400 shrink-0" />
                     )}
                     <span className="text-sm">{option.label}</span>
                   </button>

@@ -166,9 +166,9 @@ const BillingInformation = () => {
 
       {/* OR divider */}
       <div className="flex items-center w-full mb-4">
-        <span className="flex-1 h-0.5 bg-gradient-to-r from-white/0 to-[#A1453C]" />
+        <span className="flex-1 h-0.5 bg-linear-to-r from-white/0 to-[#A1453C]" />
         <p className="text-2xl mx-4 text-[#8A8A8E]">OR</p>
-        <span className="flex-1 h-0.5 bg-gradient-to-l from-white/0 to-[#A1453C]" />
+        <span className="flex-1 h-0.5 bg-linear-to-l from-white/0 to-[#A1453C]" />
       </div>
 
       {/* Inputs */}
