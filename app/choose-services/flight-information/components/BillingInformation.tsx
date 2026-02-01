@@ -2,7 +2,7 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { PhoneInput } from "@/components/ui/phone-input";
+import CustomPhoneInput from "@/components/ui/phone-input";
 import { useState } from "react";
 
 const BillingInformation = () => {
@@ -85,10 +85,10 @@ const BillingInformation = () => {
 
         <div className="space-y-2">
           <Label htmlFor="phone">Phone</Label>
-          <PhoneInput
+          <CustomPhoneInput
             disabled={sameAsPrimary}
-            id="phone"
-            placeholder="0101 434 3413"
+            // id="phone"
+            // placeholder="0101 434 3413"
             className="bg-[#F4F4F4] rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
           />
         </div>

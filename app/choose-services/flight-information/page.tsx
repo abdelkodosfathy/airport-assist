@@ -2,9 +2,6 @@
 
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import car1 from "@/public/car1.png";
-import car2 from "@/public/car1.png";
-import rollsRoyce from "@/public/rolls-rouce.png";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import SearchWithDropdown from "@/components/custom inputs/search";
@@ -12,13 +9,11 @@ import { Textarea } from "@/components/ui/textarea";
 import {
   ArrowDownToLineIcon,
   ArrowLeft,
-  Menu,
   UploadCloud,
 } from "lucide-react";
 import Link from "next/link";
 import SideInfo from "../components/side-info";
 import { useState } from "react";
-import IconInput from "@/components/custom inputs/customInput";
 import FlightForm from "./components/FlightForm";
 import CustomPhoneInput from "@/components/ui/phone-input";
 import DateOfBirth from "./components/DateOfBirth";
