@@ -72,7 +72,7 @@ const VerticalCausel = () => {
       title: "PRIVATE ENTRANCE",
       textContent:
         "Arrive at the Terminal through an independent access point, ensuring complete privacy and security.",
-      image: "/carousel/check-in-despacho.png",
+      image: "/carousel/check-in-despacho.webp",
       top:"top-30"
     },
     {
@@ -80,7 +80,7 @@ const VerticalCausel = () => {
       title: "Assisted check-in and baggage drop-off",
       textContent:
         "Arrive at the Terminal through an independent access point, ensuring complete privacy and security.",
-      image: "/carousel/concierge-dedicado.png",
+      image: "/carousel/concierge-dedicado.webp",
       top:"top-40"
     },
     {
@@ -88,7 +88,7 @@ const VerticalCausel = () => {
       title: "DEDICATED CONCIERGE",
       textContent:
         "Arrive at the Terminal through an independent access point, ensuring complete privacy and security.",
-      image: "/carousel/entrada-privada.png",
+      image: "/carousel/entrada-privada.webp",
       top:"top-50"
     },
     {
@@ -96,7 +96,7 @@ const VerticalCausel = () => {
       title: "On-site security and immigration",
       textContent:
         "Arrive at the Terminal through an independent access point, ensuring complete privacy and security.",
-      image: "/carousel/raiox.png",
+      image: "/carousel/raiox.webp",
       top:"top-60"
     },
     {
@@ -104,7 +104,7 @@ const VerticalCausel = () => {
       title: "Transfer",
       textContent:
         "Arrive at the Terminal through an independent access point, ensuring complete privacy and security.",
-      image: "/carousel/transfer.png",
+      image: "/carousel/transfer.webp",
       top:"top-70"
     },
   ];

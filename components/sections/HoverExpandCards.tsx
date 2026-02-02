@@ -10,35 +10,35 @@ export default function HoverExpandCards() {
       title: "PRIVATE ENTRANCE",
       textContent:
         "Arrive at the Terminal through an independent access point, ensuring complete privacy and security.",
-      image: "/carousel/check-in-despacho.png",
+      image: "/carousel/check-in-despacho.webp",
     },
     {
       id: 2,
       title: "Assisted check-in and baggage drop-off",
       textContent:
         "Arrive at the Terminal through an independent access point, ensuring complete privacy and security.",
-      image: "/carousel/concierge-dedicado.png",
+      image: "/carousel/concierge-dedicado.webp",
     },
     {
       id: 3,
       title: "DEDICATED CONCIERGE",
       textContent:
         "Arrive at the Terminal through an independent access point, ensuring complete privacy and security.",
-      image: "/carousel/entrada-privada.png",
+      image: "/carousel/entrada-privada.webp",
     },
     {
       id: 4,
       title: " On-site security and immigration",
       textContent:
         "Arrive at the Terminal through an independent access point, ensuring complete privacy and security.",
-      image: "/carousel/raiox.png",
+      image: "/carousel/raiox.webp",
     },
     {
       id: 5,
       title: "On-site security and immigration",
       textContent:
         "Arrive at the Terminal through an independent access point, ensuring complete privacy and security.",
-      image: "/carousel/transfer.png",
+      image: "/carousel/transfer.webp",
     },
   ];
 
