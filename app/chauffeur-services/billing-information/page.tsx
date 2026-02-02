@@ -127,7 +127,6 @@ export default function BillingInformationPage() {
           asChild
           variant="outline"
           className="
-          
             col-span-2
             mt-4
             w-full
