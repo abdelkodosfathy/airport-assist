@@ -92,7 +92,7 @@ const Footer = () => {
               </h4>
               <ul className="space-y-1">
                 <li>
-                  <p>About Us</p>
+                  <Link href={"/why-us"}>About Us</Link>
                 </li>
                 <li>
                   <Link href={"/contact-us"}>Contact Us</Link>

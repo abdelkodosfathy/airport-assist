@@ -81,15 +81,14 @@ export default function AirportInvitation({
     }
   }, [left]);
 
-
   return (
     <section
-      className="py-6 gap-4 px-26 flex items-center overflow-hidden"
+      className="py-6 gap-4 px-12 lg:px-10 xl:px-26 flex items-center justify-center lg:justify-normal overflow-hidden"
     >
 
-      <div className={`flex max-w-360 mx-auto ${
-        left ? "flex-row-reverse" : ""
-      } gap-6 2xl:gap-10 items-center overflow-hidden`}>
+      <div className={`flex max-w-360  lg:mx-auto 
+      ${left ? "flex-col-reverse lg:flex-row-reverse" : "flex-col-reverse lg:flex-row"} 
+      gap-6 2xl:gap-10 lg:items-center overflow-hidden`}>
 
         {/* ------------ LEFT TEXT ------------ */}
         <div className="flex-3">
@@ -103,7 +102,7 @@ export default function AirportInvitation({
         </div>
 
         {/* ------------ RIGHT IMAGES ------------ */}
-        <div className="flex flex-4 gap-4">
+        <div className="flex flex-4 gap-4 ml-auto xl:ml-0">
           {/* الصورة الأولى */}
           <div ref={img1Ref} className="overflow-hidden rounded-md h-64 2xl:h-70">
             <img

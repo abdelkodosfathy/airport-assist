@@ -1,5 +1,3 @@
-// app/chauffeur-services/BillingInformationPage/page.tsx
-
 import CarPassengers from "@/components/custom icons/CarPassengers";
 import LicensedChaufferus from "@/components/custom icons/licensedChaufferus";
 import LuggageAssist from "@/components/custom icons/LuggageAssist";
@@ -11,7 +9,6 @@ import Separator from "@/components/ui/formSeparator";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import CustomPhoneInput from "@/components/ui/phone-input";
-// import { PhoneInput } from "@/components/ui/phone-input";
 import car1 from "@/public/car1.png";
 import Image from "next/image";
 import Link from "next/link";

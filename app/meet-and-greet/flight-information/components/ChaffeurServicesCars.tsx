@@ -12,9 +12,10 @@ import { Car } from "@/lib/types/car";
 
 interface StepsProps {
   onFocus?: () => void;
+  selectCar: (carData: Car) => void;
 }
 
-const ChauffeurServicesCars = ({ onFocus }: StepsProps) => {
+const ChauffeurServicesCars = ({ onFocus, selectCar}: StepsProps) => {
   return (
     <div
       onClick={() => {
@@ -41,7 +42,7 @@ const ChauffeurServicesCars = ({ onFocus }: StepsProps) => {
         />
       </div>
       <div className="py-4">
-        <CardPicker />
+        <CardPicker onSelectCar={selectCar} />
       </div>
 
       <Button
@@ -125,6 +126,7 @@ const CarCard = ({ car, selected = false, onSelect }: CarCardProps) => {
           alt={car_type_name}
           width={230}
           height={120}
+          quality={1}
           className="rounded-lg h-[120px] w-[230px] object-contain mx-auto"
         />
 
@@ -155,7 +157,7 @@ const CarCard = ({ car, selected = false, onSelect }: CarCardProps) => {
   );
 };
 
-function CardPicker() {
+function CardPicker({onSelectCar}: {onSelectCar: (carData: Car) => void}) {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [selectedCarId, setSelectedCarId] = useState<number | null>(null);
   const carInputRef = useRef<HTMLInputElement>(null);
@@ -182,16 +184,20 @@ function CardPicker() {
     if (index !== -1) {
       setSelectedIndex(index);
       setSelectedCarId(carId);
-
+      
       if (carInputRef.current) {
         carInputRef.current.value = String(carId);
       }
     }
   }, [data]);
-
+  
   const handleSelect = (index: number, carId: number) => {
     setSelectedIndex(index);
     setSelectedCarId(carId);
+    if(data?.data.car_types){
+      onSelectCar(data.data.car_types[index])
+    }
+
 
     // update sessionStorage
     sessionStorage.setItem("selected_car_type_id", String(carId));

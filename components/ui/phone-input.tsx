@@ -1,3 +1,4 @@
+'use client'
 import "react-international-phone/style.css";
 import { PhoneInput } from "react-international-phone";
 

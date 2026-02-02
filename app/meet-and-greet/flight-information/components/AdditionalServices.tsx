@@ -96,13 +96,8 @@ const AdditionalServices = ({ onFocus }: StepsProps) => {
             hidden
             onChange={handlePassengerFileSelect}
           />
-          <input
-            ref={passengerFileRef}
-            type="file"
-            accept=".pdf,.xlsx,.xls,.csv"
-            onChange={handlePassengerFileSelect}
-          />
           <Button
+            type="button"
             onClick={() => passengerFileRef.current?.click()}
             style={{
               background:
@@ -153,12 +148,14 @@ const AdditionalServices = ({ onFocus }: StepsProps) => {
 
           <input
             ref={ticketFileRef}
+            hidden
             type="file"
             accept="image/jpeg,image/png,application/pdf"
             onChange={handleTicketUpload}
           />
 
           <Button
+            type="button"
             onClick={() => ticketFileRef.current?.click()}
             style={{
               background:

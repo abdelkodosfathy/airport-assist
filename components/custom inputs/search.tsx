@@ -9,8 +9,10 @@ import Depature from "../custom icons/depature";
 import Connection from "../custom icons/connection";
 
 export interface OptionType {
-  label: string | null | undefined;
-  value: string | null | undefined;
+  // label: string | null | undefined;
+  label: string;
+  // value: string | null | undefined;
+  value: string;
   icon?: ReactNode;
 }
 

@@ -166,9 +166,11 @@ export default function FlightInformation() {
 
         <SideInfo />
       </div>
-      <Button onClick={sessionStoredData}>get data</Button>
+      {/* <Button onClick={sessionStoredData}>get data</Button> */}
       <Button
-        asChild
+      type="button"
+      onClick={sessionStoredData}
+        // asChild
         variant="outline"
         className="
             mt-6
@@ -182,11 +184,12 @@ export default function FlightInformation() {
             duration-0
           "
       >
-        <Link href="/meet-and-greet/flight-information/billing-information/checkout">
+        Proceed To Checkout
+        {/* <Link href="/meet-and-greet/flight-information/billing-information/checkout">
           <p className="text-lg font-normal font-[Manrope]">
             Proceed To Checkout{" "}
           </p>
-        </Link>
+        </Link> */}
       </Button>
     </div>
   );

@@ -241,6 +241,7 @@ const PrimaryPassengerForm = ({ onFocus }: StepsProps) => {
           <div className="space-y-2 md:col-span-2">
             <Label>Number Of bags</Label>
             <Input
+            type="number"
               placeholder="Number Of bags"
               className="bg-[#F4F4F4]"
               value={passenger.number_of_pages || ""}

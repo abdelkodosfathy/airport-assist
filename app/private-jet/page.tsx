@@ -409,7 +409,7 @@ const Card = ({ title, content, dir, imagePosition }: CardProps) => {
         <Image
           src={serviceImage}
           alt="service name"
-          className={`w-95 h-66.25 absolute -${dir}-60.25 ${positionClass}`}
+          className={`w-95 h-66.25 absolute ${dir === "right"? "-right-60.25": "-left-60.25"} ${positionClass}`}
         />
       </div>
     </div>

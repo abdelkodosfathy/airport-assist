@@ -9,13 +9,19 @@ export default function HeroTitle() {
   const titleMap: Record<string, string> = {
     "frequently-asked-questions": "Frequently Asked Questions",
     "contact-us": "Contact Us",
+    "chauffeuring": "Chauffeur Services",
     "private-suite": "Private Suite Services",
+    "vip-meet-and-greet": "Meet & Greet Services",
+    "hotel": "Luxury Hotel",
   };
   
   const breadcrumbMap: Record<string, string> = {
     "frequently-asked-questions": "Home / FAQ",
     "contact-us": "Home / Contact Us",
+    "chauffeuring": "An elevated chauffeur experience with refined space and exceptional comfort.",
     "private-suite": "For the discerning traveller, the Private Suite experience is the ultimate way to travel.",
+    "vip-meet-and-greet": "From boarding to arrival, every moment is expertly managed for a seamless airport experience.",
+    "hotel": "Designed with style and sophistication, our spaces offer a refined environment to unwind,",
   };
 
   return (

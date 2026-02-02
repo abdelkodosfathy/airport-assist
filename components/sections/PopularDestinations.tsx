@@ -98,9 +98,9 @@ export default function PopularDestinations() {
   }, [scrolled]);
 
   return (
-    <section className="py-20 pl-20 flex bg-[#1a1a1a] text-white overflow-hidden">
+    <section className="py-20 pl-20 flex flex-col lg:flex-row gap-4 lg:gap-2 bg-[#1a1a1a] text-white overflow-hidden">
       {/* ------------ LEFT TEXT ------------ */}
-      <div className="w-1/2 relative">
+      <div className="lg:w-1/3 xl:w-1/2 relative">
         <span
           className="
             absolute left-0 right-0 -top-6 h-0.75 rounded-full
@@ -116,7 +116,7 @@ export default function PopularDestinations() {
           <span className="block">Destinations</span>
         </h2>
 
-        <p className="text-[15px] traking-[1.5px] leading-[160%] w-137.5 text-[#959595] mt-9">
+        <p className="text-[15px] traking-[1.5px] leading-[160%] max-w-full w-137.5 text-[#959595] mt-9 whitespace-break-spaces">
           Travel in comfort with our VIP Airport Meet & Greet service, featuring
           fast-track security & immigration and dedicated airport concierge
           assistance from curbside to gate.
@@ -124,7 +124,7 @@ export default function PopularDestinations() {
       </div>
 
       {/* ------------ CARDS GRID ------------ */}
-      <div className="flex w-1/2 flex-col gap-4">
+      <div className="flex lg:w-2/3 xl:w-1/2 flex-col gap-4">
         <div
           ref={scrollRef}
           className="flex-1 flex overflow-x-auto gap-4 scrollbar-none scroll-smooth"

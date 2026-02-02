@@ -3,13 +3,16 @@ import { Button } from "@/components/ui/button";
 import InnerToast from "@/components/ui/InnerToast";
 import { Clock4 } from "lucide-react";
 import Image from "next/image";
+import { Car } from "@/lib/types/car";
 
-type Props = {};
 interface StepsProps {
   onFocus?: () => void;
+  selectedCar?: Car;
 }
 
-const ChauffeurServices = ({ onFocus }: StepsProps) => {
+const ChauffeurServices = ({ onFocus, selectedCar }: StepsProps) => {
+  console.log(selectedCar);
+
   return (
     <div
       onClick={() => {
@@ -25,9 +28,20 @@ const ChauffeurServices = ({ onFocus }: StepsProps) => {
       </h4>
       <span className="inline-block w-full h-0.5 bg-[#CFCFCF]" />
       <div className="flex gap-4 items-center py-8">
-        <Image alt="car image" src={car1} width={216} height={108.75} />
+        <Image
+          alt="car image"
+          src={
+            selectedCar?.car_type_img
+              ? `https://airportassist-backend.aqaralex.com/storage/images/car-types-images/${selectedCar.car_type_img}`
+              : car1
+          }
+          width={216}
+          height={108.75}
+        />
         <div>
-          <p className="font-semibold">S -Class Mercedes</p>
+          <p className="font-semibold">
+            {selectedCar?.car_type_name || "S -Class Mercedes"}
+          </p>
           <p>
             <span className="font-semibold">Drop Off Address:</span> 1256
             Maidenhead Road SL6 1RN

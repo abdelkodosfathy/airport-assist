@@ -269,6 +269,7 @@ import ChauffeurServicesCars from "./components/ChaffeurServicesCars";
 import FlightForm from "./components/FlightForm";
 import PrimaryPassengerForm from "./components/PrimaryPassengerForm";
 import AdditionalServices from "./components/AdditionalServices";
+import { Car } from "@/lib/types/car";
 
 enum Steps {
   Flight = 2,
@@ -279,6 +280,8 @@ enum Steps {
 
 export default function FlightInformation() {
   // ======= change steps (UI) =======
+  const [selectedCarData, setSelectedCarData] = useState<Car>();
+  
   const [currentStep, setCurrentStep] = useState(1);
   const handleStepChange = (step: number) => {
     setCurrentStep(step - 1);
@@ -298,11 +301,10 @@ export default function FlightInformation() {
         <form className="flex-2 space-y-4 h-auto">
           <FlightForm onFocus={() => handleStepChange(Steps.Flight)} />
           <PrimaryPassengerForm onFocus={() => handleStepChange(Steps.Passenger)}/>
-          <ChauffeurServicesCars onFocus={() => handleStepChange(Steps.Chauffeur)}/>
-          <ChauffeurServices onFocus={() => handleStepChange(Steps.Chauffeur)}/>
+          <ChauffeurServicesCars selectCar={setSelectedCarData} onFocus={() => handleStepChange(Steps.Chauffeur)}/>
+          <ChauffeurServices selectedCar={selectedCarData || undefined} onFocus={() => handleStepChange(Steps.Chauffeur)}/>
             
           <AdditionalServices onFocus={() => handleStepChange(Steps.Additional)}/>
-          <button type="submit">submit</button>
         </form>
         <SideInfo focusedStep={currentStep} />
       </div>
