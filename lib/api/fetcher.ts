@@ -13,12 +13,13 @@ export async function apiFetch(endpoint: string, options: RequestInit = {}) {
 
   try {
     const response = await fetch(url, config);
-
+    
     const contentType = response.headers.get("content-type");
     const isJson = contentType?.includes("application/json");
-
+    
     const data = isJson ? await response.json() : await response.text();
-
+    
+    console.log(data);
     if (!response.ok) {
       throw {
         status: response.status,
