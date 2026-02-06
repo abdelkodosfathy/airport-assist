@@ -83,7 +83,7 @@ export default function AirportInvitation({
 
   return (
     <section
-      className="py-6 gap-4 px-12 lg:px-10 xl:px-26 flex items-center justify-center lg:justify-normal overflow-hidden"
+      className="py-6 gap-4 px-4 sm:px-6 md:px-8 lg:px-10 xl:px-26 flex items-center justify-center lg:justify-normal overflow-hidden"
     >
 
       <div className={`flex max-w-360  lg:mx-auto 
@@ -92,7 +92,7 @@ export default function AirportInvitation({
 
         {/* ------------ LEFT TEXT ------------ */}
         <div className="flex-3">
-          <h2 className="font-[Manrope] max-w-116 font-normal text-3xl leading-[128%] tracking-[10px] uppercase">
+          <h2 className="font-[Manrope] max-w-116 font-normal text-xl md:text-2xl lg:text-3xl leading-[128%] tracking-[10px] uppercase">
             {heading}
           </h2>
 

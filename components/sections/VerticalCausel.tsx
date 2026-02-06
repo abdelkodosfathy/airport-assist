@@ -111,12 +111,12 @@ const VerticalCausel = () => {
 
   
   return (
-    <section className="xl:hidden relative bg-neutral-900 p-4 h-max py-10">
-      <div className="sticky top-10 bg-neutral-900 h-max space-y-20">
+    <section className="xl:hidden relative bg-neutral-900 p-4 h-max py-6 md:py-10">
+      <div className="sticky top-10 bg-neutral-900 h-max space-y-4 sm:space-y-10 md:space-y-16 lg:space-y-20">
         {cards.map((card, index) => (
           <div
             key={card.id}
-            className={`sticky ${card.top} rounded-lg overflow-hidden h-80 z-30 w-full bg-red-500 flex items-end pb-10 justify-center text-white text-xl`}
+            className={`px-4 md:px-6 sticky ${card.top} rounded-lg overflow-hidden h-80 z-30 w-full flex items-end pb-10 justify-center text-white text-normal sm:text-xl`}
           >
             {/* الصورة */}
             <Image
@@ -131,9 +131,9 @@ const VerticalCausel = () => {
             <div className="absolute inset-0 shadow-lg bg-gradient-to-t from-black to-transparent" />
 
             {/* المحتوى */}
-            <div className="relative text-white">
-              <h3 className=" text-2xl tracking-[0.3em] mb-10 w-120">{card.title}</h3>
-              <p className="text-md">
+            <div className="relative w-full text-white">
+              <h3 className="text-xl sm:text-2xl text-start tracking-[0.3em] mb-4 sm:mb-8 w-full">{card.title}</h3>
+              <p className="text-sm sm:text-lg tracking-wide">
                 {card.textContent}
               </p>
             </div>

@@ -10,6 +10,7 @@ import { useAirports } from "@/lib/hooks/useAirports";
 import { Loader2, AlertCircle } from "lucide-react";
 import DatePickerInput from "./custom inputs/DatePickerInputs";
 import AdultsPicker from "./custom inputs/AdultsPicker";
+import AirportSearch from "./custom inputs/AirportSearch";
 
 export interface VipBookingData {
   airport_id: string;
@@ -275,6 +276,11 @@ export default function BookingForm() {
     );
   }
 
+  const handleAirportQueryChange = (e) => {
+    console.log(e);
+    
+  }
+
   return (
     <Card className="booking-form opacity-0 mx-auto backdrop-blur-md bg-white/10 border-white/20 mt-8 md:mt-12 w-full max-w-[1272px] p-6 lg:p-7.5 transition-all duration-300 hover:shadow-2xl">
       {/* Tabs */}
@@ -324,7 +330,8 @@ export default function BookingForm() {
           {activeTab === "vip" ? (
             <>
               <div className="col-span-1 sm:col-span-2 lg:col-span-6">
-                <SearchWithDropdown
+                <AirportSearch
+                onChange={handleAirportQueryChange}
                   icon={<Plane />}
                   id="airport"
                   placeholder={
@@ -380,7 +387,7 @@ export default function BookingForm() {
                 <DatePickerInput
                   className="h-full"
                   inputClassName={clsx(
-                    "rounded-bl-lg lg:rounded-none  h-10 lg:h-full transition-all duration-200",
+                    "sm:rounded-bl-lg lg:rounded-none  h-10 lg:h-full transition-all duration-200",
                     errors.date &&
                       "ring-2 ring-red-500 placeholder:text-red-500",
                   )}
@@ -400,7 +407,7 @@ export default function BookingForm() {
                   icon={<Adults />}
                   placeholder="1 Adult - 0 Children"
                   className="h-full"
-                  inputClassName="bg-white rounded-br-lg lg:rounded-none lg:rounded-none h-10 lg:h-full"
+                  inputClassName="bg-white rounded-b-lg sm:rounded-b-none sm:rounded-br-lg lg:rounded-none h-10 lg:h-full"
                   onAdultsChange={setAdultsCount}
                   onChildrenChange={setChildrenCount}
                 />

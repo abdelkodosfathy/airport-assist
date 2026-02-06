@@ -33,7 +33,7 @@ export default function HeroContent() {
       ref={containerRef}
       className="
         w-full flex flex-col items-center justify-center text-center
-        md:px-28 px-6 
+        px-4 sm:px-6 md:px-8 lg:px-16 xl:px-28  
         mt-16 md:mt-24 lg:mt-32
       "
     >

@@ -5,7 +5,7 @@ import { Button } from "../ui/button";
 const ExclusiveContent = () => {
   return (
     // <section className="min-h-screen px-28 py-16 flex flex-col items-center">
-    <section className=" px-28 py-16 flex flex-col items-center">
+    <section className=" px-4 sm:px-8 md:px-10 lg:px-28 py-8 lg:py-16 flex flex-col items-center">
       <h2 className="font-manrope text-center font-normal text-3xl leading-[100%] tracking-[10px] uppercase">
         Discover exclusive content
       </h2>
@@ -22,7 +22,7 @@ const ExclusiveContent = () => {
         <ArrowUpRight />
       </Button>
 
-      <div className="gap-8 w-full flex max-w-360">
+      <div className="lg:gap-8 w-full lg:flex max-w-360">
         {/* Card 1 */}
         <div className="flex-1 flex flex-col">
           <div className="overflow-hidden rounded-lg aspect-square group">
