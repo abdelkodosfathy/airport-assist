@@ -285,12 +285,12 @@ const AdultsPicker = ({
             </span>
           )}
 
-          <ChevronDown
+          {/* <ChevronDown
             className={cn(
               "absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 h-5 w-5 transition-transform",
               isOpen && "rotate-180",
             )}
-          />
+          /> */}
         </div>
 
         {/* Dropdown */}

@@ -16,7 +16,8 @@ const FlightForm = ({ onFocus }: StepsProps) => {
   const [selectedAirport, setSelectedAirport] = useState<string | null | undefined>("");
 
   const { data, isLoading, isError, error } = useAirlines();
-
+  console.log(data);
+  
   if (isError) {
     console.error("Error fetching airports:", error);
   }

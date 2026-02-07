@@ -142,6 +142,7 @@ export interface FlightInfo {
 
 const FlightForm = ({ onFocus }: StepsProps) => {
   const { data, isLoading, isError, error } = useAirlines();
+console.log(data);
 
   const [flightInfo, setFlightInfo] = useState<FlightInfo>({
     fast_track_enabled: false,
@@ -169,7 +170,7 @@ const FlightForm = ({ onFocus }: StepsProps) => {
   // Convert airlines to options
   const airlineOptions: OptionType[] =
     data?.data.airlines.map((airline) => ({
-      label: `${airline.airline_name} (${airline.country?.country_name})`,
+      label: `${airline.airline_name} (${airline.airline_code})`,
       value: airline.airline_id?.toString(),
     })) || [];
 

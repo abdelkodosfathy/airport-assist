@@ -11,7 +11,6 @@ import { Loader2, AlertCircle } from "lucide-react";
 import DatePickerInput from "./custom inputs/DatePickerInputs";
 import AdultsPicker from "./custom inputs/AdultsPicker";
 import AirportSearch from "./custom inputs/AirportSearch";
-import { Package } from "@/lib/types/package";
 
 export interface VipBookingData {
   airport_id: string;
@@ -312,11 +311,11 @@ export default function BookingForm() {
         <Button
           variant="ghost"
           onClick={() => handleTabChange("vip")}
-          className="truncate cursor-pointer relative px-3 sm:px-4 py-2 text-white font-medium md:text-lg lg:text-xl hover:bg-transparent hover:text-[#AB9B90] transition-all duration-300"
+          className="cursor-pointer relative px-3 sm:px-4 py-2 text-white font-medium md:text-lg lg:text-xl hover:bg-transparent hover:text-[#AB9B90] transition-all duration-300"
           aria-pressed={activeTab === "vip"}
           aria-label="VIP Meet & Greet Service Tab"
         >
-          VIP Meet & Greet Service
+          <p>VIP Meet & Greet Service</p>
           <span
             className={clsx(
               "absolute left-0 right-0 -bottom-2 h-0.5 rounded-full transition-all duration-300",

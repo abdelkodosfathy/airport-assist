@@ -1,5 +1,6 @@
 export interface Airline {
   airline_id: number;
+  airline_code: string;
   airline_name: string;
   airline_img: string;
   country_id: number;
