@@ -16,6 +16,8 @@ import clsx from "clsx";
 import Separator from "@/components/ui/formSeparator";
 import Link from "next/link";
 import InnerToast from "@/components/ui/InnerToast";
+import { useCars } from "@/lib/hooks/useCars";
+import { Car } from "@/lib/types/car";
 
 type ServiceType = "one-way" | "round-trip" | "hourly";
 type Props = {};
@@ -34,7 +36,7 @@ const Pickup = (props: Props) => {
             " mt-6 w-max  cursor-pointer  border-[#D1D1D1]  text-[#7A7A7A]  bg-[#ECECEC] hover:border-[#664F31]   hover:bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)]  hover:text-white  duration-0",
             selectedService === "one-way"
               ? "border-[#664F31] bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)] text-white"
-              : ""
+              : "",
           )}
         >
           On a way
@@ -58,7 +60,7 @@ const Pickup = (props: Props) => {
             " mt-6 w-max  cursor-pointer  border-[#D1D1D1]  text-[#7A7A7A]  bg-[#ECECEC] hover:border-[#664F31]   hover:bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)]  hover:text-white  duration-0",
             selectedService === "hourly"
               ? "border-[#664F31] bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)] text-white"
-              : ""
+              : "",
           )}
         >
           Hourly
@@ -80,7 +82,7 @@ const PickupForm = ({ serviceType }: { serviceType?: ServiceType }) => {
     <div className="shadow-md px-4.5 py-6 bg-white rounded-2xl h-full w-full max-w-6/11">
       <div className="my-2">
         <h3 className="mb-2 font-semibold">Pickup</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 w-full">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 w-full ">
           <div className="space-y-2 col-span-2 mb-6">
             {/* <Label htmlFor="from">From</Label> */}
             <Input
@@ -89,7 +91,7 @@ const PickupForm = ({ serviceType }: { serviceType?: ServiceType }) => {
               className="pl-4 pr-10 bg-[#F4F4F4] border border-[#E0E0E0]"
             />
           </div>
-          <div className="space-y-2 col-span-2">
+          <div className="space-y-2 col-span-2 mb-6">
             {/* <Label htmlFor="drop-off">Drop Off</Label> */}
             <Input
               id="drop-off"
@@ -300,19 +302,24 @@ const NumberInput = ({ title }: { title: string }) => {
 };
 
 type CarCardProps = {
-  title: string;
-  desc: string;
-  isNew?: boolean;
-  image: StaticImageData | string;
+  // title: string;
+  // desc: string;
+  // isNew?: boolean;
+  // image: StaticImageData | string;
+
+  car: Car;
+
   selected?: boolean;
   onSelect?: () => void;
 };
 
 const CarCard = ({
-  title,
-  desc,
-  image,
-  isNew,
+  // title,
+  // desc,
+  // image,
+  // isNew,
+
+  car,
   selected = false,
   onSelect,
 }: CarCardProps) => (
@@ -323,48 +330,51 @@ const CarCard = ({
       ${selected ? "border-2 border-[#664F31]" : "border-2 border-white"}
     `}
   >
-    {/* Radio-like indicator */}
-    <div
-      className={`
-        absolute grid place-items-center top-4 right-4 w-5 h-5 rounded-full border 
+    <div className="flex justify-between items-start">
+      <p className="font-bold text-[#101828]">
+        {car.car_type_name}{" "}
+        {/* {car.status && (
+          <span className="text-[0.625rem] font-light">(new shape)</span>
+        )} */}
+      </p>
+
+      {/* Radio-like indicator */}
+      <div
+        className={`
+        grid place-items-center top-4 right-4 min-w-5 min-h-5 rounded-full border 
         ${selected ? " border-[#664F31]" : "border-[#D5D6DB]"}
       `}
-    >
-      {selected ? (
-        <span className="block w-4 h-4 rounded-full bg-[#664F31]" />
-      ) : (
-        ""
-      )}
-    </div>
-
-    <div className="flex justify-between">
-      <p className="font-bold text-[#101828]">
-        {title}{" "}
-        {isNew && (
-          <span className="text-[0.625rem] font-light">(new shape)</span>
+      >
+        {selected ? (
+          <span className="block min-w-4 min-h-4 rounded-full bg-[#664F31]" />
+        ) : (
+          ""
         )}
-      </p>
+      </div>
     </div>
 
-    <p className="text-[0.625rem] max-w-44 text-[#7a7a7a] mb-3">{desc}</p>
+    <p className="text-[0.625rem] max-w-44 text-[#7a7a7a] mb-3">
+      {car.car_type_description}
+    </p>
 
     <Image
-      src={image}
-      alt={title}
+      // src={car.car_type_img}
+      src={`https://airportassist-backend.aqaralex.com/storage/images/car-types-images/${car.car_type_img}`}
+      alt={car.car_type_name}
       width={230}
       height={120}
-      className="rounded-lg h-[120px] w-[230px] object-contain mx-auto"
+      className="rounded-lg h-30 w-57.5 object-contain mx-auto"
     />
 
     <div className="flex justify-between text-[0.625rem] items-end pb-1 mb-1 border-b border-[#E5E5E5]">
       <div className="flex gap-2 ">
         <p className="flex gap-1 items-center">
           <Passengers />
-          <span>7</span>
+          <span>{car.passengers_capacity}</span>
         </p>
         <p className="flex gap-1 items-center">
           <CarriedBag />
-          <span>7</span>
+          <span>{car.baggage_capacity}</span>
         </p>
       </div>
       <p className="text-[#74747A]">Includes up to 18 miles</p>
@@ -372,13 +382,13 @@ const CarCard = ({
 
     <div>
       <p className="text-[0.675rem] flex justify-between">
-        Price Per Mile<span>£4.00</span>
+        Price Per Mile<span>£{car.price_per_mile}</span>
       </p>
       <p className="text-[0.675rem] flex justify-between">
         Supplement Fee<span>£220.00</span>
       </p>
       <p className="text-[0.675rem] flex justify-between">
-        Rate per hour<span>+£90.00/hour</span>
+        Rate per hour<span>+£{car.price_per_hour}/hour</span>
       </p>
     </div>
   </div>
@@ -386,6 +396,13 @@ const CarCard = ({
 
 function CardPicker() {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+
+  const { data, isLoading, isError, error } = useCars();
+  console.log(data);
+
+  if (isError) {
+    console.error("Error fetching airports:", error);
+  }
 
   const cars = [
     {
@@ -423,13 +440,10 @@ function CardPicker() {
 
   return (
     <div className="grid grid-cols-2 gap-3 w-5/11">
-      {cars.map((car, index) => (
+      {data?.data.car_types.map((car, index) => (
         <CarCard
           key={index}
-          title={car.title}
-          desc={car.desc}
-          image={car.image}
-          isNew={car.isNew}
+          car={car}
           selected={selectedIndex === index}
           onSelect={() => setSelectedIndex(index)}
         />

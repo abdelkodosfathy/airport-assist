@@ -15,7 +15,7 @@ interface StepsProps {
   selectCar: (carData: Car) => void;
 }
 
-const ChauffeurServicesCars = ({ onFocus, selectCar}: StepsProps) => {
+const ChauffeurServicesCars = ({ onFocus, selectCar }: StepsProps) => {
   return (
     <div
       onClick={() => {
@@ -88,28 +88,25 @@ const CarCard = ({ car, selected = false, onSelect }: CarCardProps) => {
       ${selected ? "border-2 border-[#664F31]" : "border-2 border-white"}
     `}
     >
-      {/* Radio-like indicator */}
-      <div>
+      <div className="flex justify-between w-full items-start">
+        <p className="font-bold text-[#101828]">
+          {car_type_name}{" "}
+          {/* {isNew && (
+            <span className="text-[0.625rem] font-light">(new shape)</span>
+          )} */}
+        </p>
+        {/* Radio-like indicator */}
         <div
           className={`
-        absolute grid place-items-center top-4 right-4 w-5 h-5 rounded-full border 
-        ${selected ? " border-[#664F31]" : "border-[#D5D6DB]"}
-      `}
+              grid place-items-center top-4 right-4 min-w-5 min-h-5 rounded-full border 
+              ${selected ? " border-[#664F31]" : "border-[#D5D6DB]"}
+            `}
         >
           {selected ? (
             <span className="block w-4 h-4 rounded-full bg-[#664F31]" />
           ) : (
             ""
           )}
-        </div>
-
-        <div className="flex justify-between w-full pr-5">
-          <p className="font-bold text-[#101828]">
-            {car_type_name}{" "}
-            {/* {isNew && (
-            <span className="text-[0.625rem] font-light">(new shape)</span>
-          )} */}
-          </p>
         </div>
       </div>
       <div>
@@ -157,7 +154,7 @@ const CarCard = ({ car, selected = false, onSelect }: CarCardProps) => {
   );
 };
 
-function CardPicker({onSelectCar}: {onSelectCar: (carData: Car) => void}) {
+function CardPicker({ onSelectCar }: { onSelectCar: (carData: Car) => void }) {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [selectedCarId, setSelectedCarId] = useState<number | null>(null);
   const carInputRef = useRef<HTMLInputElement>(null);
@@ -184,20 +181,19 @@ function CardPicker({onSelectCar}: {onSelectCar: (carData: Car) => void}) {
     if (index !== -1) {
       setSelectedIndex(index);
       setSelectedCarId(carId);
-      
+
       if (carInputRef.current) {
         carInputRef.current.value = String(carId);
       }
     }
   }, [data]);
-  
+
   const handleSelect = (index: number, carId: number) => {
     setSelectedIndex(index);
     setSelectedCarId(carId);
-    if(data?.data.car_types){
-      onSelectCar(data.data.car_types[index])
+    if (data?.data.car_types) {
+      onSelectCar(data.data.car_types[index]);
     }
-
 
     // update sessionStorage
     sessionStorage.setItem("selected_car_type_id", String(carId));

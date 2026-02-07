@@ -16,6 +16,7 @@
 //   iconPosition?: "left" | "right";
 //   value?: string;
 //   onChange?: (value: string) => void;
+//   onDateChange?: (date: string) => void;
 //   onSelect?: (date: Date) => void;
 //   minDate?: Date;
 //   maxDate?: Date;
@@ -23,7 +24,7 @@
 
 // const DatePickerInput = ({
 //   id,
-//   placeholder = "Select date",
+//   placeholder = "",
 //   className,
 //   inputClassName,
 //   disabled = false,
@@ -31,6 +32,7 @@
 //   iconPosition = "left",
 //   value: controlledValue,
 //   onChange,
+//   onDateChange,
 //   onSelect,
 //   minDate,
 //   maxDate,
@@ -63,31 +65,40 @@
 //     return () => document.removeEventListener("mousedown", handleClickOutside);
 //   }, []);
 
-// //   useEffect(() => {
-// //     console.log(currentMonthPage);
-// //     if(selectedDate.trim() !== ""){
-
-// //     } else {
-// //         setCurrentMonth(currentMonthPage);
-// //     }
-// //   }, [isOpen]);
-
 //   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 //     const newValue = e.target.value;
 //     setSelectedDate(newValue);
 //     onChange?.(newValue);
+//     onDateChange?.(newValue);
 //   };
 
+//   // Convert a Date object to "YYYY-MM-DD HH:mm"
+//   function formatDateForAPI(date: Date): string {
+//     const pad = (n: number) => n.toString().padStart(2, "0");
+//     const year = date.getFullYear();
+//     const month = pad(date.getMonth() + 1); // 0-indexed
+//     const day = pad(date.getDate());
+//     const hours = pad(date.getHours());
+//     const minutes = pad(date.getMinutes());
+//     return `${year}-${month}-${day} ${hours}:${minutes}`;
+//   }
+
 //   const handleDateSelect = (date: Date) => {
-//     const formatted = date.toLocaleDateString("en-US", {
+//     const formattedDisplay = date.toLocaleDateString("en-US", {
 //       year: "numeric",
 //       month: "short",
 //       day: "numeric",
 //     });
-//     setCurrentMonthPage(date.getMonth())
-//     setSelectedDate(formatted);
+
+//     const formattedAPI = formatDateForAPI(date); // ✅ API-ready format
+
+//     setCurrentMonthPage(date.getMonth());
+//     setSelectedDate(formattedDisplay); // what the user sees
 //     setIsOpen(false);
-//     onChange?.(formatted);
+
+//     // call your callbacks
+//     onChange?.(formattedAPI); // send API format
+//     onDateChange?.(formattedAPI); // send API format
 //     onSelect?.(date);
 //   };
 
@@ -245,7 +256,6 @@
 //                       !isDisabled && "hover:bg-gray-100 cursor-pointer",
 //                       isDisabled && "text-gray-300 cursor-not-allowed",
 //                       selectedDate === markerDate &&
-//                         // }) && "border border-black p-0 text-black  hover:text-white  hover:p-1 hover:border-none hover:bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)] "
 //                         "text-white bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)]",
 //                     )}
 //                   >
@@ -289,7 +299,7 @@ interface DatePickerInputProps {
 
 const DatePickerInput = ({
   id,
-  placeholder = "Select date",
+  placeholder = "",
   className,
   inputClassName,
   disabled = false,
@@ -299,7 +309,7 @@ const DatePickerInput = ({
   onChange,
   onDateChange,
   onSelect,
-  minDate,
+  minDate = new Date(new Date().setHours(0, 0, 0, 0)), // Default to today at midnight
   maxDate,
 }: DatePickerInputProps) => {
   const [selectedDate, setSelectedDate] = useState(controlledValue || "");
@@ -337,19 +347,6 @@ const DatePickerInput = ({
     onDateChange?.(newValue);
   };
 
-  // const handleDateSelect = (date: Date) => {
-  //   const formatted = date.toLocaleDateString("en-US", {
-  //     year: "numeric",
-  //     month: "short",
-  //     day: "numeric",
-  //   });
-  //   setCurrentMonthPage(date.getMonth());
-  //   setSelectedDate(formatted);
-  //   setIsOpen(false);
-  //   onChange?.(formatted);
-  //   onDateChange?.(formatted);
-  //   onSelect?.(date);
-  // };
   // Convert a Date object to "YYYY-MM-DD HH:mm"
   function formatDateForAPI(date: Date): string {
     const pad = (n: number) => n.toString().padStart(2, "0");
@@ -392,8 +389,19 @@ const DatePickerInput = ({
   };
 
   const isDateDisabled = (date: Date) => {
-    if (minDate && date < minDate) return true;
-    if (maxDate && date > maxDate) return true;
+    // Set the date to midnight for comparison
+    const dateToCompare = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+    
+    if (minDate) {
+      const minDateMidnight = new Date(minDate.getFullYear(), minDate.getMonth(), minDate.getDate());
+      if (dateToCompare < minDateMidnight) return true;
+    }
+    
+    if (maxDate) {
+      const maxDateMidnight = new Date(maxDate.getFullYear(), maxDate.getMonth(), maxDate.getDate());
+      if (dateToCompare > maxDateMidnight) return true;
+    }
+    
     return false;
   };
 

@@ -1,3 +1,5 @@
+import { Package } from "./package";
+
 export interface City {
   city_id: number;
   state_id: number;
@@ -43,5 +45,30 @@ export interface AirportsResponse {
   data: {
     airports: Airport[];
     total_result: number;
+  };
+}
+
+export interface AirportPackage {
+  id: number;
+  package_id: number;
+  airport_id: number;
+  infant_cost: number;
+  child_cost: number;
+  adult_cost: number;
+  included_adults_count: number;
+  additional_adult_cost: number;
+  status: boolean;
+  created_at: string;
+  updated_at: string;
+  package: Package;
+}
+
+export interface SingleAirportResponse {
+  status: number;
+  msg: string | null;
+  data: {
+    airport: {
+      airport_packages: AirportPackage[]
+    }
   };
 }

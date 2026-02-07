@@ -12,18 +12,19 @@ import Image from "next/image";
 import { useState, useRef, useEffect } from "react";
 import { gsap } from "gsap";
 // import { Service } from "@/types/service";
-import { Package } from "@/lib/types/package";
+// import { Package } from "@/lib/types/package";
+import { AirportPackage } from "@/lib/types/airport";
+import { VipBookingData } from "../page";
 
 interface ServiceCardProps {
-  // service: Service;
-  service: Package;
-  // selectedService: "elite" | "elite_plus" | "signature";
+  service: AirportPackage;
   selectedService?: string | null;
-  onSelect: (value: Package) => void; // pass the value on selection
-  // onSelect: (value: Package["package_slug"]) => void; // pass the value on selection
+  bookingData: VipBookingData;
+  onSelect: (value: AirportPackage) => void; // pass the value on selection
 }
 
 export default function ServiceCard({
+  bookingData,
   service,
   selectedService,
   onSelect,
@@ -54,6 +55,25 @@ export default function ServiceCard({
     }
   }, [showMore]);
 
+  const prices = {
+    initPrice: 0,
+    // adult_cost: service.adult_cost * (),
+    adult_cost:
+      bookingData.adults - service.included_adults_count > 0
+        ? service.included_adults_count * service.additional_adult_cost +
+          (bookingData.adults - service.included_adults_count) *
+            service.adult_cost
+        : service.adult_cost * bookingData.adults,
+    child_cost: service.child_cost * bookingData.children,
+    // infant_cost: service.infant_cost * bookingData.infant,
+    additional_adult_cost: service.additional_adult_cost * bookingData.adults,
+  };
+
+  const totalPrice =
+    prices.initPrice +
+    prices.adult_cost +
+    prices.child_cost +
+    prices.additional_adult_cost;
   return (
     <div className="*:font-[Manrope] mt-8 rounded-xl p-3 bg-[#F4F4F4] border border-[#E0E0E0]">
       {/* Top Section */}
@@ -64,14 +84,19 @@ export default function ServiceCard({
               onClick={() => onSelect(service)}
               className="cursor-pointer flex gap-2 items-center"
             >
-              <Radio selected={service.package_slug === selectedService} />
+              {/* <Radio selected={service.package_slug === selectedService} /> */}
+              <Radio
+                selected={service.package.package_slug === selectedService}
+              />
               <div>
-                <p className="font-semibold">{service.package_name}</p>
-                <p className="text-[#7B5A41] text-sm">{service.package_description}</p>
+                <p className="font-semibold">{service.package.package_name}</p>
+                <p className="text-[#7B5A41] text-sm">
+                  {service.package.package_description}
+                </p>
               </div>
             </div>
             <div className="w-fit py-1 px-2 h-fit rounded-md font-semibold text-lg bg-[#7B5A411F] text-[#7B5A41]">
-              300$
+              {totalPrice} $
             </div>
           </div>
           <span className="my-2 h-px bg-[#CFCFCF] w-full" />

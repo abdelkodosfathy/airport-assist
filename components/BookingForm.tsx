@@ -1,16 +1,17 @@
 "use client";
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import clsx from "clsx";
 import Plane from "./custom icons/plane";
 import Adults from "./custom icons/adults";
 import SearchWithDropdown, { OptionType } from "./custom inputs/search";
-import { useAirports } from "@/lib/hooks/useAirports";
+import { useAirportSearch } from "@/lib/hooks/useAirports";
 import { Loader2, AlertCircle } from "lucide-react";
 import DatePickerInput from "./custom inputs/DatePickerInputs";
 import AdultsPicker from "./custom inputs/AdultsPicker";
 import AirportSearch from "./custom inputs/AirportSearch";
+import { Package } from "@/lib/types/package";
 
 export interface VipBookingData {
   airport_id: string;
@@ -35,10 +36,30 @@ type TabType = "vip" | "chauffeur-services";
 export default function BookingForm() {
   const [activeTab, setActiveTab] = useState<TabType>("vip");
 
+  const [searchQuery, setSearchQuery] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
+
+  // Debounce search
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(searchQuery);
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
+
   // VIP form states
+  // const { data, isLoading, isError, error } = useAirports();
+  const { data, isLoading, isError, error } = useAirportSearch(
+    debouncedSearch,
+    // debouncedSearch.length > 0,
+  );
+  console.log(data);
+
   const [selectedAirport, setSelectedAirport] = useState<string>("");
   const [selectedAirportID, setSelectedAirportID] = useState<string>("");
   const [selectedAirportName, setSelectedAirportName] = useState<string>("");
+
   const [selectedServiceType, setSelectedServiceType] = useState<string>("");
   const [selectedDate, setSelectedDate] = useState<string>("");
   const [adultsCount, setAdultsCount] = useState<number>(1);
@@ -55,12 +76,12 @@ export default function BookingForm() {
   const [attemptedSubmit, setAttemptedSubmit] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const { data, isLoading, isError, error } = useAirports();
-
   // Convert airports to options format with memoization
+
+  const airports = data?.data.airports;
   const airportOptions: OptionType[] = useMemo(
     () =>
-      data?.data.airports.map((airport) => ({
+      airports?.map((airport) => ({
         label: `${airport.airport_name} (${airport.airport_code})`,
         value: airport.airport_id.toString(),
       })) || [],
@@ -77,9 +98,15 @@ export default function BookingForm() {
     [attemptedSubmit],
   );
 
+  // useEffect(()=> {
+  //   // if(selectedAirportID === )
+  //   const airport = airports?.filter(arp => arp.airport_id.toString() === selectedAirportID);
+
+  //   console.log(airport);
+
+  // }, [selectedAirportID])
   const handleAirportSelect = useCallback(
     (option: OptionType) => {
-      setSelectedAirport(option.value);
       setSelectedAirportID(option.value);
       setSelectedAirportName(option.label);
       clearError("airport");
@@ -135,9 +162,9 @@ export default function BookingForm() {
     const newErrors: Record<string, string> = {};
 
     if (activeTab === "vip") {
-      if (!selectedAirport) {
-        newErrors.airport = "Please select an airport";
-      }
+      // if (!selectedAirport) {
+      //   newErrors.airport = "Please select an airport";
+      // }
       if (!selectedServiceType) {
         newErrors.serviceType = "Please select a service type";
       }
@@ -163,7 +190,7 @@ export default function BookingForm() {
     return Object.keys(newErrors).length === 0;
   }, [
     activeTab,
-    selectedAirport,
+    // selectedAirport,
     selectedServiceType,
     selectedDate,
     pickUpLocation,
@@ -171,6 +198,7 @@ export default function BookingForm() {
     chauffeurDate,
     pickupTime,
   ]);
+  // console.log(selectedAirport);
 
   const saveBookingToSession = useCallback(() => {
     try {
@@ -185,6 +213,7 @@ export default function BookingForm() {
         };
 
         sessionStorage.setItem("vipBooking", JSON.stringify(vipBookingData));
+        // sessionStorage.setItem("airport", JSON.stringify(selectedAirport))
       } else {
         const chauffeurBookingData: ChauffeurBookingData = {
           pickUp: pickUpLocation,
@@ -222,7 +251,7 @@ export default function BookingForm() {
       e.preventDefault();
       setAttemptedSubmit(true);
 
-      if (!validateForm()) {
+      if (!validateForm() && activeTab === "vip") {
         // Scroll to first error
         const firstErrorField = Object.keys(errors)[0];
         const element = document.getElementById(firstErrorField);
@@ -276,11 +305,6 @@ export default function BookingForm() {
     );
   }
 
-  const handleAirportQueryChange = (e) => {
-    console.log(e);
-    
-  }
-
   return (
     <Card className="booking-form opacity-0 mx-auto backdrop-blur-md bg-white/10 border-white/20 mt-8 md:mt-12 w-full max-w-[1272px] p-6 lg:p-7.5 transition-all duration-300 hover:shadow-2xl">
       {/* Tabs */}
@@ -331,7 +355,7 @@ export default function BookingForm() {
             <>
               <div className="col-span-1 sm:col-span-2 lg:col-span-6">
                 <AirportSearch
-                onChange={handleAirportQueryChange}
+                  onChange={setSearchQuery}
                   icon={<Plane />}
                   id="airport"
                   placeholder={
@@ -415,7 +439,7 @@ export default function BookingForm() {
             </>
           ) : (
             <>
-              <div className="col-span-1 sm:col-span-2 lg:col-span-5">
+              {/* <div className="col-span-1 sm:col-span-2 lg:col-span-5">
                 <SearchWithDropdown
                   id="pickUp"
                   placeholder="Pick Up from"
@@ -432,6 +456,35 @@ export default function BookingForm() {
                 {errors.pickUp && (
                   <div id="pickUp-error" role="alert">
                     <ErrorMessage message={errors.pickUp} />
+                  </div>
+                )}
+              </div> */}
+              <div className="col-span-1 sm:col-span-2 lg:col-span-5">
+                <AirportSearch
+                  onChange={setSearchQuery}
+                  icon={<Plane />}
+                  id="airport"
+                  placeholder={
+                    isLoading ? "Loading airports..." : "Select Airport"
+                  }
+                  inputClassName={clsx(
+                    "rounded-t-lg lg:rounded-l-xl transition-all duration-200",
+                    errors.airport &&
+                      "ring-2 ring-red-500 placeholder:text-red-500",
+                  )}
+                  className="bg-white h-10 lg:h-full rounded-lg lg:rounded-none lg:rounded-l-xl"
+                  disabled={isLoading}
+                  options={airportOptions}
+                  onSelect={handleAirportSelect}
+                  showRecentSearches={false}
+                  aria-invalid={!!errors.airport}
+                  aria-describedby={
+                    errors.airport ? "airport-error" : undefined
+                  }
+                />
+                {errors.airport && (
+                  <div id="airport-error" role="alert">
+                    <ErrorMessage message={errors.airport} />
                   </div>
                 )}
               </div>
@@ -496,13 +549,15 @@ export default function BookingForm() {
           <button
             onClick={handleBookNow}
             disabled={isSubmitting || isLoading}
-            className="w-full h-10 lg:min-h-12 rounded-lg lg:rounded-none lg:rounded-r-xl border text-lg font-light border-white/30 text-white px-6 py-3 bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)] hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 transform cursor-pointer col-span-1 sm:col-span-2 lg:col-span-4"
+            className="w-full h-10  lg:min-h-12 rounded-lg lg:rounded-none lg:rounded-r-xl border text-lg font-light border-white/30 text-white px-6 py-3 bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)] hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 transform cursor-pointer col-span-1 sm:col-span-2 lg:col-span-4"
             aria-label="Book now"
           >
             <p className="text-normal h-full font-light flex items-center justify-center gap-2">
-              {(isLoading || isSubmitting) && (
+              {/* {(isLoading || isSubmitting) && (
                 <Loader2 className="w-4 h-4 animate-spin" />
               )}
+              {isSubmitting ? "BOOKING..." : "BOOK NOW"} */}
+              {isSubmitting && <Loader2 className="w-4 h-4 animate-spin" />}
               {isSubmitting ? "BOOKING..." : "BOOK NOW"}
             </p>
           </button>
