@@ -140,7 +140,7 @@ const SideInfoContent = ({ focusedStep = 5 }: { focusedStep?: number }) => {
 };
 
 // Wrap with Suspense boundary
-const SideInfo = ({ bookingData, focusedStep = 5 }: { bookingData:VipBookingData, focusedStep?: number }) => {
+const SideInfo = ({ bookingData, focusedStep = 5 }: { bookingData?:VipBookingData, focusedStep?: number }) => {
   return (
     <Suspense fallback={<SideInfoSkeleton />}>
       <SideInfoContent focusedStep={focusedStep} />

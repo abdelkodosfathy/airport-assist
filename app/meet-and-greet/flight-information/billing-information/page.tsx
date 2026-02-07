@@ -9,6 +9,7 @@ import BillingInformation from "../components/BillingInformation";
 import { useAdditionalServicesStore } from "@/store/useAdditionalServices";
 import { getFromSession } from "@/store/getSessionData";
 import { useEffect, useState } from "react";
+import { VipBookingData } from "@/components/BookingForm";
 
 export default function FlightInformation() {
   const { imageFile, passengerFile, wheelchair, additionalRequirements } =
@@ -149,6 +150,16 @@ export default function FlightInformation() {
     }
   };
 
+  const [bookingData, setBookingData] = useState<VipBookingData | null>(null);
+
+  useEffect(() => {
+    const vipBookingData = sessionStorage.getItem("vipBooking");
+    if (vipBookingData) {
+      setBookingData(JSON.parse(vipBookingData));
+    }
+  }, []);
+
+  if (!bookingData) return null;
   return (
     <div>
       <Link
@@ -168,8 +179,8 @@ export default function FlightInformation() {
       </div>
       {/* <Button onClick={sessionStoredData}>get data</Button> */}
       <Button
-      type="button"
-      onClick={sessionStoredData}
+        type="button"
+        onClick={sessionStoredData}
         // asChild
         variant="outline"
         className="
