@@ -25,12 +25,22 @@ export function useAirportSearch(search: string, enabled = true) {
   return useQuery({
     queryKey: ["airports", "search", search],
     queryFn: () => fetchAirports(search),
-    enabled: enabled && search.length > 0,
+    enabled: enabled, // ← Remove the search.length check
     staleTime: 1000 * 60 * 5,
     gcTime: 1000 * 60 * 10,
     retry: 1,
   });
 }
+// export function useAirportSearch(search: string, enabled = true) {
+//   return useQuery({
+//     queryKey: ["airports", "search", search],
+//     queryFn: () => fetchAirports(search),
+//     enabled: enabled && search.length > 0,
+//     staleTime: 1000 * 60 * 5,
+//     gcTime: 1000 * 60 * 10,
+//     retry: 1,
+//   });
+// }
 export function useSingleAirport(id: string) {
   return useQuery({
     queryKey: ["singleAirport", id],

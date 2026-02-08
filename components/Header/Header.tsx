@@ -167,7 +167,7 @@ const ServiceList = () => {
       >
         <li className="px-4 py-2 border-b border-[#D5D5D5]">
           {/* <Link href="/services/chauffeuring">Chauffeuring</Link> */}
-          <Link href="/our-services/chauffeuring">Chauffeuring</Link>
+          <Link href="/our-services/chauffeuring">Chauffeur Services</Link>
         </li>
         <li className="px-4 py-2 border-b border-[#D5D5D5]">
           {/* <Link href="/services/hotel">Hotel Service</Link> */}

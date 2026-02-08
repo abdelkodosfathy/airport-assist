@@ -17,13 +17,13 @@ const Intro = (props: Props) => {
 
         {/* Right Text */}
         <div className="flex-1 h-full">
-          <p className="font-[Manrope] font-normal max-w-90 text-sm lg:text-normal leading-[150%] text-[#959595] mb-8">
+          <p className="font-[Manrope] font-normal max-w-90 text-sm lg:text-[15px] leading-[150%] text-[#959595] mb-8">
             AIRPORT Assists Private Travel Division provides discreet, luxury
             concierge travel for VIP clients worldwide.
           </p>
           <Button
             variant="outline"
-            className="my-10 min-w-[140px] mb-6 py-5 border-black hover:bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)] hover:text-white hover:border-white duration-0"
+            className="my-6 min-w-[140px] py-5 border-black hover:bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)] hover:text-white hover:border-white duration-0"
           >
             <p>About Us</p>
             <ArrowUpRight className="size-md" />

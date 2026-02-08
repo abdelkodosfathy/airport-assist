@@ -25,7 +25,7 @@ export default function CustomPhoneInput({
       defaultCountry="us"
       preferredCountries={["gb", "us", "fr"]}
       placeholder="0101 434 3413"
-      className={`bg-[#F4F4F4] border border-[#E0E0E0]  ${className ?? "h-11.25 rounded-xl"}`}
+      className={`bg-[#F4F4F4] border border-[#E0E0E0] overflow-hidden  ${className ?? "h-11.25 rounded-xl"}`}
       inputProps={{
         style: {
           backgroundColor: "#F4F4F4",

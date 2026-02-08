@@ -1,8 +1,18 @@
 // app/meet-and-greet/layout.tsx
+"use client";
+
 import Header from "@/components/Header/Header";
 import Footer from "@/components/Footer";
-import Image from "next/image";
+import Image, { StaticImageData } from "next/image";
+import { useSelectedLayoutSegment } from "next/navigation";
 import hero from "@/public/our-sercives-hero.jpg";
+// Import your other hero images
+// import faqHero from "@/public/faq-hero.jpg";
+// import contactHero from "@/public/contact-hero.jpg";
+import chaufferingHero from "@/public/chauffeuring.webp";
+// import privateSuiteHero from "@/public/private-suite-hero.jpg";
+// import vipMeetHero from "@/public/vip-meet-hero.jpg";
+// import hotelHero from "@/public/hotel-hero.jpg";
 import HeroTitle from "./HeroTitle";
 
 export default function Layout({
@@ -10,6 +20,19 @@ export default function Layout({
 }: {
   children: React.ReactNode;
 }) {
+  const segment = useSelectedLayoutSegment();
+
+  const imageMap: Record<string, StaticImageData> = {
+    "frequently-asked-questions": hero, // Replace with faqHero
+    "contact-us": hero, // Replace with contactHero
+    "chauffeuring": chaufferingHero, // Replace with chaufferingHero
+    "private-suite": hero, // Replace with privateSuiteHero
+    "vip-meet-and-greet": hero, // Replace with vipMeetHero
+    "hotel": hero, // Replace with hotelHero
+  };
+
+  const currentImage = imageMap[segment ?? ""] ?? hero;
+
   return (
     <main className="bg-[#F7F7F6] font-[Manrope]">
       <Header />
@@ -17,7 +40,7 @@ export default function Layout({
       <section className="relative w-full h-114 text-white flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <Image
-            src={hero}
+            src={currentImage}
             alt="background"
             fill
             className="object-cover"

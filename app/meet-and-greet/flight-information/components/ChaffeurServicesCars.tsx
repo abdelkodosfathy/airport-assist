@@ -29,9 +29,9 @@ const ChauffeurServicesCars = ({ onFocus, selectCar }: StepsProps) => {
       <h4 className="font-manrope font-medium text-[18.75px] leading-[1.3] tracking-normal">
         Chauffeur Services
       </h4>
-      <span className="inline-block w-full h-0.5 bg-[#CFCFCF] mb-2" />
-      <div className="space-y-2 md:col-span-2">
-        <Label htmlFor="vehicle-address">Select your vehicle</Label>
+      <span className="inline-block w-full h-0.5 bg-[#CFCFCF] mb-0" />
+      {/* <div className="space-y-2 md:col-span-2">
+        <Label htmlFor="vehicle-address">Select your vehicsle</Label>
         <IconInput
           icon={<Menu />}
           iconPosition="right"
@@ -40,8 +40,8 @@ const ChauffeurServicesCars = ({ onFocus, selectCar }: StepsProps) => {
           className="pl-4 pr-10 bg-[#F4F4F4] rounded-md border border-[#E0E0E0]"
           inputClassName="shadow-none outline-none focus:outline-none focus:ring-0 ring-0 border-none"
         />
-      </div>
-      <div className="py-4">
+      </div> */}
+      <div className="py-2">
         <CardPicker onSelectCar={selectCar} />
       </div>
 

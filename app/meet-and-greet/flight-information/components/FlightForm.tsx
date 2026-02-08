@@ -221,7 +221,7 @@ console.log(data);
         <div className="space-y-2">
           <Label>Flight Number</Label>
           <Input
-            maxLength={255}
+            maxLength={9}
             placeholder="BA 777"
             className="bg-[#F4F4F4]"
             value={flightInfo.flight_number || ""}

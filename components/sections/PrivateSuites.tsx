@@ -160,7 +160,7 @@ function DestinationCard({ title, content, img, price }: CardProps) {
       hover:shadow-xl hover:shadow-black/40 transition-all duration-300
       "
       style={{
-        height:"calc(50% - 16px)"
+        height:"calc(40% - 16px)"
       }}
       // h-3/7
     >

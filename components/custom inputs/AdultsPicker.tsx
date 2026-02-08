@@ -127,11 +127,13 @@ const PickerRow = ({
   title,
   subtitle,
   value,
+  min,
   onChange,
 }: {
   title: string;
   subtitle: string;
   value: number;
+  min: number;
   onChange: (value: number) => void;
 }) => (
   <div className="flex justify-between gap-4">
@@ -139,19 +141,21 @@ const PickerRow = ({
       <p>{title}</p>
       <p className="text-sm text-gray-500">{subtitle}</p>
     </div>
-    <NumberInput value={value} onChange={onChange} />
+    <NumberInput min={min} value={value} onChange={onChange} />
   </div>
 );
 
 const NumberInput = ({
   value,
   onChange,
+  min,
 }: {
+  min: number;
   value: number;
   onChange: (value: number) => void;
 }) => {
   const increment = () => onChange(value + 1);
-  const decrement = () => onChange(Math.max(0, value - 1));
+  const decrement = () => onChange(Math.max(min, value - 1));
 
   return (
     <div className="flex items-center gap-2">
@@ -168,7 +172,7 @@ const NumberInput = ({
 
       <Input
         type="number"
-        min={0}
+        min={1}
         value={value}
         onChange={(e) => onChange(Math.max(0, Number(e.target.value)))}
         className="w-16 text-center bg-[#F2F3F5] rounded-lg
@@ -300,6 +304,7 @@ const AdultsPicker = ({
               title="Adults"
               subtitle="Over 12yrs old"
               value={adults}
+              min={1}
               onChange={handleAdultsChange}
             />
 
@@ -307,6 +312,7 @@ const AdultsPicker = ({
               title="Children"
               subtitle="0-12yrs old"
               value={children}
+              min={0}
               onChange={handleChildrenChange}
             />
           </div>

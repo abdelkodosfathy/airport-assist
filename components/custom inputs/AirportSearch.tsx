@@ -218,7 +218,6 @@ const AirportSearch = ({
   value: controlledValue,
   onChange,
   onSelect,
-  // showRecentSearches = true,
   isLoading: externalLoading = false,
 }: SearchWithDropdownProps) => {
   const [search, setSearch] = useState("");

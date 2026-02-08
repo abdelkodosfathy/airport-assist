@@ -48,7 +48,7 @@ export default function Locations() {
             icon={<Search />}
             className="bg-white rounded-md mt-4"
             placeholder="Search for a airport"
-            inputClassName="p-6 pl-10  w-[960px] text-black"
+            inputClassName="p-6 pl-10 lg:w-[820px] xl:w-[960px] text-black"
           />
         </div>
       </section>
@@ -58,7 +58,7 @@ export default function Locations() {
           <h2 className="font-normal text-[30px] leading-[128%] tracking-[7.5px] text-center uppercase mb-4">
             Airport Assist meet & greet
           </h2>
-          <p className="font-normal text-[18.75px] w-250 mx-auto leading-[128%] tracking-[7.5px] text-center uppercase">
+          <p className="font-normal text-[18.75px] max-w-250 mx-auto leading-[128%] tracking-[7.5px] text-center uppercase">
             From boarding to arrival, every moment is professionally handled.
           </p>
         </div>

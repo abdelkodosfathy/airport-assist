@@ -49,10 +49,7 @@ export default function BookingForm() {
 
   // VIP form states
   // const { data, isLoading, isError, error } = useAirports();
-  const { data, isLoading, isError, error } = useAirportSearch(
-    debouncedSearch,
-    // debouncedSearch.length > 0,
-  );
+  const { data, isLoading, isError } = useAirportSearch(debouncedSearch);
   console.log(data);
 
   const [selectedAirport, setSelectedAirport] = useState<string>("");
@@ -77,14 +74,23 @@ export default function BookingForm() {
 
   // Convert airports to options format with memoization
 
-  const airports = data?.data.airports;
+  // const airports = data?.data.airports;
+  // const airportOptions: OptionType[] = useMemo(
+  //   () =>
+  //     airports?.map((airport) => ({
+  //       label: `${airport.airport_name} (${airport.airport_code})`,
+  //       value: airport.airport_id.toString(),
+  //     })) || [],
+  //   [data],
+  // );
+  const airports = data?.data?.airports;
   const airportOptions: OptionType[] = useMemo(
     () =>
       airports?.map((airport) => ({
         label: `${airport.airport_name} (${airport.airport_code})`,
         value: airport.airport_id.toString(),
       })) || [],
-    [data],
+    [airports], // Changed from [data] to [airports]
   );
 
   // Handler functions with useCallback for optimization
@@ -97,13 +103,6 @@ export default function BookingForm() {
     [attemptedSubmit],
   );
 
-  // useEffect(()=> {
-  //   // if(selectedAirportID === )
-  //   const airport = airports?.filter(arp => arp.airport_id.toString() === selectedAirportID);
-
-  //   console.log(airport);
-
-  // }, [selectedAirportID])
   const handleAirportSelect = useCallback(
     (option: OptionType) => {
       setSelectedAirportID(option.value);
@@ -117,14 +116,6 @@ export default function BookingForm() {
     (option: OptionType) => {
       setSelectedServiceType(option.value);
       clearError("serviceType");
-    },
-    [clearError],
-  );
-
-  const handlePickUpSelect = useCallback(
-    (option: OptionType) => {
-      setPickUpLocation(option.value);
-      clearError("pickUp");
     },
     [clearError],
   );
@@ -438,26 +429,6 @@ export default function BookingForm() {
             </>
           ) : (
             <>
-              {/* <div className="col-span-1 sm:col-span-2 lg:col-span-5">
-                <SearchWithDropdown
-                  id="pickUp"
-                  placeholder="Pick Up from"
-                  inputClassName={clsx(
-                    "rounded-t-lg lg:rounded-none lg:rounded-l-xl transition-all duration-200",
-                    errors.pickUp &&
-                      "ring-2 ring-red-500 placeholder:text-red-500",
-                  )}
-                  className="bg-white h-10 lg:h-full rounded-lg lg:rounded-none lg:rounded-l-xl"
-                  onSelect={handlePickUpSelect}
-                  aria-invalid={!!errors.pickUp}
-                  aria-describedby={errors.pickUp ? "pickUp-error" : undefined}
-                />
-                {errors.pickUp && (
-                  <div id="pickUp-error" role="alert">
-                    <ErrorMessage message={errors.pickUp} />
-                  </div>
-                )}
-              </div> */}
               <div className="col-span-1 sm:col-span-2 lg:col-span-5">
                 <AirportSearch
                   onChange={setSearchQuery}
@@ -552,10 +523,6 @@ export default function BookingForm() {
             aria-label="Book now"
           >
             <p className="text-normal h-full font-light flex items-center justify-center gap-2">
-              {/* {(isLoading || isSubmitting) && (
-                <Loader2 className="w-4 h-4 animate-spin" />
-              )}
-              {isSubmitting ? "BOOKING..." : "BOOK NOW"} */}
               {isSubmitting && <Loader2 className="w-4 h-4 animate-spin" />}
               {isSubmitting ? "BOOKING..." : "BOOK NOW"}
             </p>

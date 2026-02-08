@@ -1,13 +1,8 @@
-import React from "react";
 import Header from "@/components/Header/Header";
 import Footer from "@/components/Footer";
 import Image from "next/image";
-import serviceImage from "@/public/services-image.jpg";
-import { ArrowUpRight } from "lucide-react";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import heroImage from "@/public/why-us-hero.jpg";
-
+import InfoContainer from "./InfoContainer";
 export default function ServicesLayout() {
   return (
     <main className="bg-[#F7F7F6] font-[Manrope]">
@@ -58,35 +53,7 @@ export default function ServicesLayout() {
           />
         </div>
 
-        <div className="flex px-10 gap-8 max-w-410 mx-auto">
-          <div className="flex-1 py-6.5 px-4 bg-white rounded-xl">
-            <ul className="*:p-2.5 space-y-1">
-              <li className="rounded-lg hover:bg-[#7B5A4133] bg-[#7B5A4133]">WHY AIRPORT ASSIST </li>
-              <li className="rounded-lg hover:bg-[#7B5A4133]">OUR PRICING </li>
-              <li className="rounded-lg hover:bg-[#7B5A4133]">VIP MEET & GREET</li>
-              <li className="rounded-lg hover:bg-[#7B5A4133]">PRIVATE SUITE</li>
-              <li className="rounded-lg hover:bg-[#7B5A4133]">CHAUFFEUR</li>
-              <li className="rounded-lg hover:bg-[#7B5A4133]">HOTEL</li>
-            </ul>
-          </div>
-          <div className="flex-3 bg-white px-8 py-5 rounded-xl">
-            {/* changable content here */}
-            <InfoSection
-              title="Why Choose AIRPORT ASSIST for Airport Concierge Services?"
-              content="
-               Why Choose AIRPORT ASSIST for Airport Concierge Services?
-               AIRPORT ASSIST’s Private Travel division specialises in VIP airport assistance,
-               luxury travel concierge services, and tailored travel experiences.
-
-               We are trusted globally for our:
-               • Discreet and professional service
-               • Fast-track airport assistance
-               • Personalised travel planning
-               • Worldwide airport coverage
-              "
-            />
-          </div>
-        </div>
+       <InfoContainer/>
       </section>
       <Footer />
     </main>
@@ -102,13 +69,7 @@ const TopCard = ({ title, content }: { title: string; content: string }) => {
   );
 };
 
-const InfoSection = ({
-  title,
-  content,
-}: {
-  title: string;
-  content: string;
-}) => {
+const InfoSection = ({ title }: { title: string }) => {
   return (
     <div>
       <h3 className="font-semibold tracking-[2.25px] mb-3">{title}</h3>
@@ -118,10 +79,16 @@ const InfoSection = ({
         assistance, luxury travel concierge services, and tailored travel
         experiences for high-profile and discerning clients.
       </p>
-      <p className="mt-3 text-sm text-[#6D6D6D]">We are trusted globally for our:</p>
+      <p className="mt-3 text-sm text-[#6D6D6D]">
+        We are trusted globally for our:
+      </p>
       <ul className="mb-3 list-disc ml-5">
-        <li className="text-sm text-[#6D6D6D]">Discreet and professional service</li>
-        <li className="text-sm text-[#6D6D6D]">Fast-track airport assistance</li>
+        <li className="text-sm text-[#6D6D6D]">
+          Discreet and professional service
+        </li>
+        <li className="text-sm text-[#6D6D6D]">
+          Fast-track airport assistance
+        </li>
         <li className="text-sm text-[#6D6D6D]">Personalised travel planning</li>
         <li className="text-sm text-[#6D6D6D]">Worldwide airport coverage</li>
       </ul>

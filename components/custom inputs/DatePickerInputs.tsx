@@ -164,7 +164,7 @@ const DatePickerInput = ({
             disabled={disabled}
             id={id}
             value={selectedDate}
-            placeholder={placeholder}
+            placeholder={"Select Date"}
             onChange={handleInputChange}
             onFocus={() => !disabled && setIsOpen(true)}
             readOnly
