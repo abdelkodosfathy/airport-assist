@@ -152,9 +152,9 @@ export default function BookingForm() {
     const newErrors: Record<string, string> = {};
 
     if (activeTab === "vip") {
-      // if (!selectedAirport) {
-      //   newErrors.airport = "Please select an airport";
-      // }
+      if (!selectedAirport) {
+        newErrors.airport = "Please select an airport";
+      }
       if (!selectedServiceType) {
         newErrors.serviceType = "Please select a service type";
       }
@@ -352,7 +352,7 @@ export default function BookingForm() {
                     isLoading ? "Loading airports..." : "Select Airport"
                   }
                   inputClassName={clsx(
-                    "rounded-t-lg lg:rounded-l-xl transition-all duration-200",
+                    "rounded-t-lg lg:rounded-l-xl lg:rounded-t-none transition-all duration-200",
                     errors.airport &&
                       "ring-2 ring-red-500 placeholder:text-red-500",
                   )}
@@ -530,14 +530,14 @@ export default function BookingForm() {
         </div>
 
         {/* Global error message */}
-        {attemptedSubmit && Object.keys(errors).length > 0 && (
+        {/* {attemptedSubmit && Object.keys(errors).length > 0 && (
           <div className="bg-red-500/10 border border-red-500/50 rounded-lg p-4 animate-in fade-in slide-in-from-top-2 duration-300">
             <p className="text-red-400 text-sm flex items-center gap-2">
               <AlertCircle className="w-4 h-4" />
               Please fix the errors above before proceeding
             </p>
           </div>
-        )}
+        )} */}
       </div>
     </Card>
   );
