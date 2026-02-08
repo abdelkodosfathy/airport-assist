@@ -52,7 +52,6 @@ export default function BookingForm() {
   const { data, isLoading, isError } = useAirportSearch(debouncedSearch);
   console.log(data);
 
-  const [selectedAirport, setSelectedAirport] = useState<string>("");
   const [selectedAirportID, setSelectedAirportID] = useState<string>("");
   const [selectedAirportName, setSelectedAirportName] = useState<string>("");
 
@@ -152,7 +151,7 @@ export default function BookingForm() {
     const newErrors: Record<string, string> = {};
 
     if (activeTab === "vip") {
-      if (!selectedAirport) {
+      if (!selectedAirportID) {
         newErrors.airport = "Please select an airport";
       }
       if (!selectedServiceType) {
@@ -203,7 +202,6 @@ export default function BookingForm() {
         };
 
         sessionStorage.setItem("vipBooking", JSON.stringify(vipBookingData));
-        // sessionStorage.setItem("airport", JSON.stringify(selectedAirport))
       } else {
         const chauffeurBookingData: ChauffeurBookingData = {
           pickUp: pickUpLocation,
@@ -276,7 +274,10 @@ export default function BookingForm() {
   const ErrorMessage = ({ message }: { message?: string }) => {
     if (!message) return null;
     return (
-      <div className="flex items-center gap-1 text-red-500 text-sm mt-1 animate-in fade-in slide-in-from-top-1 duration-200">
+      <div className="absolute flex items-center gap-1 bg-white rounded-lg p-4 text-red-500 text-sm mt-4 animate-in fade-in slide-in-from-top-1 duration-200">
+        <div className="absolute w-4 h-4 bg-white rotate-45 -top-2 left-5">
+
+        </div>
         <AlertCircle className="w-3 h-3" />
         <span>{message}</span>
       </div>
