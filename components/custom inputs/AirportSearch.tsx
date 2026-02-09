@@ -99,7 +99,7 @@ const AirportSearch = ({
 
   return (
     <div className={className}>
-      <div ref={wrapperRef} className="relative h-full">
+      <div ref={wrapperRef} className="relative w-full h-full">
         {/* Input Wrapper */}
         <div className="relative h-full flex items-center">
           {icon && iconPosition === "left" && (

@@ -4,11 +4,17 @@ import Adults from "@/components/custom icons/adults";
 import Arraival from "@/components/custom icons/arraival";
 import Calender from "@/components/custom icons/calender";
 import { Mail } from "lucide-react";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 import { VipBookingData } from "../page";
 
-const SideInfoContent = ({ focusedStep = 5 }: { focusedStep?: number }) => {
+const SideInfoContent = ({
+  isElite,
+  focusedStep = 1,
+}: {
+  isElite?: boolean;
+  focusedStep?: number;
+}) => {
   const pathname = usePathname();
   // const searchParams = useSearchParams();
   const isMainPage = pathname === "/meet-and-greet";
@@ -52,6 +58,10 @@ const SideInfoContent = ({ focusedStep = 5 }: { focusedStep?: number }) => {
       setTime(data.time || null);
     }
   }, []);
+
+
+  console.log("rendered SideInfoContent: ", isElite);
+  
 
   // console.log(date);
   // console.log(airportNumber);
@@ -109,7 +119,7 @@ const SideInfoContent = ({ focusedStep = 5 }: { focusedStep?: number }) => {
           Total: <span>100$</span>
         </p>
       </div>
-      <Steps currentStep={isMainPage ? 0 : focusedStep} />
+      <Steps isElite={isElite} currentStep={isMainPage ? 0 : focusedStep} />
       {isMainPage && (
         <div className="bg-white rounded-2xl p-5">
           <h4 className="font-[Manrope] font-semibold">
@@ -140,10 +150,19 @@ const SideInfoContent = ({ focusedStep = 5 }: { focusedStep?: number }) => {
 };
 
 // Wrap with Suspense boundary
-const SideInfo = ({ bookingData, focusedStep = 5 }: { bookingData?:VipBookingData, focusedStep?: number }) => {
+const SideInfo = ({
+  focusedStep = 1,
+  isElite,
+}: {
+  bookingData?: VipBookingData;
+  focusedStep?: number;
+  isElite?: boolean;
+}) => {
+
+  console.log("SideInfo ", isElite);
   return (
     <Suspense fallback={<SideInfoSkeleton />}>
-      <SideInfoContent focusedStep={focusedStep} />
+      <SideInfoContent isElite={isElite} focusedStep={focusedStep} />
     </Suspense>
   );
 };
@@ -165,12 +184,21 @@ const SideInfoSkeleton = () => {
 
 export default SideInfo;
 
-const Steps = ({ currentStep = 0 }: { currentStep: number }) => {
+const Steps = ({
+  currentStep = 0,
+  isElite = false,
+}: {
+  isElite?: boolean;
+  currentStep: number;
+}) => {
+
+  
+  
   const steps = [
     "Choose Service",
     "Flight Information",
     "Primary passenger",
-    "Chauffeur Services",
+    ...((isElite) ? [] : ["Chauffeur Services"]),
     "Additional Services",
     "Billing Information",
   ];

@@ -289,9 +289,9 @@ export default function BookingForm() {
   }
 
   return (
-    <Card className="booking-form opacity-0 mx-auto backdrop-blur-md bg-white/10 border-white/20 mt-8 md:mt-12 w-full max-w-[1272px] p-6 lg:p-7.5 transition-all duration-300 hover:shadow-2xl">
+    <Card className="gap-4 xs:gap-6 lg:gap-4 booking-form opacity-0 mx-auto backdrop-blur-md bg-white/10 border-white/20 mt-8 md:mt-12 w-full max-w-[1272px] p-6 lg:p-7.5 transition-all duration-300 hover:shadow-2xl">
       {/* Tabs */}
-      <div className="flex flex-wrap gap-2 md:gap-4 justify-center lg:justify-start lg:mb-6">
+      <div className="flex flex-col items-start xs:flex-row xs:items-center flex-wrap gap-2 md:gap-4 justify-center lg:justify-start lg:mb-6">
         <Button
           variant="ghost"
           onClick={() => handleTabChange("vip")}
@@ -302,7 +302,7 @@ export default function BookingForm() {
           <p>VIP Meet & Greet Service</p>
           <span
             className={clsx(
-              "absolute left-0 right-0 -bottom-2 h-0.5 rounded-full transition-all duration-300",
+              "absolute left-0 right-0 bottom-0.5 xs:-bottom-2 h-0.5 rounded-full transition-all duration-300",
               activeTab === "vip"
                 ? "opacity-100 scale-x-100 bg-linear-to-r from-[#99785F00]/0 via-[#EBA068] to-[#99785F00]/0"
                 : "opacity-0 scale-x-0",
@@ -310,7 +310,7 @@ export default function BookingForm() {
           />
         </Button>
 
-        <span className="inline-block w-0.75 h-9 rounded-3xl bg-linear-to-b from-white to-white/10" />
+        <span className="hidden xs:inline-block w-0.75 h-9 rounded-3xl bg-linear-to-b from-white to-white/10" />
 
         <Button
           variant="ghost"
@@ -322,7 +322,7 @@ export default function BookingForm() {
           Chauffeur Services
           <span
             className={clsx(
-              "absolute left-0 right-0 -bottom-2 h-0.5 rounded-full transition-all duration-300",
+              "absolute left-0 right-0 bottom-0.5 xs:-bottom-2 h-0.5 rounded-full transition-all duration-300",
               activeTab === "chauffeur-services"
                 ? "opacity-100 scale-x-100 bg-linear-to-r from-[#99785F00]/0 via-[#EBA068] to-[#99785F00]/0"
                 : "opacity-0 scale-x-0",
@@ -503,7 +503,7 @@ export default function BookingForm() {
               <div className="col-span-1 sm:col-span-1 lg:col-span-3">
                 <DatePickerInput
                   inputClassName={clsx(
-                    "rounded-bl-lg lg:rounded-none h-10 lg:h-full transition-all duration-200",
+                    "sm:rounded-bl-lg lg:rounded-none  h-10 lg:h-full transition-all duration-200",
                     errors.chauffeurDate &&
                       "ring-2 ring-red-500 placeholder:text-red-500",
                   )}
@@ -523,7 +523,7 @@ export default function BookingForm() {
 
               <div className="col-span-1 sm:col-span-1 lg:col-span-3">
                 <AdultsPicker
-                  inputClassName="bg-white rounded-br-lg lg:rounded-none h-10 lg:h-full"
+                  inputClassName="bg-white rounded-b-lg sm:rounded-b-none sm:rounded-br-lg lg:rounded-none h-10 lg:h-full"
                   icon={<Adults />}
                   placeholder="1 Adult - 0 Children"
                   className="h-full"

@@ -68,6 +68,8 @@ export interface SingleAirportResponse {
   msg: string | null;
   data: {
     airport: {
+
+      airport_name:string,
       airport_packages: AirportPackage[]
     }
   };

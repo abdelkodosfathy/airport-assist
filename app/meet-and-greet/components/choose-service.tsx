@@ -8,8 +8,8 @@ import { AirportPackage } from "@/lib/types/airport";
 
 const SESSION_KEY = "vipSelectedPackage";
 
-const ChooseService = ({bookingData}:{bookingData:VipBookingData}) => {
-  console.log(bookingData);
+const ChooseService = ({onSelectElitePackage, bookingData}:{onSelectElitePackage: (value: boolean) => void, bookingData:VipBookingData}) => {
+  // console.log(bookingData);
   
   const [airportId, setAirportId] = useState<number>();
 
@@ -48,8 +48,13 @@ const ChooseService = ({bookingData}:{bookingData:VipBookingData}) => {
 
     // Store only the slug
     sessionStorage.setItem(SESSION_KEY, pkg.package.package_slug);
-
-    console.log("Selected package slug:", pkg.package.package_slug);
+    const selectedPackageSlug =  pkg.package.package_slug;
+    if(selectedPackageSlug === "elite"){ 
+      onSelectElitePackage(true);
+    } else {
+      onSelectElitePackage(false);
+    }
+    console.log("Selected package slug:",selectedPackageSlug);
   };
 
   if (isLoading) return null;

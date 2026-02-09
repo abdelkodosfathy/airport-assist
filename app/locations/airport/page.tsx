@@ -9,7 +9,26 @@ import hero from "@/public/our-sercives-hero.jpg";
 import { ArrowUpRight, Mail } from "lucide-react";
 import Image from "next/image";
 import serviceImage from "@/public/arravial package.jpg";
+
+import { useSearchParams } from "next/navigation";
+import { useSingleAirport } from "@/lib/hooks/useAirports";
+
 export default function Locations() {
+  const searchParams = useSearchParams();
+  const airportId = searchParams.get("airportId");
+
+  const { data, isLoading, isError } = useSingleAirport(
+    airportId?.toString() || "",
+  );
+  console.log(data);
+  
+  if (isLoading) {
+  }
+
+  if (isError || !data) {
+  }
+
+
   return (
     <main className="relative font-[Manrope] bg-[#F7F7F6] max-w-screen overflow-hidden">
       <Header />
@@ -37,7 +56,7 @@ export default function Locations() {
         {/* Hero content */}
         <div className="relative z-10">
           <h1 className=" font-[Manrope] text-[30px] leading-[130%] tracking-[3px] text-center mb-4.25">
-            London Gatwick Airport - LGW
+            {data?.data.airport.airport_name || "Loading..."}
           </h1>
 
           <p className=" font-[Manrope] font-normal w-250 mx-auto text-[14.25px] tracking-[1.5px] text-center text-[rgb(200,200,200)]">
@@ -151,20 +170,20 @@ export default function Locations() {
                   </div>
                 </div>
               </div>
-              <div className="bg-white px-8 py-5 rounded-xl shadow-sm">
+              <div className="bg-[#1A1A1A] px-8 py-5 rounded-xl shadow-sm">
                 <h2
                   style={{
                     fontFamily: "Manrope",
                     fontWeight: 400,
                     fontStyle: "Regular",
                     fontSize: "20px",
-                    color: "#0A0A0A",
-
+                    // color: "#0A0A0A",
+                    color: "#fff",
                     lineHeight: "40.03px",
                     letterSpacing: "0px",
                   }}
                 >
-                  ELITE
+                  SIGNATURE
                 </h2>
                 <p
                   style={{
@@ -174,12 +193,12 @@ export default function Locations() {
                     fontSize: "12.51px",
                     lineHeight: "18.77px",
                     letterSpacing: "1.88px",
-                    color: "#7B5A41",
-
+                    // color: "#7B5A41",
+                    color: "#fff",
                     textTransform: "uppercase",
                   }}
                 >
-                  VIP Meet & Greet
+                  VIP PRIVATE SUITE
                 </p>
 
                 <p
@@ -188,31 +207,26 @@ export default function Locations() {
                     fontWeight: 400,
                     fontStyle: "Regular",
                     fontSize: "13px",
-                    color: "#6D6D6D",
+                    // color: "#6D6D6D",
+                    color: "#fff",
                     lineHeight: "28.46px",
                   }}
                 >
-                  Upon arrival, our airport meet & greet greeter will welcome
-                  you at the aircraft or air bridge, escort you through Fast
-                  Track immigration, assist with baggage claim, and coordinate
-                  your transfer to your waiting chauffeur for a smooth,
-                  stress-free airport arrival experience
+                  Experience a seamless airport arrival with our premium meet &
+                  greet concierge service. Be welcomed at the aircraft, enjoy
+                  private transfer to an exclusive lounge, and relax while our
+                  team handles luggage and formalities for a smooth, stress-free
+                  landing.
                 </p>
                 <div className="flex gap-24 relative">
-                  <div
-                    className="h-[373px] w-[166px] p-[2px]"
-                    style={{
-                      background:
-                        "linear-gradient(120deg, rgba(161, 101, 56) 0%, rgba(0,0,0,0) 15%, rgba(0,0,0,0) 85%, rgba(161,101,56,1) 100%)",
-                    }}
-                  >
-                    <div className="relative w-full h-full bg-[#f2f1ef]">
+                  <div className="h-[373px] w-[166px] p-[2px] bg-[linear-gradient(130deg,#FFFFFF98_0%,#1a1a1a_20%,#1a1a1a_80%,#ffffff98_100%)]">
+                    <div className="relative w-full h-full bg-[#1a1a1a]">
                       <Image
                         alt="service image"
                         src={serviceImage}
                         width={180}
                         height={258}
-                        className="absolute top-1/2  left-1/2 -translate-y-1/2  w-45 h-64.5 object-cover border border-gray-300"
+                        className="absolute top-1/2  left-1/2 -translate-y-1/2  w-45 h-64.5 object-cover border border-[#1a1a1a]"
                       />
                     </div>
                   </div>
@@ -232,17 +246,13 @@ export default function Locations() {
                     >
                       Arrival
                     </p>
-                    <ul className="list-disc ml-5">
-                      <li>Exclusive one-to-one service</li>
-                      <li>Meet and Greet at the gate</li>
-                      <li>
-                        Fast Track or Expedited through immigration and customs
-                      </li>
-                      <li>Assistance with luggage collection</li>
-                      <li>
-                        Porter Service (if necessary, additional fees may apply)
-                      </li>
-                      <li>Escort to your vehicle</li>
+                    <ul className="list-disc ml-5 text-white">
+                      <li>Private Meet & Greet at the Aircraft</li>
+                      <li>Luxury Private Vehicle Transfer to VVIP Lounge</li>
+                      <li>Discreet, Hassle-Free Luggage Handling</li>
+                      <li>Dine from Our Curated Seasonal Menu</li>
+                      <li>Access to Exclusive VVIP Airport Lounge</li>
+                      <li>Personalised Airport Concierge</li>
                     </ul>
                   </div>
                 </div>
