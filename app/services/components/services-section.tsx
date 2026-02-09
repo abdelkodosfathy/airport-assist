@@ -144,13 +144,7 @@ const ServiceSection = ({ left }: { left?: boolean }) => {
                 "linear-gradient(120deg, rgba(161, 101, 56) 0%, rgba(0,0,0,0) 15%, rgba(0,0,0,0) 85%, rgba(161,101,56,1) 100%)",
             }}
           >
-            <div
-              className="relative w-[315px] h-[625px] bg-[#f2f1ef]"
-              // style={{
-              //   background:
-              //     "linear-gradient(179.26deg, #f9f9fa 0.64%, #fefcfa 223.79%)",
-              // }}
-            >
+            <div className="relative w-[315px] h-[625px] bg-[#f2f1ef]">
               <Image
                 ref={firstImageRef}
                 alt="service image"
