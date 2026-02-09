@@ -108,7 +108,7 @@ function DestinationCard({ title, content, img, price }: CardProps) {
         </p>
 
         <p className="mt-8 mb-4 text-[#7B5A41] text-[18px] leading-[100%] tracking-[0.31em]">
-          From £{price}
+          From {price}
         </p>
 
         <Button

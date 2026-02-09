@@ -1,5 +1,11 @@
 "use client";
-import { useState, useCallback, useMemo, useEffect } from "react";
+import {
+  useState,
+  useCallback,
+  useMemo,
+  useEffect,
+  SetStateAction,
+} from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import clsx from "clsx";
@@ -11,6 +17,7 @@ import { Loader2, AlertCircle } from "lucide-react";
 import DatePickerInput from "./custom inputs/DatePickerInputs";
 import AdultsPicker from "./custom inputs/AdultsPicker";
 import AirportSearch from "./custom inputs/AirportSearch";
+import AirportSearchInput from "./AirportSearchInput";
 
 export interface VipBookingData {
   airport_id: string;
@@ -50,8 +57,6 @@ export default function BookingForm() {
   // VIP form states
   // const { data, isLoading, isError, error } = useAirports();
   const { data, isLoading, isError } = useAirportSearch(debouncedSearch);
-  console.log(data);
-
   const [selectedAirportID, setSelectedAirportID] = useState<string>("");
   const [selectedAirportName, setSelectedAirportName] = useState<string>("");
 
@@ -73,24 +78,15 @@ export default function BookingForm() {
 
   // Convert airports to options format with memoization
 
-  // const airports = data?.data.airports;
+  // const airports = data?.data?.airports;
   // const airportOptions: OptionType[] = useMemo(
   //   () =>
   //     airports?.map((airport) => ({
   //       label: `${airport.airport_name} (${airport.airport_code})`,
   //       value: airport.airport_id.toString(),
   //     })) || [],
-  //   [data],
+  //   [airports], // Changed from [data] to [airports]
   // );
-  const airports = data?.data?.airports;
-  const airportOptions: OptionType[] = useMemo(
-    () =>
-      airports?.map((airport) => ({
-        label: `${airport.airport_name} (${airport.airport_code})`,
-        value: airport.airport_id.toString(),
-      })) || [],
-    [airports], // Changed from [data] to [airports]
-  );
 
   // Handler functions with useCallback for optimization
   const clearError = useCallback(
@@ -179,7 +175,7 @@ export default function BookingForm() {
     return Object.keys(newErrors).length === 0;
   }, [
     activeTab,
-    // selectedAirport,
+    selectedAirportID,
     selectedServiceType,
     selectedDate,
     pickUpLocation,
@@ -187,8 +183,6 @@ export default function BookingForm() {
     chauffeurDate,
     pickupTime,
   ]);
-  // console.log(selectedAirport);
-
   const saveBookingToSession = useCallback(() => {
     try {
       if (activeTab === "vip") {
@@ -275,9 +269,7 @@ export default function BookingForm() {
     if (!message) return null;
     return (
       <div className="absolute flex items-center gap-1 bg-white rounded-lg p-4 text-red-500 text-sm mt-4 animate-in fade-in slide-in-from-top-1 duration-200">
-        <div className="absolute w-4 h-4 bg-white rotate-45 -top-2 left-5">
-
-        </div>
+        <div className="absolute w-4 h-4 bg-white rotate-45 -top-2 left-5"></div>
         <AlertCircle className="w-3 h-3" />
         <span>{message}</span>
       </div>
@@ -345,7 +337,7 @@ export default function BookingForm() {
           {activeTab === "vip" ? (
             <>
               <div className="col-span-1 sm:col-span-2 lg:col-span-6">
-                <AirportSearch
+                {/* <AirportSearch
                   onChange={setSearchQuery}
                   icon={<Plane />}
                   id="airport"
@@ -366,6 +358,18 @@ export default function BookingForm() {
                   aria-describedby={
                     errors.airport ? "airport-error" : undefined
                   }
+                /> */}
+                <AirportSearchInput
+                  onSelect={handleAirportSelect}
+                  inputClassName={clsx(
+                    "rounded-t-lg lg:rounded-l-xl lg:rounded-t-none transition-all duration-200",
+                    errors.airport &&
+                      "ring-2 ring-red-500 placeholder:text-red-500",
+                  )}
+                  className="bg-white h-10 lg:h-full rounded-lg lg:rounded-none lg:rounded-l-xl"
+                  attemptedSubmit={attemptedSubmit}
+                  errors={errors}
+                  // setErrors={setErrors}
                 />
                 {errors.airport && (
                   <div id="airport-error" role="alert">
@@ -431,7 +435,7 @@ export default function BookingForm() {
           ) : (
             <>
               <div className="col-span-1 sm:col-span-2 lg:col-span-5">
-                <AirportSearch
+                {/* <AirportSearch
                   onChange={setSearchQuery}
                   icon={<Plane />}
                   id="airport"
@@ -452,6 +456,19 @@ export default function BookingForm() {
                   aria-describedby={
                     errors.airport ? "airport-error" : undefined
                   }
+                /> */}
+
+                <AirportSearchInput
+                  onSelect={handleAirportSelect}
+                  inputClassName={clsx(
+                    "rounded-t-lg lg:rounded-l-xl lg:rounded-t-none transition-all duration-200",
+                    errors.airport &&
+                      "ring-2 ring-red-500 placeholder:text-red-500",
+                  )}
+                  className="bg-white h-10 lg:h-full rounded-lg lg:rounded-none lg:rounded-l-xl"
+                  attemptedSubmit={attemptedSubmit}
+                  errors={errors}
+                  // setErrors={setErrors}
                 />
                 {errors.airport && (
                   <div id="airport-error" role="alert">

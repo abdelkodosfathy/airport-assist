@@ -252,6 +252,7 @@ const Footer = () => {
                 </h4>
                 <ul className="space-y-1">
                   <li><Link href="/why-us">About Us</Link></li>
+                  <li><Link href="/why-us-expand">About Us (expand)</Link></li>
                   <li><Link href="/contact-us">Contact Us</Link></li>
                   <li><Link href="/frequently-asked-questions">FAQs</Link></li>
                 </ul>

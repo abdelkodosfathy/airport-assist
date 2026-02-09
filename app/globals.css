@@ -143,3 +143,18 @@ html {
   --tw-backdrop-blur: blur(12px);
   backdrop-filter: blur(12px);
 }
+
+
+.scrollbar-minimal::-webkit-scrollbar {
+  width: 4px;
+}
+
+.scrollbar-minimal::-webkit-scrollbar-thumb {
+  background-color: rgba(0,0,0,0.25);
+  border-radius: 9999px;
+}
+
+.scrollbar-minimal {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0,0,0,0.25) transparent;
+}

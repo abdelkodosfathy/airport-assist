@@ -1,20 +1,21 @@
+"use client";
+
 import { PrivateSuites } from "@/components/sections";
 
 import Footer from "@/components/Footer";
 import Header from "@/components/Header/Header";
 import { Button } from "@/components/ui/button";
-import { ArrowUpRight, Search } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import hero from "@/public/our-sercives-hero.jpg";
 import Image from "next/image";
-import { Card } from "@/components/ui/card";
 import CardsList from "./CardsList";
-import IconInput from "@/components/custom inputs/customInput";
+import AirportSearchInput from "@/components/AirportSearchInput";
 
 export default function Locations() {
   return (
     <main className="relative font-[Manrope] max-w-screen overflow-hidden">
       <Header />
-      <section className="relative w-full h-114 text-white flex items-center justify-center overflow-hidden">
+      <section className="relative w-full h-114 text-white flex items-center justify-center">
         {/* Background Image */}
         <div className="absolute inset-0">
           <Image
@@ -44,11 +45,9 @@ export default function Locations() {
           <p className=" font-[Manrope] font-normal text-[24px] text-center text-[rgb(200,200,200)]">
             Available in the following locations.
           </p>
-          <IconInput
-            icon={<Search />}
-            className="bg-white rounded-md mt-4"
-            placeholder="Search for a airport"
-            inputClassName="p-6 pl-10 lg:w-[820px] xl:w-[960px] text-black"
+          <AirportSearchInput
+            inputClassName="p-4 pl-10 rounded-lg lg:w-[820px] xl:w-[960px] text-black"
+            className="bg-white text-black rounded-md mt-4 relative w-full flex items-center"
           />
         </div>
       </section>

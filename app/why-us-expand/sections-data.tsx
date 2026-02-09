@@ -1,55 +1,12 @@
-"use client";
-
-import { se } from "date-fns/locale";
-
-interface ContentBlock {
+export interface ContentBlock {
   type: "paragraph" | "list";
   content: string | string[];
 }
 
-interface Section {
+export interface Section {
   title: string;
   blocks: ContentBlock[];
 }
-
-interface InfoSectionProps {
-  section: Section;
-}
-
-const InfoSection = ({ section }: InfoSectionProps) => {
-  return (
-    <div className="mb-8">
-      <h3 className="font-semibold tracking-[2.25px] mb-3">{section.title}</h3>
-
-      {section.blocks.map((block, index) => {
-        if (block.type === "paragraph") {
-          return (
-            <p
-              key={index}
-              className={`text-sm text-[#6D6D6D] ${index > 0 ? "mt-3" : ""}`}
-            >
-              {block.content as string}
-            </p>
-          );
-        }
-
-        if (block.type === "list") {
-          return (
-            <ul key={index} className="mb-3 list-disc ml-5">
-              {(block.content as string[]).map((item, itemIndex) => (
-                <li key={itemIndex} className="text-sm text-[#6D6D6D]">
-                  {item}
-                </li>
-              ))}
-            </ul>
-          );
-        }
-
-        return null;
-      })}
-    </div>
-  );
-};
 
 const WHY_AIRPORT_ASSIST: Section[] = [
   {
@@ -1275,36 +1232,12 @@ const FAQ_PRIVATE_JET: Section[] = [
   },
 ];
 
-export type SectionKey = 
-  | "WHY_AIRPORT_ASSIST"
-  | "OUR_PRICING"
-  | "FAQ_VIP_MEET_and_GREET"
-  | "FAQ_PRIVATE_SUITE"
-  | "FAQ_CHAUFFEUR"
-  | "FAQ_HOTEL"
-  | "FAQ_PRIVATE_JET";
-
-// Main component
-export default function InfoSections({
-  selectedSection = "WHY_AIRPORT_ASSIST",
-}: {
-  selectedSection?: SectionKey;
-}) {
-  const sectionsArray: Record<SectionKey, Section[]> = {
-    WHY_AIRPORT_ASSIST: WHY_AIRPORT_ASSIST,
-    OUR_PRICING: OUR_PRICING,
-    FAQ_VIP_MEET_and_GREET: FAQ_VIP_MEET_and_GREET,
-    FAQ_PRIVATE_SUITE: FAQ_PRIVATE_SUITE,
-    FAQ_CHAUFFEUR: FAQ_CHAUFFEUR,
-    FAQ_HOTEL: FAQ_HOTEL,
-    FAQ_PRIVATE_JET: FAQ_PRIVATE_JET,
-  };
-
-  return (
-    <div className="max-w-4xl p-6">
-      {sectionsArray[selectedSection]?.map((section, index) => (
-        <InfoSection key={index} section={section} />
-      ))}
-    </div>
-  );
-}
+export {
+  WHY_AIRPORT_ASSIST,
+  OUR_PRICING,
+  FAQ_VIP_MEET_and_GREET,
+  FAQ_PRIVATE_SUITE,
+  FAQ_CHAUFFEUR,
+  FAQ_HOTEL,
+  FAQ_PRIVATE_JET,
+};
