@@ -7,6 +7,7 @@ import { Mail } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 import { VipBookingData } from "../page";
+import Steps from "./steps";
 
 const SideInfoContent = ({
   isElite,
@@ -184,52 +185,52 @@ const SideInfoSkeleton = () => {
 
 export default SideInfo;
 
-const Steps = ({
-  currentStep = 0,
-  isElite = false,
-}: {
-  isElite?: boolean;
-  currentStep: number;
-}) => {
+// const Steps = ({
+//   currentStep = 0,
+//   isElite = false,
+// }: {
+//   isElite?: boolean;
+//   currentStep: number;
+// }) => {
 
   
   
-  const steps = [
-    "Choose Service",
-    "Flight Information",
-    "Primary passenger",
-    ...((isElite) ? [] : ["Chauffeur Services"]),
-    "Additional Services",
-    "Billing Information",
-  ];
-  return (
-    <div className="bg-white rounded-2xl p-5">
-      <h4 className="font-[Manrope] font-semibold">Steps</h4>
-      <ul className="space-y-2 mt-2">
-        {steps.map((step, i) => {
-          return (
-            <li
-              key={step}
-              className={`p-2 flex items-center ${
-                i === currentStep ? "bg-[#7B5A4133]" : ""
-              } rounded-md`}
-            >
-              <p>
-                <span
-                  className={`inline-block text-center rounded-full w-6 h-6 mr-2 ${
-                    i === currentStep
-                      ? "bg-[#7B5A41] text-white"
-                      : "bg-[#F4F4F4] text-[#7a7a7a]"
-                  }`}
-                >
-                  {i + 1}
-                </span>
-                {step}
-              </p>
-            </li>
-          );
-        })}
-      </ul>
-    </div>
-  );
-};
+//   const steps = [
+//     "Choose Service",
+//     "Flight Information",
+//     "Primary passenger",
+//     ...((isElite) ? [] : ["Chauffeur Services"]),
+//     "Additional Services",
+//     "Billing Information",
+//   ];
+//   return (
+//     <div className="bg-white rounded-2xl p-5">
+//       <h4 className="font-[Manrope] font-semibold">Steps</h4>
+//       <ul className="space-y-2 mt-2">
+//         {steps.map((step, i) => {
+//           return (
+//             <li
+//               key={step}
+//               className={`p-2 flex items-center ${
+//                 i === currentStep ? "bg-[#7B5A4133]" : ""
+//               } rounded-md`}
+//             >
+//               <p>
+//                 <span
+//                   className={`inline-block text-center rounded-full w-6 h-6 mr-2 ${
+//                     i === currentStep
+//                       ? "bg-[#7B5A41] text-white"
+//                       : "bg-[#F4F4F4] text-[#7a7a7a]"
+//                   }`}
+//                 >
+//                   {i + 1}
+//                 </span>
+//                 {step}
+//               </p>
+//             </li>
+//           );
+//         })}
+//       </ul>
+//     </div>
+//   );
+// };
