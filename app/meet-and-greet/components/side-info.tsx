@@ -62,10 +62,6 @@ const SideInfoContent = ({
 
 
   console.log("rendered SideInfoContent: ", isElite);
-  
-
-  // console.log(date);
-  // console.log(airportNumber);
 
   // You might want to fetch airport name based on ID
   // For now, displaying the raw values

@@ -10,23 +10,23 @@ import { ArrowUpRight, Mail } from "lucide-react";
 import Image from "next/image";
 import serviceImage from "@/public/arravial package.jpg";
 
-import { useSearchParams } from "next/navigation";
-import { useSingleAirport } from "@/lib/hooks/useAirports";
+// import { useSearchParams } from "next/navigation";
+// import { useSingleAirport } from "@/lib/hooks/useAirports";
 
 export default function Locations() {
-  const searchParams = useSearchParams();
-  const airportId = searchParams.get("airportId");
+  // const searchParams = useSearchParams();
+  // const airportId = searchParams.get("airportId");
 
-  const { data, isLoading, isError } = useSingleAirport(
-    airportId?.toString() || "",
-  );
-  console.log(data);
+  // const { data, isLoading, isError } = useSingleAirport(
+  //   airportId?.toString() || "",
+  // );
+  // console.log(data);
   
-  if (isLoading) {
-  }
+  // if (isLoading) {
+  // }
 
-  if (isError || !data) {
-  }
+  // if (isError || !data) {
+  // }
 
 
   return (
@@ -56,7 +56,8 @@ export default function Locations() {
         {/* Hero content */}
         <div className="relative z-10">
           <h1 className=" font-[Manrope] text-[30px] leading-[130%] tracking-[3px] text-center mb-4.25">
-            {data?.data.airport.airport_name || "Loading..."}
+            {/* {data?.data.airport.airport_name || "Loading..."} */}
+            London Gatwick Airport - LGW
           </h1>
 
           <p className=" font-[Manrope] font-normal w-250 mx-auto text-[14.25px] tracking-[1.5px] text-center text-[rgb(200,200,200)]">
