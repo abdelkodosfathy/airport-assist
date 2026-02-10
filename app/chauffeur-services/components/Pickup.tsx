@@ -18,6 +18,10 @@ import Link from "next/link";
 import InnerToast from "@/components/ui/InnerToast";
 import { useCars } from "@/lib/hooks/useCars";
 import { Car } from "@/lib/types/car";
+import RouteMap from "./RouteMap";
+import { DatePickerWithIconDemo } from "@/components/DateTimeInputs";
+import DatePickerInput from "@/components/custom inputs/DatePickerInputs";
+import TimePickerInput from "@/components/custom inputs/TimePicker";
 
 type ServiceType = "one-way" | "round-trip" | "hourly";
 type Props = {};
@@ -82,9 +86,10 @@ const PickupForm = ({ serviceType }: { serviceType?: ServiceType }) => {
     <div className="shadow-md px-4.5 py-6 bg-white rounded-2xl h-full w-full max-w-6/11">
       <div className="my-2">
         <h3 className="mb-2 font-semibold">Pickup</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 w-full ">
-          <div className="space-y-2 col-span-2 mb-6">
-            {/* <Label htmlFor="from">From</Label> */}
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full ">
+          <RouteMap className={"col-span-1 md:col-span-2"} />
+          {/* <div className="space-y-2 col-span-2 mb-6">
             <Input
               id="from"
               placeholder="From"
@@ -92,36 +97,28 @@ const PickupForm = ({ serviceType }: { serviceType?: ServiceType }) => {
             />
           </div>
           <div className="space-y-2 col-span-2 mb-6">
-            {/* <Label htmlFor="drop-off">Drop Off</Label> */}
             <Input
               id="drop-off"
               placeholder="Drop Off"
               className="pl-4 pr-10 bg-[#F4F4F4] border border-[#E0E0E0]"
             />
-          </div>
-
-          {/* <div className="col-span-2 flex justify-end my-2">
-            <Button
-              variant={"ghost"}
-              className="cursor-pointer align-end p-0 hover:bg-white hover:text-[#614631] text-end font-semibold text-[#7B5A41]"
-            >
-              + Add stop
-            </Button>
           </div> */}
-          <div className="space-y-2 col-span-1">
-            {/* <Label htmlFor="pickup-date">Pickup date</Label> */}
-            <Input
+
+          <div className="relative space-y-2 col-span-1">
+            {/* <Input
               id="pickup-date"
-              placeholder="Pickup data"
+              placeholder="Pickup date"
               className="pl-4 pr-10 bg-[#F4F4F4] border border-[#E0E0E0]"
+              /> */}
+            <DatePickerInput
+              className="bg-[#F4F4F4] border border-[#E0E0E0] rounded-lg h-full"
+              inputClassName="px-10 h-9 bg-[#F4F4F4] border-none w-full rounded-lg"
             />
           </div>
           <div className="space-y-2 col-span-1">
-            {/* <Label htmlFor="pickup-time">Pickup time</Label> */}
-            <Input
-              id="pickup-time"
-              placeholder="Pickup time"
-              className="pl-4 pr-10 bg-[#F4F4F4] border border-[#E0E0E0]"
+            <TimePickerInput
+              className="bg-[#F4F4F4] border border-[#E0E0E0] rounded-lg h-full"
+              inputClassName="px-10 h-9 bg-[#F4F4F4] border-none w-full rounded-lg"
             />
           </div>
         </div>
@@ -136,7 +133,6 @@ const PickupForm = ({ serviceType }: { serviceType?: ServiceType }) => {
             <h3 className="mb-2 font-semibold">Return</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 w-full">
               <div className="space-y-2 col-span-2 mb-4">
-                {/* <Label htmlFor="from">From</Label> */}
                 <Input
                   id="from"
                   placeholder="Return From"
@@ -144,32 +140,20 @@ const PickupForm = ({ serviceType }: { serviceType?: ServiceType }) => {
                 />
               </div>
               <div className="space-y-2 col-span-2">
-                {/* <Label htmlFor="drop-off">Drop Off</Label> */}
                 <Input
                   id="drop-off"
                   placeholder="Return Drop Off"
                   className="pl-4 pr-10 bg-[#F4F4F4] border border-[#E0E0E0]"
                 />
               </div>
-
-              {/* <div className="col-span-2 flex justify-end my-2">
-                <Button
-                  variant={"ghost"}
-                  className="cursor-pointer p-0 hover:bg-white hover:text-[#7B5A41] text-end font-semibold text-[#7B5A41]"
-                >
-                  + Add stop
-                </Button>
-              </div> */}
               <div className="space-y-2 col-span-1">
-                {/* <Label htmlFor="pickup-date">Pickup date</Label> */}
                 <Input
                   id="pickup-date"
-                  placeholder="Return Pickup data"
+                  placeholder="Return Pickup date"
                   className="pl-4 pr-10 bg-[#F4F4F4] border border-[#E0E0E0]"
                 />
               </div>
               <div className="space-y-2 col-span-1">
-                {/* <Label htmlFor="pickup-time">Pickup time</Label> */}
                 <Input
                   id="pickup-time"
                   placeholder="Return Pickup time"
@@ -190,7 +174,6 @@ const PickupForm = ({ serviceType }: { serviceType?: ServiceType }) => {
             <h3 className="mb-2 font-semibold">Flight</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-6 w-full">
               <div className="space-y-2 col-span-1">
-                {/* <Label htmlFor="flight">Flight</Label> */}
                 <Input
                   id="flight"
                   placeholder="Air Lines"
@@ -198,10 +181,10 @@ const PickupForm = ({ serviceType }: { serviceType?: ServiceType }) => {
                 />
               </div>
               <div className="space-y-2 col-span-1">
-                {/* <Label htmlFor="flight">Flight</Label> */}
                 <Input
                   id="flight"
                   placeholder="Flight Number"
+                  maxLength={6}
                   className="pl-4 pr-10 bg-[#F4F4F4] border border-[#E0E0E0]"
                 />
               </div>
@@ -363,7 +346,7 @@ const CarCard = ({
       alt={car.car_type_name}
       width={230}
       height={120}
-      className="rounded-lg h-30 w-57.5 object-contain mx-auto"
+      className="rounded-lg h-30 w-full object-cover  mb-3"
     />
 
     <div className="flex justify-between text-[0.625rem] items-end pb-1 mb-1 border-b border-[#E5E5E5]">

@@ -18,6 +18,8 @@
         "name": "next"
       }
     ],
+    // "types": ["google.maps"],
+
     "paths": {
       "@/*": ["./*"]
     }
@@ -28,7 +30,8 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
-    "**/*.mts"
+    "**/*.mts",
+    "google-maps.d.ts"
   ],
   "exclude": ["node_modules"]
 }

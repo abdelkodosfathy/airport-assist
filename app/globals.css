@@ -139,6 +139,9 @@ html {
   }
   touch-action: auto;
 }
+.scrollbar-none::-webkit-scrollbar{
+  display: none;
+}
 
 .booking-form {
   will-change: opacity, transform, filter, backdrop-filter;

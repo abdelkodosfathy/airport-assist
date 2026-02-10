@@ -4,15 +4,15 @@ import Link from "next/link";
 import { useState } from "react";
 import { Button } from "../ui/button";
 import LanguageSelect from "../ui/LanguageSelector";
-import { Menu, X } from "lucide-react";
+import { ChevronDown, Menu, X } from "lucide-react";
 import CurrncySelector from "../ui/CurrncySelector";
-import "./header.css"
+import "./header.css";
 
 export default function Header() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="animated-header fixed  z-50 w-full border-b border-transparent">
+    <header className="animated-header fixed  z-90 w-full border-b border-transparent">
       <div className="mx-auto max-w-360 flex items-center justify-between px-6 lg:px-20 py-1">
         {/* Logo */}
         <Link href="/" className="shrink-0">
@@ -147,12 +147,15 @@ const ServiceList = () => {
       onMouseEnter={() => setOpen(true)}
       onMouseLeave={() => setOpen(false)}
     >
-      <Button
-        variant={"ghost"}
-        className="cursor-pointer text-white text-lg font-normal leading-none hover:text-gray-300 hover:bg-white/0 duration-300"
-      >
-        Services
-      </Button>
+      <div className="flex text-white items-center">
+        <Button
+          variant={"ghost"}
+          className="cursor-pointer px-0 text-white text-lg font-normal leading-none hover:text-gray-300 hover:bg-white/0 duration-300"
+        >
+          Services
+        </Button>
+        <ChevronDown className={`${open ? "rotate-180 text-gray-300" : ""} duration-300`}/>
+      </div>
 
       <ul
         className={`

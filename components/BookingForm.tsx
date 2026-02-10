@@ -1,23 +1,19 @@
 "use client";
-import {
-  useState,
-  useCallback,
-  useMemo,
-  useEffect,
-  SetStateAction,
-} from "react";
+import { useState, useCallback, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import clsx from "clsx";
-import Plane from "./custom icons/plane";
 import Adults from "./custom icons/adults";
 import SearchWithDropdown, { OptionType } from "./custom inputs/search";
 import { useAirportSearch } from "@/lib/hooks/useAirports";
-import { Loader2, AlertCircle } from "lucide-react";
+import { Loader2, AlertCircle, MapPin } from "lucide-react";
 import DatePickerInput from "./custom inputs/DatePickerInputs";
 import AdultsPicker from "./custom inputs/AdultsPicker";
-import AirportSearch from "./custom inputs/AirportSearch";
 import AirportSearchInput from "./AirportSearchInput";
+import Arraival from "./custom icons/arraival";
+import SelectDropdown from "./custom inputs/SelectList";
+import Depature from "./custom icons/depature";
+import Connection from "./custom icons/connection";
 
 export interface VipBookingData {
   airport_id: string;
@@ -44,6 +40,9 @@ export default function BookingForm() {
 
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
+
+  const [pickUp, setPickUp] = useState<OptionType | null>(null);
+  const [service, setService] = useState<OptionType | null>(null);
 
   // Debounce search
   useEffect(() => {
@@ -75,18 +74,6 @@ export default function BookingForm() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [attemptedSubmit, setAttemptedSubmit] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  // Convert airports to options format with memoization
-
-  // const airports = data?.data?.airports;
-  // const airportOptions: OptionType[] = useMemo(
-  //   () =>
-  //     airports?.map((airport) => ({
-  //       label: `${airport.airport_name} (${airport.airport_code})`,
-  //       value: airport.airport_id.toString(),
-  //     })) || [],
-  //   [airports], // Changed from [data] to [airports]
-  // );
 
   // Handler functions with useCallback for optimization
   const clearError = useCallback(
@@ -337,28 +324,6 @@ export default function BookingForm() {
           {activeTab === "vip" ? (
             <>
               <div className="col-span-1 sm:col-span-2 lg:col-span-6">
-                {/* <AirportSearch
-                  onChange={setSearchQuery}
-                  icon={<Plane />}
-                  id="airport"
-                  placeholder={
-                    isLoading ? "Loading airports..." : "Select Airport"
-                  }
-                  inputClassName={clsx(
-                    "rounded-t-lg lg:rounded-l-xl lg:rounded-t-none transition-all duration-200",
-                    errors.airport &&
-                      "ring-2 ring-red-500 placeholder:text-red-500",
-                  )}
-                  className="bg-white h-10 lg:h-full rounded-lg lg:rounded-none lg:rounded-l-xl"
-                  disabled={isLoading}
-                  options={airportOptions}
-                  onSelect={handleAirportSelect}
-                  showRecentSearches={false}
-                  aria-invalid={!!errors.airport}
-                  aria-describedby={
-                    errors.airport ? "airport-error" : undefined
-                  }
-                /> */}
                 <AirportSearchInput
                   onSelect={handleAirportSelect}
                   inputClassName={clsx(
@@ -435,30 +400,7 @@ export default function BookingForm() {
           ) : (
             <>
               <div className="col-span-1 sm:col-span-2 lg:col-span-5">
-                {/* <AirportSearch
-                  onChange={setSearchQuery}
-                  icon={<Plane />}
-                  id="airport"
-                  placeholder={
-                    isLoading ? "Loading airports..." : "Select Airport"
-                  }
-                  inputClassName={clsx(
-                    "rounded-t-lg lg:rounded-l-xl transition-all duration-200",
-                    errors.airport &&
-                      "ring-2 ring-red-500 placeholder:text-red-500",
-                  )}
-                  className="bg-white h-10 lg:h-full rounded-lg lg:rounded-none lg:rounded-l-xl"
-                  disabled={isLoading}
-                  options={airportOptions}
-                  onSelect={handleAirportSelect}
-                  showRecentSearches={false}
-                  aria-invalid={!!errors.airport}
-                  aria-describedby={
-                    errors.airport ? "airport-error" : undefined
-                  }
-                /> */}
-
-                <AirportSearchInput
+                {/* <AirportSearchInput
                   onSelect={handleAirportSelect}
                   inputClassName={clsx(
                     "rounded-t-lg lg:rounded-l-xl lg:rounded-t-none transition-all duration-200",
@@ -474,11 +416,64 @@ export default function BookingForm() {
                   <div id="airport-error" role="alert">
                     <ErrorMessage message={errors.airport} />
                   </div>
+                )} */}
+
+                {/* <SearchWithDropdown
+                  id="dropOff"
+                  placeholder="Pick Up"
+                  inputClassName={clsx(
+                    "rounded-t-lg lg:rounded-l-xl lg:rounded-t-none transition-all duration-200",
+                    errors.dropOff &&
+                      "ring-2 ring-red-500 placeholder:text-red-500",
+                  )}
+                  options={[
+                    {
+                      label: "Airport Transfer",
+                      value: "arrival",
+                      icon: <Arraival />,
+                    },
+                    {
+                      label: "Custom Pickup",
+                      value: "departure",
+                      icon: <MapPin />,
+                    },
+                  ]}
+                  className="bg-white h-10 lg:h-full rounded-lg lg:rounded-none lg:rounded-l-xl"
+                  onSelect={handleDropOffSelect}
+                  aria-invalid={!!errors.dropOff}
+                  aria-describedby={
+                    errors.dropOff ? "dropOff-error" : undefined
+                  }
+                />
+                 */}
+                <SelectDropdown
+                  inputClassName={"shadow-none border-none"}
+                  className="bg-white h-10 lg:h-full rounded-lg lg:rounded-none lg:rounded-l-xl"
+                  placeholder="Choose service"
+                  options={[
+                    {
+                      label: "Airport Transfer",
+                      value: "arrival",
+                      icon: <Arraival />,
+                    },
+                    {
+                      label: "Custom Pickup",
+                      value: "departure",
+                      icon: <MapPin color="#6D6D6D" />,
+                    },
+                  ]}
+                  value={pickUp}
+                  onSelect={setPickUp}
+                />
+                {errors.dropOff && (
+                  <div id="dropOff-error" role="alert">
+                    <ErrorMessage message={errors.dropOff} />
+                  </div>
                 )}
               </div>
 
               <div className="col-span-1 sm:col-span-2 lg:col-span-5">
-                <SearchWithDropdown
+                {/* <SearchWithDropdown
                   id="dropOff"
                   placeholder="Drop off"
                   inputClassName={clsx(
@@ -497,7 +492,27 @@ export default function BookingForm() {
                   <div id="dropOff-error" role="alert">
                     <ErrorMessage message={errors.dropOff} />
                   </div>
-                )}
+                )} */}
+                <SelectDropdown
+                  inputClassName={"shadow-none border-none"}
+                  className="bg-white h-10 lg:h-full rounded-lg lg:rounded-none"
+                  placeholder="Choose service"
+                  options={[
+                    { label: "Arrival", value: "arrival", icon: <Arraival /> },
+                    {
+                      label: "Departure",
+                      value: "departure",
+                      icon: <Depature />,
+                    },
+                    {
+                      label: "Connection",
+                      value: "connection",
+                      icon: <Connection />,
+                    },
+                  ]}
+                  value={service}
+                  onSelect={setService}
+                />
               </div>
 
               <div className="col-span-1 sm:col-span-1 lg:col-span-3">

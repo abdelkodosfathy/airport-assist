@@ -124,6 +124,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAirlines } from "@/lib/hooks/useAirlines";
+import TimePickerInput from "@/components/custom inputs/TimePicker";
 
 interface StepsProps {
   onFocus?: () => void;
@@ -142,7 +143,7 @@ export interface FlightInfo {
 
 const FlightForm = ({ onFocus }: StepsProps) => {
   const { data, isLoading, isError, error } = useAirlines();
-console.log(data);
+  console.log(data);
 
   const [flightInfo, setFlightInfo] = useState<FlightInfo>({
     fast_track_enabled: false,
@@ -232,11 +233,15 @@ console.log(data);
         {/* Arrival Time */}
         <div className="space-y-2">
           <Label>Arrival Time</Label>
-          <Input
+          {/* <Input
             type="time"
             className="bg-[#F4F4F4]"
             value={flightInfo.arrival_time || ""}
             onChange={(e) => updateSession({ arrival_time: e.target.value })}
+          /> */}
+          <TimePickerInput
+            className="bg-[#F4F4F4] border-none shadow-none rounded-lg"
+            inputClassName="px-10 h-9 bg-[#F4F4F4] w-full rounded-lg"
           />
         </div>
 
@@ -244,7 +249,7 @@ console.log(data);
         <div className="space-y-2">
           <Label>Service Duration</Label>
           <Input
-          type="number"
+            type="number"
             placeholder="e.g. 2 hours"
             className="bg-[#F4F4F4]"
             value={flightInfo.service_duration || ""}

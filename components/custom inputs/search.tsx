@@ -9,9 +9,7 @@ import Depature from "../custom icons/depature";
 import Connection from "../custom icons/connection";
 
 export interface OptionType {
-  // label: string | null | undefined;
   label: string;
-  // value: string | null | undefined;
   value: string;
   icon?: ReactNode;
 }
@@ -26,7 +24,6 @@ interface SearchWithDropdownProps {
   icon?: ReactNode;
   iconPosition?: "left" | "right";
   options?: OptionType[];
-  // value?: {value:number, label: string};
   value?: OptionType | null;
   onChange?: (text: string) => void;
   onSelect?: (option: OptionType) => void;

@@ -180,7 +180,7 @@ export default function FlightInformation() {
       {/* <Button onClick={sessionStoredData}>get data</Button> */}
       <Button
         type="button"
-        onClick={sessionStoredData}
+        // onClick={sessionStoredData}
         // asChild
         variant="outline"
         className="
@@ -195,12 +195,12 @@ export default function FlightInformation() {
             duration-0
           "
       >
-        Proceed To Checkout
-        {/* <Link href="/meet-and-greet/flight-information/billing-information/checkout">
+        {/* Proceed To Checkout */}
+        <Link href="/meet-and-greet/flight-information/billing-information/checkout">
           <p className="text-lg font-normal font-[Manrope]">
             Proceed To Checkout{" "}
           </p>
-        </Link> */}
+        </Link>
       </Button>
     </div>
   );

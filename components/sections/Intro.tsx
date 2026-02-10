@@ -1,5 +1,6 @@
 import { ArrowUpRight } from "lucide-react";
 import { Button } from "../ui/button";
+import Link from "next/link";
 
 type Props = {};
 
@@ -21,13 +22,15 @@ const Intro = (props: Props) => {
             AIRPORT Assists Private Travel Division provides discreet, luxury
             concierge travel for VIP clients worldwide.
           </p>
-          <Button
-            variant="outline"
-            className="my-6 min-w-[140px] py-5 border-black hover:bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)] hover:text-white hover:border-white duration-0"
-          >
-            <p>About Us</p>
-            <ArrowUpRight className="size-md" />
-          </Button>
+          <Link href={"/why-us"}>
+            <Button
+              variant="outline"
+              className="my-6 min-w-[140px] py-5 border-black hover:bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)] hover:text-white hover:border-white duration-0"
+            >
+              <p>About Us</p>
+              <ArrowUpRight className="size-md" />
+            </Button>
+          </Link>
         </div>
       </div>
     </section>
