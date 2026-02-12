@@ -55,28 +55,6 @@ const AdditionalServices = ({ onFocus }: StepsProps) => {
       </h4>
       <span className="inline-block w-full h-0.5 bg-[#CFCFCF]" />
       <div className="space-y-4 mt-4">
-        {/* <div className="p-4 space-y-4 bg-[#F4F4F4] border border-[#E0E0E0] rounded-lg">
-          <p className="text-sm">
-            Please download the passenger data form, fill it out, and upload it
-            below:
-          </p>
-          <p className="text-[#7B5A41] flex items-center gap-2 font-bold">
-            <ArrowDownToLineIcon className="inline" /> Download passenger data
-            file
-          </p>
-          <Button
-            style={{
-              background:
-                "linear-gradient(179.26deg, #7B5A41 0.64%, #DFB08D 223.79%)",
-              border: "1.26px solid #966B4B",
-            }}
-            className={
-              "cursor-pointer h-7 font-[Manrope] font-normal py-0 px-8 rounded-full mt-2 border-[#966B4B] text-white"
-            }
-          >
-            Choose File <UploadCloud />
-          </Button>
-        </div> */}
         <div className="p-4 space-y-4 bg-[#F4F4F4] border border-[#E0E0E0] rounded-lg">
           <p className="text-sm">
             Please download the passenger data form, fill it out, and upload it
@@ -109,29 +87,6 @@ const AdditionalServices = ({ onFocus }: StepsProps) => {
             Choose File <UploadCloud />
           </Button>
         </div>
-
-        {/* <div className="p-4 space-y-4 bg-[#F4F4F4] border border-[#E0E0E0] rounded-lg">
-          <p className="text-sm">
-            Upload your tickets now, or we'll contact you later Drag & drop or
-            click to upload Formats: JPEG, PNG, PDF.
-          </p>
-          <p className="text-[#7B5A41] flex items-center gap-2 font-bold">
-            <ArrowDownToLineIcon className="inline" /> Upload your Flight
-            Tickets optional
-          </p>
-          <Button
-            style={{
-              background:
-                "linear-gradient(179.26deg, #7B5A41 0.64%, #DFB08D 223.79%)",
-              border: "1.26px solid #966B4B",
-            }}
-            className={
-              "cursor-pointer h-7 font-[Manrope] font-normal py-0 px-8 rounded-full mt-2 border-[#966B4B] text-white"
-            }
-          >
-            Choose File <UploadCloud />
-          </Button>
-        </div> */}
         <div className="p-4 space-y-4 bg-[#F4F4F4] border border-[#E0E0E0] rounded-lg">
           <p className="text-sm">
             Upload your tickets now, or we'll contact you later.

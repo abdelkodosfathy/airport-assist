@@ -1,53 +1,10 @@
-"use client";
+import CarPassengers from "@/components/custom icons/CarPassengers";
 import CarriedBag from "@/components/custom icons/carriedBag";
 import Passengers from "@/components/custom icons/passengers";
-import { Button } from "@/components/ui/button";
-import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
 import { useCars } from "@/lib/hooks/useCars";
 import { Car } from "@/lib/types/car";
-
-interface StepsProps {
-  onFocus?: () => void;
-  selectCar: (carData: Car) => void;
-}
-
-const ChauffeurServicesCars = ({ onFocus, selectCar }: StepsProps) => {
-  return (
-    <div
-      onClick={() => {
-        onFocus?.();
-      }}
-      style={{
-        boxShadow: "0px 11.48px 114.76px 0px #A7A7A73D",
-      }}
-      className="px-10 py-6 bg-white rounded-2xl"
-    >
-      <h4 className="font-manrope font-medium text-[18.75px] leading-[1.3] tracking-normal">
-        Chauffeur Services
-      </h4>
-      <span className="inline-block w-full h-0.5 bg-[#CFCFCF] mb-0" />
-      <div className="py-2">
-        <CardPicker onSelectCar={selectCar} />
-      </div>
-
-      <Button
-        style={{
-          background:
-            "linear-gradient(179.26deg, #7B5A41 0.64%, #DFB08D 223.79%)",
-          border: "1.26px solid #966B4B",
-        }}
-        className={
-          "cursor-pointer h-7 font-[Manrope] font-normal py-0 px-8 rounded-full mt-2 border-[#966B4B] text-white"
-        }
-      >
-        Add Chauffeur
-      </Button>
-    </div>
-  );
-};
-
-export default ChauffeurServicesCars;
+import Image from "next/image";
+import React, { useEffect, useRef, useState } from "react";
 
 type CarCardProps = {
   car: Car;
@@ -110,11 +67,11 @@ const CarCard = ({ car, selected = false, onSelect }: CarCardProps) => {
           width={230}
           height={120}
           quality={1}
-          className="rounded-lg h-[120px] w-[230px] object-contain mx-auto"
+          className="rounded-lg h-[120px] w-[230px] object-cover mx-auto"
         />
 
         <div className="mt-auto flex justify-between text-[0.625rem] items-end pb-1 mb-1 border-b border-[#E5E5E5]">
-          <div className="flex gap-2 ">
+          <div className="flex gap-2 mt-2 ">
             <p className="flex gap-1 items-center">
               <Passengers />
               <span>{passengers_capacity}</span>
@@ -140,7 +97,11 @@ const CarCard = ({ car, selected = false, onSelect }: CarCardProps) => {
   );
 };
 
-function CardPicker({ onSelectCar }: { onSelectCar: (carData: Car) => void }) {
+export default function CarsList({
+  onSelectCar,
+}: {
+  onSelectCar: (carData: Car) => void;
+}) {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [selectedCarId, setSelectedCarId] = useState<number | null>(null);
   const carInputRef = useRef<HTMLInputElement>(null);
@@ -152,27 +113,27 @@ function CardPicker({ onSelectCar }: { onSelectCar: (carData: Car) => void }) {
   }
 
   // 🔹 load from sessionStorage once data is available
-  useEffect(() => {
-    if (!data?.data.car_types) return;
+  // useEffect(() => {
+  //   if (!data?.data.car_types) return;
 
-    const storedCarId = sessionStorage.getItem("selected_car_type_id");
-    if (!storedCarId) return;
+  //   const storedCarId = sessionStorage.getItem("selected_car_type_id");
+  //   if (!storedCarId) return;
 
-    const carId = Number(storedCarId);
+  //   const carId = Number(storedCarId);
 
-    const index = data.data.car_types.findIndex(
-      (car) => car.car_type_id === carId,
-    );
+  //   const index = data.data.car_types.findIndex(
+  //     (car) => car.car_type_id === carId,
+  //   );
 
-    if (index !== -1) {
-      setSelectedIndex(index);
-      setSelectedCarId(carId);
+  //   if (index !== -1) {
+  //     setSelectedIndex(index);
+  //     setSelectedCarId(carId);
 
-      if (carInputRef.current) {
-        carInputRef.current.value = String(carId);
-      }
-    }
-  }, [data]);
+  //     if (carInputRef.current) {
+  //       carInputRef.current.value = String(carId);
+  //     }
+  //   }
+  // }, [data]);
 
   const handleSelect = (index: number, carId: number) => {
     setSelectedIndex(index);

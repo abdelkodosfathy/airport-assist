@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { Button } from "../ui/button";
-import LanguageSelect from "../ui/LanguageSelector";
+import CurrencySelector from "../ui/CurrencySelector";
 import { ChevronDown, Menu, X } from "lucide-react";
 import CurrncySelector from "../ui/CurrncySelector";
 import "./header.css";
@@ -39,7 +39,7 @@ export default function Header() {
 
         {/* Right Side */}
         <div className="hidden lg:flex items-center gap-4">
-          <CurrncySelector />
+          <CurrencySelector />
 
           <span className="inline-block w-0.5 h-8 rounded-3xl bg-linear-to-b from-white to-white/10"></span>
 

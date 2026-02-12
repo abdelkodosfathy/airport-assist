@@ -8,31 +8,24 @@ import { usePathname } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 import { VipBookingData } from "../page";
 import Steps from "./steps";
+import { AirportPackage } from "@/lib/types/airport";
 
 const SideInfoContent = ({
   isElite,
   focusedStep = 1,
+  selectedPackage,
+  bookingData,
 }: {
+  selectedPackage?: AirportPackage;
   isElite?: boolean;
+  bookingData?: VipBookingData;
   focusedStep?: number;
 }) => {
+  console.log(selectedPackage);
+
   const pathname = usePathname();
   // const searchParams = useSearchParams();
   const isMainPage = pathname === "/meet-and-greet";
-
-  // // Get URL parameters
-  // const airportNumber = searchParams.get("airport_id");
-  // const airportName = searchParams.get("airport_name");
-  // // const airport = searchParams.get("airport");
-  // const serviceType = searchParams.get("serviceType");
-  // const date = searchParams.get("date");
-  // const adults = searchParams.get("adults") || "1";
-  // const children = searchParams.get("children") || "0";
-
-  // // For chauffeur services
-  // const pickUp = searchParams.get("pickUp");
-  // const dropOff = searchParams.get("dropOff");
-  // const time = searchParams.get("time");
   const [airportNumber, setAirportNumber] = useState<string | null>(null);
   const [airportName, setAirportName] = useState<string | null>(null);
   const [serviceType, setServiceType] = useState<string | null>(null);
@@ -60,9 +53,6 @@ const SideInfoContent = ({
     }
   }, []);
 
-
-  console.log("rendered SideInfoContent: ", isElite);
-
   // You might want to fetch airport name based on ID
   // For now, displaying the raw values
   const displayAirport = airportNumber
@@ -73,6 +63,34 @@ const SideInfoContent = ({
     : "Elite Package";
   const displayDate = date || "30 Nov 2025";
 
+  const getTotalPrice = () => {
+    if (selectedPackage && bookingData) {
+      const getAdditionalAdultsCost = () => {
+        if (bookingData.adults > selectedPackage?.included_adults_count) {
+          return (
+            (bookingData.adults - selectedPackage?.included_adults_count) *
+            selectedPackage?.additional_adult_cost
+          );
+        }
+        return 0;
+      };
+      const prices = {
+        initPrice: 0,
+        adult_cost: selectedPackage?.adult_cost,
+        child_cost: selectedPackage?.child_cost * bookingData.children,
+        additional_adult_cost: getAdditionalAdultsCost(),
+      };
+      const totalPrice =
+        prices.initPrice +
+        prices.adult_cost +
+        prices.child_cost +
+        prices.additional_adult_cost;
+        return totalPrice;
+    }
+    return 0;
+  };
+
+  const fullPrice = getTotalPrice();
   return (
     <div className="h-full flex-1 space-y-4 sticky top-26">
       <div className="bg-[#7B5A411C] rounded-2xl p-5">
@@ -113,7 +131,7 @@ const SideInfoContent = ({
         </ul>
         <span className="block w-full h-0.5 my-2 bg-[#CFCFCF]"></span>
         <p className="flex justify-between font-semibold">
-          Total: <span>100$</span>
+          Total: <span>{fullPrice}$</span>
         </p>
       </div>
       <Steps isElite={isElite} currentStep={isMainPage ? 0 : focusedStep} />
@@ -150,16 +168,24 @@ const SideInfoContent = ({
 const SideInfo = ({
   focusedStep = 1,
   isElite,
+  bookingData,
+
+  currentPackage,
 }: {
+  currentPackage?: AirportPackage;
   bookingData?: VipBookingData;
   focusedStep?: number;
   isElite?: boolean;
 }) => {
-
-  console.log("SideInfo ", isElite);
+  console.log("SideInfo ", currentPackage);
   return (
     <Suspense fallback={<SideInfoSkeleton />}>
-      <SideInfoContent isElite={isElite} focusedStep={focusedStep} />
+      <SideInfoContent
+        bookingData={bookingData}
+        selectedPackage={currentPackage}
+        isElite={isElite}
+        focusedStep={focusedStep}
+      />
     </Suspense>
   );
 };
@@ -180,53 +206,3 @@ const SideInfoSkeleton = () => {
 };
 
 export default SideInfo;
-
-// const Steps = ({
-//   currentStep = 0,
-//   isElite = false,
-// }: {
-//   isElite?: boolean;
-//   currentStep: number;
-// }) => {
-
-  
-  
-//   const steps = [
-//     "Choose Service",
-//     "Flight Information",
-//     "Primary passenger",
-//     ...((isElite) ? [] : ["Chauffeur Services"]),
-//     "Additional Services",
-//     "Billing Information",
-//   ];
-//   return (
-//     <div className="bg-white rounded-2xl p-5">
-//       <h4 className="font-[Manrope] font-semibold">Steps</h4>
-//       <ul className="space-y-2 mt-2">
-//         {steps.map((step, i) => {
-//           return (
-//             <li
-//               key={step}
-//               className={`p-2 flex items-center ${
-//                 i === currentStep ? "bg-[#7B5A4133]" : ""
-//               } rounded-md`}
-//             >
-//               <p>
-//                 <span
-//                   className={`inline-block text-center rounded-full w-6 h-6 mr-2 ${
-//                     i === currentStep
-//                       ? "bg-[#7B5A41] text-white"
-//                       : "bg-[#F4F4F4] text-[#7a7a7a]"
-//                   }`}
-//                 >
-//                   {i + 1}
-//                 </span>
-//                 {step}
-//               </p>
-//             </li>
-//           );
-//         })}
-//       </ul>
-//     </div>
-//   );
-// };

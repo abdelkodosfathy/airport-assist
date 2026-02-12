@@ -12,6 +12,7 @@ export interface OptionType {
   label: string;
   value: string;
   icon?: ReactNode;
+  color?: string;
 }
 
 interface SearchWithDropdownProps {

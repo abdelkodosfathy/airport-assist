@@ -46,7 +46,9 @@ export function useSingleAirport(id: string) {
     queryKey: ["singleAirport", id],
     queryFn: () => fetchSingleAirport(id),
     staleTime: 1000 * 60 * 5,
+    
     gcTime: 1000 * 60 * 10,
     retry: 1,
+    enabled: !!id,
   });
 }

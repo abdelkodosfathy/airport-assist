@@ -15,7 +15,7 @@ interface TimePickerInputProps {
   value?: string;
   onChange?: (value: string) => void;
   onTimeChange?: (value: string) => void;
-  onSelect?: (hour: number, minute: number) => void;
+  onSelect?: (hour: number, minute: number, period?: "AM" | "PM") => void;
   format?: "12" | "24"; // 12-hour or 24-hour format
   minuteStep?: number; // Step for minutes (e.g., 5, 10, 15, 30)
 }
@@ -58,20 +58,20 @@ const TimePickerInput = ({
   // Parse time value to set hour, minute, and period
   const parseTimeValue = (timeStr: string) => {
     if (!timeStr) return;
-    
+
     const timeMatch = timeStr.match(/(\d{1,2}):(\d{2})\s*(AM|PM)?/i);
     if (timeMatch) {
       let hour = parseInt(timeMatch[1]);
       const minute = parseInt(timeMatch[2]);
       const period = timeMatch[3]?.toUpperCase() as "AM" | "PM" | undefined;
-      
+
       if (format === "12" && period) {
         setSelectedPeriod(period);
       } else if (format === "24" && hour > 12) {
         setSelectedPeriod("PM");
         hour = hour > 12 ? hour : hour;
       }
-      
+
       setSelectedHour(hour);
       setSelectedMinute(minute);
       setManualHourInput(hour.toString());
@@ -106,7 +106,7 @@ const TimePickerInput = ({
   const scrollToSelected = () => {
     if (hourScrollRef.current && selectedHour !== null) {
       const hourElement = hourScrollRef.current.querySelector(
-        `[data-hour="${selectedHour}"]`
+        `[data-hour="${selectedHour}"]`,
       );
       if (hourElement) {
         hourElement.scrollIntoView({ block: "center", behavior: "smooth" });
@@ -115,7 +115,7 @@ const TimePickerInput = ({
 
     if (minuteScrollRef.current && selectedMinute !== null) {
       const minuteElement = minuteScrollRef.current.querySelector(
-        `[data-minute="${selectedMinute}"]`
+        `[data-minute="${selectedMinute}"]`,
       );
       if (minuteElement) {
         minuteElement.scrollIntoView({ block: "center", behavior: "smooth" });
@@ -132,7 +132,7 @@ const TimePickerInput = ({
 
   const formatTime = (hour: number, minute: number, period: "AM" | "PM") => {
     const paddedMinute = minute.toString().padStart(2, "0");
-    
+
     if (format === "12") {
       return `${hour}:${paddedMinute} ${period}`;
     } else {
@@ -149,23 +149,28 @@ const TimePickerInput = ({
 
   const handleTimeSelect = () => {
     if (selectedHour !== null && selectedMinute !== null) {
-      const formattedTime = formatTime(selectedHour, selectedMinute, selectedPeriod);
+      const formattedTime = formatTime(
+        selectedHour,
+        selectedMinute,
+        selectedPeriod,
+      );
       setSelectedTime(formattedTime);
       setIsOpen(false);
 
       onChange?.(formattedTime);
       onTimeChange?.(formattedTime);
-      onSelect?.(selectedHour, selectedMinute);
+      onSelect?.(selectedHour, selectedMinute, selectedPeriod);
     }
   };
 
-  const hours = format === "12" 
-    ? Array.from({ length: 12 }, (_, i) => i + 1)
-    : Array.from({ length: 24 }, (_, i) => i);
+  const hours =
+    format === "12"
+      ? Array.from({ length: 12 }, (_, i) => i + 1)
+      : Array.from({ length: 24 }, (_, i) => i);
 
   const minutes = Array.from(
     { length: 60 / minuteStep },
-    (_, i) => i * minuteStep
+    (_, i) => i * minuteStep,
   );
 
   const handleHourClick = (hour: number) => {
@@ -198,10 +203,13 @@ const TimePickerInput = ({
         setTimeout(() => {
           if (hourScrollRef.current) {
             const hourElement = hourScrollRef.current.querySelector(
-              `[data-hour="${hourNum}"]`
+              `[data-hour="${hourNum}"]`,
             );
             if (hourElement) {
-              hourElement.scrollIntoView({ block: "center", behavior: "smooth" });
+              hourElement.scrollIntoView({
+                block: "center",
+                behavior: "smooth",
+              });
             }
           }
         }, 10);
@@ -224,10 +232,13 @@ const TimePickerInput = ({
         setTimeout(() => {
           if (minuteScrollRef.current) {
             const minuteElement = minuteScrollRef.current.querySelector(
-              `[data-minute="${nearestMinute}"]`
+              `[data-minute="${nearestMinute}"]`,
             );
             if (minuteElement) {
-              minuteElement.scrollIntoView({ block: "center", behavior: "smooth" });
+              minuteElement.scrollIntoView({
+                block: "center",
+                behavior: "smooth",
+              });
             }
           }
         }, 10);
@@ -326,7 +337,7 @@ const TimePickerInput = ({
                 -ms-overflow-style: none;
               }
             `}</style>
-            
+
             {/* Manual Input Section */}
             <div className="flex gap-2 mb-4">
               {/* Hour Input */}
@@ -415,6 +426,7 @@ const TimePickerInput = ({
                 >
                   {hours.map((hour) => (
                     <button
+                      type="button"
                       key={hour}
                       data-hour={hour}
                       onClick={() => handleHourClick(hour)}
@@ -424,7 +436,9 @@ const TimePickerInput = ({
                           "text-white bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)] font-semibold",
                       )}
                     >
-                      {format === "24" ? hour.toString().padStart(2, "0") : hour}
+                      {format === "24"
+                        ? hour.toString().padStart(2, "0")
+                        : hour}
                     </button>
                   ))}
                 </div>
@@ -441,6 +455,7 @@ const TimePickerInput = ({
                 >
                   {minutes.map((minute) => (
                     <button
+                      type="button"
                       key={minute}
                       data-minute={minute}
                       onClick={() => handleMinuteClick(minute)}
@@ -468,6 +483,7 @@ const TimePickerInput = ({
                   >
                     {["AM", "PM"].map((period) => (
                       <button
+                        type="button"
                         key={period}
                         onClick={() => handlePeriodClick(period as "AM" | "PM")}
                         className={cn(
@@ -486,6 +502,7 @@ const TimePickerInput = ({
 
             {/* Confirm Button */}
             <button
+              type="button"
               onClick={handleTimeSelect}
               disabled={selectedHour === null || selectedMinute === null}
               className={cn(

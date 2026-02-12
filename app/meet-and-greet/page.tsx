@@ -4,9 +4,27 @@ import ChooseService from "./components/choose-service";
 import SideInfo from "./components/side-info";
 import ContinueButton from "./components/Continue";
 import { useEffect, useState } from "react";
+import { Package } from "@/lib/types/package";
+import { AirportPackage } from "@/lib/types/airport";
 
+// export interface VipBookingData {
+//   airport_id: number;
+//   airport_name: string;
+//   serviceType: string;
+//   date: string;
+//   adults: number;
+//   children: number;
+//   pickUp?: string;
+//   dropOff?: string;
+//   time?: string;
+// }
 export interface VipBookingData {
+  additional_adult_cost: number;
+  adult_cost: number;
   airport_id: number;
+  child_cost: number;
+  included_adults_count: number;
+  package: Package;
   airport_name: string;
   serviceType: string;
   date: string;
@@ -18,6 +36,7 @@ export interface VipBookingData {
 }
 
 export default function ChooseServicesPage() {
+  const [selectedPackage, setSelectedPackage] = useState<AirportPackage>();
   const [bookingData, setBookingData] = useState<VipBookingData | null>(null);
   const [isElite, setIsElite] = useState<boolean>(false);
 
@@ -49,12 +68,15 @@ export default function ChooseServicesPage() {
       </h2>
       <div className="flex gap-4">
         <ChooseService
+          onSelectPackage={(e) => {
+            setSelectedPackage(e);
+          }}
           onSelectElitePackage={(value: boolean) => {
             setIsElite(value);
           }}
           bookingData={bookingData}
         />
-        <SideInfo isElite={isElite} bookingData={bookingData} />
+        <SideInfo currentPackage={selectedPackage} isElite={isElite} bookingData={bookingData} />
       </div>
       <ContinueButton />
     </>

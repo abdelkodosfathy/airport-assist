@@ -14,17 +14,23 @@ import { gsap } from "gsap";
 // import { Service } from "@/types/service";
 // import { Package } from "@/lib/types/package";
 import { AirportPackage } from "@/lib/types/airport";
-import { VipBookingData } from "../page";
+// import { VipBookingData } from "../page";
 
 interface ServiceCardProps {
   service: AirportPackage;
-  selectedService?: string | null;
-  bookingData: VipBookingData;
-  onSelect: (value: AirportPackage) => void; // pass the value on selection
+  selectedService?: boolean;
+  AirportCost: number;
+  adults_count: number;
+  child_count: number;
+  // bookingData: VipBookingData;
+  onSelect: (slug:string, packageCost: number) => void; // pass the value on selection
 }
 
 export default function ServiceCard({
-  bookingData,
+  // bookingData,
+  AirportCost,
+  adults_count,
+  child_count,
   service,
   selectedService,
   onSelect,
@@ -55,28 +61,29 @@ export default function ServiceCard({
     }
   }, [showMore]);
 
-  console.log(service);
   const getAdditionalAdultsCost = () => {
-    if (bookingData.adults > service.included_adults_count) {
+    if (adults_count > service.included_adults_count) {
       return (
-        (bookingData.adults - service.included_adults_count) *
+        (adults_count - service.included_adults_count) *
         service.additional_adult_cost
       );
     }
     return 0;
   };
   const prices = {
-    initPrice: 0,
     adult_cost: service.adult_cost,
-    child_cost: service.child_cost * bookingData.children,
+    child_cost: service.child_cost * child_count,
     additional_adult_cost: getAdditionalAdultsCost(),
   };
 
-  const totalPrice =
-    prices.initPrice +
+  const packageCost =
+    prices.additional_adult_cost +
     prices.adult_cost +
     prices.child_cost +
-    prices.additional_adult_cost;
+    AirportCost;
+
+
+    
   return (
     <div className="*:font-[Manrope] mt-8 rounded-xl p-3 bg-[#F4F4F4] border border-[#E0E0E0]">
       {/* Top Section */}
@@ -84,12 +91,15 @@ export default function ServiceCard({
         <div className="p-2 flex-2 flex flex-col">
           <div className="flex justify-between items-center">
             <div
-              onClick={() => onSelect(service)}
+              onClick={() => {
+                const slug = service.package.package_slug;
+                onSelect(slug, packageCost)
+              }}
               className="cursor-pointer flex gap-2 items-center"
             >
               {/* <Radio selected={service.package_slug === selectedService} /> */}
               <Radio
-                selected={service.package.package_slug === selectedService}
+                selected={selectedService}
               />
               <div>
                 <p className="font-semibold">{service.package.package_name}</p>
@@ -99,7 +109,8 @@ export default function ServiceCard({
               </div>
             </div>
             <div className="w-fit py-1 px-2 h-fit rounded-md font-semibold text-lg bg-[#7B5A411F] text-[#7B5A41]">
-              {totalPrice} $
+              {/* {totalPrice} $ */}
+              {packageCost.toFixed(2)}$
             </div>
           </div>
           <span className="my-2 h-px bg-[#CFCFCF] w-full" />

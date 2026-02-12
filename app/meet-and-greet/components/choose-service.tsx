@@ -8,9 +8,15 @@ import { AirportPackage } from "@/lib/types/airport";
 
 const SESSION_KEY = "vipSelectedPackage";
 
-const ChooseService = ({onSelectElitePackage, bookingData}:{onSelectElitePackage: (value: boolean) => void, bookingData:VipBookingData}) => {
-  // console.log(bookingData);
-  
+const ChooseService = ({
+  onSelectElitePackage,
+  onSelectPackage,
+  bookingData,
+}: {
+  onSelectElitePackage: (value: boolean) => void;
+  onSelectPackage: (pkg: AirportPackage) => void;
+  bookingData: VipBookingData;
+}) => {
   const [airportId, setAirportId] = useState<number>();
 
   useEffect(() => {
@@ -21,8 +27,9 @@ const ChooseService = ({onSelectElitePackage, bookingData}:{onSelectElitePackage
     }
   }, []);
 
-  const [selectedPackage, setSelectedPackage] = useState<AirportPackage | null>(null);
-  // const { data, isLoading, isError } = usePackages();
+  const [selectedPackage, setSelectedPackage] = useState<AirportPackage | null>(
+    null,
+  );
   const { data, isLoading, isError } = useSingleAirport(
     airportId?.toString() || "",
   );
@@ -35,7 +42,9 @@ const ChooseService = ({onSelectElitePackage, bookingData}:{onSelectElitePackage
   useEffect(() => {
     const storedSlug = sessionStorage.getItem(SESSION_KEY);
     if (storedSlug && packagesList) {
-      const found = packagesList.find((p) => p.package.package_slug === storedSlug);
+      const found = packagesList.find(
+        (p) => p.package.package_slug === storedSlug,
+      );
       if (found) {
         setSelectedPackage(found);
       }
@@ -44,24 +53,22 @@ const ChooseService = ({onSelectElitePackage, bookingData}:{onSelectElitePackage
   console.log(packagesList);
 
   const handleSelectPackage = (pkg: AirportPackage) => {
+    onSelectPackage(pkg);
+
     setSelectedPackage(pkg);
 
     // Store only the slug
     sessionStorage.setItem(SESSION_KEY, pkg.package.package_slug);
-    const selectedPackageSlug =  pkg.package.package_slug;
-    if(selectedPackageSlug === "elite"){ 
+    const selectedPackageSlug = pkg.package.package_slug;
+    if (selectedPackageSlug === "elite") {
       onSelectElitePackage(true);
     } else {
       onSelectElitePackage(false);
     }
-    console.log("Selected package slug:",selectedPackageSlug);
   };
 
   if (isLoading) return null;
 
-
-  console.log(bookingData);
-  
   return (
     <div className="flex-2 h-full">
       <div
@@ -77,7 +84,7 @@ const ChooseService = ({onSelectElitePackage, bookingData}:{onSelectElitePackage
 
         {packagesList?.map((pkg) => (
           <ServiceCard
-          bookingData={bookingData}
+            bookingData={bookingData}
             key={`package_${pkg.package_id}`}
             service={pkg}
             selectedService={

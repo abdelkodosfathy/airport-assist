@@ -48,6 +48,17 @@ export interface AirportsResponse {
   };
 }
 
+interface InnerPackage {
+  package_id: number;
+  service_type: string;
+  package_name: string;
+  package_description: string;
+  package_slug: string;
+  status: boolean;
+  created_at: string;
+  updated_at: string;
+  deleted_at: string | null;
+}
 export interface AirportPackage {
   id: number;
   package_id: number;
@@ -60,17 +71,40 @@ export interface AirportPackage {
   status: boolean;
   created_at: string;
   updated_at: string;
-  package: Package;
+  package: InnerPackage;
+}
+
+export interface SingleAirport {
+  airport_id: number;
+  airport_name: string;
+  airport_code: string;
+  airport_img: string | null;
+  airport_color: string | null;
+  location_lat: number;
+  location_long: number;
+  city_id: number;
+  status: boolean;
+  created_at: string;
+  updated_at: string;
+  deleted_at: string | null;
+  min_hours_before_booking: number;
+  last_minute_strategy: string;
+  last_minute_cost: number;
+  number_of_free_bags: number;
+  paid_bags_block_size: number;
+  paid_bags_block_cost: number;
+  is_fast_track_active: number;
+  fast_track_cost: number;
+  additional_hour_cost: number;
+  city: City;
+  features: any[]; // لو عندك type محدد ممكن تغيّره
+  airport_packages: AirportPackage[];
 }
 
 export interface SingleAirportResponse {
   status: number;
   msg: string | null;
   data: {
-    airport: {
-
-      airport_name:string,
-      airport_packages: AirportPackage[]
-    }
+    airport: SingleAirport;
   };
 }

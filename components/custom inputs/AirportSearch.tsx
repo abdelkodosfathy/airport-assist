@@ -4,12 +4,7 @@ import React, { useState, useRef, useEffect, ReactNode, useMemo } from "react";
 import { Search, ChevronDown, Loader2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-
-export interface OptionType {
-  label: string;
-  value: string;
-  icon?: ReactNode;
-}
+import { OptionType } from "./search";
 
 interface SearchWithDropdownProps {
   id?: string;

@@ -4,12 +4,13 @@ import { useState, useRef, useEffect, ReactNode } from "react";
 import { ChevronDown } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-
-export interface OptionType {
-  label: string;
-  value: string;
-  icon?: ReactNode;
-}
+import { OptionType } from "./search";
+// export interface OptionType {
+//   label: string;
+//   value: string;
+//   icon?: ReactNode;
+//   color?: ReactNode;
+// }
 
 interface SelectDropdownProps {
   id?: string;
@@ -35,11 +36,13 @@ const SelectDropdown = ({
   icon,
   iconPosition = "left",
   options,
-  value,
+  // value,
   onSelect,
 }: SelectDropdownProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
+
+  const [selectedValue, setSelectedValue] = useState<OptionType>();
 
   // Close on outside click
   useEffect(() => {
@@ -58,6 +61,7 @@ const SelectDropdown = ({
   const handleSelect = (option: OptionType) => {
     setIsOpen(false);
     onSelect?.(option);
+    setSelectedValue(option);
   };
 
   return (
@@ -79,20 +83,20 @@ const SelectDropdown = ({
             name={name}
             disabled={disabled}
             readOnly
-            value={value?.label || ""}
+            value={selectedValue?.label || ""}
             placeholder={placeholder}
             className={cn(
               "cursor-pointer bg-white",
               icon && iconPosition === "left" && "pl-10",
               icon && iconPosition === "right" && "pr-10",
-              inputClassName
+              inputClassName,
             )}
           />
 
           <ChevronDown
             className={cn(
               "absolute right-3 h-5 w-5 text-gray-400 transition-transform",
-              isOpen && "rotate-180"
+              isOpen && "rotate-180",
             )}
           />
         </div>
@@ -104,7 +108,7 @@ const SelectDropdown = ({
               <button
                 key={option.value}
                 onClick={() => handleSelect(option)}
-                className="w-full px-4 py-2 text-left hover:bg-gray-100 flex items-center gap-2"
+                className={`w-full px-4 py-2 text-left hover:bg-gray-200 flex items-center gap-2 ${option.color ? option.color : ""}`}
               >
                 {option.icon && option.icon}
                 <span className="text-sm">{option.label}</span>

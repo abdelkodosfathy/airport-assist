@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Manrope, Nunito } from "next/font/google";
 import "./globals.css";
 import Providers from "./providers";
+import { Toaster } from "sonner";
 
 const nunito = Nunito({
   variable: "--font-nuito",
@@ -48,6 +49,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${manrope.variable} ${nunito.variable}antialiased`}>
         <Providers>{children}</Providers>
+        <Toaster />
       </body>
     </html>
   );

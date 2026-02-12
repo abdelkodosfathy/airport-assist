@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Select,
   SelectContent,
@@ -8,18 +8,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useCurrency } from "@/lib/hooks/useCurrency";
 
-export default function LanguageSelect() {
-  const [language, setLanguage] = useState("USD");
+export default function CurrencySelector() {
+  const { currency, setCurrency } = useCurrency();
 
-  const icons: Record<string, string> = {
-    USD: "/icons/usd.png",
-    EUR: "/icons/eur.webp",
-    GBP: "/icons/gbp.png",
-  };
-
+  useEffect(() => {
+  }, [currency]);
   return (
-    <Select value={language} onValueChange={setLanguage}>
+    <Select value={currency} onValueChange={setCurrency}>
       <SelectTrigger
         // className="h-10 flex items-center gap-3 backdrop-blur-md hover:backdrop-blur-2xl transform duration-300 cursor-pointer bg-white/10 border-2 border-white/20 px-8 py-4 rounded-3xl font-light text-white leading-8 tracking-[0px] hover:bg-white/10"
         className=" min-h-10 backdrop-blur-md hover:backdrop-blur-xl
@@ -31,24 +28,33 @@ export default function LanguageSelect() {
         <SelectValue />
       </SelectTrigger>
 
-      <SelectContent className="bg-white text-black">
+      <SelectContent className="bg-white text-black" position="popper">
         <SelectItem value="USD">
           <div className="flex items-center gap-3">
-            <img src="/icons/usd.png" className="w-8 h-8 object-contain" />
+            <img
+              src="/icons/usd.png"
+              className="w-8 h-8 object-cover rounded-2xl"
+            />
             USD
           </div>
         </SelectItem>
 
         <SelectItem value="EUR">
           <div className="flex items-center gap-3">
-            <img src="/icons/eur.webp" className="w-8 h-8 object-contain" />
+            <img
+              src="/icons/eur.webp"
+              className="w-8 h-8 object-cover rounded-2xl"
+            />
             EUR
           </div>
         </SelectItem>
 
         <SelectItem value="GBP">
           <div className="flex items-center gap-3">
-            <img src="/icons/gbp.png" className="w-8 h-8 object-contain" />
+            <img
+              src="/icons/gbp.png"
+              className="w-8 h-8 object-cover rounded-2xl"
+            />
             GBP
           </div>
         </SelectItem>

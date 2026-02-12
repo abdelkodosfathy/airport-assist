@@ -233,12 +233,6 @@ const FlightForm = ({ onFocus }: StepsProps) => {
         {/* Arrival Time */}
         <div className="space-y-2">
           <Label>Arrival Time</Label>
-          {/* <Input
-            type="time"
-            className="bg-[#F4F4F4]"
-            value={flightInfo.arrival_time || ""}
-            onChange={(e) => updateSession({ arrival_time: e.target.value })}
-          /> */}
           <TimePickerInput
             className="bg-[#F4F4F4] border-none shadow-none rounded-lg"
             inputClassName="px-10 h-9 bg-[#F4F4F4] w-full rounded-lg"
