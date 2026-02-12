@@ -201,6 +201,17 @@ const PrimaryPassengerForm = forwardRef<PrimaryPassengerFormHandle, StepsProps>(
     const [bags, setBags] = useState<OptionType | null>(null);
     const [otherInfo, setOtherInfo] = useState("");
 
+    // Track validation errors
+    const [validationErrors, setValidationErrors] = useState<{
+      firstName?: boolean;
+      lastName?: boolean;
+      dob?: boolean;
+      travelClass?: boolean;
+      email?: boolean;
+      phone?: boolean;
+      bags?: boolean;
+    }>({});
+
     // Bags options with color
     const buildBagsOptions = (maxBags: number = 12) => {
       const options: OptionType[] = [];
@@ -231,18 +242,26 @@ const PrimaryPassengerForm = forwardRef<PrimaryPassengerFormHandle, StepsProps>(
 
     const bagsOptions = buildBagsOptions();
 
+    const validateInputs = () => {
+      const errors: typeof validationErrors = {};
+
+      if (!firstName.trim()) errors.firstName = true;
+      if (!lastName.trim()) errors.lastName = true;
+      if (!dob) errors.dob = true;
+      if (!travelClass) errors.travelClass = true;
+      if (!email.trim()) errors.email = true;
+      if (!phone.trim()) errors.phone = true;
+      if (!bags) errors.bags = true;
+
+      setValidationErrors(errors);
+
+      return Object.keys(errors).length === 0;
+    };
+
     // Expose isValid to parent
     useImperativeHandle(ref, () => ({
       isValid: () => {
-        // Check required fields
-        if (!firstName.trim()) return false;
-        if (!lastName.trim()) return false;
-        if (!dob) return false;
-        if (!travelClass) return false;
-        if (!email.trim()) return false;
-        if (!phone.trim()) return false;
-        if (!bags) return false;
-        return true;
+        return validateInputs();
       },
     }));
 
@@ -263,74 +282,103 @@ const PrimaryPassengerForm = forwardRef<PrimaryPassengerFormHandle, StepsProps>(
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-6 w-full">
             {/* First Name */}
             <div className="space-y-2">
-              <Label>First Name</Label>
+              <Label className={validationErrors.firstName ? "text-red-500" : ""}>
+                First Name {validationErrors?.firstName && "*"}
+              </Label>
               <Input
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
                 placeholder="First Name"
-                className="bg-[#F4F4F4]"
+                className={`bg-[#F4F4F4] ${
+                  validationErrors.firstName ? "border-red-500 border" : ""
+                }`}
               />
             </div>
 
             {/* Last Name */}
             <div className="space-y-2">
-              <Label>Last Name</Label>
+              <Label className={validationErrors.lastName ? "text-red-500" : ""}>
+                Last Name {validationErrors?.lastName && "*"}
+              </Label>
               <Input
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
                 placeholder="Last Name"
-                className="bg-[#F4F4F4]"
+                className={`bg-[#F4F4F4] ${
+                  validationErrors.lastName ? "border-red-500 border" : ""
+                }`}
               />
             </div>
 
             {/* DOB */}
             <div className="space-y-2">
-              <Label>Date of birth</Label>
-              <DateOfBirth onChange={setDob} value={dob} />
+              <Label className={validationErrors.dob ? "text-red-500" : ""}>
+                Date of birth {validationErrors?.dob && "*"}
+              </Label>
+              <DateOfBirth 
+                onChange={setDob} 
+                value={dob}
+                className={validationErrors.dob ? "border-red-500 border" : ""}
+              />
             </div>
 
             {/* Travel Class */}
             <div className="space-y-2">
-              <Label>Class of travel</Label>
+              <Label className={validationErrors.travelClass ? "text-red-500" : ""}>
+                Class of travel {validationErrors?.travelClass && "*"}
+              </Label>
               <SelectDropdown
                 value={travelClass}
                 onSelect={setTravelClass}
                 options={classesOptions}
                 className="h-9 rounded-md"
-                inputClassName="rounded-md pl-4 pr-10 bg-[#F4F4F4] border border-[#E0E0E0]"
+                inputClassName={`rounded-md pl-4 pr-10 bg-[#F4F4F4] border ${
+                  validationErrors.travelClass ? "border-red-500" : "border-[#E0E0E0]"
+                }`}
               />
             </div>
 
             {/* Email */}
             <div className="space-y-2">
-              <Label>Email</Label>
+              <Label className={validationErrors.email ? "text-red-500" : ""}>
+                Email {validationErrors?.email && "*"}
+              </Label>
               <Input
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Email address"
-                className="bg-[#F4F4F4]"
+                className={`bg-[#F4F4F4] ${
+                  validationErrors.email ? "border-red-500 border" : ""
+                }`}
               />
             </div>
 
             {/* Phone */}
             <div className="space-y-2">
-              <Label>Phone</Label>
+              <Label className={validationErrors.phone ? "text-red-500" : ""}>
+                Phone {validationErrors?.phone && "*"}
+              </Label>
               <CustomPhoneInput
                 radius="7px"
                 value={phone}
                 onChange={setPhone}
+                validationClass={validationErrors.phone}
               />
             </div>
 
             {/* Number of bags */}
             <div className="space-y-2 md:col-span-2">
-              <Label>Number Of bags</Label>
+              <Label className={validationErrors.bags ? "text-red-500" : ""}>
+                Number Of bags {validationErrors?.bags && "*"}
+              </Label>
               <SelectDropdown
                 options={bagsOptions}
                 value={bags}
                 onSelect={setBags}
                 className="h-9 rounded-md"
-                inputClassName="rounded-md pl-4 pr-10 bg-[#F4F4F4] border border-[#E0E0E0]"
+                inputClassName={`rounded-md pl-4 pr-10 bg-[#F4F4F4] border ${
+                  validationErrors.bags ? "border-red-500" : "border-[#E0E0E0]"
+                }`}
               />
             </div>
 

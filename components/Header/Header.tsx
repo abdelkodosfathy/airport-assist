@@ -5,7 +5,6 @@ import { useState } from "react";
 import { Button } from "../ui/button";
 import CurrencySelector from "../ui/CurrencySelector";
 import { ChevronDown, Menu, X } from "lucide-react";
-import CurrncySelector from "../ui/CurrncySelector";
 import "./header.css";
 
 export default function Header() {
@@ -106,7 +105,7 @@ export default function Header() {
           </Link>
 
           <div className="pt-4 border-t border-white/20 space-y-4">
-            <LanguageSelect />
+            <CurrencySelector />
 
             <a
               style={{

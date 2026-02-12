@@ -239,7 +239,8 @@ export default function BookingForm() {
 
         // Redirect without query params
         if (activeTab === "vip") {
-          window.location.href = "/meet-and-greet";
+          // window.location.href = "/meet-and-greet";
+          window.location.href = "/vip-meet-and-greet";
         } else {
           window.location.href = "/chauffeur-services";
         }
