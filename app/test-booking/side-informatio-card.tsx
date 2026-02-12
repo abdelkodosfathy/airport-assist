@@ -8,9 +8,10 @@ type Props = {
   adults_count: number;
   child_count: number;
   totalPrice: number;
+  withoutChauffuer: boolean;
 };
 
-const SideInformationCard = ({ adults_count, child_count,totalPrice }: Props) => {
+const SideInformationCard = ({ withoutChauffuer, adults_count, child_count,totalPrice }: Props) => {
   return (
     <div className="h-full flex-1 space-y-4 sticky top-26">
       <div className="bg-[#7B5A411C] rounded-2xl p-5">
@@ -48,7 +49,7 @@ const SideInformationCard = ({ adults_count, child_count,totalPrice }: Props) =>
           Total: <span>{totalPrice.toFixed(2)}$</span>
         </p>
       </div>
-      <Steps currentStep={1} />
+      <Steps withoutChauffuer={withoutChauffuer} currentStep={1} />
     </div>
   );
 };

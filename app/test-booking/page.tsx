@@ -222,6 +222,7 @@ const Page = () => {
         </Activity>
         {currentPage !== "summry" && (
           <SideInformationCard
+          withoutChauffuer={currentPackageSlug === "elite"}
             totalPrice={totalPrice}
             adults_count={storedData.adults}
             child_count={storedData.children}

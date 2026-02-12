@@ -3,13 +3,13 @@ import { gsap } from "gsap";
 
 const Steps = ({
   currentStep = 0,
-  isElite = false,
+  withoutChauffuer = false,
 }: {
-  isElite?: boolean;
+  withoutChauffuer?: boolean;
   currentStep: number;
 }) => {
   const chauffeurRef = useRef<HTMLLIElement>(null);
-  const prevIsEliteRef = useRef(isElite);
+  const prevIsEliteRef = useRef(withoutChauffuer);
 
   const steps = [
     "Choose Service",
@@ -23,7 +23,7 @@ const Steps = ({
   useEffect(() => {
     if (chauffeurRef.current) {
       const wasElite = prevIsEliteRef.current;
-      const isNowElite = isElite;
+      const isNowElite = withoutChauffuer;
 
       // Hiding animation (when becoming elite)
       if (!wasElite && isNowElite) {
@@ -60,7 +60,7 @@ const Steps = ({
         );
       }
       // Initial state
-      else if (isElite) {
+      else if (withoutChauffuer) {
         gsap.set(chauffeurRef.current, {
           height: 0,
           opacity: 0,
@@ -70,9 +70,9 @@ const Steps = ({
         });
       }
 
-      prevIsEliteRef.current = isElite;
+      prevIsEliteRef.current = withoutChauffuer;
     }
-  }, [isElite]);
+  }, [withoutChauffuer]);
 
   return (
     <div className="bg-white rounded-2xl p-5">
@@ -80,7 +80,7 @@ const Steps = ({
       <ul className="mt-2">
         {steps.map((step, i) => {
           const isChauffeur = step === "Chauffeur Services";
-          const displayIndex = isElite && i > 3 ? i - 1 : i;
+          const displayIndex = withoutChauffuer && i > 3 ? i - 1 : i;
 
           return (
             <li
