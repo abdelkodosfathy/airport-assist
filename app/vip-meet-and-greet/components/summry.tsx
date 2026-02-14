@@ -340,6 +340,7 @@ const BookButton = ({
 
   return (
     <Button
+    type="button"
       disabled={display_booking_status !== "Awaiting Payment"}
       onClick={handlBookNow}
       variant="outline"
