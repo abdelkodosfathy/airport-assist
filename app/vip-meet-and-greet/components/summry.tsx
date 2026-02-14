@@ -13,6 +13,7 @@ import Separator from "@/components/ui/formSeparator";
 import payments from "@/public/payments.png";
 import { useEffect, useState } from "react";
 import { useCurrency } from "@/lib/hooks/useCurrency";
+import { apiPost } from "@/lib/api";
 
 export default function Summary({
   onBack,
@@ -285,7 +286,7 @@ export default function Summary({
             </div>
 
             <BookButton
-              uuid=""
+              uuid={uuid}
               display_booking_status={summaryData.display_booking_status}
             />
             <p className="text-[#74747A]  col-span-2 text-center">
@@ -301,6 +302,109 @@ export default function Summary({
   );
 }
 
+// const BookButton = ({
+//   uuid,
+//   display_booking_status,
+// }: {
+//   uuid: string;
+//   display_booking_status: string;
+// }) => {
+//   const [summaryData, setSummaryData] = useState<any>(null);
+//   const [loading, setLoading] = useState(false);
+//   const [error, setError] = useState<string | null>(null);
+
+//   const handlBookNow = () => {
+//     console.log(uuid);
+//     if (display_booking_status === "Awaiting Payment") {
+//       fetchLink();
+//     }
+//   };
+
+//   // const fetchLink = async () => {
+//   //   try {
+//   //     setLoading(true);
+//   //     setError(null);
+
+//   //     const res = await fetch(
+//   //       `https://airportassist-backend.aqaralex.com/api/public/bookings/${uuid}/checkout/payment-url`,
+//   //     );
+//   //     if (!res.ok) throw new Error(`Failed to fetch summary: ${res.status}`);
+
+//   //     const data = await res.json();
+//   //     setSummaryData(data.data.booking);
+//   //   } catch (err: unknown) {
+//   //     console.error(err);
+//   //     setError(err instanceof Error ? err.message : "Unknown error");
+//   //   } finally {
+//   //     setLoading(false);
+//   //   }
+//   // };
+
+//   const fetchLink = async () => {
+//     try {
+//       setLoading(true);
+//       setError(null);
+
+//       const res = await fetch(
+//         `https://airportassist-backend.aqaralex.com/api/public/bookings/${uuid}/checkout/payment-url`,
+//         {
+//           method: "POST",
+//           headers: { "Content-Type": "application/json" },
+//           body: JSON.stringify({
+//             payment_method: "stripe",
+//             promo_code: "",
+//           }),
+//         },
+//       );
+
+//       if (!res.ok)
+//         throw new Error(`Failed to fetch payment link: ${res.status}`);
+
+//       const data = await res.json();
+
+//       const paymentUrl = data?.data?.payment_url;
+//       if (paymentUrl) {
+//         // Redirect to the payment page
+//         window.location.href = paymentUrl;
+//       } else {
+//         setError("Payment URL not returned from server.");
+//       }
+//     } catch (err: unknown) {
+//       console.error(err);
+//       setError(err instanceof Error ? err.message : "Unknown error");
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+//   return (
+//     <Button
+//       type="button"
+//       disabled={display_booking_status !== "Awaiting Payment"}
+//       onClick={handlBookNow}
+//       variant="outline"
+//       className="
+// 								col-span-2
+// 								w-full
+// 								cursor-pointer
+// 								border-black
+// 								text-black
+// 								hover:border-[#664F31]
+// 								hover:bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)]
+// 								hover:text-white
+// 								duration-0
+// 								rounded-lg
+// 								py-5
+// 								px-7
+// 								"
+//     >
+//       <p className="text-sm font-normal font-[Manrope]">
+//         {/* Proceed To Checkout{" "} */}
+//         Book Now
+//       </p>
+//     </Button>
+//   );
+// };
+
 const BookButton = ({
   uuid,
   display_booking_status,
@@ -308,28 +412,34 @@ const BookButton = ({
   uuid: string;
   display_booking_status: string;
 }) => {
-  const [summaryData, setSummaryData] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const handlBookNow = () => {
-    console.log(uuid);
     if (display_booking_status === "Awaiting Payment") {
+      fetchPaymentLink();
     }
   };
 
-  const fetchLink = async () => {
+  const fetchPaymentLink = async () => {
+    console.log(uuid);
+    
     try {
       setLoading(true);
       setError(null);
 
-      const res = await fetch(
-        `https://airportassist-backend.aqaralex.com/api/public/bookings/${uuid}/checkout/payment-url`,
-      );
-      if (!res.ok) throw new Error(`Failed to fetch summary: ${res.status}`);
+      const data = await apiPost(`/bookings/${uuid}/checkout/payment-url`, {
+        payment_method: "stripe",
+        promo_code: "",
+      });
 
-      const data = await res.json();
-      setSummaryData(data.data.booking);
+      const paymentUrl = data?.data?.payment_url;
+      if (paymentUrl) {
+        // Redirect to the payment page
+        window.location.href = paymentUrl;
+      } else {
+        setError("Payment URL not returned from server.");
+      }
     } catch (err: unknown) {
       console.error(err);
       setError(err instanceof Error ? err.message : "Unknown error");
@@ -340,28 +450,27 @@ const BookButton = ({
 
   return (
     <Button
-    type="button"
-      disabled={display_booking_status !== "Awaiting Payment"}
+      type="button"
+      disabled={display_booking_status !== "Awaiting Payment" || loading}
       onClick={handlBookNow}
       variant="outline"
       className="
-								col-span-2
-								w-full
-								cursor-pointer 
-								border-black 
-								text-black 
-								hover:border-[#664F31]  
-								hover:bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)] 
-								hover:text-white 
-								duration-0
-								rounded-lg
-								py-5
-								px-7
-								"
+        col-span-2
+        w-full
+        cursor-pointer 
+        border-black 
+        text-black 
+        hover:border-[#664F31]  
+        hover:bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)] 
+        hover:text-white 
+        duration-0
+        rounded-lg
+        py-5
+        px-7
+      "
     >
       <p className="text-sm font-normal font-[Manrope]">
-        {/* Proceed To Checkout{" "} */}
-        Book Now
+        {loading ? "Processing..." : "Book Now"}
       </p>
     </Button>
   );

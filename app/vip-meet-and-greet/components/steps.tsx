@@ -115,6 +115,7 @@
 
 import { ChevronRight } from "lucide-react";
 import { currentPage } from "../page";
+import React from "react";
 
 type StepItem = {
   label: string;
@@ -141,6 +142,7 @@ const Steps = ({ currentPage = "packages" }: { currentPage: currentPage }) => {
     }
   };
   const currentStep = getCurrentStep();
+  console.log(steps);
   return (
     <div className="bg-white rounded-2xl shadow-xs p-5 mb-4">
       {/* <h4 className="font-[Manrope] font-semibold">Steps</h4> */}
@@ -149,9 +151,10 @@ const Steps = ({ currentPage = "packages" }: { currentPage: currentPage }) => {
         {steps.map((step, i) => {
           const isActive = i === currentStep;
           const isCompleted = i < currentStep;
+          console.log(step.label);
 
           return (
-            <>
+            <React.Fragment key={step.label}>
               <li
                 key={step.label}
                 className={`flex items-center rounded-md transition-all duration-300 ${
@@ -194,7 +197,7 @@ const Steps = ({ currentPage = "packages" }: { currentPage: currentPage }) => {
                   <ChevronRight color="#7B5A41" />
                 </li>
               )}
-            </>
+            </React.Fragment>
           );
         })}
       </ul>
