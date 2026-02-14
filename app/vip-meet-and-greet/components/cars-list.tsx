@@ -27,7 +27,7 @@ const CarCard = ({ car, selected = false, onSelect }: CarCardProps) => {
     <div
       onClick={onSelect}
       className={`
-      bg-white rounded-lg p-4 flex flex-col justify-between shadow-md hover:shadow-xl duration-300 cursor-pointer relative
+      bg-white rounded-lg p-4 flex flex-col justify-between shadow-sm hover:shadow-md duration-300 cursor-pointer relative
       ${selected ? "border-2 border-[#664F31]" : "border-2 border-white"}
     `}
     >

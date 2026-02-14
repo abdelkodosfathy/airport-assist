@@ -14,6 +14,7 @@ import { gsap } from "gsap";
 // import { Service } from "@/types/service";
 // import { Package } from "@/lib/types/package";
 import { AirportPackage } from "@/lib/types/airport";
+import { useCurrency } from "@/lib/hooks/useCurrency";
 // import { VipBookingData } from "../page";
 
 interface ServiceCardProps {
@@ -23,7 +24,7 @@ interface ServiceCardProps {
   adults_count: number;
   child_count: number;
   // bookingData: VipBookingData;
-  onSelect: (slug:string, packageCost: number) => void; // pass the value on selection
+  onSelect: (slug: string, packageCost: number, name: string) => void; // pass the value on selection
 }
 
 export default function ServiceCard({
@@ -35,6 +36,8 @@ export default function ServiceCard({
   selectedService,
   onSelect,
 }: ServiceCardProps) {
+  const { currency } = useCurrency();
+
   const [showMore, setShowMore] = useState(false);
   const detailsRef = useRef<HTMLDivElement>(null);
 
@@ -82,8 +85,27 @@ export default function ServiceCard({
     prices.child_cost +
     AirportCost;
 
+  const getCurrencyMark = () => {
+    let mark = "$";
 
-    
+    switch (currency) {
+      case "USD":
+        mark = "$";
+        break;
+      case "EUR":
+        mark = "€";
+        break;
+      case "GBP":
+        mark = "£";
+        break;
+      default:
+        mark = "$";
+    }
+
+    return mark;
+  };
+
+  const currencyMark = getCurrencyMark();
   return (
     <div className="*:font-[Manrope] mt-8 rounded-xl p-3 bg-[#F4F4F4] border border-[#E0E0E0]">
       {/* Top Section */}
@@ -93,14 +115,12 @@ export default function ServiceCard({
             <div
               onClick={() => {
                 const slug = service.package.package_slug;
-                onSelect(slug, packageCost)
+                onSelect(slug, packageCost, service.package.package_name);
               }}
               className="cursor-pointer flex gap-2 items-center"
             >
               {/* <Radio selected={service.package_slug === selectedService} /> */}
-              <Radio
-                selected={selectedService}
-              />
+              <Radio selected={selectedService} />
               <div>
                 <p className="font-semibold">{service.package.package_name}</p>
                 <p className="text-[#7B5A41] text-sm">
@@ -108,9 +128,9 @@ export default function ServiceCard({
                 </p>
               </div>
             </div>
-            <div className="w-fit py-1 px-2 h-fit rounded-md font-semibold text-lg bg-[#7B5A411F] text-[#7B5A41]">
+            <div className="min-w-max py-1 px-2 h-fit rounded-md font-semibold text-lg bg-[#7B5A411F] text-[#7B5A41]">
               {/* {totalPrice} $ */}
-              {packageCost.toFixed(2)}$
+              {packageCost.toFixed(2)} {currencyMark}
             </div>
           </div>
           <span className="my-2 h-px bg-[#CFCFCF] w-full" />

@@ -13,6 +13,7 @@ export interface OptionType {
   value: string;
   icon?: ReactNode;
   color?: string;
+  cost?: number;
 }
 
 interface SearchWithDropdownProps {
@@ -69,7 +70,10 @@ const SearchWithDropdown = ({
 
   // Sync with controlled value
   useEffect(() => {
-    if (controlledValue?.label !== undefined && controlledValue.label !== null) {
+    if (
+      controlledValue?.label !== undefined &&
+      controlledValue.label !== null
+    ) {
       setSearch(controlledValue.label);
     }
   }, [controlledValue]);

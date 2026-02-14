@@ -13,7 +13,7 @@ const PackagesSection = ({
 
   // onUpdate,
 }: {
-  onSelectPackage: (slug: string, packageCost: number) => void;
+  onSelectPackage: (slug: string, packageCost: number, name: string) => void;
   packagesList: AirportPackage[];
   selectedPackageSlug: string;
   adults_count: number;
@@ -23,19 +23,13 @@ const PackagesSection = ({
   // onUpdate: (path: string, value: any) => void;
 }) => {
   // const [selectedPackageSlug ,setSelectedPackageSlug] = useState<string>();
-  function handleSelectedPackage(slug: string, packageCost: number) {
-    onSelectPackage(slug, packageCost);
-
-    // onUpdate("package_slug", "slug");
-    // setSelectedPackageSlug(slug)
+  function handleSelectedPackage(slug: string, packageCost: number, name: string) {
+    onSelectPackage(slug, packageCost, name);
   }
   return (
     <div className="flex-2 h-full">
       <div
-        style={{
-          boxShadow: "0px 11.48px 114.76px 0px #A7A7A73D",
-        }}
-        className="px-10 py-6 bg-white rounded-2xl h-full"
+        className="px-10 shadow-md py-6 bg-white rounded-2xl h-full"
       >
         <h4 className="text-normal">
           Kindly review the service descriptions below and confirm your
@@ -48,7 +42,7 @@ const PackagesSection = ({
             adults_count={adults_count}
             child_count={child_count}
             AirportCost={AirportCost}
-            key={`package_${pkg.package_id}`}
+            key={`package_${pkg.package.package_slug}`}
             service={pkg}
             onSelect={handleSelectedPackage}
           />

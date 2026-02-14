@@ -165,11 +165,25 @@ import DateOfBirth from "./DateOfBirth";
 import SelectDropdown from "@/components/custom inputs/SelectList";
 import { useCurrency } from "@/lib/hooks/useCurrency";
 
+export interface PrimaryPassengerData {
+  firstName: string;
+  lastName: string;
+  dateOfBirth: string | null;
+  travelClass: string | null;
+  email: string;
+  phone: string;
+  numberOfBags: number;
+  bagsCost: number;
+  otherPassengersInfo: string;
+}
+
 interface StepsProps {
   onFocus?: () => void;
   freeBags: number;
   blockCost: number;
   blockSize: number;
+
+  onSelectBags: (bagsCost: number) => void;
 }
 
 export interface PrimaryPassenger {
@@ -182,7 +196,7 @@ export type PrimaryPassengerFormHandle = {
 };
 
 const PrimaryPassengerForm = forwardRef<PrimaryPassengerFormHandle, StepsProps>(
-  ({ onFocus, freeBags, blockCost, blockSize }, ref) => {
+  ({ onFocus, freeBags, blockCost, blockSize, onSelectBags }, ref) => {
     const { currency } = useCurrency();
 
     const classesOptions = [
@@ -218,7 +232,7 @@ const PrimaryPassengerForm = forwardRef<PrimaryPassengerFormHandle, StepsProps>(
       for (let i = 1; i <= maxBags; i++) {
         let label = "";
         let color: string | undefined;
-
+        let cost = 0;
         if (i <= freeBags) {
           label = `${i} bag${i > 1 ? "s" : ""} (free)`;
           color = undefined;
@@ -226,7 +240,7 @@ const PrimaryPassengerForm = forwardRef<PrimaryPassengerFormHandle, StepsProps>(
           const extraBags = i - freeBags;
           const blocks = Math.ceil(extraBags / blockSize);
           const totalCost = blocks * blockCost;
-
+          cost = totalCost;
           label = `${i} bag${i > 1 ? "s" : ""} (+${totalCost} ${currency})`;
           color = blocks % 2 === 1 ? "bg-gray-100" : "";
         }
@@ -235,6 +249,7 @@ const PrimaryPassengerForm = forwardRef<PrimaryPassengerFormHandle, StepsProps>(
           value: i.toString(),
           label,
           color,
+          cost,
         });
       }
       return options;
@@ -263,6 +278,20 @@ const PrimaryPassengerForm = forwardRef<PrimaryPassengerFormHandle, StepsProps>(
       isValid: () => {
         return validateInputs();
       },
+
+      getData: (): PrimaryPassengerData => {
+        return {
+          firstName: firstName.trim(),
+          lastName: lastName.trim(),
+          dateOfBirth: dob,
+          travelClass: travelClass?.value || null,
+          email: email.trim(),
+          phone,
+          numberOfBags: bags ? Number(bags.value) : 0,
+          bagsCost: bags?.cost || 0,
+          otherPassengersInfo: otherInfo.trim(),
+        };
+      },
     }));
 
     return (
@@ -282,7 +311,9 @@ const PrimaryPassengerForm = forwardRef<PrimaryPassengerFormHandle, StepsProps>(
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-6 w-full">
             {/* First Name */}
             <div className="space-y-2">
-              <Label className={validationErrors.firstName ? "text-red-500" : ""}>
+              <Label
+                className={validationErrors.firstName ? "text-red-500" : ""}
+              >
                 First Name {validationErrors?.firstName && "*"}
               </Label>
               <Input
@@ -297,7 +328,9 @@ const PrimaryPassengerForm = forwardRef<PrimaryPassengerFormHandle, StepsProps>(
 
             {/* Last Name */}
             <div className="space-y-2">
-              <Label className={validationErrors.lastName ? "text-red-500" : ""}>
+              <Label
+                className={validationErrors.lastName ? "text-red-500" : ""}
+              >
                 Last Name {validationErrors?.lastName && "*"}
               </Label>
               <Input
@@ -315,8 +348,8 @@ const PrimaryPassengerForm = forwardRef<PrimaryPassengerFormHandle, StepsProps>(
               <Label className={validationErrors.dob ? "text-red-500" : ""}>
                 Date of birth {validationErrors?.dob && "*"}
               </Label>
-              <DateOfBirth 
-                onChange={setDob} 
+              <DateOfBirth
+                onChange={setDob}
                 value={dob}
                 className={validationErrors.dob ? "border-red-500 border" : ""}
               />
@@ -324,7 +357,9 @@ const PrimaryPassengerForm = forwardRef<PrimaryPassengerFormHandle, StepsProps>(
 
             {/* Travel Class */}
             <div className="space-y-2">
-              <Label className={validationErrors.travelClass ? "text-red-500" : ""}>
+              <Label
+                className={validationErrors.travelClass ? "text-red-500" : ""}
+              >
                 Class of travel {validationErrors?.travelClass && "*"}
               </Label>
               <SelectDropdown
@@ -333,7 +368,9 @@ const PrimaryPassengerForm = forwardRef<PrimaryPassengerFormHandle, StepsProps>(
                 options={classesOptions}
                 className="h-9 rounded-md"
                 inputClassName={`rounded-md pl-4 pr-10 bg-[#F4F4F4] border ${
-                  validationErrors.travelClass ? "border-red-500" : "border-[#E0E0E0]"
+                  validationErrors.travelClass
+                    ? "border-red-500"
+                    : "border-[#E0E0E0]"
                 }`}
               />
             </div>
@@ -359,6 +396,7 @@ const PrimaryPassengerForm = forwardRef<PrimaryPassengerFormHandle, StepsProps>(
                 Phone {validationErrors?.phone && "*"}
               </Label>
               <CustomPhoneInput
+                className="h-9 rounded-md"
                 radius="7px"
                 value={phone}
                 onChange={setPhone}
@@ -374,7 +412,10 @@ const PrimaryPassengerForm = forwardRef<PrimaryPassengerFormHandle, StepsProps>(
               <SelectDropdown
                 options={bagsOptions}
                 value={bags}
-                onSelect={setBags}
+                onSelect={(e) => {
+                  setBags(e);
+                  onSelectBags(e.cost || 0);
+                }}
                 className="h-9 rounded-md"
                 inputClassName={`rounded-md pl-4 pr-10 bg-[#F4F4F4] border ${
                   validationErrors.bags ? "border-red-500" : "border-[#E0E0E0]"

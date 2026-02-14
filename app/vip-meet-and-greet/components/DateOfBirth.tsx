@@ -280,7 +280,7 @@ const DateOfBirth = ({ value, onChange, className }: DateOfBirthProps) => {
           type="button"
           onClick={() => !disabled && setOpenDropdown(isOpen ? null : name)}
           disabled={disabled}
-          className={`w-full px-4 py-2 bg-[#F4F4F4] border border-[#E0E0E0] rounded-md flex justify-between ${
+          className={`w-full items-center shadow-xs h-9 px-4 py-2 bg-[#F4F4F4] border border-[#E0E0E0] rounded-md flex justify-between ${
             disabled ? "opacity-50" : ""
           } ${className}`}
         >

@@ -11,132 +11,207 @@ import Image from "next/image";
 import Separator from "@/components/ui/formSeparator";
 
 import payments from "@/public/payments.png";
+import { useEffect, useState } from "react";
+import { useCurrency } from "@/lib/hooks/useCurrency";
 
-export default function Summry({ onBack }: { onBack: () => void }) {
+export default function Summary({
+  onBack,
+  uuid,
+}: {
+  onBack: () => void;
+  uuid: string;
+}) {
+  const [summaryData, setSummaryData] = useState<any>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const { currency } = useCurrency();
+
+  const getCurrencyMark = () => {
+    let mark = "$";
+
+    switch (currency) {
+      case "USD":
+        mark = "$";
+        break;
+      case "EUR":
+        mark = "€";
+        break;
+      case "GBP":
+        mark = "£";
+        break;
+      default:
+        mark = "$";
+    }
+
+    return mark;
+  };
+
+  const currencyMark = getCurrencyMark();
+
+  useEffect(() => {
+    if (uuid.trim() === "") return;
+
+    const fetchSummary = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+
+        const res = await fetch(
+          `https://airportassist-backend.aqaralex.com/api/public/bookings/${uuid}`,
+        );
+        if (!res.ok) throw new Error(`Failed to fetch summary: ${res.status}`);
+
+        const data = await res.json();
+        setSummaryData(data.data.booking);
+      } catch (err: unknown) {
+        console.error(err);
+        setError(err instanceof Error ? err.message : "Unknown error");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSummary();
+  }, [uuid]);
+
+  if (loading) return <p>Loading booking summary...</p>;
+  if (error) return <p className="text-red-500">{error}</p>;
+  if (!summaryData) return null;
+
+  const {
+    contact,
+    flight,
+    passenger,
+    adult_passengers,
+    child_passengers,
+    number_of_bags,
+    fast_track_enabled,
+    wheelchair_assistance,
+    user_notes,
+    subtotal,
+    payment_fees,
+    total,
+  } = summaryData;
+
   return (
     <div>
       <div className="flex gap-4">
-        <div className="flex-2 flex flex-col gap-4">
-          <div
-            className="px-10 py-6 w-full bg-white rounded-2xl"
-            style={{
-              boxShadow: "0px 11.48px 114.76px 0px #A7A7A73D",
-            }}
-          >
-            <h2 className="text-[18.75px] mb-4 font-semibold">
-              Contact Information
-            </h2>
-            <div className="space-y-4">
-              <div className="flex gap-2">
-                <User /> <p>mahmoud</p>
+        <div className="flex-2 space-y-4">
+          {/* Contact Info */}
+          <div className="px-10 py-6 w-full bg-white rounded-2xl shadow-md">
+            <h2 className="text-lg font-semibold mb-4">Contact Information</h2>
+            <div className="space-y-2">
+              <div className="flex gap-2 items-center">
+                <User />{" "}
+                <p>
+                  {contact.first_name} {contact.last_name}
+                </p>
               </div>
               <div className="flex gap-4">
-                <div className="flex gap-2">
-                  <Mail /> <p>mahmoud@airportassist.com</p>
+                <div className="flex gap-2 items-center">
+                  <Mail /> <p>{contact.email}</p>
                 </div>
-                <div className="flex gap-2">
-                  <Phone /> <p>+20 (101) 232-3422</p>
+                <div className="flex gap-2 items-center">
+                  <Phone /> <p>{contact.phone}</p>
                 </div>
               </div>
             </div>
           </div>
-          <div
-            className="px-10 py-6 w-full bg-white rounded-2xl"
-            style={{
-              boxShadow: "0px 11.48px 114.76px 0px #A7A7A73D",
-            }}
-          >
-            <h2 className="text-[18.75px] mb-4 font-semibold">
-              London Gatwick Arrival Elite
+
+          {/* Flight Info */}
+          <div className="px-10 py-6 w-full bg-white rounded-2xl shadow-md">
+            <h2 className="text-lg font-semibold mb-4">
+              {summaryData.package?.package_name || "VIP Booking"}
             </h2>
-            <div className="space-y-2 *:hover:bg-gray-100">
-              <p className=" flex justify-between">
-                <span className="flex-1">Booking Date :</span>
-                <span className="flex-1">December 25, 2025</span>
+            <div className="space-y-2">
+              <p className="flex justify-between">
+                <span>Booking Date:</span>
+                <span>
+                  {new Date(summaryData.booking_timestamp).toLocaleString()}
+                </span>
               </p>
               <p className="flex justify-between">
-                <span className="flex-1">Flight Number :</span>
-                <span className="flex-1">MS 777</span>
+                <span>Flight Number:</span>
+                <span>
+                  {flight.flight_number} ({flight.airline_name})
+                </span>
               </p>
               <p className="flex justify-between">
-                <span className="flex-1">Flight Time :</span>
-                <span className="flex-1">12:30 PM</span>
+                <span>Number of Passengers:</span>
+                <span>{adult_passengers} Adults</span>
               </p>
               <p className="flex justify-between">
-                <span className="flex-1">Number of Passengers :</span>
-                <span className="flex-1">2 Adults</span>
+                <span>Number of Children:</span>
+                <span>{child_passengers} Child</span>
               </p>
               <p className="flex justify-between">
-                <span className="flex-1">Number of Children :</span>
-                <span className="flex-1">2 Child</span>
+                <span>Number of Bags:</span>
+                <span>{number_of_bags}</span>
               </p>
               <p className="flex justify-between">
-                <span className="flex-1">Number of bags :</span>
-                <span className="flex-1">1-4</span>
+                <span>Fast Track:</span>
+                <span>{fast_track_enabled ? "Included" : "Not included"}</span>
               </p>
               <p className="flex justify-between">
-                <span className="flex-1">Fast Track :</span>
-                <span className="flex-1">Include Fast Track Service</span>
-              </p>
-              <p className="flex justify-between">
-                <span className="flex-1">Special Requests :</span>
-                <span className="flex-1">Wheelchair</span>
+                <span>Special Requests:</span>
+                <span>
+                  {wheelchair_assistance
+                    ? "Wheelchair assistance"
+                    : user_notes || "None"}
+                </span>
               </p>
             </div>
           </div>
-          <div
-            className="px-10 py-6 w-full bg-white rounded-2xl"
-            style={{
-              boxShadow: "0px 11.48px 114.76px 0px #A7A7A73D",
-            }}
-          >
-            <div className="flex gap-2 items-center text-[#364153]">
-              <StrokeBag />
-              <p>Luggage assistance: Yes Porter Services</p>
-            </div>
+
+          {/* Passenger Documents */}
+          <div className="px-10 py-6 w-full bg-white rounded-2xl shadow-md flex gap-2 items-center">
+            <StrokeBag />
+            <p>Luggage assistance: Yes Porter Services</p>
           </div>
-          <div
-            className="px-10 py-6 w-full bg-white rounded-2xl"
-            style={{
-              boxShadow: "0px 11.48px 114.76px 0px #A7A7A73D",
-            }}
-          >
-            <div className="flex gap-2 items-center text-[#364153]">
-              <FigmaMessage />
-              <p>...</p>
-            </div>
-          </div>
-          <div
-            className="px-10 py-6 space-y-2 w-full bg-white rounded-2xl"
-            style={{
-              boxShadow: "0px 11.48px 114.76px 0px #A7A7A73D",
-            }}
-          >
-            <p className="text-sm flex justify-between">
-              Base fare <span>$1,486.25</span>
+
+          <div className="px-10 py-6 w-full bg-white rounded-2xl shadow-md flex gap-2 items-center">
+            <FigmaMessage />
+            <p>
+              Passenger file uploaded:{" "}
+              {passenger.passengers_data_file?.split("/").pop()}
             </p>
-            <p className="text-sm flex justify-between">
-              Meet & greet<span>$50.00</span>
+          </div>
+
+          {/* Payment Info */}
+          <div className="px-10 py-6 w-full bg-white rounded-2xl shadow-md space-y-2">
+            <p className="flex justify-between">
+              Base Fare:{" "}
+              <span>
+                {currencyMark} {subtotal}
+              </span>
             </p>
-            <p className="text-sm flex justify-between">
-              Transactio fee<span>$64.65</span>
+            <p className="flex justify-between">
+              Transaction Fee:{" "}
+              <span>
+                {currencyMark} {payment_fees}
+              </span>
             </p>
             <Separator />
-            <p className="text-lg flex justify-between">
-              Total <span>$1,600.90</span>
+            <p className="flex justify-between font-bold">
+              Total:{" "}
+              <span>
+                {currencyMark} {total}
+              </span>
             </p>
           </div>
         </div>
         <div className="h-full flex-1 space-y-4 sticky top-26">
-          <div className="bg-white rounded-2xl p-5">
+          <div className="bg-white rounded-2xl p-5 shadow-md">
             <div className="font-[Manrope] flex items-center justify-between">
               <p className="text-[18.75px]">Total</p>
               <p className="font-bold font-[Arial]">
-                $1,600.90 <span className="font-light text-[#6A7282]">USD</span>
+                {currencyMark} {total}{" "}
+                <span className="font-light text-[#6A7282]">{currency}</span>
               </p>
             </div>
           </div>
-          <form className="bg-white rounded-2xl p-5 grid gap-2 space-y-2">
+          <form className="bg-white rounded-2xl p-5 grid gap-2 space-y-2 shadow-md">
             {/* <h4 className="font-[Manrope] font-semibold"></h4> */}
             <div className="space-y-2 col-span-2">
               <Label htmlFor="cardNumber">Card Number</Label>
@@ -209,9 +284,66 @@ export default function Summry({ onBack }: { onBack: () => void }) {
               </Label>
             </div>
 
-            <Button
-              variant="outline"
-              className="
+            <BookButton
+              uuid=""
+              display_booking_status={summaryData.display_booking_status}
+            />
+            <p className="text-[#74747A]  col-span-2 text-center">
+              Secure checkout powered by{" "}
+              <span className="font-bold">stripe</span>
+            </p>
+          </form>
+
+          {/* <SideInfo /> */}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+const BookButton = ({
+  uuid,
+  display_booking_status,
+}: {
+  uuid: string;
+  display_booking_status: string;
+}) => {
+  const [summaryData, setSummaryData] = useState<any>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handlBookNow = () => {
+    console.log(uuid);
+    if (display_booking_status === "Awaiting Payment") {
+    }
+  };
+
+  const fetchLink = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const res = await fetch(
+        `https://airportassist-backend.aqaralex.com/api/public/bookings/${uuid}/checkout/payment-url`,
+      );
+      if (!res.ok) throw new Error(`Failed to fetch summary: ${res.status}`);
+
+      const data = await res.json();
+      setSummaryData(data.data.booking);
+    } catch (err: unknown) {
+      console.error(err);
+      setError(err instanceof Error ? err.message : "Unknown error");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <Button
+      disabled={display_booking_status !== "Awaiting Payment"}
+      onClick={handlBookNow}
+      variant="outline"
+      className="
 								col-span-2
 								w-full
 								cursor-pointer 
@@ -225,42 +357,11 @@ export default function Summry({ onBack }: { onBack: () => void }) {
 								py-5
 								px-7
 								"
-            >
-              <p className="text-sm font-normal font-[Manrope]">
-                {/* Proceed To Checkout{" "} */}
-                Book Now
-              </p>
-            </Button>
-            <p className="text-[#74747A]  col-span-2 text-center">
-              Secure checkout powered by{" "}
-              <span className="font-bold">stripe</span>
-            </p>
-          </form>
-
-          {/* <SideInfo /> */}
-        </div>
-      </div>
-      {/* <Button
-        variant="outline"
-        className="
-          mt-6
-          w-max 
-          cursor-pointer 
-          border-black 
-          text-black 
-          hover:border-[#664F31]  
-          hover:bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)] 
-          hover:text-white 
-          duration-0
-          rounded-xl
-          py-5
-          px-7
-          "
-      >
-        <p className="text-sm font-normal font-[Manrope]">
-          Proceed To Checkout{" "}
-        </p>
-      </Button> */}
-    </div>
+    >
+      <p className="text-sm font-normal font-[Manrope]">
+        {/* Proceed To Checkout{" "} */}
+        Book Now
+      </p>
+    </Button>
   );
-}
+};

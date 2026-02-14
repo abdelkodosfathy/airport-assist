@@ -40,13 +40,14 @@
 
 // export default CarsSection;
 
-import React, { forwardRef, useImperativeHandle, useState } from "react";
+import { forwardRef, useImperativeHandle, useState } from "react";
 import { Button } from "@/components/ui/button";
 import CarsList from "./cars-list";
 
 // Ref handle type
 export type CarsSectionHandle = {
   isValid: () => boolean;
+  getData: () => number;
 };
 
 type Props = {};
@@ -59,6 +60,9 @@ const CarsSection = forwardRef<CarsSectionHandle, Props>((props, ref) => {
     isValid: () => {
       // Validation: a car must be selected
       return selectedCar !== null;
+    },
+    getData: () => {
+      return selectedCar || -1
     },
   }));
 

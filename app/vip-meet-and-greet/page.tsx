@@ -8,19 +8,20 @@ import { useSingleAirport } from "@/lib/hooks/useAirports";
 import { SingleAirport } from "@/lib/types/airport";
 import { Button } from "@/components/ui/button";
 import FlightSection, {
+  FlightSectionData,
   FlightSectionHandle,
 } from "./components/flight-section";
 import PackagesSection from "./components/packages-section";
 
-import BillingAddress from "./components/billing-address";
-import BillingInformation from "./components/billing-information";
 import Summry from "./components/summry";
-import BillingSection from "./components/billing-section";
+import BillingSection, {
+  BillingSectionRef,
+} from "./components/billing-section";
 import { ArrowLeft } from "lucide-react";
-import BookingForm from "./components/booking-form";
 import { toast } from "sonner";
+import Steps from "./components/steps";
 
-type currentPage = "packages" | "flight" | "billing" | "summry";
+export type currentPage = "packages" | "flight" | "billing" | "summry";
 
 const Page = () => {
   const router = useRouter();
@@ -29,10 +30,21 @@ const Page = () => {
 
   const [currentPackagePrice, setCurrentPackagePrice] = useState<number>(0);
   const [currentPackageSlug, setCurrentPackageSlug] = useState<string>("");
+  const [currentPackageName, setCurrentPackageName] = useState<string>("");
 
   const [currentPage, setCurrentPage] = useState<currentPage>("packages");
 
   const flightSectionRef = useRef<FlightSectionHandle>(null);
+  const billingRef = useRef<BillingSectionRef>(null);
+
+  const [durationCost, setDurationCost] = useState<number>();
+  const [bagsCost, setBagsCost] = useState<number>();
+  const [fastTrackCost, setFastTrackCost] = useState<boolean>();
+
+  const [uuid, setUUID] = useState<string>("");
+
+  const [flightSectionData, setFlightSectionData] =
+    useState<FlightSectionData | null>(null);
 
   // 1️⃣ Read sessionStorage safely
   useEffect(() => {
@@ -54,7 +66,7 @@ const Page = () => {
   const airportData = useSingleAirport(storedData?.airport_id as string);
   useEffect(() => {
     if (!airportData || airportData.status === "pending") return;
-    console.log("Airport Data:", airportData);
+    // console.log("Airport Data:", airportData);
 
     const res = airportData.data?.data.airport;
     // console.log(res?.data.airport);
@@ -64,7 +76,7 @@ const Page = () => {
   }, [airportData]);
 
   if (!storedData) return null; // or loader
-  console.log(airportResponse);
+  // console.log(airportResponse);
 
   const packagesList = airportResponse?.airport_packages;
 
@@ -89,12 +101,13 @@ const Page = () => {
     airportResponse &&
     isWithinHours(storedData.date, airportResponse.min_hours_before_booking);
   const airportCost = isLastMinute ? airportResponse.last_minute_cost : 0;
-  const totalPrice = currentPackagePrice + 0; // i will replace the zero with other vars later
+  const totalPrice =
+    currentPackagePrice +
+    (durationCost ?? 0) +
+    (bagsCost ?? 0) +
+    (fastTrackCost ? airportResponse?.fast_track_cost || 0 : 0) +
+    0; // i will replace the zero with other vars later
 
-  // const checkValidity = () => {
-  //   const valid = flightSectionRef.current?.isValid();
-  //   console.log("Forms valid?", valid);
-  // };
   const handleNextPage = () => {
     let nextPage: currentPage = "billing";
 
@@ -110,18 +123,30 @@ const Page = () => {
         nextPage = "flight";
         break;
       case "flight":
-        const valid = flightSectionRef.current?.isValid();
-        if(!valid) {
+        const flightValid = flightSectionRef.current?.isValid();
+        if (!flightValid) {
           toast.error("please fill required inputs", {
-            position:"top-center"
-          })
-          return
-        };
-        
+            position: "top-center",
+          });
+          return;
+        }
+        const flightInputs = flightSectionRef.current?.getInputs() ?? null;
+        console.log("page: ", flightInputs);
+        setFlightSectionData(flightInputs);
+
         nextPage = "billing";
         break;
       case "billing":
+        const billingValid = billingRef.current?.isValid();
+        if (!billingValid) {
+          toast.error("please fill required billing data", {
+            position: "top-center",
+          });
+          return;
+        }
+
         nextPage = "summry";
+
         break;
       case "summry":
         break;
@@ -129,7 +154,6 @@ const Page = () => {
 
     setCurrentPage(nextPage);
   };
-
   const handlePrevPage = () => {
     let nextPage: currentPage = "billing";
 
@@ -155,14 +179,20 @@ const Page = () => {
         prevPage = "Choose Service";
         break;
       case "billing":
-        prevPage = "Flight Information";
+        prevPage = "Passenger & Service Details";
         break;
       case "summry":
-        prevPage = "Billing Information";
+        prevPage = "Billing Details";
         break;
     }
     return prevPage;
   };
+
+
+  const handleFormSuccess = (uuid: string) => {
+    setUUID(uuid);
+    handleNextPage();
+  }
 
   return (
     <>
@@ -172,12 +202,14 @@ const Page = () => {
       <h2 className="font-[Manrope] font-normal text-[22.6px] leading-[100%] tracking-[7.06px] uppercase mb-6">
         Services Level Available
       </h2>
+
+      <Steps currentPage={currentPage} />
       {/* back button */}
       {currentPage !== "packages" && (
         <Button
           onClick={handlePrevPage}
           variant={"ghost"}
-          className="flex gap-2 mb-2 text-[#8E8E93] w-fit"
+          className="cursor-pointer flex gap-2 mb-2 text-[#8E8E93] w-fit"
         >
           <ArrowLeft />
           <p> back to {getPrevPage()}</p>
@@ -191,9 +223,10 @@ const Page = () => {
           {packagesList && (
             <PackagesSection
               selectedPackageSlug={currentPackageSlug}
-              onSelectPackage={(slug, cost) => {
+              onSelectPackage={(slug, cost, name) => {
                 setCurrentPackagePrice(cost);
                 setCurrentPackageSlug(slug);
+                setCurrentPackageName(name);
               }}
               AirportCost={airportCost}
               adults_count={storedData.adults}
@@ -207,30 +240,41 @@ const Page = () => {
           <>
             {/* flight */}
             <Activity mode={currentPage === "flight" ? "visible" : "hidden"}>
-              <FlightSection ref={flightSectionRef} airportData={airportResponse} />
+              <FlightSection
+                bagsCost={(cost) => setBagsCost(cost)}
+                durationCost={(cost) => setDurationCost(cost)}
+                withChauffuer={currentPackageSlug !== "elite"}
+                ref={flightSectionRef}
+                airportData={airportResponse}
+                onFastTrackEnabeld={setFastTrackCost}
+              />
             </Activity>
 
             {/* billing */}
             <Activity mode={currentPage === "billing" ? "visible" : "hidden"}>
-              <BillingSection />
+              <BillingSection onSuccess={handleFormSuccess} slug={currentPackageSlug} onGetFlightData={() => flightSectionData} ref={billingRef} />
             </Activity>
+
+            {/* <button onClick={handleGetInputs}>get inputs</button> */}
           </>
         )}
         {/* summry */}
         <Activity mode={currentPage === "summry" ? "visible" : "hidden"}>
-          <Summry onBack={handlePrevPage} />
+          <Summry uuid={uuid} onBack={handlePrevPage} />
         </Activity>
         {currentPage !== "summry" && (
           <SideInformationCard
-          withoutChauffuer={currentPackageSlug === "elite"}
+            serviceType={storedData.serviceType}
+            withoutChauffuer={currentPackageSlug === "elite"}
             totalPrice={totalPrice}
+            packageName={currentPackageName}
             adults_count={storedData.adults}
             child_count={storedData.children}
           />
         )}
       </div>
       <div className="flex gap-4">
-        {currentPage !== "summry" && (
+        {(currentPage !== "summry" &&  currentPage !== "billing") && (
           <Button
             onClick={handleNextPage}
             type="button"
@@ -249,7 +293,8 @@ const Page = () => {
           >
             {/* <Link href={"/meet-and-greet/flight-information"}> */}
             <p className="text-lg font-normal font-[Manrope]">
-              {currentPage === "billing" ? "Proceed To Checkout" : "Continue"}
+              {/* {currentPage === "billing" ? "Proceed To Checkout" : "Continue"} */}
+              Continue
             </p>
             {/* </Link> */}
           </Button>

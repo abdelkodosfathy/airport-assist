@@ -8,7 +8,6 @@ import { useState } from "react";
 type BookingFormData = {
   airport_id: string;
   package_slug: string;
-  // service_type: "arrival" | "departure";
   service_type: string;
   booking_timestamp: string;
   user_notes: string;
@@ -41,7 +40,6 @@ type BookingFormData = {
 };
 
 const BookingForm = ({ storedData }: { storedData: VipBookingData}) => {
-//   console.log(storedData);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [pdfFile, setPdfFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
