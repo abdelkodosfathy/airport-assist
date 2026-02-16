@@ -19,10 +19,7 @@ const PackagesSection = ({
   adults_count: number;
   AirportCost: number;
   child_count: number;
-
-  // onUpdate: (path: string, value: any) => void;
 }) => {
-  // const [selectedPackageSlug ,setSelectedPackageSlug] = useState<string>();
   function handleSelectedPackage(slug: string, packageCost: number, name: string) {
     onSelectPackage(slug, packageCost, name);
   }
@@ -36,7 +33,7 @@ const PackagesSection = ({
           selection.
         </h4>
 
-        {packagesList?.map((pkg) => (
+        {packagesList.map((pkg) => (
           <ServiceCard
             selectedService={selectedPackageSlug === pkg.package.package_slug}
             adults_count={adults_count}

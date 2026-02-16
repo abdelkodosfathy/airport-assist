@@ -449,8 +449,8 @@ export default function BookingForm() {
                  */}
                 <SelectDropdown
                   inputClassName={"shadow-none border-none"}
-                  className="bg-white h-10 lg:h-full rounded-lg lg:rounded-none lg:rounded-l-xl"
-                  placeholder="Choose service"
+                  className="bg-white h-10 lg:h-full rounded-t-lg  lg:rounded-none lg:rounded-l-xl"
+                  placeholder="Pickup From"
                   options={[
                     {
                       label: "Airport Transfer",
@@ -496,7 +496,7 @@ export default function BookingForm() {
                 )} */}
                 <SelectDropdown
                   inputClassName={"shadow-none border-none"}
-                  className="bg-white h-10 lg:h-full rounded-lg lg:rounded-none"
+                  className="bg-white h-10 lg:h-full rounded-none"
                   placeholder="Choose service"
                   options={[
                     { label: "Arrival", value: "arrival", icon: <Arraival /> },

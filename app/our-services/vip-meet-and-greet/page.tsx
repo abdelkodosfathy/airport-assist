@@ -26,7 +26,7 @@ const page = (props: Props) => {
     <>
       <section className="overflow-hidden w-full mt-12 pb-12 relative px-10">
         <h2 className="text-center text-[22.6px] tracking-[7.06px] uppercase">
-          OUR Private Suite Services{" "}
+          OUR Private Suite Services
         </h2>
         <div className="mx-auto w-max mt-7.5">
           <ul className="flex gap-17 mb-7.5">
@@ -70,7 +70,7 @@ const page = (props: Props) => {
         </div>
       </section>
 
-      <section className="overflow-hidden w-full px-4 lg:px-0 relative bg-white">
+      <section className="overflow-hidden w-full px-4  lg:px-10 relative bg-white">
         <div id="arrival" className="max-w-340 mx-auto  mt-22 mb-11">
           <p className="font-[Manrope] font-medium text-[15.53px] leading-[130%] text-gray-400 mb-3">
             Services

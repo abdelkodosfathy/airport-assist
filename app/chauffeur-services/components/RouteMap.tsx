@@ -323,7 +323,8 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 // import AirportAssistPin from "./AirportAssistPin";
 
-const center = { lat: 30.0444, lng: 31.2357 }; // Cairo
+// const center = { lat: 30.0444, lng: 31.2357 }; // Cairo
+const center = { lat: 51.4682501605486, lng: -0.4191509550266713 }; // Cairo
 
 export default function RouteMap({ className }: { className?: string }) {
   const { isLoaded } = useJsApiLoader({
@@ -592,7 +593,7 @@ export default function RouteMap({ className }: { className?: string }) {
       <div className="h-[500px] w-full rounded-xl overflow-hidden border">
         <GoogleMap
           center={center}
-          zoom={12}
+          zoom={14}
           mapContainerStyle={{ width: "100%", height: "100%" }}
           onLoad={(map) => setMap(map)}
           onClick={handleMapClick}

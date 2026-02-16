@@ -10,24 +10,25 @@ import { ArrowUpRight, Mail } from "lucide-react";
 import Image from "next/image";
 import serviceImage from "@/public/arravial package.jpg";
 
-// import { useSearchParams } from "next/navigation";
-// import { useSingleAirport } from "@/lib/hooks/useAirports";
+import { useSearchParams } from "next/navigation";
+import { useSingleAirport } from "@/lib/hooks/useAirports";
+import { Suspense } from "react";
 
 export default function Locations() {
-  // const searchParams = useSearchParams();
-  // const airportId = searchParams.get("airportId");
+  const searchParams = useSearchParams();
+  const airportId = searchParams.get("airport");
+  console.log(airportId);
 
-  // const { data, isLoading, isError } = useSingleAirport(
-  //   airportId?.toString() || "",
-  // );
-  // console.log(data);
-  
-  // if (isLoading) {
-  // }
+  const { data, isLoading, isError } = useSingleAirport(
+    airportId?.toString() || "",
+  );
+  console.log(data);
 
-  // if (isError || !data) {
-  // }
+  if (isLoading) {
+  }
 
+  if (isError || !data) {
+  }
 
   return (
     <main className="relative font-[Manrope] bg-[#F7F7F6] max-w-screen overflow-hidden">
@@ -74,191 +75,14 @@ export default function Locations() {
             Services Level Available{" "}
           </h3>
           <div className="flex gap-6">
-            <div className="flex-3 space-y-6">
-              <div className="bg-white px-8 py-5 rounded-xl shadow-sm">
-                <h2
-                  style={{
-                    fontFamily: "Manrope",
-                    fontWeight: 400,
-                    fontStyle: "Regular",
-                    fontSize: "20px",
-                    color: "#0A0A0A",
+              {isLoading && <PackagesListSkeleton />}
 
-                    lineHeight: "40.03px",
-                    letterSpacing: "0px",
-                  }}
-                >
-                  ELITE
-                </h2>
-                <p
-                  style={{
-                    fontFamily: "Manrope",
-                    fontWeight: 400,
-                    fontStyle: "Regular",
-                    fontSize: "12.51px",
-                    lineHeight: "18.77px",
-                    letterSpacing: "1.88px",
-                    color: "#7B5A41",
+              {!isLoading && data && <PackagesList />}
 
-                    textTransform: "uppercase",
-                  }}
-                >
-                  VIP Meet & Greet
-                </p>
+              {!isLoading && (isError || !data) && (
+                <p className="text-red-500">Something went wrong</p>
+              )}
 
-                <p
-                  style={{
-                    fontFamily: "Manrope",
-                    fontWeight: 400,
-                    fontStyle: "Regular",
-                    fontSize: "13px",
-                    color: "#6D6D6D",
-                    lineHeight: "28.46px",
-                  }}
-                >
-                  Upon arrival, our airport meet & greet greeter will welcome
-                  you at the aircraft or air bridge, escort you through Fast
-                  Track immigration, assist with baggage claim, and coordinate
-                  your transfer to your waiting chauffeur for a smooth,
-                  stress-free airport arrival experience
-                </p>
-                <div className="flex gap-24 relative">
-                  <div
-                    className="h-[373px] w-[166px] p-[2px]"
-                    style={{
-                      background:
-                        "linear-gradient(120deg, rgba(161, 101, 56) 0%, rgba(0,0,0,0) 15%, rgba(0,0,0,0) 85%, rgba(161,101,56,1) 100%)",
-                    }}
-                  >
-                    <div className="relative w-full h-full bg-[#f2f1ef]">
-                      <Image
-                        alt="service image"
-                        src={serviceImage}
-                        width={180}
-                        height={258}
-                        className="absolute top-1/2  left-1/2 -translate-y-1/2  w-45 h-64.5 object-cover border border-gray-300"
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <p
-                      style={{
-                        fontFamily: "Manrope",
-                        fontWeight: 700,
-                        fontStyle: "Bold",
-                        fontSize: "16px",
-                        lineHeight: "46.04px",
-                        letterSpacing: "4.6px",
-                        verticalAlign: "middle",
-                        color: "#878989",
-                        textTransform: "uppercase",
-                      }}
-                    >
-                      Arrival
-                    </p>
-                    <ul className="list-disc ml-5">
-                      <li>Exclusive one-to-one service</li>
-                      <li>Meet and Greet at the gate</li>
-                      <li>
-                        Fast Track or Expedited through immigration and customs
-                      </li>
-                      <li>Assistance with luggage collection</li>
-                      <li>
-                        Porter Service (if necessary, additional fees may apply)
-                      </li>
-                      <li>Escort to your vehicle</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-              <div className="bg-[#1A1A1A] px-8 py-5 rounded-xl shadow-sm">
-                <h2
-                  style={{
-                    fontFamily: "Manrope",
-                    fontWeight: 400,
-                    fontStyle: "Regular",
-                    fontSize: "20px",
-                    // color: "#0A0A0A",
-                    color: "#fff",
-                    lineHeight: "40.03px",
-                    letterSpacing: "0px",
-                  }}
-                >
-                  SIGNATURE
-                </h2>
-                <p
-                  style={{
-                    fontFamily: "Manrope",
-                    fontWeight: 400,
-                    fontStyle: "Regular",
-                    fontSize: "12.51px",
-                    lineHeight: "18.77px",
-                    letterSpacing: "1.88px",
-                    // color: "#7B5A41",
-                    color: "#fff",
-                    textTransform: "uppercase",
-                  }}
-                >
-                  VIP PRIVATE SUITE
-                </p>
-
-                <p
-                  style={{
-                    fontFamily: "Manrope",
-                    fontWeight: 400,
-                    fontStyle: "Regular",
-                    fontSize: "13px",
-                    // color: "#6D6D6D",
-                    color: "#fff",
-                    lineHeight: "28.46px",
-                  }}
-                >
-                  Experience a seamless airport arrival with our premium meet &
-                  greet concierge service. Be welcomed at the aircraft, enjoy
-                  private transfer to an exclusive lounge, and relax while our
-                  team handles luggage and formalities for a smooth, stress-free
-                  landing.
-                </p>
-                <div className="flex gap-24 relative">
-                  <div className="h-[373px] w-[166px] p-[2px] bg-[linear-gradient(130deg,#FFFFFF98_0%,#1a1a1a_20%,#1a1a1a_80%,#ffffff98_100%)]">
-                    <div className="relative w-full h-full bg-[#1a1a1a]">
-                      <Image
-                        alt="service image"
-                        src={serviceImage}
-                        width={180}
-                        height={258}
-                        className="absolute top-1/2  left-1/2 -translate-y-1/2  w-45 h-64.5 object-cover border border-[#1a1a1a]"
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <p
-                      style={{
-                        fontFamily: "Manrope",
-                        fontWeight: 700,
-                        fontStyle: "Bold",
-                        fontSize: "16px",
-                        lineHeight: "46.04px",
-                        letterSpacing: "4.6px",
-                        verticalAlign: "middle",
-                        color: "#878989",
-                        textTransform: "uppercase",
-                      }}
-                    >
-                      Arrival
-                    </p>
-                    <ul className="list-disc ml-5 text-white">
-                      <li>Private Meet & Greet at the Aircraft</li>
-                      <li>Luxury Private Vehicle Transfer to VVIP Lounge</li>
-                      <li>Discreet, Hassle-Free Luggage Handling</li>
-                      <li>Dine from Our Curated Seasonal Menu</li>
-                      <li>Access to Exclusive VVIP Airport Lounge</li>
-                      <li>Personalised Airport Concierge</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
             <div className="flex-1 h-fit space-y-6">
               <div className="py-6.5 px-4 h-fit bg-white rounded-xl shadow-sm">
                 <form action="" className="space-y-3">
@@ -344,3 +168,236 @@ export default function Locations() {
     </main>
   );
 }
+
+const PackagesList = () => {
+  return (
+    <div className="flex-3 space-y-6">
+      <div className="bg-white px-8 py-5 rounded-xl shadow-sm">
+        <h2
+          style={{
+            fontFamily: "Manrope",
+            fontWeight: 400,
+            fontStyle: "Regular",
+            fontSize: "20px",
+            color: "#0A0A0A",
+
+            lineHeight: "40.03px",
+            letterSpacing: "0px",
+          }}
+        >
+          ELITE
+        </h2>
+        <p
+          style={{
+            fontFamily: "Manrope",
+            fontWeight: 400,
+            fontStyle: "Regular",
+            fontSize: "12.51px",
+            lineHeight: "18.77px",
+            letterSpacing: "1.88px",
+            color: "#7B5A41",
+
+            textTransform: "uppercase",
+          }}
+        >
+          VIP Meet & Greet
+        </p>
+
+        <p
+          style={{
+            fontFamily: "Manrope",
+            fontWeight: 400,
+            fontStyle: "Regular",
+            fontSize: "13px",
+            color: "#6D6D6D",
+            lineHeight: "28.46px",
+          }}
+        >
+          Upon arrival, our airport meet & greet greeter will welcome you at the
+          aircraft or air bridge, escort you through Fast Track immigration,
+          assist with baggage claim, and coordinate your transfer to your
+          waiting chauffeur for a smooth, stress-free airport arrival experience
+        </p>
+        <div className="flex gap-24 relative">
+          <div
+            className="h-[373px] w-[166px] p-[2px]"
+            style={{
+              background:
+                "linear-gradient(120deg, rgba(161, 101, 56) 0%, rgba(0,0,0,0) 15%, rgba(0,0,0,0) 85%, rgba(161,101,56,1) 100%)",
+            }}
+          >
+            <div className="relative w-full h-full bg-[#f2f1ef]">
+              <Image
+                alt="service image"
+                src={serviceImage}
+                width={180}
+                height={258}
+                className="absolute top-1/2  left-1/2 -translate-y-1/2  w-45 h-64.5 object-cover border border-gray-300"
+              />
+            </div>
+          </div>
+          <div>
+            <p
+              style={{
+                fontFamily: "Manrope",
+                fontWeight: 700,
+                fontStyle: "Bold",
+                fontSize: "16px",
+                lineHeight: "46.04px",
+                letterSpacing: "4.6px",
+                verticalAlign: "middle",
+                color: "#878989",
+                textTransform: "uppercase",
+              }}
+            >
+              Arrival
+            </p>
+            <ul className="list-disc ml-5">
+              <li>Exclusive one-to-one service</li>
+              <li>Meet and Greet at the gate</li>
+              <li>Fast Track or Expedited through immigration and customs</li>
+              <li>Assistance with luggage collection</li>
+              <li>Porter Service (if necessary, additional fees may apply)</li>
+              <li>Escort to your vehicle</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div className="bg-[#1A1A1A] px-8 py-5 rounded-xl shadow-sm">
+        <h2
+          style={{
+            fontFamily: "Manrope",
+            fontWeight: 400,
+            fontStyle: "Regular",
+            fontSize: "20px",
+            // color: "#0A0A0A",
+            color: "#fff",
+            lineHeight: "40.03px",
+            letterSpacing: "0px",
+          }}
+        >
+          SIGNATURE
+        </h2>
+        <p
+          style={{
+            fontFamily: "Manrope",
+            fontWeight: 400,
+            fontStyle: "Regular",
+            fontSize: "12.51px",
+            lineHeight: "18.77px",
+            letterSpacing: "1.88px",
+            // color: "#7B5A41",
+            color: "#fff",
+            textTransform: "uppercase",
+          }}
+        >
+          VIP PRIVATE SUITE
+        </p>
+
+        <p
+          style={{
+            fontFamily: "Manrope",
+            fontWeight: 400,
+            fontStyle: "Regular",
+            fontSize: "13px",
+            // color: "#6D6D6D",
+            color: "#fff",
+            lineHeight: "28.46px",
+          }}
+        >
+          Experience a seamless airport arrival with our premium meet & greet
+          concierge service. Be welcomed at the aircraft, enjoy private transfer
+          to an exclusive lounge, and relax while our team handles luggage and
+          formalities for a smooth, stress-free landing.
+        </p>
+        <div className="flex gap-24 relative">
+          <div className="h-[373px] w-[166px] p-[2px] bg-[linear-gradient(130deg,#FFFFFF98_0%,#1a1a1a_20%,#1a1a1a_80%,#ffffff98_100%)]">
+            <div className="relative w-full h-full bg-[#1a1a1a]">
+              <Image
+                alt="service image"
+                src={serviceImage}
+                width={180}
+                height={258}
+                className="absolute top-1/2  left-1/2 -translate-y-1/2  w-45 h-64.5 object-cover border border-[#1a1a1a]"
+              />
+            </div>
+          </div>
+          <div>
+            <p
+              style={{
+                fontFamily: "Manrope",
+                fontWeight: 700,
+                fontStyle: "Bold",
+                fontSize: "16px",
+                lineHeight: "46.04px",
+                letterSpacing: "4.6px",
+                verticalAlign: "middle",
+                color: "#878989",
+                textTransform: "uppercase",
+              }}
+            >
+              Arrival
+            </p>
+            <ul className="list-disc ml-5 text-white">
+              <li>Private Meet & Greet at the Aircraft</li>
+              <li>Luxury Private Vehicle Transfer to VVIP Lounge</li>
+              <li>Discreet, Hassle-Free Luggage Handling</li>
+              <li>Dine from Our Curated Seasonal Menu</li>
+              <li>Access to Exclusive VVIP Airport Lounge</li>
+              <li>Personalised Airport Concierge</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const SkeletonBox = ({ className = "" }) => (
+  <div className={`bg-gray-200 animate-pulse rounded ${className}`} />
+);
+
+const PackageCardSkeleton = ({ dark = false }) => {
+  return (
+    <div
+      className={`px-8 py-5 rounded-xl shadow-sm ${
+        dark ? "bg-[#1A1A1A]" : "bg-white"
+      }`}
+    >
+      {/* Title */}
+      <SkeletonBox className="h-6 w-32 mb-3" />
+
+      {/* Subtitle */}
+      <SkeletonBox className="h-4 w-40 mb-4" />
+
+      {/* Description lines */}
+      <div className="space-y-2 mb-6">
+        <SkeletonBox className="h-3 w-full" />
+        <SkeletonBox className="h-3 w-full" />
+        <SkeletonBox className="h-3 w-4/5" />
+      </div>
+
+      <div className="flex gap-24">
+        {/* Image skeleton */}
+        <SkeletonBox className="h-[373px] w-[166px]" />
+
+        {/* List skeleton */}
+        <div className="space-y-3 w-full">
+          <SkeletonBox className="h-4 w-24 mb-3" />
+          <SkeletonBox className="h-3 w-3/4" />
+          <SkeletonBox className="h-3 w-2/3" />
+          <SkeletonBox className="h-3 w-4/5" />
+          <SkeletonBox className="h-3 w-1/2" />
+        </div>
+      </div>
+    </div>
+  );
+};
+const PackagesListSkeleton = () => {
+  return (
+    <div className="flex-3 space-y-6">
+      <PackageCardSkeleton />
+      <PackageCardSkeleton dark />
+    </div>
+  );
+};

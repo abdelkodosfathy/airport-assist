@@ -19,8 +19,6 @@ const ServiceSection = ({
 }) => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const starRef = useRef<SVGSVGElement>(null);
-  // const imagesBoxRef = useRef<HTMLDivElement>(null);
-  // const boxRef = useRef<HTMLDivElement>(null);
   const textsRef = useRef<HTMLDivElement>(null);
   const firstImageRef = useRef<HTMLImageElement>(null);
 
@@ -130,7 +128,6 @@ const ServiceSection = ({
               width={427.42}
               height={390.75}
               className="w-full aspect-116/69 m-auto rounded-lg object-cover border border-gray-300"
-              // className={`w-full max-w-116  aspect-116/69 ${left ? "ml-auto" : "mr-auto"} rounded-lg object-cover border border-gray-300 `}
             />
           </div>
 

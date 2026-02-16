@@ -2,6 +2,7 @@ import CarPassengers from "@/components/custom icons/CarPassengers";
 import CarriedBag from "@/components/custom icons/carriedBag";
 import Passengers from "@/components/custom icons/passengers";
 import { useCars } from "@/lib/hooks/useCars";
+import { useCurrency } from "@/lib/hooks/useCurrency";
 import { Car } from "@/lib/types/car";
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
@@ -23,6 +24,30 @@ const CarCard = ({ car, selected = false, onSelect }: CarCardProps) => {
     car_type_description,
   } = car;
 
+
+  const { currency } = useCurrency();
+  
+   const getCurrencyMark = () => {
+      let mark = "$";
+  
+      switch (currency) {
+        case "USD":
+          mark = "$";
+          break;
+        case "EUR":
+          mark = "€";
+          break;
+        case "GBP":
+          mark = "£";
+          break;
+        default:
+          mark = "$";
+      }
+  
+      return mark;
+    };
+  
+    const currencyMark = getCurrencyMark();
   return (
     <div
       onClick={onSelect}
@@ -86,10 +111,10 @@ const CarCard = ({ car, selected = false, onSelect }: CarCardProps) => {
 
         <div className="text-[#74747A]">
           <p className="text-[0.675rem] flex justify-between">
-            Price Per Mile<span>£{price_per_mile}</span>
+            Price Per Mile<span>{currencyMark} {price_per_mile}</span>
           </p>
           <p className="text-[0.675rem] flex justify-between">
-            Supplement Fee<span>£220.00</span>
+            Supplement Fee<span>{currencyMark}220.00</span>
           </p>
         </div>
       </div>

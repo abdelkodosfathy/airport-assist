@@ -74,7 +74,9 @@ const Page = () => {
       setAirportResponse(res);
     }
   }, [airportData]);
+  console.log(airportData);
 
+  
   if (!storedData) return null; // or loader
   // console.log(airportResponse);
 
