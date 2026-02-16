@@ -12,7 +12,7 @@ import serviceImage from "@/public/arravial package.jpg";
 
 import { useSearchParams } from "next/navigation";
 import { useSingleAirport } from "@/lib/hooks/useAirports";
-import { Suspense } from "react";
+import { AirportPackage, SingleAirportResponse } from "@/lib/types/airport";
 
 export default function Locations() {
   const searchParams = useSearchParams();
@@ -75,13 +75,15 @@ export default function Locations() {
             Services Level Available{" "}
           </h3>
           <div className="flex gap-6">
-              {isLoading && <PackagesListSkeleton />}
+            {isLoading && <PackagesListSkeleton />}
 
-              {!isLoading && data && <PackagesList />}
+            {!isLoading && data && (
+              <PackagesList packages={data.data.airport.airport_packages} />
+            )}
 
-              {!isLoading && (isError || !data) && (
-                <p className="text-red-500">Something went wrong</p>
-              )}
+            {!isLoading && (isError || !data) && (
+              <p className="text-red-500">Something went wrong</p>
+            )}
 
             <div className="flex-1 h-fit space-y-6">
               <div className="py-6.5 px-4 h-fit bg-white rounded-xl shadow-sm">
@@ -169,10 +171,128 @@ export default function Locations() {
   );
 }
 
-const PackagesList = () => {
+const PackagesList = ({ packages }: { packages: AirportPackage[] }) => {
+  console.log(packages);
+
   return (
     <div className="flex-3 space-y-6">
-      <div className="bg-white px-8 py-5 rounded-xl shadow-sm">
+      {packages.map((pkg, i) => {
+        return (
+          <div
+            key={pkg.package.package_slug}
+            className={`${
+              i % 2 === 0 ? "bg-white" : "bg-[#1A1A1A] text-white"
+            } px-8 py-5 rounded-xl shadow-sm`}
+          >
+            <h2
+              style={{
+                fontFamily: "Manrope",
+                fontWeight: 400,
+                fontStyle: "Regular",
+                fontSize: "20px",
+                color: i % 2 === 0 ? "#0A0A0A" : "white",
+
+                lineHeight: "40.03px",
+                letterSpacing: "0px",
+              }}
+            >
+              {pkg.package.package_name}
+            </h2>
+            <p
+              style={{
+                fontFamily: "Manrope",
+                fontWeight: 400,
+                fontStyle: "Regular",
+                fontSize: "12.51px",
+                lineHeight: "18.77px",
+                letterSpacing: "1.88px",
+                color: i % 2 === 0 ? "#7B5A41" : "white",
+
+                textTransform: "uppercase",
+              }}
+            >
+              VIP Meet & Greet
+            </p>
+
+            <p
+              style={{
+                fontFamily: "Manrope",
+                fontWeight: 400,
+                fontStyle: "Regular",
+                fontSize: "13px",
+                color: "#6D6D6D",
+                lineHeight: "28.46px",
+              }}
+            >
+              {pkg.package.package_description}
+            </p>
+            <div className="flex gap-24 relative">
+              {i % 2 === 0 ? (
+                <div
+                  className="h-[373px] w-[166px] p-[2px]"
+                  style={{
+                    background:
+                      "linear-gradient(120deg, rgba(161, 101, 56) 0%, rgba(0,0,0,0) 15%, rgba(0,0,0,0) 85%, rgba(161,101,56,1) 100%)",
+                  }}
+                >
+                  <div className="relative w-full h-full bg-[#f2f1ef]">
+                    <Image
+                      alt="service image"
+                      src={serviceImage}
+                      width={180}
+                      height={258}
+                      className="absolute top-1/2  left-1/2 -translate-y-1/2  w-45 h-64.5 object-cover border border-gray-300"
+                    />
+                  </div>
+                </div>
+              ) : (
+                <div className="h-[373px] w-[166px] p-[2px] bg-[linear-gradient(130deg,#FFFFFF98_0%,#1a1a1a_20%,#1a1a1a_80%,#ffffff98_100%)]">
+                  <div className="relative w-full h-full bg-[#1a1a1a]">
+                    <Image
+                      alt="service image"
+                      src={serviceImage}
+                      width={180}
+                      height={258}
+                      className="absolute top-1/2  left-1/2 -translate-y-1/2  w-45 h-64.5 object-cover border border-[#1a1a1a]"
+                    />
+                  </div>
+                </div>
+              )}
+
+              <div>
+                <p
+                  style={{
+                    fontFamily: "Manrope",
+                    fontWeight: 700,
+                    fontStyle: "Bold",
+                    fontSize: "16px",
+                    lineHeight: "46.04px",
+                    letterSpacing: "4.6px",
+                    verticalAlign: "middle",
+                    color: "#878989",
+                    textTransform: "uppercase",
+                  }}
+                >
+                  Arrival
+                </p>
+                <ul className="list-disc ml-5">
+                  <li>Exclusive one-to-one service</li>
+                  <li>Meet and Greet at the gate</li>
+                  <li>
+                    Fast Track or Expedited through immigration and customs
+                  </li>
+                  <li>Assistance with luggage collection</li>
+                  <li>
+                    Porter Service (if necessary, additional fees may apply)
+                  </li>
+                  <li>Escort to your vehicle</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        );
+      })}
+      {/* <div className="bg-white px-8 py-5 rounded-xl shadow-sm">
         <h2
           style={{
             fontFamily: "Manrope",
@@ -262,8 +382,8 @@ const PackagesList = () => {
             </ul>
           </div>
         </div>
-      </div>
-      <div className="bg-[#1A1A1A] px-8 py-5 rounded-xl shadow-sm">
+      </div> */}
+      {/* <div className="bg-[#1A1A1A] px-8 py-5 rounded-xl shadow-sm">
         <h2
           style={{
             fontFamily: "Manrope",
@@ -348,7 +468,7 @@ const PackagesList = () => {
             </ul>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
