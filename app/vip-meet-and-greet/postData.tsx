@@ -8,6 +8,7 @@ export const postBillingData = async (
   slug: string,
   getFlightData: () => FlightSectionData | null,
   onSuccess: (uuid: string) => void, // callback تستقبل البيانات
+  onEnd: () => void, // callback تستقبل البيانات
 ) => {
   if (!billingRef.current) return;
 
@@ -170,6 +171,8 @@ export const postBillingData = async (
     toast.error(errMsg, { position: "top-center" });
 
     throw error;
+  } finally {
+    onEnd();
   }
 };
 

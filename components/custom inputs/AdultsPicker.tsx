@@ -1,128 +1,5 @@
 "use client";
 
-// import React, { useState, useRef, useEffect, ReactNode } from "react";
-// import { ChevronDown, Minus, Plus } from "lucide-react";
-// import { Input } from "@/components/ui/input";
-// import { cn } from "@/lib/utils";
-
-// interface AdultsPickerProps {
-//   id?: string;
-//   placeholder?: string;
-//   className?: string;
-//   disabled?: boolean;
-//   inputClassName?: string;
-//   icon?: ReactNode;
-//   iconPosition?: "left" | "right";
-// }
-
-// const AdultsPicker = ({
-//   id,
-//   placeholder,
-//   className,
-//   inputClassName,
-//   disabled = false,
-//   icon,
-//   iconPosition = "left",
-// }: AdultsPickerProps) => {
-//   const [adults, setAdults] = useState(1);
-//   const [children, setChildren] = useState(0);
-
-//   const displayValue = `${adults} Adult - ${children} Children`;
-
-//   const [isOpen, setIsOpen] = useState(false);
-//   const wrapperRef = useRef<HTMLDivElement>(null);
-
-//   // Close dropdown when clicking outside
-//   useEffect(() => {
-//     const handleClickOutside = (event: MouseEvent) => {
-//       if (
-//         wrapperRef.current &&
-//         !wrapperRef.current.contains(event.target as Node)
-//       ) {
-//         setIsOpen(false);
-//       }
-//     };
-
-//     document.addEventListener("mousedown", handleClickOutside);
-//     return () => document.removeEventListener("mousedown", handleClickOutside);
-//   }, []);
-
-//   return (
-//     <div className={className}>
-//       <div ref={wrapperRef} className="relative h-full">
-//         {/* Input */}
-//         <div className="relative h-full flex items-center">
-//           {icon && iconPosition === "left" && (
-//             <span className="absolute left-3 text-gray-400 pointer-events-none z-10">
-//               {icon}
-//             </span>
-//           )}
-
-//           <Input
-//             disabled={disabled}
-//             id={id}
-//             value={displayValue}
-//             placeholder={placeholder}
-//             readOnly
-//             onFocus={() => !disabled && setIsOpen(true)}
-//             className={cn(
-//               "h-full bg-white rounded-none cursor-pointer",
-//               icon && iconPosition === "left" && "pl-10",
-//               icon && iconPosition === "right" && "pr-10",
-//               disabled && "cursor-not-allowed opacity-60",
-//               inputClassName,
-//             )}
-//           />
-
-//           {icon && iconPosition === "right" && (
-//             <span className="absolute right-10 text-gray-400 pointer-events-none z-10">
-//               {icon}
-//             </span>
-//           )}
-
-//           <ChevronDown
-//             className={cn(
-//               "absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 h-5 w-5 transition-transform",
-//               isOpen && "rotate-180",
-//             )}
-//           />
-//         </div>
-
-//         {/* Dropdown */}
-//         {isOpen && !disabled && (
-//           <div className="absolute w-max mt-2 p-4 space-y-4 bg-white border rounded-lg shadow-lg z-50">
-//             {/* <PickerRow
-//               title="Adults"
-//               subtitle="Over 12yrs old"
-//             />
-//             <PickerRow
-//               title="Children"
-//               subtitle="0-12yrs old"
-//             /> */}
-//             <PickerRow
-//               title="Adults"
-//               subtitle="Over 12yrs old"
-//               value={adults}
-//               onChange={setAdults}
-//             />
-
-//             <PickerRow
-//               title="Children"
-//               subtitle="0-12yrs old"
-//               value={children}
-//               onChange={setChildren}
-//             />
-//           </div>
-//         )}
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default AdultsPicker;
-
-// /* ---------------- Helpers ---------------- */
-
 const PickerRow = ({
   title,
   subtitle,
@@ -275,7 +152,7 @@ const AdultsPicker = ({
             readOnly
             onFocus={() => !disabled && setIsOpen(true)}
             className={cn(
-              "h-full bg-white rounded-none cursor-pointer",
+              "h-full bg-white rounded-none cursor-pointer placeholder:text-muted-foreground  text-gray",
               icon && iconPosition === "left" && "pl-10",
               icon && iconPosition === "right" && "pr-10",
               disabled && "cursor-not-allowed opacity-60",
@@ -310,11 +187,14 @@ const AdultsPicker = ({
 
             <PickerRow
               title="Children"
-              subtitle="0-12yrs old"
+              subtitle="3-16 years old" // الرضيع فري تو تشارج
               value={children}
               min={0}
               onChange={handleChildrenChange}
             />
+            <div>
+              <p>0 - 3 Infants for free</p>
+            </div>
           </div>
         )}
       </div>

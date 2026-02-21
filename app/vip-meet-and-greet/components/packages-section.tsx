@@ -5,7 +5,7 @@ import ServiceCard from "./ServiceCard";
 
 const PackagesSection = ({
   packagesList,
-  AirportCost,
+  // AirportCost,
   adults_count,
   child_count,
   selectedPackageSlug,
@@ -17,7 +17,7 @@ const PackagesSection = ({
   packagesList: AirportPackage[];
   selectedPackageSlug: string;
   adults_count: number;
-  AirportCost: number;
+  // AirportCost: number;
   child_count: number;
 }) => {
   function handleSelectedPackage(slug: string, packageCost: number, name: string) {
@@ -32,13 +32,13 @@ const PackagesSection = ({
           Kindly review the service descriptions below and confirm your
           selection.
         </h4>
-
+    
         {packagesList.map((pkg) => (
           <ServiceCard
             selectedService={selectedPackageSlug === pkg.package.package_slug}
             adults_count={adults_count}
             child_count={child_count}
-            AirportCost={AirportCost}
+            // AirportCost={AirportCost}
             key={`package_${pkg.package.package_slug}`}
             service={pkg}
             onSelect={handleSelectedPackage}

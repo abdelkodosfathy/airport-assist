@@ -11,32 +11,28 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { useState, useRef, useEffect } from "react";
 import { gsap } from "gsap";
-// import { Service } from "@/types/service";
-// import { Package } from "@/lib/types/package";
 import { AirportPackage } from "@/lib/types/airport";
 import { useCurrency } from "@/lib/hooks/useCurrency";
-// import { VipBookingData } from "../page";
 
 interface ServiceCardProps {
   service: AirportPackage;
   selectedService?: boolean;
-  AirportCost: number;
+  // AirportCost: number;
   adults_count: number;
   child_count: number;
-  // bookingData: VipBookingData;
   onSelect: (slug: string, packageCost: number, name: string) => void; // pass the value on selection
 }
 
 export default function ServiceCard({
   // bookingData,
-  AirportCost,
+  // AirportCost,
   adults_count,
   child_count,
   service,
   selectedService,
   onSelect,
 }: ServiceCardProps) {
-  const { currency } = useCurrency();
+  const { currencyMark } = useCurrency();
 
   const [showMore, setShowMore] = useState(false);
   const detailsRef = useRef<HTMLDivElement>(null);
@@ -80,32 +76,9 @@ export default function ServiceCard({
   };
 
   const packageCost =
-    prices.additional_adult_cost +
-    prices.adult_cost +
-    prices.child_cost +
-    AirportCost;
-
-  const getCurrencyMark = () => {
-    let mark = "$";
-
-    switch (currency) {
-      case "USD":
-        mark = "$";
-        break;
-      case "EUR":
-        mark = "€";
-        break;
-      case "GBP":
-        mark = "£";
-        break;
-      default:
-        mark = "$";
-    }
-
-    return mark;
-  };
-
-  const currencyMark = getCurrencyMark();
+    prices.adult_cost ;
+    // + prices.additional_adult_cost + prices.child_cost;
+  // AirportCost;
   return (
     <div className="*:font-[Manrope] mt-8 rounded-xl p-3 bg-[#F4F4F4] border border-[#E0E0E0]">
       {/* Top Section */}
@@ -142,7 +115,7 @@ export default function ServiceCard({
         <div className="flex-1">
           <Image
             src={saloon}
-            className="rounded-lg"
+            className="rounded-lg w-full"
             width={249.25}
             height={139.81}
             alt=""

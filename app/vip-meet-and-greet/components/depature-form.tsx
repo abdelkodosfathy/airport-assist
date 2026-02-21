@@ -8,7 +8,6 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAirlines } from "@/lib/hooks/useAirlines";
-import { useCurrency } from "@/lib/hooks/useCurrency";
 
 interface StepsProps {
   onFocus?: () => void;
@@ -16,14 +15,13 @@ interface StepsProps {
   hourCost: number;
   onEnableFastTrack: (status: boolean) => void;
   setDuration: (val: OptionType) => void;
-  serviceType: string;
 }
 
 interface validationErrors {
-  airline?: boolean;
-  flightNumber?: boolean;
-  arrivalTime?: boolean;
-  serviceDuration?: boolean;
+        airline?: boolean;
+      flightNumber?: boolean;
+      arrivalTime?: boolean;
+      serviceDuration?: boolean;
 }
 
 export type FlightFormData = {
@@ -39,20 +37,12 @@ export type FlightFormHandle = {
   getData: () => FlightFormData;
 };
 
-const FlightForm = forwardRef<FlightFormHandle, StepsProps>(
+
+const DepatureForm = forwardRef<FlightFormHandle, StepsProps>(
   (
-    {
-      onFocus,
-      fastTrackCost,
-      hourCost,
-      serviceType,
-      setDuration,
-      onEnableFastTrack,
-    },
+    { onFocus, fastTrackCost, hourCost, setDuration, onEnableFastTrack },
     ref,
   ) => {
-    // console.log(serviceType);
-
     const { data, isLoading } = useAirlines();
 
     const airlineOptions: OptionType[] =
@@ -64,15 +54,8 @@ const FlightForm = forwardRef<FlightFormHandle, StepsProps>(
     const [selectedAirline, setSelectedAirline] = useState<OptionType | null>(
       null,
     );
-    const [selectedConnectionAirline, setSelectedConnectionAirline] = useState<OptionType | null>(
-      null,
-    );
     const [flightNumber, setFlightNumber] = useState("");
-    const [flightConnectionNumber, setFlightConnectionNumber] = useState("");
     const [arrivalTime, setArrivalTime] = useState<OptionType | null>(null);
-    
-    const [departureTime, setDepartureTime] = useState<OptionType | null>(null);
-    
     const [serviceDuration, setServiceDuration] = useState<OptionType | null>(
       null,
     );
@@ -82,9 +65,7 @@ const FlightForm = forwardRef<FlightFormHandle, StepsProps>(
     //   onEnableFastTrack(fastTrackChecked);
     // }, [fastTrackChecked]);
     // Track validation errors
-    const [validationErrors, setValidationErrors] = useState<validationErrors>(
-      {},
-    );
+    const [validationErrors, setValidationErrors] = useState<validationErrors>({});
 
     const validateInputs = () => {
       const errors: typeof validationErrors = {};
@@ -132,9 +113,7 @@ const FlightForm = forwardRef<FlightFormHandle, StepsProps>(
 
       for (let i = 2; i <= 6; i++) {
         const newDate = new Date(baseDate);
-        serviceType === "departure"
-          ? newDate.setHours(newDate.getHours() - i)
-          : newDate.setHours(newDate.getHours() + i);
+        newDate.setMinutes(newDate.getMinutes() + i * 60);
 
         const formattedTime = newDate.toLocaleTimeString("en-US", {
           hour: "2-digit",
@@ -146,15 +125,14 @@ const FlightForm = forwardRef<FlightFormHandle, StepsProps>(
         const calculatedCost = hourCost ? hourCost * extraHours : 0;
 
         const label =
-          // extraHours === 0
-          // ? `${formattedTime} (${i} hours)`
-          // : `${formattedTime} (${i} hours)`;
-          `${formattedTime} (${i} hours)`;
+          extraHours === 0
+            ? `${formattedTime} (${i * 60} mins)`
+            : `${formattedTime} (${i * 60} mins) +${calculatedCost} USD`;
 
         options.push({
           label,
           value: i.toString(),
-          cost: calculatedCost,
+          cost: calculatedCost, // 👈 رجعنا الكوست هنا
         });
       }
 
@@ -173,8 +151,6 @@ const FlightForm = forwardRef<FlightFormHandle, StepsProps>(
       }, 0);
     };
 
-    const { currencyMark } = useCurrency();
-
     return (
       <div
         onClick={() => onFocus?.()}
@@ -190,7 +166,7 @@ const FlightForm = forwardRef<FlightFormHandle, StepsProps>(
           {/* Airline */}
           <div className="space-y-2">
             <Label className={validationErrors.airline ? "text-red-500" : ""}>
-              {serviceType === "connection" && "Arrival"} Airline {validationErrors?.airline && "*"}
+              Airline {validationErrors?.airline && "*"}
             </Label>
             <SearchWithDropdown
               disabled={isLoading}
@@ -206,9 +182,24 @@ const FlightForm = forwardRef<FlightFormHandle, StepsProps>(
           </div>
 
           {/* Flight Number */}
+          {/* <div className="space-y-2">
+            <Label
+              className={validationErrors.flightNumber ? "text-red-500" : ""}
+            >
+              Flight Number {validationErrors?.flightNumber && "*"}
+            </Label>
+            <Input
+            value={flightNumber}
+            onChange={(e) => setFlightNumber(e.target.value)}
+            maxLength={9}
+            placeholder="BA 777"
+            className={`bg-[#F4F4F4] ${
+              validationErrors.flightNumber ? "border-red-500 border" : ""
+              }`}
+              />
+              </div> */}
           <FlightNumberInput
-            
-            validationErrors={validationErrors}
+          validationErrors={validationErrors}
             className={`bg-[#F4F4F4] ${
               validationErrors.flightNumber ? "border-red-500 border" : ""
             }`}
@@ -216,67 +207,15 @@ const FlightForm = forwardRef<FlightFormHandle, StepsProps>(
             onChange={setFlightNumber}
           />
 
-          {serviceType === "connection" && (
-            <>
-              <div className="space-y-2">
-                <Label
-                  className={validationErrors.airline ? "text-red-500" : ""}
-                >
-                  Departure Airline {validationErrors?.airline && "*"}
-                </Label>
-                <SearchWithDropdown
-                  disabled={isLoading}
-                  options={airlineOptions}
-                  onSelect={setSelectedConnectionAirline}
-                  showRecentSearches={false}
-                  placeholder={
-                    isLoading ? "Loading airlines..." : "Choose Airline"
-                  }
-                  className="h-9 rounded-md"
-                  inputClassName={`rounded-md pl-4 pr-10 bg-[#F4F4F4] border ${
-                    validationErrors.airline
-                      ? "border-red-500"
-                      : "border-[#E0E0E0]"
-                  }`}
-                />
-              </div>
-
-              <FlightNumberInput
-                validationErrors={validationErrors}
-                className={`bg-[#F4F4F4] ${
-                  validationErrors.flightNumber ? "border-red-500 border" : ""
-                }`}
-                value={flightConnectionNumber}
-                onChange={setFlightConnectionNumber}
-              />
-              <ConnectionTimeRow
-                serviceType={serviceType}
-
-                onArrivalChange={setArrivalTime}
-                onDepartureChange={setDepartureTime}
-
-                onServiceDurationChange={(d) => {
-                  setServiceDuration(d);
-                  setDuration(d);
-                }}
-                buildServiceDuration={buildServiceDuration}
-                validationErrors={validationErrors}
-              />
-            </>
-          )}
-
-          {serviceType !== "connection" && (
-            <TimeRow
-              serviceType={serviceType}
-              onArrivalChange={setArrivalTime}
-              onServiceDurationChange={(d) => {
-                setServiceDuration(d);
-                setDuration(d);
-              }}
-              buildServiceDuration={buildServiceDuration}
-              validationErrors={validationErrors}
-            />
-          )}
+          <TimeRow
+            onArrivalChange={setArrivalTime}
+            onServiceDurationChange={(d) => {
+              setServiceDuration(d);
+              setDuration(d);
+            }}
+            buildServiceDuration={buildServiceDuration}
+            validationErrors={validationErrors}
+          />
 
           {/* Fast Track */}
           {fastTrackCost !== "not_active" && (
@@ -293,9 +232,7 @@ const FlightForm = forwardRef<FlightFormHandle, StepsProps>(
                 className="font-medium leading-relaxed cursor-pointer"
               >
                 Include Fast Track Service{" "}
-                <span>
-                  (+{currencyMark} {fastTrackCost}, Per PAX)
-                </span>
+                <span>(+£{fastTrackCost}, Per PAX)</span>
               </Label>
             </div>
           )}
@@ -305,14 +242,12 @@ const FlightForm = forwardRef<FlightFormHandle, StepsProps>(
   },
 );
 
-FlightForm.displayName = "FlightForm";
-export default FlightForm;
+DepatureForm.displayName = "DepatureForm";
+export default DepatureForm;
 
 interface TimeRowProps {
   onArrivalChange: (val: OptionType) => void;
-  onDepartureChange?: (val: OptionType) => void
   onServiceDurationChange: (val: OptionType) => void;
-  serviceType: string;
   buildServiceDuration: (
     hour: number,
     minute: number,
@@ -329,7 +264,6 @@ const TimeRow = ({
   onServiceDurationChange,
   buildServiceDuration,
   validationErrors,
-  serviceType,
 }: TimeRowProps) => {
   // const [arrival, setArrival] = useState<OptionType | null>(null);
   const [serviceOptions, setServiceOptions] = useState<OptionType[]>([
@@ -359,8 +293,7 @@ const TimeRow = ({
       {/* Arrival Time */}
       <div className="space-y-2">
         <Label className={validationErrors?.arrivalTime ? "text-red-500" : ""}>
-          {serviceType === "departure" ? "Departure " : "Arrival "} Time{" "}
-          {validationErrors?.arrivalTime && "*"}
+          Depature Time {validationErrors?.arrivalTime && "*"}
         </Label>
         <TimePickerInput
           onSelect={handleTimeSelect}
@@ -400,15 +333,10 @@ interface Props {
   value: string;
   onChange: (value: string) => void;
   className?: string;
-  validationErrors: validationErrors;
+  validationErrors: validationErrors
 }
 
-function FlightNumberInput({
-  validationErrors,
-  value,
-  onChange,
-  className = "",
-}: Props) {
+function FlightNumberInput({ validationErrors, value, onChange, className = "" }: Props) {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let input = e.target.value.toUpperCase();
 
@@ -451,88 +379,3 @@ function FlightNumberInput({
     </div>
   );
 }
-
-const ConnectionTimeRow = ({
-  onArrivalChange,
-  onDepartureChange,
-  onServiceDurationChange,
-  buildServiceDuration,
-  validationErrors,
-  serviceType,
-}: TimeRowProps) => {
-  // const [arrival, setArrival] = useState<OptionType | null>(null);
-  const [serviceOptions, setServiceOptions] = useState<OptionType[]>([
-    { label: "06:20 PM (120 mins)", value: "2" },
-  ]);
-  const [serviceDuration, setServiceDuration] = useState<OptionType | null>(
-    null,
-  );
-
-  const handleTimeSelect = (
-    hour: number,
-    minute: number,
-    period?: "AM" | "PM",
-  ) => {
-    const options = buildServiceDuration(hour, minute, period);
-    setServiceOptions(options);
-    setServiceDuration(options[0]);
-    onArrivalChange({
-      label: `${hour}:${minute} ${period}`,
-      value: `${hour}:${minute}`,
-    });
-    onServiceDurationChange(options[0]);
-  };
-
-  return (
-    <>
-      <div className="space-y-2">
-        <Label className={validationErrors?.arrivalTime ? "text-red-500" : ""}>
-          Arrival Time
-          {validationErrors?.arrivalTime && "*"}
-        </Label>
-        <TimePickerInput
-          onSelect={handleTimeSelect}
-          className="bg-[#F4F4F4] border-none shadow-none rounded-lg"
-          inputClassName={`px-10 h-9 bg-[#F4F4F4] w-full rounded-lg ${
-            validationErrors?.arrivalTime ? "border-red-500 border" : ""
-          }`}
-        />
-      </div>
-      <div className="space-y-2">
-        <Label className={validationErrors?.arrivalTime ? "text-red-500" : ""}>
-          Departure Time
-          {validationErrors?.arrivalTime && "*"}
-        </Label>
-        <TimePickerInput
-          onSelect={handleTimeSelect}
-          className="bg-[#F4F4F4] border-none shadow-none rounded-lg"
-          inputClassName={`px-10 h-9 bg-[#F4F4F4] w-full rounded-lg ${
-            validationErrors?.arrivalTime ? "border-red-500 border" : ""
-          }`}
-        />
-      </div>
-
-      {/* Service Duration */}
-      <div className="space-y-2 col-span-2">
-        <Label
-          className={validationErrors?.serviceDuration ? "text-red-500" : ""}
-        >
-          Service Duration {validationErrors?.serviceDuration && "*"}
-        </Label>
-        <SelectDropdown
-          disabled={serviceOptions.length === 1}
-          inputClassName={`bg-[#F4F4F4] focus-visible:border focus-visible:outline ${
-            validationErrors?.serviceDuration ? "border-red-500" : ""
-          }`}
-          placeholder="e.g. 2 hours"
-          options={serviceOptions}
-          value={serviceDuration}
-          onSelect={(val) => {
-            setServiceDuration(val);
-            onServiceDurationChange(val);
-          }}
-        />
-      </div>
-    </>
-  );
-};

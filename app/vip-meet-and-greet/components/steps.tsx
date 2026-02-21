@@ -142,7 +142,7 @@ const Steps = ({ currentPage = "packages" }: { currentPage: currentPage }) => {
     }
   };
   const currentStep = getCurrentStep();
-  console.log(steps);
+  // console.log(steps);
   return (
     <div className="bg-white rounded-2xl shadow-xs p-5 mb-4">
       {/* <h4 className="font-[Manrope] font-semibold">Steps</h4> */}
@@ -151,7 +151,7 @@ const Steps = ({ currentPage = "packages" }: { currentPage: currentPage }) => {
         {steps.map((step, i) => {
           const isActive = i === currentStep;
           const isCompleted = i < currentStep;
-          console.log(step.label);
+          // console.log(step.label);
 
           return (
             <React.Fragment key={step.label}>

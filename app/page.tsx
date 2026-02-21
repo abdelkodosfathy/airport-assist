@@ -40,7 +40,6 @@ export default function HomePage() {
       <PrivateSuites />
       <ExclusiveContent/>
       <Footer />
-
       {/* <Backgroundshadow /> */}
     </main>
   );

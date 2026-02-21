@@ -6,7 +6,7 @@ type Props = {};
 
 const Intro = (props: Props) => {
   return (
-    <section className="min-h-118.75  h-max gap-4  flex items-center px-4 sm:px-8 md:px-12 lg:px-20 xl:px-26 py-10 lg:py-0 overflow-hidden">
+    <section className="min-h-80  h-max gap-4  flex items-center px-4 sm:px-8 md:px-12 lg:px-20 xl:px-26 py-10 lg:py-0 overflow-hidden">
       <div className="w-full max-w-360 lg:mx-auto flex flex-col lg:flex-row lg:items-center gap-10">
         {/* Left Text */}
         <div className="flex-2">

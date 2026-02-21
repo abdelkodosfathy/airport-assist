@@ -366,6 +366,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useAdditionalServicesStore } from "@/store/useAdditionalServices";
 import { ArrowDownToLineIcon, UploadCloud, FileText, X } from "lucide-react";
+import WheelchairCheckbox from "./WheelChairBox";
 export type UploadFilesData = {
   wheelchair: boolean;
   additionalRequirements: string;
@@ -533,11 +534,8 @@ const UploadFilesSection = forwardRef<UploadFilesSectionHandle, StepsProps>(
             {!imageFile ? (
               <div className="p-4 space-y-4 bg-[#F4F4F4] border border-[#E0E0E0] rounded-lg">
                 <p className="text-sm">
-                  Upload your tickets now, or we'll contact you later.
-                  <br />
-                  Drag & drop or click to upload.
-                  <br />
-                  Formats: JPEG, PNG, PDF.
+                  Upload your tickets now, or we'll contact you later. Drag &
+                  drop or click to upload. Formats: JPEG, PNG, PDF.
                 </p>
 
                 <p className="text-[#7B5A41] flex items-center gap-2 font-bold">
@@ -598,24 +596,37 @@ const UploadFilesSection = forwardRef<UploadFilesSectionHandle, StepsProps>(
             )}
 
             {/* Wheelchair */}
-            <div className="flex items-start gap-3">
-              <Checkbox
-                id="wheelchair"
-                name="wheelchair"
-                checked={wheelchair}
-                onCheckedChange={(value) => setWheelchair(Boolean(value))}
-                className="w-6 h-6 rounded-md bg-[#F4F4F4] 
+            {/* <div>
+              <div className="flex items-start gap-3 mb-3">
+                <Checkbox
+                  id="wheelchair"
+                  name="wheelchair"
+                  checked={wheelchair}
+                  onCheckedChange={(value) => setWheelchair(Boolean(value))}
+                  className="w-6 h-6 rounded-md bg-[#F4F4F4] 
                   data-[state=checked]:bg-[#7B5A41] 
                   data-[state=checked]:border-[#7B5A41]"
-              />
+                />
 
-              <Label
-                htmlFor="wheelchair"
-                className="text-sm leading-relaxed cursor-pointer"
-              >
-                Wheelchair requested from the airline
-              </Label>
-            </div>
+                <Label
+                  htmlFor="wheelchair"
+                  className="text-sm leading-relaxed cursor-pointer"
+                >
+                  Wheelchair requested from the airline
+                </Label>
+              </div>
+              <div className="flex items-center gap-4 rounded-lg bg-[#FFFBEF] px-4 py-3 border border-[#7B5A414D] text-[#7B5A41]">
+                <div className="min-w-6 w-6 min-h-6 h-6 text-lg bg-[#7B5A41] rounded-full grid place-content-center">
+                  <p className="text-white">!</p>
+                </div>
+                <p>
+                  Wheelchair assistance must be arranged directly with your
+                  airline. By ticking this box, you confirm that you have
+                  selected wheelchair assistance on your flight booking.
+                </p>
+              </div>
+            </div> */}
+            <WheelchairCheckbox />
 
             <div className="space-y-2">
               <Label htmlFor="additionalRequirements" className="gap-0">

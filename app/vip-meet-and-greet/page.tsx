@@ -20,6 +20,7 @@ import BillingSection, {
 import { ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
 import Steps from "./components/steps";
+import ServiceCardSkeleton from "./components/ServiceSkeletonCard";
 
 export type currentPage = "packages" | "flight" | "billing" | "summry";
 
@@ -39,6 +40,7 @@ const Page = () => {
 
   const [durationCost, setDurationCost] = useState<number>();
   const [bagsCost, setBagsCost] = useState<number>();
+  const [bagsNumber, setBagsNumber] = useState<number>(0);
   const [fastTrackCost, setFastTrackCost] = useState<boolean>();
 
   const [uuid, setUUID] = useState<string>("");
@@ -76,7 +78,6 @@ const Page = () => {
   }, [airportData]);
   console.log(airportData);
 
-  
   if (!storedData) return null; // or loader
   // console.log(airportResponse);
 
@@ -102,13 +103,24 @@ const Page = () => {
   const isLastMinute =
     airportResponse &&
     isWithinHours(storedData.date, airportResponse.min_hours_before_booking);
-  const airportCost = isLastMinute ? airportResponse.last_minute_cost : 0;
+  // const airportCost = isLastMinute ? airportResponse.last_minute_cost : 0;
+
+  const lastMinuteCost =
+    airportResponse?.last_minute_strategy === "extra_fees" && isLastMinute
+      ? airportResponse.last_minute_cost
+      : 0;
+  const fastTrack = fastTrackCost
+    ? (airportResponse?.fast_track_cost || 0) *
+      (storedData.adults + storedData.children)
+    : 0;
+
   const totalPrice =
     currentPackagePrice +
     (durationCost ?? 0) +
     (bagsCost ?? 0) +
-    (fastTrackCost ? airportResponse?.fast_track_cost || 0 : 0) +
-    0; // i will replace the zero with other vars later
+    fastTrack +
+    lastMinuteCost;
+  // i will replace the zero with other vars later
 
   const handleNextPage = () => {
     let nextPage: currentPage = "billing";
@@ -190,11 +202,10 @@ const Page = () => {
     return prevPage;
   };
 
-
   const handleFormSuccess = (uuid: string) => {
     setUUID(uuid);
     handleNextPage();
-  }
+  };
 
   return (
     <>
@@ -214,7 +225,7 @@ const Page = () => {
           className="cursor-pointer flex gap-2 mb-2 text-[#8E8E93] w-fit"
         >
           <ArrowLeft />
-          <p> back to {getPrevPage()}</p>
+          <p> Back To {getPrevPage()}</p>
         </Button>
       )}
       <div className="flex gap-4">
@@ -222,7 +233,7 @@ const Page = () => {
 
         {/* packages */}
         <Activity mode={currentPage === "packages" ? "visible" : "hidden"}>
-          {packagesList && (
+          {packagesList ? (
             <PackagesSection
               selectedPackageSlug={currentPackageSlug}
               onSelectPackage={(slug, cost, name) => {
@@ -230,11 +241,18 @@ const Page = () => {
                 setCurrentPackageSlug(slug);
                 setCurrentPackageName(name);
               }}
-              AirportCost={airportCost}
+              // AirportCost={airportCost}
               adults_count={storedData.adults}
               child_count={storedData.children}
               packagesList={packagesList}
             />
+          ) : (
+            <div className="flex-2 h-full">
+              <div className="px-10 shadow-md py-6 bg-white rounded-2xl h-full">
+                <ServiceCardSkeleton />
+                {/* <ServiceCardSkeleton /> */}
+              </div>
+            </div>
           )}
         </Activity>
 
@@ -243,7 +261,9 @@ const Page = () => {
             {/* flight */}
             <Activity mode={currentPage === "flight" ? "visible" : "hidden"}>
               <FlightSection
+                serviceType={storedData.serviceType}
                 bagsCost={(cost) => setBagsCost(cost)}
+                bagsNumber={setBagsNumber}
                 durationCost={(cost) => setDurationCost(cost)}
                 withChauffuer={currentPackageSlug !== "elite"}
                 ref={flightSectionRef}
@@ -254,7 +274,12 @@ const Page = () => {
 
             {/* billing */}
             <Activity mode={currentPage === "billing" ? "visible" : "hidden"}>
-              <BillingSection onSuccess={handleFormSuccess} slug={currentPackageSlug} onGetFlightData={() => flightSectionData} ref={billingRef} />
+              <BillingSection
+                onSuccess={handleFormSuccess}
+                slug={currentPackageSlug}
+                onGetFlightData={() => flightSectionData}
+                ref={billingRef}
+              />
             </Activity>
 
             {/* <button onClick={handleGetInputs}>get inputs</button> */}
@@ -262,21 +287,32 @@ const Page = () => {
         )}
         {/* summry */}
         <Activity mode={currentPage === "summry" ? "visible" : "hidden"}>
-          <Summry uuid={uuid} onBack={handlePrevPage} />
+          <Summry
+            airportName={airportResponse?.airport_name}
+            uuid={uuid}
+            onBack={handlePrevPage}
+          />
         </Activity>
         {currentPage !== "summry" && (
           <SideInformationCard
-            serviceType={storedData.serviceType}
-            withoutChauffuer={currentPackageSlug === "elite"}
-            totalPrice={totalPrice}
+            lastMinuteCost={lastMinuteCost}
+            storedData={storedData}
+            numberOfBags={bagsNumber}
+            bagsCost={bagsCost}
+            // withoutChauffuer={currentPackageSlug === "elite"}
             packageName={currentPackageName}
-            adults_count={storedData.adults}
-            child_count={storedData.children}
+            totalPrice={totalPrice}
+            isFastTrack={fastTrackCost || false}
+            fastTrackCost={fastTrack}
+            // serviceType={storedData.serviceType}
+            // adults_count={storedData.adults}
+            // airportName={storedData.airport_name}
+            // child_count={storedData.children}
           />
         )}
       </div>
       <div className="flex gap-4">
-        {(currentPage !== "summry" &&  currentPage !== "billing") && (
+        {currentPage !== "summry" && currentPage !== "billing" && (
           <Button
             onClick={handleNextPage}
             type="button"

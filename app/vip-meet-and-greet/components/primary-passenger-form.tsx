@@ -164,6 +164,7 @@ import { Textarea } from "@/components/ui/textarea";
 import DateOfBirth from "./DateOfBirth";
 import SelectDropdown from "@/components/custom inputs/SelectList";
 import { useCurrency } from "@/lib/hooks/useCurrency";
+import { BagsInput } from "./bags-input";
 
 export interface PrimaryPassengerData {
   firstName: string;
@@ -182,8 +183,13 @@ interface StepsProps {
   freeBags: number;
   blockCost: number;
   blockSize: number;
-
-  onSelectBags: (bagsCost: number) => void;
+  onSelectBags: ({
+    bagsNumber,
+    cost,
+  }: {
+    bagsNumber: number;
+    cost: number;
+  }) => void;
 }
 
 export interface PrimaryPassenger {
@@ -200,9 +206,9 @@ const PrimaryPassengerForm = forwardRef<PrimaryPassengerFormHandle, StepsProps>(
     const { currency } = useCurrency();
 
     const classesOptions = [
-      { value: "economy", label: "economy" },
-      { value: "business", label: "business" },
-      { value: "first", label: "first" },
+      { value: "economy", label: "Economy" },
+      { value: "business", label: "Business" },
+      { value: "first", label: "First" },
     ];
 
     // Form state
@@ -212,8 +218,11 @@ const PrimaryPassengerForm = forwardRef<PrimaryPassengerFormHandle, StepsProps>(
     const [travelClass, setTravelClass] = useState<OptionType | null>(null);
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
-    const [bags, setBags] = useState<OptionType | null>(null);
+    // const [bags, setBags] = useState<OptionType | null>(null);
     const [otherInfo, setOtherInfo] = useState("");
+
+    // const [bags, setBags] = useState(0);
+    // const [bagsCost, setBagsCost] = useState(0);
 
     // Track validation errors
     const [validationErrors, setValidationErrors] = useState<{
@@ -227,35 +236,35 @@ const PrimaryPassengerForm = forwardRef<PrimaryPassengerFormHandle, StepsProps>(
     }>({});
 
     // Bags options with color
-    const buildBagsOptions = (maxBags: number = 12) => {
-      const options: OptionType[] = [];
-      for (let i = 1; i <= maxBags; i++) {
-        let label = "";
-        let color: string | undefined;
-        let cost = 0;
-        if (i <= freeBags) {
-          label = `${i} bag${i > 1 ? "s" : ""} (free)`;
-          color = undefined;
-        } else {
-          const extraBags = i - freeBags;
-          const blocks = Math.ceil(extraBags / blockSize);
-          const totalCost = blocks * blockCost;
-          cost = totalCost;
-          label = `${i} bag${i > 1 ? "s" : ""} (+${totalCost} ${currency})`;
-          color = blocks % 2 === 1 ? "bg-gray-100" : "";
-        }
+    // const buildBagsOptions = (maxBags: number = 12) => {
+    //   const options: OptionType[] = [];
+    //   for (let i = 1; i <= maxBags; i++) {
+    //     let label = "";
+    //     let color: string | undefined;
+    //     let cost = 0;
+    //     if (i <= freeBags) {
+    //       label = `${i} bag${i > 1 ? "s" : ""} (free)`;
+    //       color = undefined;
+    //     } else {
+    //       const extraBags = i - freeBags;
+    //       const blocks = Math.ceil(extraBags / blockSize);
+    //       const totalCost = blocks * blockCost;
+    //       cost = totalCost;
+    //       label = `${i} bag${i > 1 ? "s" : ""} (+${totalCost} ${currency})`;
+    //       color = blocks % 2 === 1 ? "bg-gray-100" : "";
+    //     }
 
-        options.push({
-          value: i.toString(),
-          label,
-          color,
-          cost,
-        });
-      }
-      return options;
-    };
+    //     options.push({
+    //       value: i.toString(),
+    //       label,
+    //       color,
+    //       cost,
+    //     });
+    //   }
+    //   return options;
+    // };
 
-    const bagsOptions = buildBagsOptions();
+    // const bagsOptions = buildBagsOptions();
 
     const validateInputs = () => {
       const errors: typeof validationErrors = {};
@@ -266,7 +275,7 @@ const PrimaryPassengerForm = forwardRef<PrimaryPassengerFormHandle, StepsProps>(
       if (!travelClass) errors.travelClass = true;
       if (!email.trim()) errors.email = true;
       if (!phone.trim()) errors.phone = true;
-      if (!bags) errors.bags = true;
+      // if (!bags) errors.bags = true;
 
       setValidationErrors(errors);
 
@@ -287,8 +296,10 @@ const PrimaryPassengerForm = forwardRef<PrimaryPassengerFormHandle, StepsProps>(
           travelClass: travelClass?.value || null,
           email: email.trim(),
           phone,
-          numberOfBags: bags ? Number(bags.value) : 0,
-          bagsCost: bags?.cost || 0,
+          // numberOfBags: bags ? Number(bags.value) : 0,
+          numberOfBags: 0,
+          // bagsCost: bags?.cost || 0,
+          bagsCost: 0,
           otherPassengersInfo: otherInfo.trim(),
         };
       },
@@ -303,7 +314,7 @@ const PrimaryPassengerForm = forwardRef<PrimaryPassengerFormHandle, StepsProps>(
         className="px-10 py-6 bg-white rounded-2xl"
       >
         <h4 className="font-manrope font-medium text-[18.75px]">
-          Primary passenger
+          Primary Passenger
         </h4>
         <span className="inline-block w-full h-0.5 bg-[#CFCFCF]" />
 
@@ -325,7 +336,6 @@ const PrimaryPassengerForm = forwardRef<PrimaryPassengerFormHandle, StepsProps>(
                 }`}
               />
             </div>
-
             {/* Last Name */}
             <div className="space-y-2">
               <Label
@@ -342,7 +352,6 @@ const PrimaryPassengerForm = forwardRef<PrimaryPassengerFormHandle, StepsProps>(
                 }`}
               />
             </div>
-
             {/* DOB */}
             <div className="space-y-2">
               <Label className={validationErrors.dob ? "text-red-500" : ""}>
@@ -354,7 +363,6 @@ const PrimaryPassengerForm = forwardRef<PrimaryPassengerFormHandle, StepsProps>(
                 className={validationErrors.dob ? "border-red-500 border" : ""}
               />
             </div>
-
             {/* Travel Class */}
             <div className="space-y-2">
               <Label
@@ -374,7 +382,6 @@ const PrimaryPassengerForm = forwardRef<PrimaryPassengerFormHandle, StepsProps>(
                 }`}
               />
             </div>
-
             {/* Email */}
             <div className="space-y-2">
               <Label className={validationErrors.email ? "text-red-500" : ""}>
@@ -389,7 +396,6 @@ const PrimaryPassengerForm = forwardRef<PrimaryPassengerFormHandle, StepsProps>(
                 }`}
               />
             </div>
-
             {/* Phone */}
             <div className="space-y-2">
               <Label className={validationErrors.phone ? "text-red-500" : ""}>
@@ -403,9 +409,8 @@ const PrimaryPassengerForm = forwardRef<PrimaryPassengerFormHandle, StepsProps>(
                 validationClass={validationErrors.phone}
               />
             </div>
-
             {/* Number of bags */}
-            <div className="space-y-2 md:col-span-2">
+            {/* <div className="space-y-2 md:col-span-2">
               <Label className={validationErrors.bags ? "text-red-500" : ""}>
                 Number Of bags {validationErrors?.bags && "*"}
               </Label>
@@ -414,15 +419,32 @@ const PrimaryPassengerForm = forwardRef<PrimaryPassengerFormHandle, StepsProps>(
                 value={bags}
                 onSelect={(e) => {
                   setBags(e);
-                  onSelectBags(e.cost || 0);
+                  onSelectBags(e);
                 }}
                 className="h-9 rounded-md"
                 inputClassName={`rounded-md pl-4 pr-10 bg-[#F4F4F4] border ${
                   validationErrors.bags ? "border-red-500" : "border-[#E0E0E0]"
                 }`}
               />
-            </div>
+            </div> */}
+            <span className="inline-block col-span-2 h-0.5 bg-[#CFCFCF]" />
 
+            <BagsInput
+              // title="Number Of Bags"
+              // value={bags}
+              freeBags={freeBags}
+              blockSize={blockSize}
+              blockCost={blockCost}
+              currency={currency}
+              onChange={(bagsNumber, cost) => {
+                // setBags(value);
+                // setBagsCost(cost);
+                onSelectBags({
+                  bagsNumber,
+                  cost,
+                });
+              }}
+            />
             {/* Other passengers */}
             <div className="space-y-2 md:col-span-2">
               <Label>

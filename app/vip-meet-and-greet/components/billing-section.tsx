@@ -70,8 +70,8 @@
 // BillingSection.displayName = "BillingSection";
 
 // export default BillingSection;
-
-import { forwardRef, useImperativeHandle, useRef } from "react";
+"use client";
+import { forwardRef, useImperativeHandle, useRef, useState } from "react";
 import BillingInformation, {
   BillingInformationRef,
 } from "./billing-information";
@@ -79,6 +79,7 @@ import BillingAddress, { BillingAddressRef } from "./billing-address";
 import { FlightSectionData } from "./flight-section";
 import { postBillingData } from "../postData"; // <-- import the function
 import { Button } from "@/components/ui/button";
+import { Loader2 } from "lucide-react";
 
 export type BillingSectionRef = {
   isValid: () => boolean;
@@ -96,6 +97,8 @@ interface BillingSectionProps {
 
 const BillingSection = forwardRef<BillingSectionRef, BillingSectionProps>(
   ({ onGetFlightData, slug, onSuccess }, ref) => {
+    const [loading, setLoading] = useState<boolean>(false);
+
     const billingInfoRef = useRef<BillingInformationRef>(null);
     const billingAddressRef = useRef<BillingAddressRef>(null);
 
@@ -115,6 +118,7 @@ const BillingSection = forwardRef<BillingSectionRef, BillingSectionProps>(
 
     // --- Updated: Use postBillingData here ---
     const handleSubmit = async () => {
+      setLoading(true);
       await postBillingData(
         {
           current: {
@@ -128,6 +132,9 @@ const BillingSection = forwardRef<BillingSectionRef, BillingSectionProps>(
         slug,
         onGetFlightData,
         onSuccess,
+        () => {
+          setLoading(false);
+        },
       );
     };
 
@@ -140,8 +147,8 @@ const BillingSection = forwardRef<BillingSectionRef, BillingSectionProps>(
         <BillingInformation ref={billingInfoRef} />
         <BillingAddress ref={billingAddressRef} />
 
-
         <Button
+        disabled={loading}
           onClick={handleSubmit}
           type="button"
           variant="outline"
@@ -158,7 +165,14 @@ const BillingSection = forwardRef<BillingSectionRef, BillingSectionProps>(
       "
         >
           <p className="text-lg font-normal font-[Manrope]">
-            Proceed To Checkout
+            {loading ? (
+              <p className="flex gap-2 items-center">
+                <Loader2 size={18}/>
+                <span>chacking out...</span>
+              </p>
+            ) : (
+              "Proceed To Checkout"
+            )}
           </p>
         </Button>
       </div>

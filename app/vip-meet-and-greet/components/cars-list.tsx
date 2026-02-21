@@ -25,29 +25,8 @@ const CarCard = ({ car, selected = false, onSelect }: CarCardProps) => {
   } = car;
 
 
-  const { currency } = useCurrency();
-  
-   const getCurrencyMark = () => {
-      let mark = "$";
-  
-      switch (currency) {
-        case "USD":
-          mark = "$";
-          break;
-        case "EUR":
-          mark = "€";
-          break;
-        case "GBP":
-          mark = "£";
-          break;
-        default:
-          mark = "$";
-      }
-  
-      return mark;
-    };
-  
-    const currencyMark = getCurrencyMark();
+  const { currencyMark } = useCurrency();
+
   return (
     <div
       onClick={onSelect}

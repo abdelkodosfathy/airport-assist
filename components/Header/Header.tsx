@@ -6,13 +6,36 @@ import { Button } from "../ui/button";
 import CurrencySelector from "../ui/CurrencySelector";
 import { ChevronDown, Menu, X } from "lucide-react";
 import "./header.css";
+import SearchWithDropdown from "../custom inputs/search";
+import CurrencyDropdown, { FixedOptionType } from "../ui/CurrencyDropDown";
 
 export default function Header() {
   const [open, setOpen] = useState(false);
 
+  const currencyOptions: FixedOptionType[] = [
+    {
+      label: "USD",
+      value: "USD",
+      icon: <img src="/icons/usd.png" className="w-6 h-6 rounded-xl" />,
+    },
+    {
+      label: "EUR",
+      value: "EUR",
+      icon: <img src="/icons/eur.webp" className="w-6 h-6 rounded-xl" />,
+    },
+    {
+      label: "GBP",
+      value: "GBP",
+      icon: <img src="/icons/gbp.png" className="w-6 h-6 rounded-xl" />,
+    },
+  ];
+
+  const [selectedCurrency, setSelectedCurrency] =
+    useState<FixedOptionType | null>(currencyOptions[0]);
+
   return (
-    <header className="animated-header fixed  z-90 w-full border-b border-transparent">
-      <div className="mx-auto max-w-360 flex items-center justify-between px-6 lg:px-20 py-1">
+    <header className="animated-header fixed  z-90 w-full border-b border-transparent px-4">
+      <div className="mx-auto max-w-360 flex items-center justify-between py-1">
         {/* Logo */}
         <Link href="/" className="shrink-0">
           <Image
@@ -39,7 +62,14 @@ export default function Header() {
         {/* Right Side */}
         <div className="hidden lg:flex items-center gap-4">
           <CurrencySelector />
-
+          {/* <CurrencyDropdown
+            options={currencyOptions}
+            value={selectedCurrency}
+            onSelect={setSelectedCurrency}
+            placeholder="Choose Currency"
+            className="w-32"
+            inputClassName="bg-white"
+          /> */}
           <span className="inline-block w-0.5 h-8 rounded-3xl bg-linear-to-b from-white to-white/10"></span>
 
           <a className=" text-white  font-normal text-[16px] leading-6 tracking-[0px]">
@@ -49,11 +79,11 @@ export default function Header() {
           <Button
             variant="ghost"
             className="
-              w-[124.5px]
+              w-31
               h-12
               bg-white/10
               border border-white/20
-              rounded-2xl
+              rounded-xl
               px-6
               py-3
               flex items-center justify-center gap-2
@@ -106,7 +136,6 @@ export default function Header() {
 
           <div className="pt-4 border-t border-white/20 space-y-4">
             <CurrencySelector />
-
             <a
               style={{
                 fontFamily: "Manrope",
@@ -153,7 +182,9 @@ const ServiceList = () => {
         >
           Services
         </Button>
-        <ChevronDown className={`${open ? "rotate-180 text-gray-300" : ""} duration-300`}/>
+        <ChevronDown
+          className={`${open ? "rotate-180 text-gray-300" : ""} duration-300`}
+        />
       </div>
 
       <ul

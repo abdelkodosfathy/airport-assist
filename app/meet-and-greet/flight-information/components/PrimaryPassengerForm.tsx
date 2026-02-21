@@ -147,9 +147,9 @@ const PrimaryPassengerForm = ({ onFocus }: StepsProps) => {
   };
 
   const classesOptions = [
-    { value: "economy", label: "economy" },
-    { value: "business", label: "business" },
-    { value: "first", label: "first" },
+    { value: "economy", label: "Economy" },
+    { value: "business", label: "Business" },
+    { value: "first", label: "First" },
   ];
 
   return (

@@ -13,16 +13,16 @@ import { useCurrency } from "@/lib/hooks/useCurrency";
 export default function CurrencySelector() {
   const { currency, setCurrency } = useCurrency();
 
-  useEffect(() => {
-  }, [currency]);
+  useEffect(() => {}, [currency]);
   return (
     <Select value={currency} onValueChange={setCurrency}>
       <SelectTrigger
-        // className="h-10 flex items-center gap-3 backdrop-blur-md hover:backdrop-blur-2xl transform duration-300 cursor-pointer bg-white/10 border-2 border-white/20 px-8 py-4 rounded-3xl font-light text-white leading-8 tracking-[0px] hover:bg-white/10"
         className=" min-h-10 backdrop-blur-md hover:backdrop-blur-xl
                bg-white/10 border border-white/20
               p-2 rounded-xl text-sm text-white
               transition
+              w-31
+              outline-none
               font-light hover:bg-transparent hover:text-white cursor-pointer"
       >
         <SelectValue />
@@ -62,3 +62,4 @@ export default function CurrencySelector() {
     </Select>
   );
 }
+

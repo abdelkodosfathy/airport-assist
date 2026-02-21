@@ -113,7 +113,7 @@ export default function ServicesLayout({
         </div>
       </section>
 
-      <section className="overflow-visible w-full max-w-310 mx-auto mt-20 mb-26 px-4 relative">
+      <section className="overflow-visible w-full max-w-360 mx-auto mt-20 mb-26 px-4 relative">
         {children}
       </section>
 

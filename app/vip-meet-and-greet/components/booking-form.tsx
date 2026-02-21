@@ -102,10 +102,13 @@ const BookingForm = ({ storedData }: { storedData: VipBookingData}) => {
 
       // Append file uploads
       if (pdfFile) {
+        console.log("file");
+        
         formData.append("passenger[passengers_data_file]", pdfFile);
       }
-
+      
       if (imageFile) {
+        console.log("image");
         formData.append("tickets_files[0]", imageFile);
       }
 

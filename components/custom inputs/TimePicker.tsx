@@ -32,7 +32,7 @@ const TimePickerInput = ({
   onChange,
   onTimeChange,
   onSelect,
-  format = "12",
+  format = "24",
   minuteStep = 5,
 }: TimePickerInputProps) => {
   const [selectedTime, setSelectedTime] = useState(controlledValue || "");
@@ -166,11 +166,11 @@ const TimePickerInput = ({
   const hours =
     format === "12"
       ? Array.from({ length: 12 }, (_, i) => i + 1)
-      : Array.from({ length: 24 }, (_, i) => i);
+      : Array.from({ length: 24 }, (_, i) => i+1);
 
   const minutes = Array.from(
     { length: 60 / minuteStep },
-    (_, i) => i * minuteStep,
+    (_, i) => (i+1) * minuteStep,
   );
 
   const handleHourClick = (hour: number) => {
@@ -341,7 +341,7 @@ const TimePickerInput = ({
             {/* Manual Input Section */}
             <div className="flex gap-2 mb-4">
               {/* Hour Input */}
-              <div className="flex flex-col flex-1 max-w-18">
+              <div className="flex flex-col flex-1 max-w-17">
                 <label className="text-xs font-semibold  text-gray-500 mb-1">
                   Hour
                 </label>
@@ -361,7 +361,7 @@ const TimePickerInput = ({
               </div>
 
               {/* Minute Input */}
-              <div className="flex flex-col flex-1 max-w-18">
+              <div className="flex flex-col flex-1 max-w-17">
                 <label className="text-xs font-semibold text-gray-500 mb-1">
                   Minute
                 </label>
@@ -422,7 +422,7 @@ const TimePickerInput = ({
                 </div>
                 <div
                   ref={hourScrollRef}
-                  className="time-scroll h-48 overflow-y-scroll overflow-x-hidden flex flex-col"
+                  className="time-scroll items-center h-48 overflow-y-scroll overflow-x-hidden flex flex-col"
                 >
                   {hours.map((hour) => (
                     <button
@@ -451,7 +451,7 @@ const TimePickerInput = ({
                 </div>
                 <div
                   ref={minuteScrollRef}
-                  className="time-scroll flex flex-col h-48 overflow-y-scroll overflow-x-hidden"
+                  className="time-scroll items-center flex flex-col h-48 overflow-y-scroll overflow-x-hidden"
                 >
                   {minutes.map((minute) => (
                     <button

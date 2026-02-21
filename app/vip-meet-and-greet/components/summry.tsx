@@ -18,37 +18,17 @@ import { apiPost } from "@/lib/api";
 export default function Summary({
   onBack,
   uuid,
+  airportName,
 }: {
   onBack: () => void;
   uuid: string;
+  airportName?: string;
 }) {
   const [summaryData, setSummaryData] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const { currency } = useCurrency();
-
-  const getCurrencyMark = () => {
-    let mark = "$";
-
-    switch (currency) {
-      case "USD":
-        mark = "$";
-        break;
-      case "EUR":
-        mark = "€";
-        break;
-      case "GBP":
-        mark = "£";
-        break;
-      default:
-        mark = "$";
-    }
-
-    return mark;
-  };
-
-  const currencyMark = getCurrencyMark();
+  const { currency, currencyMark } = useCurrency();
 
   useEffect(() => {
     if (uuid.trim() === "") return;
@@ -123,7 +103,8 @@ export default function Summary({
           {/* Flight Info */}
           <div className="px-10 py-6 w-full bg-white rounded-2xl shadow-md">
             <h2 className="text-lg font-semibold mb-4">
-              {summaryData.package?.package_name || "VIP Booking"}
+              {airportName || ""} {summaryData.service_type}{" "}
+              {summaryData.package.package_name}
             </h2>
             <div className="space-y-2">
               <p className="flex justify-between">
@@ -423,7 +404,7 @@ const BookButton = ({
 
   const fetchPaymentLink = async () => {
     console.log(uuid);
-    
+
     try {
       setLoading(true);
       setError(null);

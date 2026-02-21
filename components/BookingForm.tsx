@@ -48,7 +48,7 @@ export default function BookingForm() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedSearch(searchQuery);
-    }, 300);
+    }, 100);
 
     return () => clearTimeout(timer);
   }, [searchQuery]);
@@ -102,13 +102,13 @@ export default function BookingForm() {
     [clearError],
   );
 
-  const handleDropOffSelect = useCallback(
-    (option: OptionType) => {
-      setDropOffLocation(option.value);
-      clearError("dropOff");
-    },
-    [clearError],
-  );
+  // const handleDropOffSelect = useCallback(
+  //   (option: OptionType) => {
+  //     setDropOffLocation(option.value);
+  //     clearError("dropOff");
+  //   },
+  //   [clearError],
+  // );
 
   const handleDateChange = useCallback(
     (date: string) => {
@@ -218,9 +218,9 @@ export default function BookingForm() {
   const handleBookNow = useCallback(
     async (e: React.MouseEvent<HTMLButtonElement>) => {
       e.preventDefault();
-      setAttemptedSubmit(true);
-
+      
       if (!validateForm() && activeTab === "vip") {
+        setAttemptedSubmit(true);
         // Scroll to first error
         const firstErrorField = Object.keys(errors)[0];
         const element = document.getElementById(firstErrorField);
@@ -235,7 +235,7 @@ export default function BookingForm() {
         saveBookingToSession();
 
         // Small delay for better UX
-        await new Promise((resolve) => setTimeout(resolve, 300));
+        // await new Promise((resolve) => setTimeout(resolve, 300));
 
         // Redirect without query params
         if (activeTab === "vip") {
@@ -276,6 +276,11 @@ export default function BookingForm() {
     );
   }
 
+  const servicesOptions: OptionType[] = [
+    { label: "Arrival", value: "arrival", icon: <Arraival /> },
+    { label: "Departure", value: "departure", icon: <Depature /> },
+    { label: "Connection", value: "connection", icon: <Connection /> },
+  ];
   return (
     <Card className="gap-4 xs:gap-6 lg:gap-4 booking-form opacity-0 mx-auto backdrop-blur-md bg-white/10 border-white/20 mt-8 md:mt-12 w-full max-w-[1272px] p-6 lg:p-7.5 transition-all duration-300 hover:shadow-2xl">
       {/* Tabs */}
@@ -345,17 +350,19 @@ export default function BookingForm() {
               </div>
 
               <div className="col-span-1 sm:col-span-2 lg:col-span-4">
-                <SearchWithDropdown
+                <SelectDropdown
+                
                   id="serviceType"
                   placeholder="Service Type"
                   inputClassName={clsx(
-                    "rounded-none transition-all duration-200",
+                    "rounded-none transition-all duration-200 h-full",
                     // "rounded-lg lg:rounded-none transition-all duration-200",
                     errors.serviceType &&
                       "ring-2 ring-red-500 placeholder:text-red-500",
                   )}
                   className=" bg-white h-10 lg:h-full rounded-lg lg:rounded-none"
                   onSelect={handleServiceTypeSelect}
+                  options={servicesOptions}
                   aria-invalid={!!errors.serviceType}
                   aria-describedby={
                     errors.serviceType ? "serviceType-error" : undefined
