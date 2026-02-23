@@ -193,7 +193,7 @@ const AdultsPicker = ({
               onChange={handleChildrenChange}
             />
             <div>
-              <p>0 - 3 Infants for free</p>
+              <p>0 - 2 Infants for free</p>
             </div>
           </div>
         )}

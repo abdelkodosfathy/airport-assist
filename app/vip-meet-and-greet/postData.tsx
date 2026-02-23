@@ -122,8 +122,7 @@ export const postBillingData = async (
       "wheelchair_assistance",
       uploadFilesData.wheelchair ? "1" : "0",
     );
-    formData.append("additional_hours", "0"); // update if needed
-
+    formData.append("additional_hours", "0"); // عدد ساعات منيمام ساعتين وساعتها تبقي بزيرو
     // 9️⃣ Files
     if (uploadFilesData.passengerFile) {
       formData.append(

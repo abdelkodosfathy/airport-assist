@@ -67,7 +67,7 @@ export default function Checkout() {
             }}
           >
             <h2 className="text-[18.75px] mb-4 font-semibold">
-              One Way Transfer
+              Airport Transfer
             </h2>
             <div className="flex w-full">
               <p className="flex gap-2 flex-1">
