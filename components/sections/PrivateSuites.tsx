@@ -18,21 +18,23 @@ const data: Destination[] = [
     title: "WINDSOR SUITE",
     content:
       "Private, personal, and luxurious concierge assistance through Heathrow — seamless from curbside to gate.",
-    img: "/sections/suite.jpg",
+    img: "/sections/private_suits/private_charles_do_gaulle.webp",
     price: "£3,177",
   },
   {
     title: "Paris-Charles de Gaulle Saloon",
     content:
       "Private, personal, and luxurious concierge assistance through Heathrow — seamless from curbside to gate.",
-    img: "/sections/saloon.jpg",
+    img: "/sections/private_suits/private_charles_do_gaulle.webp",
+    // img: "/sections/saloon.jpg",
     price: "£3,177",
   },
   {
     title: "Paris-Charles de Gaulle Saloon",
     content:
       "Private, personal, and luxurious concierge assistance through Heathrow — seamless from curbside to gate.",
-    img: "/sections/suite.jpg",
+    img: "/sections/private_suits/private_charles_do_gaulle.webp",
+    // img: "/sections/suite.jpg",
     price: "£3,177",
   },
 ];
@@ -59,7 +61,7 @@ export default function PrivateSuites() {
       scrollRef.current,
       { y: "100%", opacity: 0 },
       { y: "0%", opacity: 1 },
-      0
+      0,
     );
     tl.fromTo(scrollRef.current, { height: "150%" }, { height: "100%" }, 0.4);
   }, []);
@@ -101,18 +103,22 @@ export default function PrivateSuites() {
     // <section className=" px-8 xl:px-10 2xl:px-16 bg-[#1a1a1a] text-white overflow-hidden">
     <section className=" bg-[#1a1a1a]">
       {/* <div className="mx-auto flex gap-6 h-full max-w-360"> */}
-    <div className="w-full mx-auto  p-6 2xl:pl-20 pt-28 pb-16  flex bg-[#1a1a1a] text-white overflow-hidden">
+      {/* <div className="w-full max-w-331  pl-26 pt-28 pb-16  flex bg-[#1a1a1a] text-white overflow-hidden"> */}
+      <div className="mx-auto w-full max-w-360  px-4 sm:px-6 md:px-8 lg:px-10 xl:px-26 pt-28 pb-16  flex bg-[#1a1a1a] text-white overflow-hidden">
         {/* ------------ LEFT TEXT ------------ */}
         <div className="w-1/2 relative">
-          <span
+          {/* <span
             className="
-            absolute left-0 right-0 -top-8 h-0.75 rounded-full
+            absolute w-150 -top-8 h-0.75 rounded-full
             transition-opacity duration-300 opacity-100
             bg-[linear-gradient(90deg,rgba(153,120,95,0)_0%,rgba(171,155,144,0.4)_50%,rgba(153,120,95,0)_100%)]
           "
-          />
+          /> */}
 
           <h2 className="text-3xl leading-[128%] tracking-[10px] uppercase">
+            <span className="block">
+              TARMAC
+            </span>
             PRIVATE SUITS
           </h2>
 
@@ -123,7 +129,7 @@ export default function PrivateSuites() {
         </div>
 
         {/* ------------ CARDS GRID ------------ */}
-        <div className="w-1/2 max-h-[650px] 2xl:pr-18 flex flex-row gap-2">
+        <div className="w-1/2 relative overflow-visible max-h-[650px] flex flex-row gap-2">
           <div
             ref={scrollRef}
             className="flex-1 flex flex-col overflow-y-auto gap-4  scrollbar-none scroll-smooth"
@@ -132,7 +138,7 @@ export default function PrivateSuites() {
               <DestinationCard key={i} {...item} />
             ))}
           </div>
-          <div className="flex flex-col gap-2 mt-auto ">
+          <div className="absolute z-10 bottom-0 -right-4 w-2 flex flex-col gap-2 mt-auto ">
             <span
               className={`bg-white/22 rounded-full ${
                 !scrolled ? "h-16" : "h-2"
@@ -156,11 +162,11 @@ function DestinationCard({ title, content, img, price }: CardProps) {
   return (
     <Card
       className="shrink-0 flex flex-row gap-0 
-      bg-white border border-[#333] rounded-2xl overflow-hidden p-0
+      bg-white border border-none rounded-2xl overflow-hidden p-0
       hover:shadow-xl hover:shadow-black/40 transition-all duration-300
       "
       style={{
-        height:"calc(40% - 16px)"
+        height: "calc(40% - 16px)",
       }}
       // h-3/7
     >
@@ -174,18 +180,18 @@ function DestinationCard({ title, content, img, price }: CardProps) {
       </div>
 
       {/* TEXT CONTENT - RIGHT */}
-      <div className="w-5/9 flex flex-col px-4 py-6">
+      <div className="w-5/9 flex flex-col px-4 pt-6 pb-2">
         <div>
           <h3 className="leading-[130%] font-semibold tracking-[3px] text-black">
             {title}
           </h3>
 
-          <p className="text-[#7a7a7a] font-[manrope] text-sm leading-[150%] mt-3 max-w-90">
+          <p className="text-[#7a7a7a] font-[Manrope] text-[12px] leading-[150%] mt-3 max-w-90">
             {content}
           </p>
         </div>
 
-        <p className="font-[Manrope] mt-auto mb-4 text-[18px] leading-[100%] tracking-[31%] text-[#7B5A41]">
+        <p className="font-[Manrope] mt-auto mb-2 text-[#7B5A41] leading-[100%]text-[#7B5A41]">
           From {price}
         </p>
 

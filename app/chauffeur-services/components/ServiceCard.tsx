@@ -12,10 +12,11 @@ import Image from "next/image";
 import { useState, useRef, useEffect } from "react";
 import { gsap } from "gsap";
 import { Service } from "@/types/service";
+import { PackageSlug } from "@/lib/types/airport";
 
 interface ServiceCardProps {
   service: Service;
-  selectedService: "elite" | "elite_plus" | "signature";
+  selectedService: PackageSlug;
   onSelect: (value: Service["value"]) => void; // pass the value on selection
 }
 

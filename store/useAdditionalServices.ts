@@ -25,6 +25,7 @@ export const useAdditionalServicesStore = create<
   reset: () =>
     set({
       passengerFile: null,
+      imageFile: null,
       wheelchair: false,
       additionalRequirements: "",
     }),

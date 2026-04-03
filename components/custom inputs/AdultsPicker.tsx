@@ -71,11 +71,11 @@ const NumberInput = ({
   );
 };
 
-
-import React, { useState, useRef, useEffect, ReactNode } from "react";
-import { ChevronDown, Minus, Plus } from "lucide-react";
+import { useState, useRef, useEffect, ReactNode } from "react";
+import { Minus, Plus } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+import { usePassengersStore } from "@/store/vipInputsStore";
 
 interface AdultsPickerProps {
   id?: string;
@@ -85,8 +85,8 @@ interface AdultsPickerProps {
   inputClassName?: string;
   icon?: ReactNode;
   iconPosition?: "left" | "right";
-  onAdultsChange?: (adults: number) => void;
-  onChildrenChange?: (children: number) => void;
+  // onAdultsChange?: (adults: number) => void;
+  // onChildrenChange?: (children: number) => void;
 }
 
 const AdultsPicker = ({
@@ -97,11 +97,13 @@ const AdultsPicker = ({
   disabled = false,
   icon,
   iconPosition = "left",
-  onAdultsChange,
-  onChildrenChange,
+  // onAdultsChange,
+  // onChildrenChange,
 }: AdultsPickerProps) => {
-  const [adults, setAdults] = useState(1);
-  const [children, setChildren] = useState(0);
+  // const [adults, setAdults] = useState(1);
+  // const [children, setChildren] = useState(0);
+
+  const { adults, children, setAdults, setChildren } = usePassengersStore(state => state);
 
   const displayValue = `${adults} Adult - ${children} Children`;
 
@@ -125,12 +127,12 @@ const AdultsPicker = ({
 
   const handleAdultsChange = (value: number) => {
     setAdults(value);
-    onAdultsChange?.(value);
+    // onAdultsChange?.(value);
   };
 
   const handleChildrenChange = (value: number) => {
     setChildren(value);
-    onChildrenChange?.(value);
+    // onChildrenChange?.(value);
   };
 
   return (
@@ -166,12 +168,6 @@ const AdultsPicker = ({
             </span>
           )}
 
-          {/* <ChevronDown
-            className={cn(
-              "absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 h-5 w-5 transition-transform",
-              isOpen && "rotate-180",
-            )}
-          /> */}
         </div>
 
         {/* Dropdown */}

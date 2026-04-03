@@ -1,7 +1,7 @@
 export interface Car {
   car_type_id: number;
   car_type_name: string;
-  car_type_description: string,
+  car_type_description: string;
   car_type_img: string;
   price_per_mile: number;
   price_per_hour: number;
@@ -11,6 +11,7 @@ export interface Car {
   created_at: string;
   updated_at: string;
   deleted_at: string | null;
+  supplement_fee: number;
 }
 
 export interface CarsResponse {

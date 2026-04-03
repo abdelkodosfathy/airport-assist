@@ -1,15 +1,17 @@
 // lib/hooks/useAirports.ts
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { fetchAirlines } from "../api/airlines";
 
-export function useAirlines() {
+export function useAirlines(search = "", enabled = true) {
   return useQuery({
-    queryKey: ["airlines"],
-    queryFn: fetchAirlines,
-    staleTime: 1000 * 60 * 5, // 5 minutes
-    gcTime: 1000 * 60 * 10, // 10 minutes (previously cacheTime)
+    queryKey: ["airlines", "search", search],
+    queryFn: () => fetchAirlines(search),
+    enabled,
+    placeholderData: keepPreviousData,
+    staleTime: 1000 * 60 * 5,
+    gcTime: 1000 * 60 * 10,
     retry: 2,
     refetchOnWindowFocus: false,
   });

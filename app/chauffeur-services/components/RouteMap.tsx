@@ -1,697 +1,366 @@
-// "use client";
-
-// import {
-//   GoogleMap,
-//   Marker,
-//   Autocomplete,
-//   DirectionsRenderer,
-//   useJsApiLoader,
-// } from "@react-google-maps/api";
-// import { useEffect, useRef, useState } from "react";
-// import { Input } from "@/components/ui/input";
-// import { Button } from "@/components/ui/button";
-// // import AirportAssistPin from "./AirportAssistPin";
-
-// const center = { lat: 30.0444, lng: 31.2357 }; // Cairo
-
-// export default function RouteMap({ className }: { className?: string }) {
-//   const { isLoaded } = useJsApiLoader({
-//     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!,
-//     libraries: ["places"],
-//   });
-//   const mapStyles: google.maps.MapTypeStyle[] = [
-//     {
-//       featureType: "administrative",
-//       elementType: "all",
-//       stylers: [{ hue: "#000000" }, { lightness: -100 }, { visibility: "off" }],
-//     },
-//     {
-//       featureType: "landscape",
-//       elementType: "geometry",
-//       stylers: [
-//         { hue: "#dddddd" },
-//         { saturation: -100 },
-//         { lightness: -3 },
-//         { visibility: "on" },
-//       ],
-//     },
-//     {
-//       featureType: "landscape",
-//       elementType: "labels",
-//       stylers: [
-//         { hue: "#000000" },
-//         { saturation: -100 },
-//         { lightness: -100 },
-//         { visibility: "off" },
-//       ],
-//     },
-//     {
-//       featureType: "poi",
-//       elementType: "all",
-//       stylers: [
-//         { hue: "#000000" },
-//         { saturation: -100 },
-//         { lightness: -100 },
-//         { visibility: "off" },
-//       ],
-//     },
-//     {
-//       featureType: "road",
-//       elementType: "geometry",
-//       stylers: [
-//         { hue: "#7B5A41" },
-//         { saturation: -100 },
-//         { lightness: 26 },
-//         { visibility: "on" },
-//       ],
-//     },
-//     {
-//       featureType: "road",
-//       elementType: "labels",
-//       stylers: [
-//         { hue: "#7B5A41" },
-//         { saturation: 100 },
-//         //{ lightness: 0 },
-//         { visibility: "on" },
-//       ],
-//     },
-//     {
-//       featureType: "road.local",
-//       elementType: "all",
-//       stylers: [
-//         { hue: "#ffffff" },
-//         { saturation: -100 },
-//         { lightness: 100 },
-//         { visibility: "on" },
-//       ],
-//     },
-//     {
-//       featureType: "transit",
-//       elementType: "labels",
-//       stylers: [{ hue: "#000000" }, { lightness: -100 }, { visibility: "off" }],
-//     },
-//     {
-//       featureType: "water",
-//       elementType: "geometry",
-//       stylers: [
-//         { hue: "#ffffff" },
-//         { saturation: -100 },
-//         { lightness: 100 },
-//         { visibility: "on" },
-//       ],
-//     },
-//     {
-//       featureType: "water",
-//       elementType: "labels",
-//       stylers: [
-//         { hue: "#000000" },
-//         { saturation: -100 },
-//         { lightness: -100 },
-//         { visibility: "off" },
-//       ],
-//     },
-//   ];
-//   const CustomMarker: google.maps.Icon = {
-//     url: "/Asset 1.svg", // رابط الصورة
-//     scaledSize: {
-//       width: 64,
-//       height: 64,
-//       equals: function (other: google.maps.Size | null): boolean {
-//         throw new Error("Function not implemented.");
-//       },
-//     }, // الحجم النهائي
-//     anchor: {
-//       x: 32,
-//       y: 64,
-//       equals: function (other: google.maps.Point | null): boolean {
-//         throw new Error("Function not implemented.");
-//       },
-//     }, // نقطة الارتكاز
-//   };
-
-//   const [map, setMap] = useState<google.maps.Map | null>(null);
-//   const [origin, setOrigin] = useState<google.maps.LatLngLiteral | null>(null);
-//   const [destination, setDestination] =
-//     useState<google.maps.LatLngLiteral | null>(null);
-
-//   const originAuto = useRef<google.maps.places.Autocomplete | null>(null);
-//   //   const destAuto = useRef<google.maps.places.Autocomplete | null>(null);
-
-//   const [directions, setDirections] =
-//     useState<google.maps.DirectionsResult | null>(null);
-
-//   const calculateRoute = async () => {
-//     if (!origin || !destination) return;
-
-//     const service = new google.maps.DirectionsService();
-//     const result = await service.route({
-//       origin,
-//       destination,
-//       travelMode: google.maps.TravelMode.DRIVING,
-//     });
-
-//     setDirections(result);
-//   };
-
-//   const handleMapClick = (e: google.maps.MapMouseEvent) => {
-//     if (!e.latLng) return;
-//     const point = e.latLng.toJSON();
-
-//     if (!origin) {
-//       setOrigin(point);
-//       console.log("Origin set to:", point);
-//     } else if (!destination) {
-//       setDestination(point);
-//       console.log("Destination set to:", point);
-//     }
-//   };
-
-//   const handleOriginDragEnd = (e: google.maps.MapMouseEvent) => {
-//     if (!e.latLng) return;
-//     const newPosition = e.latLng.toJSON();
-//     setOrigin(newPosition);
-//     console.log("Origin moved to:", newPosition);
-//   };
-
-//   const handleDestinationDragEnd = (e: google.maps.MapMouseEvent) => {
-//     if (!e.latLng) return;
-//     const newPosition = e.latLng.toJSON();
-//     setDestination(newPosition);
-//     console.log("Destination moved to:", newPosition);
-//   };
-
-//   useEffect(() => {
-//     calculateRoute();
-//   }, [origin, destination]);
-
-//   const flyTo = (point: google.maps.LatLngLiteral | null, zoom = 16) => {
-//     if (!map || !point) return;
-
-//     map.panTo(point);
-//     setTimeout(() => map.setZoom(zoom), 300);
-//   };
-
-//   // Reset all pins and directions
-//   const handleReset = () => {
-//     setOrigin(null);
-//     setDestination(null);
-//     setDirections(null);
-//     // setSearchValue("");
-//     // if (inputRef.current) {
-//     //   inputRef.current.value = "";
-//     // }
-//     // Reset map view to center
-//     if (map) {
-//       map.panTo(center);
-//       map.setZoom(12);
-//     }
-//   };
-
-//   if (!isLoaded) return <div>Loading map…</div>;
-//   return (
-//     <div className={`grid gap-4 ${className}`}>
-//       {/* Inputs */}
-//       <div className="">
-//         <Autocomplete
-//           onLoad={(auto) => (originAuto.current = auto)}
-//           onPlaceChanged={() => {
-//             const place = originAuto.current?.getPlace();
-//             if (!place?.geometry?.location || !map) return;
-
-//             const location = place.geometry.location.toJSON();
-
-//             // فقط تحريك الكاميرا بدون تعيين النقطة
-//             map.panTo(location);
-//             setTimeout(() => map.setZoom(16), 300);
-//           }}
-//         >
-//           <Input placeholder="Search to navigate" />
-//         </Autocomplete>
-//       </div>
-//       <div className="grid md:grid-cols-5 gap-4">
-//         <Button
-//           type="button"
-//           className="col-span-2"
-//           onClick={() => flyTo(origin)}
-//           disabled={!origin}
-//         >
-//           A point
-//         </Button>
-//         <Button
-//           type="button"
-//           className="col-span-2"
-//           onClick={() => flyTo(destination)}
-//           disabled={!destination}
-//         >
-//           B point
-//         </Button>
-//         <Button
-//           className="col-span-1"
-//           type="button"
-//           onClick={handleReset}
-//           disabled={!origin && !destination}
-//         >
-//           Reset
-//         </Button>
-//       </div>
-//       {/* Map */}
-//       <div className="h-[500px] w-full rounded-xl overflow-hidden border">
-//         <GoogleMap
-//           center={center}
-//           zoom={12}
-//           mapContainerStyle={{ width: "100%", height: "100%" }}
-//           onLoad={(map) => setMap(map)}
-//           onClick={handleMapClick}
-//           options={{
-//             styles: mapStyles,
-//             fullscreenControl: false,
-//             disableDefaultUI: true,
-//             scrollwheel: true,
-//             zoomControl: true,
-//             clickableIcons: false,
-//           }}
-//         >
-//           {origin && (
-//             <Marker
-//               icon={CustomMarker}
-//               position={origin}
-//               label="A"
-//               draggable={true}
-//               onDragEnd={handleOriginDragEnd}
-//             />
-//           )}
-//           {destination && (
-//             <Marker
-//               icon={CustomMarker}
-//               position={destination}
-//               label="B"
-//               draggable={true}
-//               onDragEnd={handleDestinationDragEnd}
-//             />
-//           )}
-
-//           {directions && (
-//             <DirectionsRenderer
-//               directions={directions}
-//               options={{
-//                 suppressMarkers: true,
-//                 polylineOptions: {
-//                   strokeColor: "#7B5A41",
-//                   strokeWeight: 5,
-//                   //   strokeOpacity: 1,
-//                 },
-//               }}
-//             />
-//           )}
-//         </GoogleMap>
-//       </div>
-//     </div>
-//   );
-// }
 "use client";
 
-import {
-  GoogleMap,
-  Marker,
-  Autocomplete,
-  DirectionsRenderer,
-  InfoWindow,
-  useJsApiLoader,
-} from "@react-google-maps/api";
-import { useEffect, useRef, useState } from "react";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-// import AirportAssistPin from "./AirportAssistPin";
+/**
+ * RouteCalculator.tsx — Next.js component
+ *
+ * Install:  npm install @react-google-maps/api
+ *
+ * .env.local:
+ *   NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=your_key_here
+ *
+ * Enable in Google Cloud Console:
+ *   - Maps JavaScript API
+ *   - Places API
+ *   - Distance Matrix API
+ */
 
-// const center = { lat: 30.0444, lng: 31.2357 }; // Cairo
-const center = { lat: 51.4682501605486, lng: -0.4191509550266713 }; // Cairo
+import { Autocomplete, useJsApiLoader } from "@react-google-maps/api";
+import { useRef, useState } from "react";
 
-export default function RouteMap({ className }: { className?: string }) {
+// ─── Types ────────────────────────────────────────────────────────────────────
+
+interface RouteResult {
+  distanceKm: string;
+  distanceMi: string;
+  duration: string;
+  originAddress: string;
+  destinationAddress: string;
+}
+
+// ─── Constants ────────────────────────────────────────────────────────────────
+
+const LIBRARIES: "places"[] = ["places"];
+const KM_TO_MI = 0.621371;
+
+// ─── Component ────────────────────────────────────────────────────────────────
+
+export default function RouteCalculator({ className }: { className?: string }) {
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!,
-    libraries: ["places"],
+    libraries: LIBRARIES,
   });
-  const mapStyles: google.maps.MapTypeStyle[] = [
-    {
-      featureType: "administrative",
-      elementType: "all",
-      stylers: [{ hue: "#000000" }, { lightness: -100 }, { visibility: "off" }],
-    },
-    {
-      featureType: "landscape",
-      elementType: "geometry",
-      stylers: [
-        { hue: "#dddddd" },
-        { saturation: -100 },
-        { lightness: -3 },
-        { visibility: "on" },
-      ],
-    },
-    {
-      featureType: "landscape",
-      elementType: "labels",
-      stylers: [
-        { hue: "#000000" },
-        { saturation: -100 },
-        { lightness: -100 },
-        { visibility: "off" },
-      ],
-    },
-    {
-      featureType: "poi",
-      elementType: "all",
-      stylers: [
-        { hue: "#000000" },
-        { saturation: -100 },
-        { lightness: -100 },
-        { visibility: "off" },
-      ],
-    },
-    {
-      featureType: "road",
-      elementType: "geometry",
-      stylers: [
-        { hue: "#7B5A41" },
-        { saturation: -100 },
-        { lightness: 26 },
-        { visibility: "on" },
-      ],
-    },
-    {
-      featureType: "road",
-      elementType: "labels",
-      stylers: [
-        { hue: "#7B5A41" },
-        { saturation: 100 },
-        //{ lightness: 0 },
-        { visibility: "on" },
-      ],
-    },
-    {
-      featureType: "road.local",
-      elementType: "all",
-      stylers: [
-        { hue: "#ffffff" },
-        { saturation: -100 },
-        { lightness: 100 },
-        { visibility: "on" },
-      ],
-    },
-    {
-      featureType: "transit",
-      elementType: "labels",
-      stylers: [{ hue: "#000000" }, { lightness: -100 }, { visibility: "off" }],
-    },
-    {
-      featureType: "water",
-      elementType: "geometry",
-      stylers: [
-        { hue: "#ffffff" },
-        { saturation: -100 },
-        { lightness: 100 },
-        { visibility: "on" },
-      ],
-    },
-    {
-      featureType: "water",
-      elementType: "labels",
-      stylers: [
-        { hue: "#000000" },
-        { saturation: -100 },
-        { lightness: -100 },
-        { visibility: "off" },
-      ],
-    },
-  ];
-  const CustomMarker: google.maps.Icon = {
-    url: "/Asset 1.svg", // رابط الصورة
-    scaledSize: {
-      width: 64,
-      height: 64,
-      equals: function (other: google.maps.Size | null): boolean {
-        throw new Error("Function not implemented.");
-      },
-    }, // الحجم النهائي
-    anchor: {
-      x: 32,
-      y: 64,
-      equals: function (other: google.maps.Point | null): boolean {
-        throw new Error("Function not implemented.");
-      },
-    }, // نقطة الارتكاز
-  };
 
-  const [map, setMap] = useState<google.maps.Map | null>(null);
-  const [origin, setOrigin] = useState<google.maps.LatLngLiteral | null>(null);
-  const [destination, setDestination] =
+  const originAutoRef = useRef<google.maps.places.Autocomplete | null>(null);
+  const destAutoRef = useRef<google.maps.places.Autocomplete | null>(null);
+  const originInputRef = useRef<HTMLInputElement | null>(null);
+  const destInputRef = useRef<HTMLInputElement | null>(null);
+
+  const [originPlace, setOriginPlace] =
     useState<google.maps.LatLngLiteral | null>(null);
-  const [selectedMarker, setSelectedMarker] = useState<
-    "origin" | "destination" | null
-  >(null);
+  const [destinationPlace, setDestPlace] =
+    useState<google.maps.LatLngLiteral | null>(null);
+  const [result, setResult] = useState<RouteResult | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
-  const originAuto = useRef<google.maps.places.Autocomplete | null>(null);
-  //   const destAuto = useRef<google.maps.places.Autocomplete | null>(null);
+  // ── Autocomplete handlers ──────────────────────────────────────────────────
 
-  const [directions, setDirections] =
-    useState<google.maps.DirectionsResult | null>(null);
-
-  const calculateRoute = async () => {
-    if (!origin || !destination) return;
-
-    const service = new google.maps.DirectionsService();
-    const result = await service.route({
-      origin,
-      destination,
-      travelMode: google.maps.TravelMode.DRIVING,
-    });
-
-    setDirections(result);
-  };
-
-  const handleMapClick = (e: google.maps.MapMouseEvent) => {
-    if (!e.latLng) return;
-    const point = e.latLng.toJSON();
-
-    if (!origin) {
-      setOrigin(point);
-      console.log("Origin set to:", point);
-    } else if (!destination) {
-      setDestination(point);
-      console.log("Destination set to:", point);
+  const onOriginChanged = () => {
+    const place = originAutoRef.current?.getPlace();
+    if (place?.geometry?.location) {
+      setOriginPlace(place.geometry.location.toJSON());
+      setResult(null);
+      setError(null);
     }
   };
 
-  const handleOriginDragEnd = (e: google.maps.MapMouseEvent) => {
-    if (!e.latLng) return;
-    const newPosition = e.latLng.toJSON();
-    setOrigin(newPosition);
-    console.log("Origin moved to:", newPosition);
+  const onDestChanged = () => {
+    const place = destAutoRef.current?.getPlace();
+    if (place?.geometry?.location) {
+      setDestPlace(place.geometry.location.toJSON());
+      setResult(null);
+      setError(null);
+    }
   };
 
-  const handleDestinationDragEnd = (e: google.maps.MapMouseEvent) => {
-    if (!e.latLng) return;
-    const newPosition = e.latLng.toJSON();
-    setDestination(newPosition);
-    console.log("Destination moved to:", newPosition);
+  // ── Calculate ──────────────────────────────────────────────────────────────
+
+  const calculate = () => {
+    if (!originPlace || !destinationPlace) {
+      setError("Please select both a pickup and a drop-off location.");
+      return;
+    }
+
+    setLoading(true);
+    setError(null);
+    setResult(null);
+
+    const service = new google.maps.DistanceMatrixService();
+    service.getDistanceMatrix(
+      {
+        origins: [originPlace],
+        destinations: [destinationPlace],
+        travelMode: google.maps.TravelMode.DRIVING,
+        unitSystem: google.maps.UnitSystem.METRIC,
+      },
+      (response, status) => {
+        setLoading(false);
+
+        if (status !== "OK" || !response) {
+          setError(`Request failed: ${status}`);
+          return;
+        }
+
+        const el = response.rows[0]?.elements[0];
+        if (!el || el.status !== "OK") {
+          setError(
+            el?.status === "ZERO_RESULTS"
+              ? "No route found between these locations."
+              : `Route error: ${el?.status ?? "UNKNOWN"}`,
+          );
+          return;
+        }
+
+        const rawKm = el.distance.value / 1000; // metres → km
+        const rawMi = rawKm * KM_TO_MI;
+
+        setResult({
+          distanceKm:
+            rawKm < 1 ? `${el.distance.value} m` : `${rawKm.toFixed(1)} km`,
+          distanceMi: `${rawMi.toFixed(1)} mi`,
+          duration: el.duration.text,
+          originAddress: response.originAddresses[0],
+          destinationAddress: response.destinationAddresses[0],
+        });
+      },
+    );
   };
 
-  useEffect(() => {
-    calculateRoute();
-  }, [origin, destination]);
+  // ── Reset ──────────────────────────────────────────────────────────────────
 
-  const flyTo = (point: google.maps.LatLngLiteral | null, zoom = 16) => {
-    if (!map || !point) return;
-
-    map.panTo(point);
-    setTimeout(() => map.setZoom(zoom), 300);
+  const reset = () => {
+    if (originInputRef.current) originInputRef.current.value = "";
+    if (destInputRef.current) destInputRef.current.value = "";
+    setOriginPlace(null);
+    setDestPlace(null);
+    setResult(null);
+    setError(null);
   };
 
-  // Calculate distance between two points
-  const calculateDistance = (
-    point1: google.maps.LatLngLiteral,
-    point2: google.maps.LatLngLiteral,
-  ): string => {
-    const R = 6371; // Earth's radius in km
-    const dLat = ((point2.lat - point1.lat) * Math.PI) / 180;
-    const dLng = ((point2.lng - point1.lng) * Math.PI) / 180;
-    const a =
-      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.cos((point1.lat * Math.PI) / 180) *
-        Math.cos((point2.lat * Math.PI) / 180) *
-        Math.sin(dLng / 2) *
-        Math.sin(dLng / 2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    const distance = R * c;
-    return distance.toFixed(2);
-  };
+  // ── Loading state ──────────────────────────────────────────────────────────
 
-  // Reset all pins and directions
-  const handleReset = () => {
-    setOrigin(null);
-    setDestination(null);
-    setDirections(null);
-    setSelectedMarker(null);
-    // setSearchValue("");
-    // if (inputRef.current) {
-    //   inputRef.current.value = "";
-    // }
-    // Reset map view to center
-    // if (map) {
-    //   map.panTo(center);
-    //   map.setZoom(12);
-    // }
-  };
-
-  if (!isLoaded) return <div>Loading map…</div>;
-  return (
-    <div className={`grid gap-4 ${className}`}>
-      {/* Inputs */}
-      <div className="">
-        <Autocomplete
-          onLoad={(auto) => (originAuto.current = auto)}
-          onPlaceChanged={() => {
-            const place = originAuto.current?.getPlace();
-            if (!place?.geometry?.location || !map) return;
-
-            const location = place.geometry.location.toJSON();
-
-            // فقط تحريك الكاميرا بدون تعيين النقطة
-            map.panTo(location);
-            setTimeout(() => map.setZoom(16), 300);
-          }}
-        >
-          <Input placeholder="Search to navigate" />
-        </Autocomplete>
-      </div>
-      <div className="grid md:grid-cols-5 gap-4">
-        <Button
-          type="button"
-          className="col-span-2"
-          onClick={() => flyTo(origin)}
-          disabled={!origin}
-        >
-          A point
-        </Button>
-        <Button
-          type="button"
-          className="col-span-2"
-          onClick={() => flyTo(destination)}
-          disabled={!destination}
-        >
-          B point
-        </Button>
-        <Button
-          className="col-span-1"
-          type="button"
-          onClick={handleReset}
-          disabled={!origin && !destination}
-        >
-          Reset
-        </Button>
-      </div>
-      {/* Map */}
-      <div className="h-[500px] w-full rounded-xl overflow-hidden border">
-        <GoogleMap
-          center={center}
-          zoom={14}
-          mapContainerStyle={{ width: "100%", height: "100%" }}
-          onLoad={(map) => setMap(map)}
-          onClick={handleMapClick}
-          options={{
-            styles: mapStyles,
-            fullscreenControl: false,
-            disableDefaultUI: true,
-            scrollwheel: true,
-            zoomControl: true,
-            clickableIcons: false,
-          }}
-        >
-          {origin && (
-            <>
-              <Marker
-                icon={CustomMarker}
-                position={origin}
-                label="A"
-                draggable={true}
-                onDragEnd={handleOriginDragEnd}
-                onClick={() => setSelectedMarker("origin")}
-              />
-              {selectedMarker === "origin" && (
-                <InfoWindow
-                  position={origin}
-                  onCloseClick={() => setSelectedMarker(null)}
-                >
-                  <div className="p-2">
-                    <h3 className="font-bold text-sm mb-2">Point A</h3>
-                    <div className="space-y-1 text-xs">
-                      <p>
-                        <strong>Lat:</strong> {origin.lat.toFixed(6)}
-                      </p>
-                      <p>
-                        <strong>Lng:</strong> {origin.lng.toFixed(6)}
-                      </p>
-                      {destination && (
-                        <p>
-                          <strong>Distance to B:</strong>{" "}
-                          {calculateDistance(origin, destination)} km
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                </InfoWindow>
-              )}
-            </>
-          )}
-          {destination && (
-            <>
-              <Marker
-                icon={CustomMarker}
-                position={destination}
-                label="B"
-                draggable={true}
-                onDragEnd={handleDestinationDragEnd}
-                onClick={() => setSelectedMarker("destination")}
-              />
-              {selectedMarker === "destination" && (
-                <InfoWindow
-                  position={destination}
-                  onCloseClick={() => setSelectedMarker(null)}
-                >
-                  <div className="p-2">
-                    <h3 className="font-bold text-sm mb-2">Point B</h3>
-                    <div className="space-y-1 text-xs">
-                      <p>
-                        <strong>Lat:</strong> {destination.lat.toFixed(6)}
-                      </p>
-                      <p>
-                        <strong>Lng:</strong> {destination.lng.toFixed(6)}
-                      </p>
-                      {origin && (
-                        <p>
-                          <strong>Distance from A:</strong>{" "}
-                          {calculateDistance(origin, destination)} km
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                </InfoWindow>
-              )}
-            </>
-          )}
-
-          {directions && (
-            <DirectionsRenderer
-              directions={directions}
-              options={{
-                suppressMarkers: true,
-                polylineOptions: {
-                  strokeColor: "#7B5A41",
-                  strokeWeight: 5,
-                },
-              }}
+  if (!isLoaded) {
+    return (
+      <div
+        className={`flex items-center justify-center p-10 ${className ?? ""}`}
+      >
+        <div className="flex items-center gap-3 text-slate-500">
+          <svg
+            className="animate-spin w-5 h-5"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+          >
+            <circle
+              cx="12"
+              cy="12"
+              r="10"
+              strokeDasharray="60"
+              strokeDashoffset="15"
             />
+          </svg>
+          <span className="text-sm font-mono">Loading…</span>
+        </div>
+      </div>
+    );
+  }
+
+  // ── Render ─────────────────────────────────────────────────────────────────
+
+  const canCalculate = !!originPlace && !!destinationPlace;
+
+  return (
+    <div className={`w-full max-w-md mx-auto ${className ?? ""}`}>
+      <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-2xl space-y-5 font-mono">
+        {/* Header */}
+        <div>
+          <div className="inline-flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/30 rounded-full px-3 py-1 mb-3">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            <span className="text-emerald-400 text-[10px] tracking-widest uppercase">
+              Route Estimator
+            </span>
+          </div>
+          <h2 className="text-xl font-bold text-white tracking-tight">
+            Distance &amp; Time
+          </h2>
+          <p className="text-slate-500 text-xs mt-0.5">
+            Select pickup and drop-off to get an estimate
+          </p>
+        </div>
+
+        {/* Inputs */}
+        <div className="space-y-1">
+          {/* From */}
+          <Autocomplete
+            onLoad={(a) => (originAutoRef.current = a)}
+            onPlaceChanged={onOriginChanged}
+          >
+            <div className="relative group">
+              <div className="absolute left-3.5 top-1/2 -translate-y-1/2 flex flex-col items-center z-10">
+                <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 border-2 border-slate-900" />
+              </div>
+              <input
+                ref={originInputRef}
+                type="text"
+                placeholder="Pickup location"
+                className="w-full bg-slate-800 border border-slate-700 group-focus-within:border-emerald-500 rounded-xl pl-9 pr-10 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-emerald-500/40 transition-all"
+              />
+              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-600 text-[10px] uppercase tracking-widest font-bold">
+                From
+              </span>
+            </div>
+          </Autocomplete>
+
+          {/* Dashed connector */}
+          <div className="flex items-center gap-2 pl-[13px] py-0.5">
+            <div className="flex flex-col gap-[3px]">
+              <span className="w-px h-1 bg-slate-700 self-center" />
+              <span className="w-px h-1 bg-slate-600 self-center" />
+              <span className="w-px h-1 bg-slate-700 self-center" />
+            </div>
+            <span className="text-slate-700 text-[9px] uppercase tracking-widest">
+              route
+            </span>
+          </div>
+
+          {/* To */}
+          <Autocomplete
+            onLoad={(a) => (destAutoRef.current = a)}
+            onPlaceChanged={onDestChanged}
+          >
+            <div className="relative group">
+              <div className="absolute left-3.5 top-1/2 -translate-y-1/2 z-10">
+                <span className="w-2.5 h-2.5 rounded-full bg-rose-400 border-2 border-slate-900 block" />
+              </div>
+              <input
+                ref={destInputRef}
+                type="text"
+                placeholder="Drop-off location"
+                className="w-full bg-slate-800 border border-slate-700 group-focus-within:border-rose-500 rounded-xl pl-9 pr-14 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-rose-500/40 transition-all"
+              />
+              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-600 text-[10px] uppercase tracking-widest font-bold">
+                Drop off
+              </span>
+            </div>
+          </Autocomplete>
+        </div>
+
+        {/* Action */}
+        <div className="flex gap-2">
+          <button
+            onClick={calculate}
+            disabled={loading || !canCalculate}
+            className="flex-1 bg-emerald-500 hover:bg-emerald-400 disabled:bg-slate-700 disabled:text-slate-500 disabled:cursor-not-allowed text-slate-950 font-bold py-3 rounded-xl transition-all duration-200 hover:shadow-lg hover:shadow-emerald-500/20 active:scale-95 text-sm tracking-wide"
+          >
+            {loading ? (
+              <span className="flex items-center justify-center gap-2">
+                <svg
+                  className="animate-spin w-4 h-4"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="3"
+                >
+                  <circle
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    strokeDasharray="60"
+                    strokeDashoffset="15"
+                  />
+                </svg>
+                Calculating…
+              </span>
+            ) : (
+              "Get Estimate"
+            )}
+          </button>
+
+          {(result || error || originPlace || destinationPlace) && (
+            <button
+              onClick={reset}
+              className="px-4 py-3 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-400 hover:text-white rounded-xl transition-all text-sm"
+              title="Clear"
+            >
+              ↺
+            </button>
           )}
-        </GoogleMap>
+        </div>
+
+        {/* Error */}
+        {error && (
+          <div className="bg-rose-500/10 border border-rose-500/30 rounded-xl px-4 py-3 text-rose-400 text-xs">
+            ⚠️ {error}
+          </div>
+        )}
+
+        {/* Result */}
+        {result && (
+          <div className="space-y-3 pt-1">
+            {/* Stats */}
+            <div className="grid grid-cols-3 gap-2">
+              {/* km */}
+              <div className="bg-slate-800 border border-slate-700/60 rounded-xl p-3 text-center">
+                <p className="text-slate-500 text-[9px] uppercase tracking-widest mb-1">
+                  Distance
+                </p>
+                <p className="text-lg font-bold text-emerald-400 leading-tight">
+                  {result.distanceKm}
+                </p>
+              </div>
+              {/* miles */}
+              <div className="bg-slate-800 border border-slate-700/60 rounded-xl p-3 text-center">
+                <p className="text-slate-500 text-[9px] uppercase tracking-widest mb-1">
+                  Distance
+                </p>
+                <p className="text-lg font-bold text-amber-400 leading-tight">
+                  {result.distanceMi}
+                </p>
+              </div>
+              {/* time */}
+              <div className="bg-slate-800 border border-slate-700/60 rounded-xl p-3 text-center">
+                <p className="text-slate-500 text-[9px] uppercase tracking-widest mb-1">
+                  Duration
+                </p>
+                <p className="text-lg font-bold text-sky-400 leading-tight">
+                  {result.duration}
+                </p>
+              </div>
+            </div>
+
+            {/* Resolved addresses */}
+            <div className="bg-slate-800/40 border border-slate-700/40 rounded-xl p-3 space-y-2">
+              <div className="flex items-start gap-2.5">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 mt-1 shrink-0" />
+                <div>
+                  <p className="text-[9px] text-slate-500 uppercase tracking-widest">
+                    Pickup
+                  </p>
+                  <p className="text-xs text-slate-300 leading-snug">
+                    {result.originAddress}
+                  </p>
+                </div>
+              </div>
+              <div className="border-t border-slate-700/40" />
+              <div className="flex items-start gap-2.5">
+                <span className="w-2 h-2 rounded-full bg-rose-400 mt-1 shrink-0" />
+                <div>
+                  <p className="text-[9px] text-slate-500 uppercase tracking-widest">
+                    Drop-off
+                  </p>
+                  <p className="text-xs text-slate-300 leading-snug">
+                    {result.destinationAddress}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <p className="text-slate-700 text-[10px] text-center">
+              Driving estimate via Google Maps Distance Matrix
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );

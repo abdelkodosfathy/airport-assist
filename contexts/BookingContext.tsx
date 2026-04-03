@@ -1,5 +1,4 @@
 "use client";
-import { OptionType } from "@/components/custom inputs/search";
 import { createContext, useState, ReactNode } from "react";
 
 // Define types for the booking data structure
@@ -8,8 +7,6 @@ export interface FlightInfo {
   flight_number?: string | null;
   passenger_arrival_time?: string | null;
   additional_hours?: string | null;
-  // fast_track_enabled?: boolean;
-  
   // for UI
   airline_name?: string | null;
 }

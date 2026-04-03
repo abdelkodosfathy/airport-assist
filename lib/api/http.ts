@@ -3,7 +3,7 @@ import { apiFetch } from "./fetcher";
 export function apiGet(
   endpoint: string,
   params: Record<string, any> = {},
-  options: RequestInit = {}
+  options: RequestInit = {},
 ) {
   const query =
     Object.keys(params).length > 0
@@ -19,11 +19,16 @@ export function apiGet(
 export function apiPost(
   endpoint: string,
   data: any = {},
-  options: RequestInit = {}
+  options: RequestInit = {},
 ) {
+  const isFormData = options.body instanceof FormData;
+  console.log(isFormData);
+  
   return apiFetch(endpoint, {
     method: "POST",
-    body: JSON.stringify(data),
+    // body: JSON.stringify(data),
+    ...(!isFormData && { body: JSON.stringify(data) }),
+
     ...options,
   });
 }

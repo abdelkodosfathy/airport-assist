@@ -1,20 +1,21 @@
 "use client";
 
-import { useState } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
+import { useAdditionalServicesStore } from "@/store/useAdditionalServices";
 
 export default function WheelchairCheckbox() {
-  const [checked, setChecked] = useState(false);
-
+    const wheelchair = useAdditionalServicesStore(state => state.wheelchair);
+    const setWheelchair = useAdditionalServicesStore(state => state.setWheelchair);
+    
   return (
     <div>
       {/* Checkbox Row */}
       <div className="flex items-start gap-3 mb-3">
         <Checkbox
           id="wheelchair"
-          checked={checked}
-          onCheckedChange={(value) => setChecked(Boolean(value))}
+          checked={wheelchair}
+          onCheckedChange={(value) => setWheelchair(Boolean(value))}
           className="w-6 h-6 rounded-md bg-[#F4F4F4] 
           data-[state=checked]:bg-[#7B5A41] 
           data-[state=checked]:border-[#7B5A41]"
@@ -31,7 +32,7 @@ export default function WheelchairCheckbox() {
       {/* Animated Warning Box */}
       <div
         className={`overflow-hidden transition-all duration-500 ease-in-out ${
-          checked
+          wheelchair
             ? "max-h-40 opacity-100"
             : "max-h-0 opacity-0"
         }`}

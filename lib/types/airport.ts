@@ -1,5 +1,4 @@
-import { Package } from "./package";
-
+export type PackageSlug = "elite" | "elite_plus" | "signature" | "vip";
 export interface City {
   city_id: number;
   state_id: number;
@@ -11,6 +10,7 @@ export interface City {
   country_id: number;
   flag_img: string;
   state_name: string;
+  iso2: string;
   country_name: string;
 }
 
@@ -34,8 +34,10 @@ export interface Airport {
   paid_bags_block_size: number;
   paid_bags_block_cost: number;
   is_fast_track_active: number;
+  is_golf_cart_active: number;
   fast_track_cost: number;
   additional_hour_cost: number;
+  connection_fees: number;
   city: City;
 }
 
@@ -53,7 +55,7 @@ interface InnerPackage {
   service_type: string;
   package_name: string;
   package_description: string;
-  package_slug: string;
+  package_slug: PackageSlug;
   status: boolean;
   created_at: string;
   updated_at: string;
@@ -68,6 +70,8 @@ export interface AirportPackage {
   adult_cost: number;
   included_adults_count: number;
   additional_adult_cost: number;
+  connection_fees: number;
+  additional_hour_cost: number;
   status: boolean;
   created_at: string;
   updated_at: string;
@@ -75,28 +79,29 @@ export interface AirportPackage {
 }
 
 export interface SingleAirport {
-  airport_id: number;
-  airport_name: string;
+  additional_hour_cost: number;
   airport_code: string;
-  airport_img: string | null;
   airport_color: string | null;
+  airport_id: number;
+  airport_img: string | null;
+  airport_name: string;
+  connection_fees: number;
+  city: City;
+  city_id: number;
+  created_at: string;
+  deleted_at: string | null;
+  fast_track_cost: number;
+  is_fast_track_active: number;
+  last_minute_cost: number;
+  last_minute_strategy: string;
   location_lat: number;
   location_long: number;
-  city_id: number;
-  status: boolean;
-  created_at: string;
-  updated_at: string;
-  deleted_at: string | null;
   min_hours_before_booking: number;
-  last_minute_strategy: string;
-  last_minute_cost: number;
   number_of_free_bags: number;
-  paid_bags_block_size: number;
   paid_bags_block_cost: number;
-  is_fast_track_active: number;
-  fast_track_cost: number;
-  additional_hour_cost: number;
-  city: City;
+  paid_bags_block_size: number;
+  status: boolean;
+  updated_at: string;
   features: any[]; // لو عندك type محدد ممكن تغيّره
   airport_packages: AirportPackage[];
 }

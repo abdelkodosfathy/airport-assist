@@ -1,3 +1,15 @@
+import React from "react";
+
+export type Feature = {
+  icon: React.FC<React.SVGProps<SVGSVGElement>>;
+  title: string;
+  description: string;
+};
+
+export interface ServiceTypeData {
+  description: string;
+  features: Feature[];
+}
 export interface Package {
   package_id: number;
   service_type: string;

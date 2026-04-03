@@ -1,39 +1,37 @@
 "use client";
 
 import saloon from "@/public/sections/saloon.jpg";
-import {
-  Baggage,
-  Exiting,
-  FastTrack,
-  Person,
-} from "@/components/custom icons/service-icons";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { useState, useRef, useEffect } from "react";
 import { gsap } from "gsap";
 import { AirportPackage } from "@/lib/types/airport";
-import { useCurrency } from "@/lib/hooks/useCurrency";
+import { useCurrencyStore } from "@/store/currencyStore";
+import {
+  ServiceType,
+  useAirportStore,
+  useServiceStore,
+} from "@/store/vipInputsStore";
+import { packageFeatures } from "@/lib/fixed-features";
+import { formatNumber } from "@/lib/formatNumbers";
 
 interface ServiceCardProps {
   service: AirportPackage;
   selectedService?: boolean;
   // AirportCost: number;
-  adults_count: number;
-  child_count: number;
-  onSelect: (slug: string, packageCost: number, name: string) => void; // pass the value on selection
+  onSelect: () => void; // pass the value on selection
 }
 
 export default function ServiceCard({
-  // bookingData,
-  // AirportCost,
-  adults_count,
-  child_count,
   service,
   selectedService,
   onSelect,
 }: ServiceCardProps) {
-  const { currencyMark } = useCurrency();
+  // const currencyMark = useCurrencyStore((s) => s.currencyMark);
+  const currency = useCurrencyStore((s) => s.currency);
 
+  const airport = useAirportStore((s) => s.airport);
+  const serviceType = useServiceStore((s) => s.serviceType);
   const [showMore, setShowMore] = useState(false);
   const detailsRef = useRef<HTMLDivElement>(null);
 
@@ -60,25 +58,30 @@ export default function ServiceCard({
     }
   }, [showMore]);
 
-  const getAdditionalAdultsCost = () => {
-    if (adults_count > service.included_adults_count) {
-      return (
-        (adults_count - service.included_adults_count) *
-        service.additional_adult_cost
-      );
-    }
-    return 0;
-  };
   const prices = {
     adult_cost: service.adult_cost,
-    child_cost: service.child_cost * child_count,
-    additional_adult_cost: getAdditionalAdultsCost(),
   };
 
-  const packageCost =
-    prices.adult_cost ;
-    // + prices.additional_adult_cost + prices.child_cost;
-  // AirportCost;
+  const packageCost = prices.adult_cost;
+
+  // const featuresList =
+  //   packageFeatures[service.package.package_slug][serviceType as ServiceType]; // remove (element.whereAvailable === true) if the isFastTrackActive === false || 0
+  const isFastTrackActive = airport?.is_fast_track_active;
+  const isGolfCartActive = airport?.is_golf_cart_active;
+
+  const fixedPackageData = packageFeatures[service.package.package_slug];
+
+  const fixedPackageService =
+    packageFeatures[service.package.package_slug][serviceType as ServiceType];
+
+  const featuresList = fixedPackageService.features.filter((f) => {
+    const name = f.icon.displayName ?? f.icon.name;
+    if (name.includes("FastTrack") && !isFastTrackActive) return false;
+    if (name.includes("GolfCart") && !isGolfCartActive) return false;
+    return true;
+  });
+
+  const formatedCost = formatNumber(Math.ceil(packageCost));
   return (
     <div className="*:font-[Manrope] mt-8 rounded-xl p-3 bg-[#F4F4F4] border border-[#E0E0E0]">
       {/* Top Section */}
@@ -86,30 +89,29 @@ export default function ServiceCard({
         <div className="p-2 flex-2 flex flex-col">
           <div className="flex justify-between items-center">
             <div
-              onClick={() => {
-                const slug = service.package.package_slug;
-                onSelect(slug, packageCost, service.package.package_name);
-              }}
+              onClick={onSelect}
               className="cursor-pointer flex gap-2 items-center"
             >
-              {/* <Radio selected={service.package_slug === selectedService} /> */}
               <Radio selected={selectedService} />
               <div>
                 <p className="font-semibold">{service.package.package_name}</p>
                 <p className="text-[#7B5A41] text-sm">
-                  {service.package.package_description}
+                  {/* {service.package.package_description} */}
+                  {fixedPackageData.subTitle}
                 </p>
               </div>
             </div>
             <div className="min-w-max py-1 px-2 h-fit rounded-md font-semibold text-lg bg-[#7B5A411F] text-[#7B5A41]">
-              {/* {totalPrice} $ */}
-              {packageCost.toFixed(2)} {currencyMark}
+              {/* {currencyMark} */}
+              <p>
+                <span className="text-xs">{currency} </span>
+                {formatedCost}
+              </p>
             </div>
           </div>
           <span className="my-2 h-px bg-[#CFCFCF] w-full" />
           <p className="text-sm text-[#7A7A7A]">
-            Seamless airport experience, breeze through terminals effortlessly
-            Seamless
+            {fixedPackageService.description}
           </p>
         </div>
         <div className="flex-1">
@@ -129,97 +131,16 @@ export default function ServiceCard({
         className="mt-6 mb-4 grid grid-cols-2 gap-4 overflow-hidden"
         style={{ height: 0, opacity: 0 }}
       >
-        <div className="flex gap-2.5">
-          <div className="bg-black w-12 h-12 rounded-lg grid place-content-center">
-            <Person />
-          </div>
-          <div className="space-y-1">
-            <p className="tracking-0 font-[Manrope] font-bold">
-              Personal Greeting
-            </p>
-            <p className="text-sm text-[#7A7A7A]">
-              at the arrival gate with a name sign
-            </p>
-          </div>
-        </div>
-        <div className="flex gap-2.5">
-          <div className="bg-black w-12 h-12 rounded-lg grid place-content-center">
-            <Person />
-          </div>
-          <div className="space-y-1">
-            <p className="tracking-0 font-[Manrope] font-bold">
-              Personal Greeting
-            </p>
-            <p className="text-sm text-[#7A7A7A]">
-              at the arrival gate with a name sign
-            </p>
-          </div>
-        </div>
-        <div className="flex gap-2.5">
-          <div className="bg-black w-12 h-12 rounded-lg grid place-content-center">
-            <Person />
-          </div>
-          <div className="space-y-1">
-            <p className="tracking-0 font-[Manrope] font-bold">
-              Personal Greeting
-            </p>
-            <p className="text-sm text-[#7A7A7A]">
-              at the arrival gate with a name sign
-            </p>
-          </div>
-        </div>
-        <div className="flex gap-2.5">
-          <div className="bg-black w-12 h-12 rounded-lg grid place-content-center">
-            <Person />
-          </div>
-          <div className="space-y-1">
-            <p className="tracking-0 font-[Manrope] font-bold">
-              Personal Greeting
-            </p>
-            <p className="text-sm text-[#7A7A7A]">
-              at the arrival gate with a name sign
-            </p>
-          </div>
-        </div>
-        <div className="flex gap-2.5">
-          <div className="bg-black w-12 h-12 rounded-lg grid place-content-center">
-            <FastTrack />
-          </div>
-          <div className="space-y-1">
-            <p className="tracking-0 font-[Manrope] font-bold">
-              Fast Track - Special lane{" "}
-            </p>
-            <p className="text-sm text-[#7A7A7A]">
-              through the airport formalities
-            </p>
-          </div>
-        </div>
-        <div className="flex gap-2.5">
-          <div className="bg-black w-12 h-12 rounded-lg grid place-content-center">
-            <Baggage />
-          </div>
-          <div className="space-y-1">
-            <p className="tracking-0 font-[Manrope] font-bold">
-              Baggage Handling
-            </p>
-            <p className="text-sm text-[#7A7A7A]">
-              luggage assistance upon request
-            </p>
-          </div>
-        </div>
-        <div className="flex gap-2.5">
-          <div className="bg-black w-12 h-12 rounded-lg grid place-content-center">
-            <Exiting />
-          </div>
-          <div className="space-y-1">
-            <p className="tracking-0 font-[Manrope] font-bold">
-              Airport Exiting
-            </p>
-            <p className="text-sm text-[#7A7A7A]">
-              accompanying to the curbside
-            </p>
-          </div>
-        </div>
+        {serviceType &&
+          packageFeatures &&
+          featuresList.map((f, i) => (
+            <FeatureCard
+              key={`${i}-${f.title}-${service.package.package_slug}`}
+              title={f.title}
+              icon={f.icon}
+              description={f.description}
+            />
+          ))}
       </div>
 
       {/* Toggle Button */}
@@ -262,3 +183,23 @@ function Radio({ selected }: RadioProps) {
     </div>
   );
 }
+
+interface FeatureCardProps {
+  icon: React.FC<React.SVGProps<SVGSVGElement>>;
+  title: string;
+  description: string;
+}
+
+const FeatureCard = ({ icon: Icon, title, description }: FeatureCardProps) => {
+  return (
+    <div className="flex gap-2.5">
+      <div className="bg-black w-12 h-12 rounded-lg grid place-content-center">
+        <Icon />
+      </div>
+      <div className="space-y-1">
+        <p className="tracking-0 font-[Manrope] font-bold">{title}</p>
+        <p className="text-sm text-[#7A7A7A]">{description}</p>
+      </div>
+    </div>
+  );
+};

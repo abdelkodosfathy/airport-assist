@@ -1,34 +1,35 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Minus, Plus } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { useCurrency } from "@/lib/hooks/useCurrency";
+import { useCurrencyStore } from "@/store/currencyStore";
+import { useAirportStore } from "@/store/vipInputsStore";
+import { usePrimaryPassengerStore } from "@/store/primaryPassengerStore";
 
 type BagsInputProps = {
-  // title: string;
-  //   value: number;
-  onChange: (cost: number, value: number) => void;
-  freeBags: number;
-  blockSize: number;
-  blockCost: number;
-  currency: string;
   max?: number;
 };
 
 export const BagsInput = ({
-  // title,
-  //   value,
-  onChange,
-  freeBags,
-  blockSize,
-  blockCost,
-  //   currency,
   max = 99,
 }: BagsInputProps) => {
-  const [bagsNumber, setBagsNumber] = useState(0);
+
+  const airport = useAirportStore((state) => state.airport);
+  const freeBags = airport?.number_of_free_bags ?? 0;
+  const blockCost = airport?.paid_bags_block_cost ?? 0;
+  const blockSize = airport?.paid_bags_block_size ?? 0;
+
+  const currency = useCurrencyStore((s) => s.currency);
+  // const currencyMark = useCurrencyStore((s) => s.currency);
+
+
+
+  const bagsNumber = usePrimaryPassengerStore(state => state.numberOfBags);
+  const setBagsNumber = usePrimaryPassengerStore(state => state.setNumberOfBags);
+
   const [cost, setCost] = useState(0);
-  const { currencyMark } = useCurrency();
+
   const calculateCost = (bags: number) => {
     if (bags <= freeBags) return 0;
 
@@ -40,7 +41,7 @@ export const BagsInput = ({
   const updateValue = (newValue: number) => {
     const safeValue = Math.max(0, Math.min(max, newValue));
     const calculatedCost = calculateCost(safeValue);
-    onChange(safeValue, calculatedCost);
+    
     setCost(calculatedCost);
     setBagsNumber(safeValue);
   };
@@ -49,7 +50,7 @@ export const BagsInput = ({
     <div className="flex flex-1 justify-between items-center col-span-2">
       <p className="font-semibold">
         Number Of Bags{" "}
-        {bagsNumber > 0 && (cost > 0 ? `(+${cost} ${currencyMark})` : "(free)")}
+        {bagsNumber > 0 && (cost > 0 ? `(+${cost} ${currency})` : "(free)")}
       </p>
 
       <div className="flex gap-2 items-center">

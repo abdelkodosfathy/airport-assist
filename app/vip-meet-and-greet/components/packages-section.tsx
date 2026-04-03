@@ -2,46 +2,40 @@
 
 import { AirportPackage } from "@/lib/types/airport";
 import ServiceCard from "./ServiceCard";
+import { useAirportPackageStore } from "@/store/packageStore";
+import { useChauffeurDestinationStore } from "@/store/vipInputsStore";
+import { useCarStore } from "@/store/chauffeurStore";
 
 const PackagesSection = ({
   packagesList,
-  // AirportCost,
-  adults_count,
-  child_count,
-  selectedPackageSlug,
-  onSelectPackage,
-
-  // onUpdate,
 }: {
-  onSelectPackage: (slug: string, packageCost: number, name: string) => void;
   packagesList: AirportPackage[];
-  selectedPackageSlug: string;
-  adults_count: number;
-  // AirportCost: number;
-  child_count: number;
 }) => {
-  function handleSelectedPackage(slug: string, packageCost: number, name: string) {
-    onSelectPackage(slug, packageCost, name);
-  }
+  
+  const airportPackage = useAirportPackageStore((state) => state.airportPackage);
+  const setPackage = useAirportPackageStore((state) => state.setAirportPackage);
+  const resetChauffeur = useChauffeurDestinationStore(s => s.resetChauffeurDestination);
+  const setCar = useCarStore(s => s.setCar);
   return (
     <div className="flex-2 h-full">
-      <div
-        className="px-10 shadow-md py-6 bg-white rounded-2xl h-full"
-      >
+      <div className="px-10 shadow-md py-6 bg-white rounded-2xl h-full">
         <h4 className="text-normal">
           Kindly review the service descriptions below and confirm your
           selection.
         </h4>
-    
-        {packagesList.map((pkg) => (
+
+        {packagesList.map((pkg, i) => (
           <ServiceCard
-            selectedService={selectedPackageSlug === pkg.package.package_slug}
-            adults_count={adults_count}
-            child_count={child_count}
-            // AirportCost={AirportCost}
+            selectedService={
+              (airportPackage?.package.package_slug ?? "s") === pkg.package.package_slug
+            }
             key={`package_${pkg.package.package_slug}`}
             service={pkg}
-            onSelect={handleSelectedPackage}
+            onSelect={() => {
+              setPackage(pkg);
+              resetChauffeur();
+              setCar(null);
+            }}
           />
         ))}
       </div>

@@ -5,12 +5,6 @@ import { ChevronDown } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { OptionType } from "./search";
-// export interface OptionType {
-//   label: string;
-//   value: string;
-//   icon?: ReactNode;
-//   color?: ReactNode;
-// }
 
 interface SelectDropdownProps {
   id?: string;
@@ -23,6 +17,7 @@ interface SelectDropdownProps {
   iconPosition?: "left" | "right";
   options: OptionType[];
   value?: OptionType | null;
+  storedServiceLabel?: string,
   onSelect?: (option: OptionType) => void;
 }
 
@@ -36,15 +31,17 @@ const SelectDropdown = ({
   icon,
   iconPosition = "left",
   options,
-  // value,
+  value,
+  storedServiceLabel,
   onSelect,
 }: SelectDropdownProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
-  const [selectedValue, setSelectedValue] = useState<OptionType>();
+  const [selectedValue, setSelectedValue] = useState<OptionType | null>(null);
 
-  // Close on outside click
+  const inputValue = selectedValue?.label ?? (storedServiceLabel ?? ""); // Close on outside click
+  
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -83,7 +80,7 @@ const SelectDropdown = ({
             name={name}
             disabled={disabled}
             readOnly
-            value={selectedValue?.label || ""}
+            value={value?.label ?? inputValue ??  ""}
             placeholder={placeholder}
             className={cn(
               "cursor-pointer bg-white",

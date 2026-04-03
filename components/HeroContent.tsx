@@ -2,7 +2,7 @@
 
 import { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
-import BookingForm from "@/components/BookingForm";
+import BookingForm from "@/components/BookingForm/BookingForm";
 
 export default function HeroContent() {
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -11,7 +11,7 @@ export default function HeroContent() {
     if (!containerRef.current) return;
 
     const elements = containerRef.current.querySelectorAll<HTMLElement>(
-      "h1, .hero-text, .booking-form"
+      "h1, .hero-text, .booking-form",
     );
 
     gsap.set(elements, { opacity: 0, y: 50 });
@@ -42,10 +42,12 @@ export default function HeroContent() {
           font-[Manrope] font-normal leading-[140%] tracking-[2.7px] 
           text-[30px] 
           opacity-0
+          uppercase
           "
-          // sm:text-3xl md:text-4xl 
+        // sm:text-3xl md:text-4xl
       >
-        WELCOME TO AIRPORT ASSIST
+        {/* WELCOME TO AIRPORT ASSIST */}
+        Experience a New Travel Concept
       </h1>
 
       <p
@@ -56,13 +58,14 @@ export default function HeroContent() {
           opacity-0
           text-[21.75px]
           "
-          // text-base sm:text-sm md:text-xl lg:text-2xl
-          // max-w-[90%] sm:max-w-[650px]
+        // text-base sm:text-sm md:text-xl lg:text-2xl
+        // max-w-[90%] sm:max-w-[650px]
       >
+        {/* Luxury Airport VIP Concierge — seamless, private, stress-free travel. */}
         Luxury Airport VIP Concierge — seamless, private, stress-free travel.
       </p>
 
-        <BookingForm />
+      <BookingForm />
     </div>
   );
 }

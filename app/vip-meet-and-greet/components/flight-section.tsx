@@ -1,210 +1,60 @@
-// import FlightForm from "./flight-information";
-// import PrimaryPassengerForm from "./primary-passenger-form";
-// import { SingleAirport } from "@/lib/types/airport";
-// import UploadFilesSeciton from "./upload-files-section";
-// import CarsSection from "./cars-section";
-
-// const FlightSection = ({ airportData }: { airportData: SingleAirport }) => {
-//   return (
-//     <>
-//       <div className="flex-2 space-y-4 h-auto">
-//         <FlightForm
-//           fastTrackCost={
-//             airportData.is_fast_track_active
-//               ? airportData.fast_track_cost
-//               : "not_active"
-//           }
-//         />
-//         <PrimaryPassengerForm
-//           freeBags={airportData.number_of_free_bags}
-//           blockCost={airportData.paid_bags_block_cost}
-//           blockSize={airportData.paid_bags_block_size}
-//         />
-//         <CarsSection />
-//         <UploadFilesSeciton />
-//       </div>
-//     </>
-//   );
-// };
-
-// export default FlightSection;
-
-import  { forwardRef, useImperativeHandle, useRef } from "react";
-import FlightForm, {
-  FlightFormData,
-  FlightFormHandle,
-} from "./flight-information";
-import PrimaryPassengerForm, {
-  PrimaryPassengerData,
-} from "./primary-passenger-form";
-import { SingleAirport } from "@/lib/types/airport";
-import UploadFilesSeciton, {
-  UploadFilesData,
-  UploadFilesSectionHandle,
-} from "./upload-files-section";
+import PrimaryPassengerForm from "./primary-passenger-form";
+import UploadFilesSeciton from "./upload-files-section";
 import CarsSection from "./cars-section";
-import { OptionType } from "@/components/custom inputs/search";
-// import DepatureForm from "./depature-form";
-// import ConnectionForm from "./connection-form";
+import { useAirportPackageStore } from "@/store/packageStore";
+import FlightForm from "./FlightForm/flight-form";
+import {
+  useChauffeurDestinationStore,
+  useServiceStore,
+  useSingleAirportStore,
+} from "@/store/vipInputsStore";
+import { useCars } from "@/lib/hooks/useCars";
+import { useSingleAirport } from "@/lib/hooks/useAirports";
+import InnerToast from "@/components/ui/InnerToast";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
-// Define the handle type
-export type FlightSectionHandle = {
-  isValid: () => boolean;
-  getInputs: () => FlightSectionData | null;
+const FlightSection = () => {
+  const currentPackage = useAirportPackageStore(
+    (state) => state.airportPackage,
+  );
+
+  const country = useSingleAirportStore((state) => state.singleAirport)?.city
+    .iso2;
+  const setCountry = useChauffeurDestinationStore((s) => s.setCountry);
+  setCountry(country ?? "");
+  console.log(country);
+
+  const { data, isLoading, isError, error } = useCars(country ?? undefined);
+
+  const includingCars: boolean = (data?.data.total_result ?? 0) > 0;
+  const serviceType = useServiceStore((s) => s.serviceType);
+  const withChauffuer =
+    // includingCars &&
+    currentPackage?.package.package_slug === "elite_plus" &&
+    serviceType !== "connection";
+
+  return (
+    <div className="flex-2 space-y-4 h-auto capitalize">
+      <FlightForm />
+      <PrimaryPassengerForm />
+
+      {withChauffuer && includingCars && <CarsSection />}
+      {withChauffuer && !includingCars && (
+        <InnerToast text="We regret that chauffeur-driven cars are not available in this region at the moment. Kindly contact us and we will be happy to assist you.">
+          <Button
+            asChild
+            variant={"outline"}
+            className="mt-2 bg-transparent shadow-none cursor-pointer border border-[#7B5A41] text-[#7B5A41] hover:bg-transparent hover:text-[#7B5A41]"
+          >
+            <Link href="/contact-us">Contact Us</Link>
+          </Button>
+        </InnerToast>
+      )}
+
+      <UploadFilesSeciton />
+    </div>
+  );
 };
-export type PrimaryPassengerFormHandle = {
-  isValid: () => boolean;
-  getData: () => PrimaryPassengerData; // لو عملت الinterface
-};
-export type CarFormHandle = {
-  isValid: () => boolean;
-  getData: () => number; // لو عملت الinterface
-};
-
-export type FlightSectionData = {
-  flightFormData: FlightFormData;
-  primaryPassengerData: PrimaryPassengerData;
-  carsSectionData: number;
-  uploadFilesData: UploadFilesData;
-};
-
-const FlightSection = forwardRef<
-  FlightSectionHandle,
-  {
-    airportData: SingleAirport;
-    serviceType: string;
-    withChauffuer: boolean;
-    onFastTrackEnabeld: (status: boolean) => void;
-    durationCost: (e?: number) => void;
-    bagsNumber: (e: number) => void;
-    bagsCost: (e?: number) => void;
-  }
->(
-  (
-    {
-      airportData,
-      withChauffuer,
-      serviceType,
-      durationCost,
-      bagsCost,
-      bagsNumber,
-      onFastTrackEnabeld,
-    },
-    ref,
-  ) => {
-    // Create refs for child forms if they have validation functions
-    // const flightFormRef = useRef<{ isValid: () => boolean, getData: () => {}}>(null);
-    const flightFormRef = useRef<FlightFormHandle>(null);
-
-    const primaryPassengerRef = useRef<PrimaryPassengerFormHandle | null>(null);
-    const carsSectionRef = useRef<CarFormHandle>(null);
-    const uploadFilesRef = useRef<UploadFilesSectionHandle>(null);
-
-    // Expose the isValid function to parent
-    useImperativeHandle(ref, () => ({
-      isValid: () => {
-        // Call isValid of each child form if exists
-        const flightValid = flightFormRef.current?.isValid?.() ?? true;
-        const primaryValid = primaryPassengerRef.current?.isValid?.() ?? true;
-
-        const carsValid = withChauffuer
-          ? (carsSectionRef.current?.isValid?.() ?? true)
-          : true;
-        // const filesValid = uploadFilesRef.current?.isValid?.() ?? true;
-
-        return flightValid && primaryValid && carsValid;
-        // return false
-      },
-
-      getInputs: (): FlightSectionData | null => {
-        if (
-          !flightFormRef.current ||
-          !primaryPassengerRef.current ||
-          !uploadFilesRef.current
-        ) {
-          return null;
-        }
-        return {
-          flightFormData: flightFormRef.current.getData(),
-          primaryPassengerData: primaryPassengerRef.current.getData(),
-          carsSectionData: carsSectionRef.current?.getData() ?? 0,
-          uploadFilesData: uploadFilesRef.current.getData(),
-        };
-      },
-    }));
-
-    const handleDurationChange = (duration: OptionType) => {
-      // console.log(duration);
-      durationCost(duration.cost);
-    };
-    return (
-      <div className="flex-2 space-y-4 h-auto">
-        {
-          // if serviceType === "arrival"
-          <FlightForm
-            serviceType={serviceType}
-            ref={flightFormRef}
-            setDuration={handleDurationChange}
-            onEnableFastTrack={onFastTrackEnabeld}
-            hourCost={airportData.additional_hour_cost}
-            // hourCost={10}
-            fastTrackCost={
-              airportData.is_fast_track_active
-                ? airportData.fast_track_cost
-                : "not_active"
-            }
-          />
-        }
-        {/* {
-          // if serviceType === "connection"
-          <ConnectionForm
-            ref={flightFormRef}
-            setDuration={handleDurationChange}
-            onEnableFastTrack={onFastTrackEnabeld}
-            hourCost={airportData.additional_hour_cost}
-            // hourCost={10}
-            fastTrackCost={
-              airportData.is_fast_track_active
-                ? airportData.fast_track_cost
-                : "not_active"
-            }
-          />
-        }
-        {
-          // if serviceType === "depature"
-          <DepatureForm
-            ref={flightFormRef}
-            setDuration={handleDurationChange}
-            onEnableFastTrack={onFastTrackEnabeld}
-            hourCost={airportData.additional_hour_cost}
-            // hourCost={10}
-            fastTrackCost={
-              airportData.is_fast_track_active
-                ? airportData.fast_track_cost
-                : "not_active"
-            }
-          />
-        } */}
-        <PrimaryPassengerForm
-          ref={primaryPassengerRef}
-          freeBags={airportData.number_of_free_bags}
-          blockCost={airportData.paid_bags_block_cost}
-          blockSize={airportData.paid_bags_block_size}
-          onSelectBags={(e) => {
-            bagsCost(e.cost);
-            bagsNumber(Number(e.bagsNumber));
-            console.log(e);
-            
-          }}
-        />
-        {withChauffuer && <CarsSection ref={carsSectionRef} />}
-
-        <UploadFilesSeciton ref={uploadFilesRef} />
-      </div>
-    );
-  },
-);
-
-FlightSection.displayName = "FlightSection";
 
 export default FlightSection;

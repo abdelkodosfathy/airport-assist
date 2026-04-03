@@ -9,13 +9,26 @@ const DefaultIcon = () => (
 const InnerToast = ({
   text,
   icon,
+  children,
+  className = "mb-4",
 }: {
-  text: string;
+  text?: string;
   icon?: ReactNode;
+  children?: ReactNode;
+  className?: string;
 }) => (
-  <div className="flex items-center mb-4 gap-4 rounded-lg bg-[#FFFBEF] px-4 py-3 border border-[#7B5A414D] text-[#7B5A41]">
+  <div
+    className={`flex items-center gap-4 rounded-lg bg-[#FFFBEF] px-4 py-3 border border-[#7B5A414D] text-[#7B5A41] ${className}`}
+    style={{
+      textTransform: "none",
+    }}
+  >
     {icon ? icon : <DefaultIcon />}
-    <p>{text}</p>
+
+    <div>
+      <p>{text}</p>
+      {children ? children : null}
+    </div>
   </div>
 );
 

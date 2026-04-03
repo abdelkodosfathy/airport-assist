@@ -15,8 +15,8 @@ export default function AirportInvitation({
   left?: boolean;
   imgOne: string;
   imgTwo: string;
-  heading: string
-  content: string
+  heading: string;
+  content: string;
 }) {
   const img1Ref = useRef<HTMLDivElement | null>(null);
   const img2Ref = useRef<HTMLDivElement | null>(null);
@@ -40,7 +40,7 @@ export default function AirportInvitation({
       img1Ref.current,
       { width: left ? "65%" : "100%", x: left ? "-100%" : "100%", opacity: 0 },
       { width: left ? "100%" : "65%", x: left ? "0%" : "0%", opacity: 1 },
-      0
+      0,
     );
 
     // الصورة الثانية: تبدأ 100% → 80%
@@ -48,30 +48,52 @@ export default function AirportInvitation({
       img2Ref.current,
       { width: left ? "100%" : "65%", x: left ? "-100%" : "100%", opacity: 0 },
       { width: left ? "65%" : "100%", x: left ? "0%" : "0%", opacity: 1 },
-      0
+      0,
     );
-  // }, []);
+    // }, []);
 
-
-      const hover1 = () => {
-      gsap.to(img1Ref.current, { width: "100%", duration: 0.5, ease: "power3.out" });
-      gsap.to(img2Ref.current, { width: "65%", duration: 0.5, ease: "power3.out" });
+    const hover1 = () => {
+      gsap.to(img1Ref.current, {
+        width: "100%",
+        duration: 0.5,
+        ease: "power3.out",
+      });
+      gsap.to(img2Ref.current, {
+        width: "65%",
+        duration: 0.5,
+        ease: "power3.out",
+      });
     };
     const hover2 = () => {
-      gsap.to(img2Ref.current, { width: "100%", duration: 0.5, ease: "power3.out" });
-      gsap.to(img1Ref.current, { width: "65%", duration: 0.5, ease: "power3.out" });
+      gsap.to(img2Ref.current, {
+        width: "100%",
+        duration: 0.5,
+        ease: "power3.out",
+      });
+      gsap.to(img1Ref.current, {
+        width: "65%",
+        duration: 0.5,
+        ease: "power3.out",
+      });
     };
     const reset = () => {
-      gsap.to(img1Ref.current, { width: left ? "100%" : "65%", duration: 0.5, ease: "power3.out" });
-      gsap.to(img2Ref.current, { width: left ? "65%" : "100%", duration: 0.5, ease: "power3.out" });
+      gsap.to(img1Ref.current, {
+        width: left ? "100%" : "65%",
+        duration: 0.5,
+        ease: "power3.out",
+      });
+      gsap.to(img2Ref.current, {
+        width: left ? "65%" : "100%",
+        duration: 0.5,
+        ease: "power3.out",
+      });
     };
-    if(img1Ref.current && img2Ref.current){
-
+    if (img1Ref.current && img2Ref.current) {
       img1Ref.current.addEventListener("mouseenter", hover1);
       img2Ref.current.addEventListener("mouseenter", hover2);
       img1Ref.current.addEventListener("mouseleave", reset);
       img2Ref.current.addEventListener("mouseleave", reset);
-      
+
       return () => {
         img1Ref.current?.removeEventListener("mouseenter", hover1);
         img2Ref.current?.removeEventListener("mouseenter", hover2);
@@ -82,21 +104,22 @@ export default function AirportInvitation({
   }, [left]);
 
   return (
-    <section
-      className="py-6 gap-4 px-4 sm:px-6 md:px-8 lg:px-10 xl:px-26 flex items-center justify-center lg:justify-normal overflow-hidden"
-    >
-
-      <div className={`flex max-w-360  lg:mx-auto 
-      ${left ? "flex-col-reverse lg:flex-row-reverse" : "flex-col-reverse lg:flex-row"} 
-      gap-6 2xl:gap-10 lg:items-center overflow-hidden`}>
-
+    <section className="gap-4 px-4 sm:px-6 md:px-8 lg:px-10 xl:px-26 flex items-center justify-center lg:justify-normal overflow-hidden">
+      <div
+        className={`flex max-w-360  lg:mx-auto 
+      ${left ? "flex-col-reverse lg:flex-row-reverse" : "flex-col-reverse lg:flex-row"}
+      gap-6 xl:gap-17.5 lg:items-center overflow-hidden`}
+      >
         {/* ------------ LEFT TEXT ------------ */}
         <div className="flex-3">
-          <h2 className="font-[Manrope] max-w-116 font-normal text-xl md:text-2xl lg:text-3xl leading-[128%] tracking-[10px] uppercase">
+          {/* <h2 className="font-[Manrope] max-w-116 font-normal text-xl md:text-[25px] leading-[128%] tracking-[10px] uppercase"> */}
+          <h2 className="whitespace-pre-line font-[Manrope] max-w-116 font-normal text-xl md:text-[25px] leading-[128%] tracking-[10px] uppercase">
             {heading}
           </h2>
+          {/* {heading} */}
+          {/* </h2> */}
 
-          <p className="mt-6 font-[Manrope] font-normal text-normal leading-[150%] tracking-[9%] text-[#555] max-w-130">
+          <p className="mt-6 font-[Manrope] font-normal  text-[15px] leading-[150%] tracking-[9%] text-[#6D6D6D] max-w-130">
             {content}
           </p>
         </div>
@@ -104,7 +127,10 @@ export default function AirportInvitation({
         {/* ------------ RIGHT IMAGES ------------ */}
         <div className="flex flex-4 gap-4 ml-auto xl:ml-0">
           {/* الصورة الأولى */}
-          <div ref={img1Ref} className="overflow-hidden rounded-md h-64 2xl:h-70">
+          <div
+            ref={img1Ref}
+            className="overflow-hidden rounded-md h-64 2xl:h-70"
+          >
             <img
               // src="/sections/img1.jpg"
               src={imgOne}
@@ -113,11 +139,11 @@ export default function AirportInvitation({
           </div>
 
           {/* الصورة الثانية */}
-          <div ref={img2Ref} className="overflow-hidden rounded-md h-64 2xl:h-70">
-            <img
-              src={imgTwo}
-              className="w-full h-full object-cover"
-            />
+          <div
+            ref={img2Ref}
+            className="overflow-hidden rounded-md h-64 2xl:h-70"
+          >
+            <img src={imgTwo} className="w-full h-full object-cover" />
           </div>
         </div>
       </div>

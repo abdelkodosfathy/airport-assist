@@ -18,14 +18,28 @@
 // lib/hooks/useAirportSearch.ts
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
+// import { useQuery } from "@tanstack/react-query";
 import { fetchAirports, fetchSingleAirport } from "@/lib/api/airports";
+import { useCurrencyStore } from "@/store/currencyStore";
+
+// export function useAirportSearch(search: string, enabled = true) {
+//   return useQuery({
+//     queryKey: ["airports", "search", search],
+//     queryFn: () => fetchAirports(search),
+//     enabled: enabled, // ← Remove the search.length check
+//     staleTime: 1000 * 60 * 5,
+//     gcTime: 1000 * 60 * 10,
+//     retry: 1,
+//   });
+// }
+import { useQuery, keepPreviousData } from "@tanstack/react-query";
 
 export function useAirportSearch(search: string, enabled = true) {
   return useQuery({
     queryKey: ["airports", "search", search],
     queryFn: () => fetchAirports(search),
-    enabled: enabled, // ← Remove the search.length check
+    enabled,
+    placeholderData: keepPreviousData, // ← keeps old results visible during refetch
     staleTime: 1000 * 60 * 5,
     gcTime: 1000 * 60 * 10,
     retry: 1,
@@ -46,7 +60,6 @@ export function useSingleAirport(id: string) {
     queryKey: ["singleAirport", id],
     queryFn: () => fetchSingleAirport(id),
     staleTime: 1000 * 60 * 5,
-    
     gcTime: 1000 * 60 * 10,
     retry: 1,
     enabled: !!id,

@@ -6,33 +6,9 @@ import { Button } from "../ui/button";
 import CurrencySelector from "../ui/CurrencySelector";
 import { ChevronDown, Menu, X } from "lucide-react";
 import "./header.css";
-import SearchWithDropdown from "../custom inputs/search";
-import CurrencyDropdown, { FixedOptionType } from "../ui/CurrencyDropDown";
 
 export default function Header() {
   const [open, setOpen] = useState(false);
-
-  const currencyOptions: FixedOptionType[] = [
-    {
-      label: "USD",
-      value: "USD",
-      icon: <img src="/icons/usd.png" className="w-6 h-6 rounded-xl" />,
-    },
-    {
-      label: "EUR",
-      value: "EUR",
-      icon: <img src="/icons/eur.webp" className="w-6 h-6 rounded-xl" />,
-    },
-    {
-      label: "GBP",
-      value: "GBP",
-      icon: <img src="/icons/gbp.png" className="w-6 h-6 rounded-xl" />,
-    },
-  ];
-
-  const [selectedCurrency, setSelectedCurrency] =
-    useState<FixedOptionType | null>(currencyOptions[0]);
-
   return (
     <header className="animated-header fixed  z-90 w-full border-b border-transparent px-4">
       <div className="mx-auto max-w-360 flex items-center justify-between py-1">
@@ -62,19 +38,11 @@ export default function Header() {
         {/* Right Side */}
         <div className="hidden lg:flex items-center gap-4">
           <CurrencySelector />
-          {/* <CurrencyDropdown
-            options={currencyOptions}
-            value={selectedCurrency}
-            onSelect={setSelectedCurrency}
-            placeholder="Choose Currency"
-            className="w-32"
-            inputClassName="bg-white"
-          /> */}
           <span className="inline-block w-0.5 h-8 rounded-3xl bg-linear-to-b from-white to-white/10"></span>
 
-          <a className=" text-white  font-normal text-[16px] leading-6 tracking-[0px]">
+          <Link href={"/login"} className=" text-white  font-normal text-[16px] leading-6 tracking-[0px]">
             Login
-          </a>
+          </Link>
 
           <Button
             variant="ghost"
@@ -199,23 +167,18 @@ const ServiceList = () => {
         `}
       >
         <li className="px-4 py-2 border-b border-[#D5D5D5]">
-          {/* <Link href="/services/chauffeuring">Chauffeuring</Link> */}
           <Link href="/our-services/chauffeuring">Chauffeur Services</Link>
         </li>
         <li className="px-4 py-2 border-b border-[#D5D5D5]">
-          {/* <Link href="/services/hotel">Hotel Service</Link> */}
           <Link href="/our-services/hotel">Hotel Service</Link>
         </li>
         <li className="px-4 py-2 border-b border-[#D5D5D5]">
-          {/* <Link href="/services/vip-meet-and-greet">VIP Meet & Greet</Link> */}
           <Link href="/our-services/vip-meet-and-greet">VIP Meet & Greet</Link>
         </li>
         <li className="px-4 py-2 border-b border-[#D5D5D5]">
-          {/* <Link href="/services/private-suite">Private Suite</Link> */}
           <Link href="/our-services/private-suite">Private Suite</Link>
         </li>
         <li className="px-4 py-2">
-          {/* <Link href="/services/private-jet">Private Jet</Link> */}
           <Link href="/private-jet">Private Jet</Link>
         </li>
       </ul>

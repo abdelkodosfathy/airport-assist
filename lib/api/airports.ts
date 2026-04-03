@@ -13,6 +13,6 @@ export async function fetchAirports(search?: string): Promise<AirportsResponse> 
   const params = search ? `?search=${encodeURIComponent(search)}` : '';
   return apiGet(`/airports${params}`);
 }
-export async function fetchSingleAirport(airportID?: string): Promise<SingleAirportResponse> {
+export async function fetchSingleAirport(airportID: string): Promise<SingleAirportResponse> {
   return apiGet(`/airports/${airportID}`);
 }

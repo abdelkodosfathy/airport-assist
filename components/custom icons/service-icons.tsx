@@ -7,7 +7,7 @@ const Person: React.FC<React.SVGProps<SVGElement>> = (props) => (
     viewBox="0 0 24 24"
   >
     <path
-      fill="#CC9E7C"
+      fill={props.color ?? "#CC9E7C"}
       d="M11.553 9.626a3.85 3.85 0 1 0 0-7.7 3.85 3.85 0 0 0 0 7.7M19.253 16.845c0 2.392 0 4.332-7.7 4.332s-7.701-1.94-7.701-4.332 3.447-4.331 7.7-4.331 7.7 1.94 7.7 4.331"
     ></path>
   </svg>

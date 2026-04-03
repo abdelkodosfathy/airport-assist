@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ArrowUpRight } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-// import { useState, useRef, useEffect } from "react";
 
 export default function CardsList() {
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -48,15 +47,6 @@ export default function CardsList() {
       >
         {data.map((item, i) => (
           <DestinationCard key={i} {...item} />
-        ))}
-      </div>
-      <div className="flex gap-2 justify-center mt-8">
-        {data.map((_, i) => (
-          <span
-            key={i}
-            className={`inline-block bg-[#c9bfb4] rounded-lg duration-300 h-1 w-8`}
-            //  ${activeIndex === i ? 'bg-black' : 'bg-[#c9bfb4]'}
-          />
         ))}
       </div>
     </div>

@@ -69,47 +69,53 @@ const VerticalCausel = () => {
   const cards = [
     {
       id: 1,
-      title: "PRIVATE ENTRANCE",
+      title: "VIP Meet & Greet Services",
+      link: "/our-services/vip-meet-and-greet",
       textContent:
-        "Arrive at the Terminal through an independent access point, ensuring complete privacy and security.",
-      image: "/carousel/check-in-despacho.webp",
-      top:"top-30"
+        "Enhancing your journey with private greeter assistance and fast-track airport procedures.",
+      image: "/carousel/VipMeetAndGreet.png",
+      top: "top-30",
     },
     {
       id: 2,
-      title: "Assisted check-in and baggage drop-off",
+      title: "Tarmac Services",
+      link: "/our-services/private-suite",
       textContent:
-        "Arrive at the Terminal through an independent access point, ensuring complete privacy and security.",
-      image: "/carousel/concierge-dedicado.webp",
-      top:"top-40"
+        "Our most exclusive offering, providing the highest level of luxury airport assistance across 500+ destinations worldwide.",
+      image: "/carousel/TarmacServices.png",
+      top: "top-40",
     },
     {
       id: 3,
-      title: "DEDICATED CONCIERGE",
+      title: "Luxury Chauffeur Services",
+      link: "/our-services/chauffeuring",
       textContent:
-        "Arrive at the Terminal through an independent access point, ensuring complete privacy and security.",
-      image: "/carousel/entrada-privada.webp",
-      top:"top-50"
+        "Experience seamless chauffeur-driven transfers between the airport and your destination.",
+      image: "/carousel/LuxuryChauffeur.webp",
+      top: "top-50",
     },
+
     {
       id: 4,
-      title: "On-site security and immigration",
+      title: "Private Jet Services",
+      link: "/private-jet",
       textContent:
-        "Arrive at the Terminal through an independent access point, ensuring complete privacy and security.",
-      image: "/carousel/raiox.webp",
-      top:"top-60"
+        "Experience seamless travel with private airport assistance and priority fast-track procedures.",
+      image: "/carousel/PrivateJetServices.webp",
+      top: "top-60",
     },
+
     {
       id: 5,
-      title: "Transfer",
+      title: "A Truly Magical Grand Hotel",
+      link: "/our-services/hotel",
       textContent:
-        "Arrive at the Terminal through an independent access point, ensuring complete privacy and security.",
-      image: "/carousel/transfer.webp",
-      top:"top-70"
+        "Our elegant rooms and suites blend space, style, and tranquility, creating a refined city retreat for ultimate comfort and relaxation.",
+      image: "/carousel/ATrulyMagicalGrandHotel.webp",
+      top: "top-70",
     },
   ];
 
-  
   return (
     <section className="xl:hidden relative bg-neutral-900 p-4 h-max py-6 md:py-10">
       <div className="sticky top-10 bg-neutral-900 h-max space-y-4 sm:space-y-10 md:space-y-16 lg:space-y-20">
@@ -132,7 +138,9 @@ const VerticalCausel = () => {
 
             {/* المحتوى */}
             <div className="relative w-full text-white">
-              <h3 className="text-xl sm:text-2xl text-start tracking-[0.3em] mb-4 sm:mb-8 w-full">{card.title}</h3>
+              <h3 className="text-xl sm:text-2xl text-start tracking-[0.3em] mb-4 sm:mb-8 w-full">
+                {card.title}
+              </h3>
               <p className="text-sm sm:text-lg tracking-wide">
                 {card.textContent}
               </p>

@@ -1,15 +1,40 @@
+"use client";
+
 import React from "react";
 import Header from "@/components/Header/Header";
 import Footer from "@/components/Footer";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import hero from "@/public/chauffeur-services.jpg";
+import { useRouter } from "next/navigation";
+import {
+  // useAirportStore,
+  useDateStore,
+  // usePassengersStore,
+  // useServiceStore,
+} from "@/store/vipInputsStore";
 // import Link from "next/link";
 export default function ServicesLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const router = useRouter();
+  const handleChangeServices = () => {
+    router.push("/");
+  };
+
+  // const airportName = useAirportStore((state) => state.airport?.airport_name);
+  // const storedServiceType = useServiceStore((state) => state.serviceType);
+  const storedDate = useDateStore((state) => state.bookingDate);
+  // const storedAdults = usePassengersStore((state) => state.adults);
+  // const storedChildren = usePassengersStore((state) => state.children);
+
+  // const totalPassengers =
+  //   Number(storedAdults || 0) + Number(storedChildren || 0);
+
+  // const passengersText =
+  //   totalPassengers === 1 ? "1 Passenger" : `${totalPassengers} Passengers`;
   return (
     <main className="bg-[#F7F7F6] font-[Manrope]">
       <Header />
@@ -38,20 +63,22 @@ export default function ServicesLayout({
         {/* Hero content */}
         <div className="relative z-10 h-full flex flex-col justify-center mx-auto">
           <p className="text-center mb-7.5 font-[Manrope] text-normal">
-            ARRIVAL TO
+            {/* {storedServiceType === "arrival" ? "ARRIVAL TO" : "DEPARTURE FROM"}  */}
           </p>
           <h1 className="font-[Manrope] font-light text-3xl leading-[130%] tracking-[8.25px] text-center mb-7.5">
-            London Gatwick Airport - LGW
+            {/* {airportName} */}
+            Let's plan your trip
           </h1>
-          <div className="flex justify-around">
+          <div className="flex gap-20 justify-between">
             <p className="font-[Manrope] font-normal text-[18px] leading-[100%] tracking-[8.25px] text-center text-[rgb(200,200,200)]">
-              30 Nov 2025
+              {storedDate?.date}
             </p>
             <p className="font-[Manrope] font-normal text-[18px] leading-[100%] tracking-[8.25px] text-center text-[rgb(200,200,200)]">
               3 Passengers
             </p>
           </div>
           <Button
+            onClick={handleChangeServices}
             variant="ghost"
             className="
               absolute

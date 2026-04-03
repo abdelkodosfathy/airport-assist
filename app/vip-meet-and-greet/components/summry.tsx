@@ -12,11 +12,12 @@ import Separator from "@/components/ui/formSeparator";
 
 import payments from "@/public/payments.png";
 import { useEffect, useState } from "react";
-import { useCurrency } from "@/lib/hooks/useCurrency";
 import { apiPost } from "@/lib/api";
+import { useRouter } from "next/navigation";
+import { useCurrencyStore } from "@/store/currencyStore";
 
 export default function Summary({
-  onBack,
+  // onBack,
   uuid,
   airportName,
 }: {
@@ -28,7 +29,8 @@ export default function Summary({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const { currency, currencyMark } = useCurrency();
+    const currency = useCurrencyStore((s) => s.currency);
+    const currencyMark = useCurrencyStore((s) => s.currencyMark);
 
   useEffect(() => {
     if (uuid.trim() === "") return;
@@ -108,7 +110,7 @@ export default function Summary({
             </h2>
             <div className="space-y-2">
               <p className="flex justify-between">
-                <span>Booking Date:</span>
+                <span>Order Date:</span>
                 <span>
                   {new Date(summaryData.booking_timestamp).toLocaleString()}
                 </span>
@@ -149,7 +151,7 @@ export default function Summary({
           {/* Passenger Documents */}
           <div className="px-10 py-6 w-full bg-white rounded-2xl shadow-md flex gap-2 items-center">
             <StrokeBag />
-            <p>Luggage assistance: Yes Porter Services</p>
+            <p>Luggage assistance: Porter Services</p>
           </div>
 
           <div className="px-10 py-6 w-full bg-white rounded-2xl shadow-md flex gap-2 items-center">
@@ -165,20 +167,23 @@ export default function Summary({
             <p className="flex justify-between">
               Base Fare:{" "}
               <span>
-                {currencyMark} {subtotal}
+                {/* {currencyMark} {subtotal} */}
+                {currency} {subtotal}
               </span>
             </p>
             <p className="flex justify-between">
               Transaction Fee:{" "}
               <span>
-                {currencyMark} {payment_fees}
+                {/* {currencyMark} {payment_fees} */}
+                {currency} {payment_fees}
               </span>
             </p>
             <Separator />
             <p className="flex justify-between font-bold">
               Total:{" "}
               <span>
-                {currencyMark} {total}
+                {/* {currencyMark} {total} */}
+                {currency} {total}
               </span>
             </p>
           </div>
@@ -283,109 +288,6 @@ export default function Summary({
   );
 }
 
-// const BookButton = ({
-//   uuid,
-//   display_booking_status,
-// }: {
-//   uuid: string;
-//   display_booking_status: string;
-// }) => {
-//   const [summaryData, setSummaryData] = useState<any>(null);
-//   const [loading, setLoading] = useState(false);
-//   const [error, setError] = useState<string | null>(null);
-
-//   const handlBookNow = () => {
-//     console.log(uuid);
-//     if (display_booking_status === "Awaiting Payment") {
-//       fetchLink();
-//     }
-//   };
-
-//   // const fetchLink = async () => {
-//   //   try {
-//   //     setLoading(true);
-//   //     setError(null);
-
-//   //     const res = await fetch(
-//   //       `https://airportassist-backend.aqaralex.com/api/public/bookings/${uuid}/checkout/payment-url`,
-//   //     );
-//   //     if (!res.ok) throw new Error(`Failed to fetch summary: ${res.status}`);
-
-//   //     const data = await res.json();
-//   //     setSummaryData(data.data.booking);
-//   //   } catch (err: unknown) {
-//   //     console.error(err);
-//   //     setError(err instanceof Error ? err.message : "Unknown error");
-//   //   } finally {
-//   //     setLoading(false);
-//   //   }
-//   // };
-
-//   const fetchLink = async () => {
-//     try {
-//       setLoading(true);
-//       setError(null);
-
-//       const res = await fetch(
-//         `https://airportassist-backend.aqaralex.com/api/public/bookings/${uuid}/checkout/payment-url`,
-//         {
-//           method: "POST",
-//           headers: { "Content-Type": "application/json" },
-//           body: JSON.stringify({
-//             payment_method: "stripe",
-//             promo_code: "",
-//           }),
-//         },
-//       );
-
-//       if (!res.ok)
-//         throw new Error(`Failed to fetch payment link: ${res.status}`);
-
-//       const data = await res.json();
-
-//       const paymentUrl = data?.data?.payment_url;
-//       if (paymentUrl) {
-//         // Redirect to the payment page
-//         window.location.href = paymentUrl;
-//       } else {
-//         setError("Payment URL not returned from server.");
-//       }
-//     } catch (err: unknown) {
-//       console.error(err);
-//       setError(err instanceof Error ? err.message : "Unknown error");
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-//   return (
-//     <Button
-//       type="button"
-//       disabled={display_booking_status !== "Awaiting Payment"}
-//       onClick={handlBookNow}
-//       variant="outline"
-//       className="
-// 								col-span-2
-// 								w-full
-// 								cursor-pointer
-// 								border-black
-// 								text-black
-// 								hover:border-[#664F31]
-// 								hover:bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)]
-// 								hover:text-white
-// 								duration-0
-// 								rounded-lg
-// 								py-5
-// 								px-7
-// 								"
-//     >
-//       <p className="text-sm font-normal font-[Manrope]">
-//         {/* Proceed To Checkout{" "} */}
-//         Book Now
-//       </p>
-//     </Button>
-//   );
-// };
-
 const BookButton = ({
   uuid,
   display_booking_status,
@@ -393,6 +295,7 @@ const BookButton = ({
   uuid: string;
   display_booking_status: string;
 }) => {
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -417,7 +320,8 @@ const BookButton = ({
       const paymentUrl = data?.data?.payment_url;
       if (paymentUrl) {
         // Redirect to the payment page
-        window.location.href = paymentUrl;
+        // window.location.href = paymentUrl;
+        router.push(paymentUrl);
       } else {
         setError("Payment URL not returned from server.");
       }

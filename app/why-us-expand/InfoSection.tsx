@@ -16,41 +16,6 @@ export interface InfoSectionProps {
   section: Section;
 }
 
-// const InfoSection = ({ section }: InfoSectionProps) => {
-//   return (
-//     <div className="mb-8">
-//       <h3 className="font-semibold tracking-[2.25px] mb-3">{section.title}</h3>
-
-//       {section.blocks.map((block, index) => {
-//         if (block.type === "paragraph") {
-//           return (
-//             <p
-//               key={index}
-//               className={`text-sm text-[#6D6D6D] ${index > 0 ? "mt-3" : ""}`}
-//             >
-//               {block.content as string}
-//             </p>
-//           );
-//         }
-
-//         if (block.type === "list") {
-//           return (
-//             <ul key={index} className="mb-3 list-disc ml-5">
-//               {(block.content as string[]).map((item, itemIndex) => (
-//                 <li key={itemIndex} className="text-sm text-[#6D6D6D]">
-//                   {item}
-//                 </li>
-//               ))}
-//             </ul>
-//           );
-//         }
-
-//         return null;
-//       })}
-//     </div>
-//   );
-// };
-
 const InfoSection = ({ section }: InfoSectionProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
 

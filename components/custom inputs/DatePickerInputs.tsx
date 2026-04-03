@@ -1,14 +1,19 @@
 "use client";
 
-import React, { useState, useRef, useEffect, ReactNode } from "react";
+import { useState, useRef, useEffect, ReactNode } from "react";
 import { ChevronDown } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import Calender from "../custom icons/calender";
+import { useDateStore } from "@/store/vipInputsStore";
+
+export type BookingDate = {
+  date: string;
+  time: string;
+};
 
 interface DatePickerInputProps {
   id?: string;
-  placeholder?: string;
   className?: string;
   disabled?: boolean;
   inputClassName?: string;
@@ -17,38 +22,27 @@ interface DatePickerInputProps {
   value?: string;
   onChange?: (value: string) => void;
   onDateChange?: (date: string) => void;
-  onSelect?: (date: Date) => void;
   minDate?: Date;
   maxDate?: Date;
 }
 
 const DatePickerInput = ({
   id,
-  placeholder = "",
   className,
   inputClassName,
   disabled = false,
   icon = <Calender className="h-4 w-4" />,
   iconPosition = "left",
   value: controlledValue,
-  onChange,
-  onDateChange,
-  onSelect,
   minDate = new Date(new Date().setHours(0, 0, 0, 0)), // Default to today at midnight
   maxDate,
 }: DatePickerInputProps) => {
-  const [selectedDate, setSelectedDate] = useState(controlledValue || "");
+  const storeDate = useDateStore((state) => state.setBookingDate);
+  const storedDate = useDateStore((state) => state.bookingDate);
+
   const [isOpen, setIsOpen] = useState(false);
-  const [currentMonthPage, setCurrentMonthPage] = useState(Number);
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const wrapperRef = useRef<HTMLDivElement>(null);
-
-  // Sync with controlled value
-  useEffect(() => {
-    if (controlledValue !== undefined) {
-      setSelectedDate(controlledValue);
-    }
-  }, [controlledValue]);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -65,41 +59,27 @@ const DatePickerInput = ({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue = e.target.value;
-    setSelectedDate(newValue);
-    onChange?.(newValue);
-    onDateChange?.(newValue);
-  };
-
   // Convert a Date object to "YYYY-MM-DD HH:mm"
-  function formatDateForAPI(date: Date): string {
+  function formatDateForAPI(date: Date): BookingDate {
     const pad = (n: number) => n.toString().padStart(2, "0");
-    const year = date.getFullYear();
-    const month = pad(date.getMonth() + 1); // 0-indexed
-    const day = pad(date.getDate());
+
     const hours = pad(date.getHours());
     const minutes = pad(date.getMinutes());
-    return `${year}-${month}-${day} ${hours}:${minutes}`;
+
+    return {
+      date: date.toLocaleDateString("en-US", {
+        month: "short", // Feb
+        day: "2-digit", // 27
+        year: "numeric", // 2026
+      }),
+      time: `${hours}:${minutes}`,
+    };
   }
 
   const handleDateSelect = (date: Date) => {
-    const formattedDisplay = date.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    });
-
     const formattedAPI = formatDateForAPI(date); // ✅ API-ready format
-
-    setCurrentMonthPage(date.getMonth());
-    setSelectedDate(formattedDisplay); // what the user sees
     setIsOpen(false);
-
-    // call your callbacks
-    onChange?.(formattedAPI); // send API format
-    onDateChange?.(formattedAPI); // send API format
-    onSelect?.(date);
+    storeDate(formattedAPI);
   };
 
   const getDaysInMonth = (date: Date) => {
@@ -115,18 +95,30 @@ const DatePickerInput = ({
 
   const isDateDisabled = (date: Date) => {
     // Set the date to midnight for comparison
-    const dateToCompare = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-    
+    const dateToCompare = new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate(),
+    );
+
     if (minDate) {
-      const minDateMidnight = new Date(minDate.getFullYear(), minDate.getMonth(), minDate.getDate());
+      const minDateMidnight = new Date(
+        minDate.getFullYear(),
+        minDate.getMonth(),
+        minDate.getDate(),
+      );
       if (dateToCompare < minDateMidnight) return true;
     }
-    
+
     if (maxDate) {
-      const maxDateMidnight = new Date(maxDate.getFullYear(), maxDate.getMonth(), maxDate.getDate());
+      const maxDateMidnight = new Date(
+        maxDate.getFullYear(),
+        maxDate.getMonth(),
+        maxDate.getDate(),
+      );
       if (dateToCompare > maxDateMidnight) return true;
     }
-    
+
     return false;
   };
 
@@ -149,6 +141,8 @@ const DatePickerInput = ({
     year: "numeric",
   });
 
+
+  
   return (
     <div className={className}>
       <div ref={wrapperRef} className="relative h-full">
@@ -163,9 +157,8 @@ const DatePickerInput = ({
           <Input
             disabled={disabled}
             id={id}
-            value={selectedDate}
+            value={storedDate?.date ?? ""}
             placeholder={"Select Date"}
-            onChange={handleInputChange}
             onFocus={() => !disabled && setIsOpen(true)}
             readOnly
             className={cn(
@@ -250,7 +243,8 @@ const DatePickerInput = ({
                 });
 
                 const title =
-                  selectedDate === markerDate
+                // selectedDate === markerDate
+                  storedDate?.date === markerDate
                     ? "selected date"
                     : isToday
                       ? "today"
@@ -266,7 +260,8 @@ const DatePickerInput = ({
                       isToday && "font-bold border border-gray-300",
                       !isDisabled && "hover:bg-gray-100 cursor-pointer",
                       isDisabled && "text-gray-300 cursor-not-allowed",
-                      selectedDate === markerDate &&
+                      // selectedDate === markerDate &&
+                      storedDate?.date === markerDate &&
                         "text-white bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)]",
                     )}
                   >

@@ -6,13 +6,7 @@ import Footer from "@/components/Footer";
 import Image, { StaticImageData } from "next/image";
 import { useSelectedLayoutSegment } from "next/navigation";
 import hero from "@/public/our-sercives-hero.jpg";
-// Import your other hero images
-// import faqHero from "@/public/faq-hero.jpg";
-// import contactHero from "@/public/contact-hero.jpg";
 import chaufferingHero from "@/public/chauffeuring.webp";
-// import privateSuiteHero from "@/public/private-suite-hero.jpg";
-// import vipMeetHero from "@/public/vip-meet-hero.jpg";
-// import hotelHero from "@/public/hotel-hero.jpg";
 import HeroTitle from "./HeroTitle";
 
 export default function Layout({

@@ -1,84 +1,14 @@
 "use client";
 
 import { PrivateSuites } from "@/components/sections";
-
-import Footer from "@/components/Footer";
-import Header from "@/components/Header/Header";
 import { Button } from "@/components/ui/button";
-import { ArrowUpRight, Search } from "lucide-react";
-import hero from "@/public/our-sercives-hero.jpg";
-import Image from "next/image";
+import { ArrowUpRight } from "lucide-react";
 import CardsList from "./CardsList";
-import AirportSearchInput from "@/components/AirportSearchInput";
-import { useState } from "react";
-import { OptionType } from "@/components/custom inputs/search";
-import { useRouter } from "next/navigation";
 
 export default function Locations() {
-  const [selectedAirportID, setSelectedAirportID] = useState<string>();
-  const router = useRouter();
 
-  const handleAirportSelect = (option: OptionType) => {
-    setSelectedAirportID(option.value);
-  };
-
-  const handleSearch = () => {
-    if (!selectedAirportID) return;
-
-    router.push(`/locations/airport?airport=${selectedAirportID}`);
-  };
   return (
-    <main className="relative font-[Manrope] max-w-screen overflow-hidden">
-      <Header />
-      <section className="relative w-full h-114 text-white flex items-center justify-center">
-        {/* Background Image */}
-        <div className="absolute inset-0">
-          <Image
-            src={hero}
-            alt="background"
-            fill
-            className="object-cover object-[50%_20%] w-full h-full"
-            priority
-          />
-
-          {/* Gradient overlay */}
-          <div
-            className="absolute inset-0"
-            style={{
-              background:
-                "linear-gradient(14.45deg, rgba(2, 2, 2, 0.0546) -17.37%, rgba(11, 11, 11, 0.78) 21.48%)",
-            }}
-          />
-        </div>
-
-        {/* Hero content */}
-        <div className="relative z-10">
-          <h1 className=" font-[Manrope] text-[30px] leading-[130%] tracking-[3px] text-center mb-4.25">
-            Premium Airport Meet & Greet Services
-          </h1>
-
-          <p className=" font-[Manrope] font-normal text-[24px] text-center text-[rgb(200,200,200)]">
-            Available in the following locations.
-          </p>
-          <div className="relative lg:w-[820px] xl:w-[960px] px-4">
-            <AirportSearchInput
-              onSelect={handleAirportSelect}
-              inputClassName="p-4 pl-10 rounded-lg w-full lg:w-[820px] xl:w-[960px] text-black"
-              className="bg-white text-black rounded-md mt-4 relative w-full flex items-center"
-            />
-
-            <Button
-              variant="ghost"
-              className="absolute right-12 top-1/2 -translate-y-1/2 w-fit h-fit"
-              onClick={handleSearch}
-              disabled={!selectedAirportID}
-            >
-              <Search color="gray" />
-            </Button>
-          </div>
-        </div>
-      </section>
-
+    <>
       <section className="px-6 sm:px-10 md:px-16 lg:px-20 py-12 md:py-16 lg:py-20 overflow-hidden">
         <div className="mb-12.5 w-full ">
           <h2 className="font-normal text-[30px] leading-[128%] tracking-[7.5px] text-center uppercase mb-4">
@@ -128,7 +58,6 @@ export default function Locations() {
           </div>
         </div>
       </section>
-      <Footer />
-    </main>
+    </>
   );
 }

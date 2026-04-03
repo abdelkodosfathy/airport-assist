@@ -3,8 +3,8 @@ import LocationsClient from "./LocationsClient";
 
 export default function Locations() {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    // <Suspense fallback={null}>
+    // {/* </Suspense> */}
       <LocationsClient />
-    </Suspense>
   );
 }

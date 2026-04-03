@@ -3,7 +3,6 @@ import { Manrope, Nunito } from "next/font/google";
 import "./globals.css";
 import Providers from "./providers";
 import { Toaster } from "sonner";
-import { MessageCircle } from "lucide-react";
 import Whatsapp from "@/components/custom icons/whatsapp";
 
 const nunito = Nunito({
@@ -49,11 +48,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${manrope.variable} ${nunito.variable}antialiased`}>
+      <body className={`capitalize ${manrope.variable} ${nunito.variable}antialiased`}>
         <Providers>{children}</Providers>
         {/* WhatsApp Floating Button */}
         <a
-          href="https://wa.me/201066638523?text=Hello%20I%20would%20like%20to%20book%20airport%20assistance"
+          href="https://wa.me/442045177711?text=Hello%20I%20would%20like%20to%20book%20airport%20assistance"
           target="_blank"
           rel="noopener noreferrer"
           className="fixed bottom-5 right-5 z-50 text-white p-4 transition-all duration-300 hover:scale-110 w-max h-max"

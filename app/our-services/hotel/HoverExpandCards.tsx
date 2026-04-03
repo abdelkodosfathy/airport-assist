@@ -17,7 +17,7 @@ export default function HoverExpandCards() {
       title: "Assisted check-in and baggage drop-off",
       textContent:
         "Arrive at the Terminal through an independent access point, ensuring complete privacy and security.",
-      image: "/carousel/concierge-dedicado.webp",
+      image: "/carousel/concierge-dedicadoSSS.webp",
     },
     {
       id: 3,

@@ -1,342 +1,101 @@
 "use client";
 
-import { Activity, useEffect, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
-import { VipBookingData } from "@/components/BookingForm";
+import { useEffect } from "react";
 import SideInformationCard from "./side-informatio-card";
 import { useSingleAirport } from "@/lib/hooks/useAirports";
-import { SingleAirport } from "@/lib/types/airport";
 import { Button } from "@/components/ui/button";
-import FlightSection, {
-  FlightSectionData,
-  FlightSectionHandle,
-} from "./components/flight-section";
 import PackagesSection from "./components/packages-section";
-
-import Summry from "./components/summry";
-import BillingSection, {
-  BillingSectionRef,
-} from "./components/billing-section";
-import { ArrowLeft } from "lucide-react";
-import { toast } from "sonner";
 import Steps from "./components/steps";
 import ServiceCardSkeleton from "./components/ServiceSkeletonCard";
-
+import { useAirportStore, useSingleAirportStore } from "@/store/vipInputsStore";
+import Link from "next/link";
+import { toast } from "sonner";
+import { useAirportPackageStore } from "@/store/packageStore";
+import { useRouter } from "next/navigation";
 export type currentPage = "packages" | "flight" | "billing" | "summry";
 
 const Page = () => {
   const router = useRouter();
-  const [storedData, setStoredData] = useState<VipBookingData>();
-  const [airportResponse, setAirportResponse] = useState<SingleAirport>();
 
-  const [currentPackagePrice, setCurrentPackagePrice] = useState<number>(0);
-  const [currentPackageSlug, setCurrentPackageSlug] = useState<string>("");
-  const [currentPackageName, setCurrentPackageName] = useState<string>("");
+  const airportPackage = useAirportPackageStore(
+    (state) => state.airportPackage,
+  );
+  const storedAirport = useAirportStore((state) => state.airport);
 
-  const [currentPage, setCurrentPage] = useState<currentPage>("packages");
-
-  const flightSectionRef = useRef<FlightSectionHandle>(null);
-  const billingRef = useRef<BillingSectionRef>(null);
-
-  const [durationCost, setDurationCost] = useState<number>();
-  const [bagsCost, setBagsCost] = useState<number>();
-  const [bagsNumber, setBagsNumber] = useState<number>(0);
-  const [fastTrackCost, setFastTrackCost] = useState<boolean>();
-
-  const [uuid, setUUID] = useState<string>("");
-
-  const [flightSectionData, setFlightSectionData] =
-    useState<FlightSectionData | null>(null);
-
-  // 1️⃣ Read sessionStorage safely
   useEffect(() => {
-    const stored = sessionStorage.getItem("vipBooking");
-
-    if (!stored) {
-      router.replace("/"); // or router.back()
-      return;
-    }
-
-    try {
-      setStoredData(JSON.parse(stored));
-    } catch {
+    if (!storedAirport) {
       router.replace("/");
     }
-  }, [router]);
+  }, [storedAirport, router]);
 
-  // 2️⃣ Call hook ONLY when data exists
-  const airportData = useSingleAirport(storedData?.airport_id as string);
+  if (!storedAirport) return null;
+
+  const setSingleAirport = useSingleAirportStore(
+    (state) => state.setSingleAirport,
+  );
+
+  const {
+    data: airportQuery,
+    isLoading,
+    isError,
+  } = useSingleAirport(storedAirport?.airport_id.toString() ?? "");
+  const airportResponse = airportQuery?.data?.airport;
+
   useEffect(() => {
-    if (!airportData || airportData.status === "pending") return;
-    // console.log("Airport Data:", airportData);
-
-    const res = airportData.data?.data.airport;
-    // console.log(res?.data.airport);
-    if (res) {
-      setAirportResponse(res);
+    if (airportResponse) {
+      setSingleAirport(airportResponse);
     }
-  }, [airportData]);
-  console.log(airportData);
+  }, [airportResponse, setSingleAirport]);
 
-  if (!storedData) return null; // or loader
-  // console.log(airportResponse);
+  const singleAirport = useSingleAirportStore((state) => state.singleAirport);
+  const packagesList = singleAirport?.airport_packages;
 
-  const packagesList = airportResponse?.airport_packages;
+  // حصل خطأ في المطار
+  if (isError) {
+    return <div className="p-10">Something went wrong.</div>;
+  }
 
-  const isWithinHours = (dateString: string, hours: number): boolean => {
-    if (!dateString) return false;
-
-    // نحول التاريخ لصيغة مفهومة للـ JS
-    const targetDate = new Date(dateString.replace(" ", "T"));
-
-    if (isNaN(targetDate.getTime())) return false;
-
-    const now = new Date();
-
-    const diffInMs = targetDate.getTime() - now.getTime();
-
-    const limitInMs = hours * 60 * 60 * 1000;
-
-    return diffInMs <= limitInMs;
-  };
-
-  const isLastMinute =
-    airportResponse &&
-    isWithinHours(storedData.date, airportResponse.min_hours_before_booking);
-  // const airportCost = isLastMinute ? airportResponse.last_minute_cost : 0;
-
-  const lastMinuteCost =
-    airportResponse?.last_minute_strategy === "extra_fees" && isLastMinute
-      ? airportResponse.last_minute_cost
-      : 0;
-  const fastTrack = fastTrackCost
-    ? (airportResponse?.fast_track_cost || 0) *
-      (storedData.adults + storedData.children)
-    : 0;
-
-  const totalPrice =
-    currentPackagePrice +
-    (durationCost ?? 0) +
-    (bagsCost ?? 0) +
-    fastTrack +
-    lastMinuteCost;
-  // i will replace the zero with other vars later
-
-  const handleNextPage = () => {
-    let nextPage: currentPage = "billing";
-
-    switch (currentPage) {
-      case "packages":
-        if (currentPackageSlug.trim() === "") {
-          toast.error("please select one package", {
-            position: "top-center",
-          });
-          return;
-        }
-
-        nextPage = "flight";
-        break;
-      case "flight":
-        const flightValid = flightSectionRef.current?.isValid();
-        if (!flightValid) {
-          toast.error("please fill required inputs", {
-            position: "top-center",
-          });
-          return;
-        }
-        const flightInputs = flightSectionRef.current?.getInputs() ?? null;
-        console.log("page: ", flightInputs);
-        setFlightSectionData(flightInputs);
-
-        nextPage = "billing";
-        break;
-      case "billing":
-        const billingValid = billingRef.current?.isValid();
-        if (!billingValid) {
-          toast.error("please fill required billing data", {
-            position: "top-center",
-          });
-          return;
-        }
-
-        nextPage = "summry";
-
-        break;
-      case "summry":
-        break;
+  // validation on the packaages
+  const handleContinue = (e: React.MouseEvent) => {
+    if (!airportPackage) {
+      toast.error("Please select a pacakgae", { position: "top-center" });
+      e.preventDefault(); // يمنع الانتقال
     }
-
-    setCurrentPage(nextPage);
   };
-  const handlePrevPage = () => {
-    let nextPage: currentPage = "billing";
-
-    switch (currentPage) {
-      case "packages":
-        break;
-      case "flight":
-        nextPage = "packages";
-        break;
-      case "billing":
-        nextPage = "flight";
-        break;
-      case "summry":
-        break;
-    }
-
-    setCurrentPage(nextPage);
-  };
-  const getPrevPage = () => {
-    let prevPage = "";
-    switch (currentPage) {
-      case "flight":
-        prevPage = "Choose Service";
-        break;
-      case "billing":
-        prevPage = "Passenger & Service Details";
-        break;
-      case "summry":
-        prevPage = "Billing Details";
-        break;
-    }
-    return prevPage;
-  };
-
-  const handleFormSuccess = (uuid: string) => {
-    setUUID(uuid);
-    handleNextPage();
-  };
-
   return (
     <>
       <p className="font-[Manrope] font-medium text-[15.53px] leading-[130%] text-[#8E8E93] mb-3">
         Choose how to travel
       </p>
+
       <h2 className="font-[Manrope] font-normal text-[22.6px] leading-[100%] tracking-[7.06px] uppercase mb-6">
         Services Level Available
       </h2>
 
-      <Steps currentPage={currentPage} />
-      {/* back button */}
-      {currentPage !== "packages" && (
-        <Button
-          onClick={handlePrevPage}
-          variant={"ghost"}
-          className="cursor-pointer flex gap-2 mb-2 text-[#8E8E93] w-fit"
-        >
-          <ArrowLeft />
-          <p> Back To {getPrevPage()}</p>
-        </Button>
-      )}
+      <Steps currentPage="packages" />
+
       <div className="flex gap-4">
-        {/* <BookingForm storedData={storedData} /> */}
-
-        {/* packages */}
-        <Activity mode={currentPage === "packages" ? "visible" : "hidden"}>
-          {packagesList ? (
-            <PackagesSection
-              selectedPackageSlug={currentPackageSlug}
-              onSelectPackage={(slug, cost, name) => {
-                setCurrentPackagePrice(cost);
-                setCurrentPackageSlug(slug);
-                setCurrentPackageName(name);
-              }}
-              // AirportCost={airportCost}
-              adults_count={storedData.adults}
-              child_count={storedData.children}
-              packagesList={packagesList}
-            />
-          ) : (
-            <div className="flex-2 h-full">
-              <div className="px-10 shadow-md py-6 bg-white rounded-2xl h-full">
-                <ServiceCardSkeleton />
-                {/* <ServiceCardSkeleton /> */}
-              </div>
-            </div>
-          )}
-        </Activity>
-
-        {airportResponse && (
-          <>
-            {/* flight */}
-            <Activity mode={currentPage === "flight" ? "visible" : "hidden"}>
-              <FlightSection
-                serviceType={storedData.serviceType}
-                bagsCost={(cost) => setBagsCost(cost)}
-                bagsNumber={setBagsNumber}
-                durationCost={(cost) => setDurationCost(cost)}
-                withChauffuer={currentPackageSlug !== "elite"}
-                ref={flightSectionRef}
-                airportData={airportResponse}
-                onFastTrackEnabeld={setFastTrackCost}
-              />
-            </Activity>
-
-            {/* billing */}
-            <Activity mode={currentPage === "billing" ? "visible" : "hidden"}>
-              <BillingSection
-                onSuccess={handleFormSuccess}
-                slug={currentPackageSlug}
-                onGetFlightData={() => flightSectionData}
-                ref={billingRef}
-              />
-            </Activity>
-
-            {/* <button onClick={handleGetInputs}>get inputs</button> */}
-          </>
+        {isLoading || !packagesList ? (
+          <ServiceCardSkeleton />
+        ) : (
+          <PackagesSection packagesList={packagesList} />
         )}
-        {/* summry */}
-        <Activity mode={currentPage === "summry" ? "visible" : "hidden"}>
-          <Summry
-            airportName={airportResponse?.airport_name}
-            uuid={uuid}
-            onBack={handlePrevPage}
-          />
-        </Activity>
-        {currentPage !== "summry" && (
-          <SideInformationCard
-            lastMinuteCost={lastMinuteCost}
-            storedData={storedData}
-            numberOfBags={bagsNumber}
-            bagsCost={bagsCost}
-            // withoutChauffuer={currentPackageSlug === "elite"}
-            packageName={currentPackageName}
-            totalPrice={totalPrice}
-            isFastTrack={fastTrackCost || false}
-            fastTrackCost={fastTrack}
-            // serviceType={storedData.serviceType}
-            // adults_count={storedData.adults}
-            // airportName={storedData.airport_name}
-            // child_count={storedData.children}
-          />
-        )}
+
+        <SideInformationCard />
       </div>
+
       <div className="flex gap-4">
-        {currentPage !== "summry" && currentPage !== "billing" && (
-          <Button
-            onClick={handleNextPage}
-            type="button"
-            variant="outline"
-            className="
-        mt-6
-        w-max 
-        cursor-pointer 
-        border-black 
-        text-black 
-        hover:border-[#664F31]  
-        hover:bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)] 
-        hover:text-white 
-        duration-0
-      "
-          >
-            {/* <Link href={"/meet-and-greet/flight-information"}> */}
-            <p className="text-lg font-normal font-[Manrope]">
-              {/* {currentPage === "billing" ? "Proceed To Checkout" : "Continue"} */}
-              Continue
-            </p>
-            {/* </Link> */}
-          </Button>
-        )}
+        <Button
+          asChild
+          type="button"
+          variant="outline"
+          onClick={handleContinue}
+          className="mt-6 w-max cursor-pointer border-black text-black hover:border-[#664F31] hover:bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)] hover:text-white duration-0"
+        >
+          <Link href="/vip-meet-and-greet/passenger-details">
+            <p className="text-lg font-normal font-[Manrope]">Continue</p>
+          </Link>
+        </Button>
       </div>
     </>
   );

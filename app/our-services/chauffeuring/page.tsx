@@ -4,7 +4,7 @@ import carImage from "@/public/v_class.jpg";
 import car from "@/public/front-face.png";
 import DarkSection from "./DarkSection";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, ArrowUpRight } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 
 type Props = {};
 
@@ -72,14 +72,7 @@ export default function page(props: Props) {
             meaningful time with guests and family.
           </span>
         </p>
-
-        {/* <div className="mb-32 flex justify-between">
-          <CarCard className="max-w-[426px]" />
-          <CarCard className="max-w-[426px]" />
-          <CarCard className="max-w-[426px]" />
-        </div> */}
         <div className="relative flex gap-6">
-
           <CarCard className="flex-1"/>
           <CarCard className="flex-1"/>
           <CarCard className="flex-1"/>
