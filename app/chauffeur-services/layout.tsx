@@ -5,7 +5,7 @@ import Header from "@/components/Header/Header";
 import Footer from "@/components/Footer";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import hero from "@/public/chauffeur-services.jpg";
+import hero from "@/public/chauffeur-hero.webp";
 import { useRouter } from "next/navigation";
 import {
   // useAirportStore,
@@ -13,6 +13,7 @@ import {
   // usePassengersStore,
   // useServiceStore,
 } from "@/store/vipInputsStore";
+import { useTripStore } from "@/store/tripStore";
 // import Link from "next/link";
 export default function ServicesLayout({
   children,
@@ -35,6 +36,8 @@ export default function ServicesLayout({
 
   // const passengersText =
   //   totalPassengers === 1 ? "1 Passenger" : `${totalPassengers} Passengers`;
+    const passengersValue = useTripStore((state) => state.passengers);
+  
   return (
     <main className="bg-[#F7F7F6] font-[Manrope]">
       <Header />
@@ -46,7 +49,7 @@ export default function ServicesLayout({
             src={hero}
             alt="background"
             fill
-            className="object-cover w-full h-full"
+            className="object-[50%_30%] object-cover w-full h-full"
             priority
           />
 
@@ -74,7 +77,7 @@ export default function ServicesLayout({
               {storedDate?.date}
             </p>
             <p className="font-[Manrope] font-normal text-[18px] leading-[100%] tracking-[8.25px] text-center text-[rgb(200,200,200)]">
-              3 Passengers
+              {passengersValue} Passengers
             </p>
           </div>
           <Button

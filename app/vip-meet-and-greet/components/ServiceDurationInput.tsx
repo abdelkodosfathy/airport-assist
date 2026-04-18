@@ -2,8 +2,15 @@
 import { OptionType } from "@/components/custom inputs/search";
 import SelectDropdown from "@/components/custom inputs/SelectList";
 import { Label } from "@/components/ui/label";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { useFlightFormStore } from "@/store/useFlightFormStore";
 import { ServiceType, useServiceStore } from "@/store/vipInputsStore";
+import { Info } from "lucide-react";
 import { useEffect, useState } from "react";
 
 const ServiceDurationInput = () => {
@@ -36,7 +43,21 @@ const ServiceDurationInput = () => {
         <p>
           Service Duration
           <span className="text-xs"> (Duration: 2 hours per services)</span>
+          {/* <Info/> */}
         </p>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Info size={16} className="2xl:hidden cursor-pointer" />
+            </TooltipTrigger>
+            <TooltipContent className="bg-white text-black shadow-lg">
+              <p>
+                Duration: 2 hours per service at the airport. Additional hours
+                incur extra charges.
+              </p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       </Label>
       <SelectDropdown
         disabled={serviceOptions.length === 0}

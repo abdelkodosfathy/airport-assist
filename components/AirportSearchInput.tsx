@@ -1,8 +1,9 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
-import { Plane, Loader2, AlertCircle } from "lucide-react";
-import { useAirportSearch } from "@/lib/hooks/useAirports";
+import { useRef, useState, useEffect, useMemo, useCallback } from "react";
+import { Plane, Loader2 } from "lucide-react";
+// import { useAirportSearch, usePopularAirports } from "@/lib/hooks/useAirports";
+import { useAirports } from "@/lib/hooks/useAirports";
 import { useAirportStore } from "@/store/vipInputsStore";
 import { Airport } from "@/lib/types/airport";
 import { Input } from "./ui/input";
@@ -14,7 +15,6 @@ interface AirportSearchInputProps {
   placeholder?: string;
   onSelect?: (airport: Airport) => void;
   onReset?: () => void;
-  error?: string;
   disabled?: boolean;
   className?: string;
 }
@@ -26,7 +26,6 @@ export default function AirportSearchInput({
   placeholder = "Search airport…",
   onSelect,
   onReset = () => {},
-  error,
   disabled,
   className,
 }: AirportSearchInputProps) {
@@ -43,10 +42,13 @@ export default function AirportSearchInput({
 
   // ── Sync display with store (e.g. pre-filled from outside) ────────────────
   useEffect(() => {
-    if (storedAirport && !selected) {
-      setQuery(storedAirport.airport_name);
+    if (!storedAirport) {
+      setSelected(null);
+      setQuery("");
+    } else {
       setSelected(storedAirport);
     }
+    // console.log(storedAirport);
   }, [storedAirport]);
 
   // ── Close on outside click ────────────────────────────────────────────────
@@ -67,11 +69,33 @@ export default function AirportSearchInput({
   // `data` retains the previous query's results while a new fetch is in-flight
   // because the hook uses `placeholderData: keepPreviousData`. This prevents the
   // dropdown from blanking out between keystrokes.
-  const { data, isFetching } = useAirportSearch(
-    debouncedQuery,
-    debouncedQuery.trim().length > 0,
-  );
-  const airports: Airport[] = data?.data?.airports ?? [];
+  // const { data: popularData,isFetching:  popularLoading } = usePopularAirports();
+  // const { data, isFetching } = useAirportSearch(
+  //   debouncedQuery,
+  //   debouncedQuery.trim().length > 0,
+  // );
+  const { data, isFetching } = useAirports(debouncedQuery);
+  const fetchedAirports = data?.data?.airports ?? [];
+  // const searchResults = data?.data?.airports;
+  // const popularResults = popularData?.data?.airports;
+
+  // const allAirports = useMemo(() => {
+  //   if (debouncedQuery.trim() && searchResults?.length) return searchResults;
+  //   return popularResults ?? [];
+  // }, [searchResults, popularResults, debouncedQuery]);
+
+
+  // Client-side filter على الـ query الحالي (مش الـ debounced)
+  const airports: Airport[] = useMemo(() => {
+    if (!query.trim()) return fetchedAirports;
+
+    const q = query.toLowerCase();
+    return fetchedAirports.filter(
+      (a) =>
+        a.airport_name.toLowerCase().includes(q) ||
+        a.airport_code?.toLowerCase().includes(q), // ← بيسيرش في الكود كمان
+    );
+  }, [fetchedAirports, query]);
 
   // ── Open dropdown when results arrive ────────────────────────────────────
   useEffect(() => {
@@ -79,7 +103,7 @@ export default function AirportSearchInput({
   }, [airports.length, debouncedQuery]);
 
   // ── Input change with debounce ────────────────────────────────────────────
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const q = e.target.value;
     setQuery(q);
     setSelected(null);
@@ -91,23 +115,34 @@ export default function AirportSearchInput({
     }
 
     if (debounceRef.current) clearTimeout(debounceRef.current);
-    debounceRef.current = setTimeout(() => {
-      setDebouncedQuery(q);
-    }, 300);
-  };
+    debounceRef.current = setTimeout(() => setDebouncedQuery(q), 300);
+  }, []);
 
   // ── Select ────────────────────────────────────────────────────────────────
-  const handleSelect = (airport: Airport) => {
-    setQuery(airport.airport_name);
-    setSelected(airport);
-    setOpen(false);
-    storeAirport(airport);
-    onSelect?.(airport);
+  const handleSelect = useCallback(
+    (airport: Airport) => {
+      setQuery(airport.airport_name);
+      setSelected(airport);
+      setOpen(false);
+      storeAirport(airport);
+      onSelect?.(airport);
       onReset();
-    
-  };
-
+    },
+    [storeAirport, onSelect, onReset],
+  );
   const displayValue = selected ? selected.airport_name : query;
+
+  const [isFocused, setIsFocused] = useState(false);
+
+  // Auto-open when popular data arrives and input is still focused
+  useEffect(() => {
+    if (isFocused && airports.length > 0 && !storedAirport) {
+      console.log("after");
+      setOpen(true);
+    }
+  }, [airports.length, isFocused]);
+
+  console.log(open);
 
   return (
     <div
@@ -125,9 +160,6 @@ export default function AirportSearchInput({
         {/* Input row */}
         <div
           className={`relative flex items-center h-11 rounded-lg transition-colors`}
-          // : open
-          //   ? "border-[#1A1A1A]"
-          //   : "border-[#E0E0E0]"
         >
           {/* Icon */}
           <span className="pl-3 pr-2 flex-shrink-0">
@@ -138,13 +170,24 @@ export default function AirportSearchInput({
           </span>
 
           <Input
+            // onFocus={() => airports.length > 0 && setOpen(true)}
+            // onFocus={() => {
+            //   setIsFocused(true);
+            //   if (airports.length > 0) setOpen(true);
+            // }}
+            onFocus={() => {
+              setIsFocused(true);
+              setOpen(true);
+            }}
+            onBlur={() => setIsFocused(false)}
             name="airport-search"
-            disabled={disabled}
+            // disabled={disabled || isFetching || popularLoading}
+            disabled={disabled || isFetching }
             value={displayValue}
             onChange={handleChange}
-            onFocus={() => airports.length > 0 && setOpen(true)}
             placeholder={placeholder}
             className="shadow-none outline-none border-none flex-1 bg-transparent text-sm text-[#1A1A1A] placeholder:text-[#ACACAC] pr-9 truncate"
+            autoComplete="off"
           />
 
           {/* IATA badge when selected */}
@@ -155,6 +198,7 @@ export default function AirportSearchInput({
           )}
 
           {/* Spinner */}
+          {/* {isFetching || !popularLoading && ( */}
           {isFetching && (
             <Loader2
               size={14}
@@ -218,6 +262,7 @@ export default function AirportSearchInput({
         {/* Empty state */}
         {open &&
           debouncedQuery.trim() &&
+          // !isFetching || !popularLoading &&
           !isFetching &&
           airports.length === 0 && (
             <div className="absolute z-50 mt-1.5 w-full rounded-xl border border-[#E8E8E8] bg-white shadow-xl px-4 py-6 text-center">
@@ -228,14 +273,6 @@ export default function AirportSearchInput({
             </div>
           )}
       </div>
-
-      {/* Error */}
-      {/* {error && (
-        <p className="flex items-center gap-1 text-xs text-red-500 mt-0.5">
-          <AlertCircle size={11} />
-          {error}
-        </p>
-      )} */}
     </div>
   );
 }

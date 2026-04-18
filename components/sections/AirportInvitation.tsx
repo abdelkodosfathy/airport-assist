@@ -9,12 +9,16 @@ export default function AirportInvitation({
   left = false,
   imgOne,
   imgTwo,
+  imgOneName,
+  imgTwoName,
   heading,
   content,
 }: {
   left?: boolean;
   imgOne: string;
   imgTwo: string;
+  imgOneName: string;
+  imgTwoName: string;
   heading: string;
   content: string;
 }) {
@@ -132,7 +136,9 @@ export default function AirportInvitation({
             className="overflow-hidden rounded-md h-64 2xl:h-70"
           >
             <img
+              loading="lazy"
               // src="/sections/img1.jpg"
+              alt={imgOneName}
               src={imgOne}
               className="w-full h-full object-cover"
             />
@@ -143,7 +149,12 @@ export default function AirportInvitation({
             ref={img2Ref}
             className="overflow-hidden rounded-md h-64 2xl:h-70"
           >
-            <img src={imgTwo} className="w-full h-full object-cover" />
+            <img
+              loading="lazy"
+              alt={imgTwoName}
+              src={imgTwo}
+              className="w-full h-full object-cover"
+            />
           </div>
         </div>
       </div>

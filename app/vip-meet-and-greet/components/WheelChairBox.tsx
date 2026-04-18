@@ -41,7 +41,7 @@ export default function WheelchairCheckbox() {
           <div className="min-w-6 w-6 min-h-6 h-6 text-lg bg-[#7B5A41] rounded-full grid place-content-center">
             <p className="text-white">!</p>
           </div>
-          <p className="text-sm leading-relaxed">
+          <p className="text-sm normal-case leading-relaxed">
             Wheelchair assistance must be arranged directly with your
             airline. By ticking this box, you confirm that you have
             selected wheelchair assistance on your flight booking.

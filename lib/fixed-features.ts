@@ -17,8 +17,13 @@ import {
   PrivateSecurity,
   TransferToSecondGate,
 } from "@/components/custom icons/feature-icons";
+import elite from "@/public/fixedPackages/elite.webp";
+import elite_plus from "@/public/fixedPackages/elite_plus.webp";
+import signature from "@/public/fixedPackages/signature.webp";
+import { StaticImageData } from "next/image";
 export type fixedPackageData = {
   subTitle: string;
+  image: StaticImageData;
 } & Record<ServiceType, ServiceTypeData>;
 
 // export const packageFeatures: Record<
@@ -29,6 +34,7 @@ export type fixedPackageData = {
 export const packageFeatures: Record<PackageSlug, fixedPackageData> = {
   elite: {
     subTitle: "VIP Meet & Greet",
+    image: elite,
     arrival: {
       description:
         "Upon arrival, your greeter will meet you at the aircraft or airbridge, escort you through fast-track immigration, assist with baggage claim, and coordinate your transfer to the waiting driver—ensuring a smooth and effortless airport arrival experience.",
@@ -137,6 +143,7 @@ export const packageFeatures: Record<PackageSlug, fixedPackageData> = {
 
   elite_plus: {
     subTitle: "VIP Meet & Greet Plus Transfer",
+    image: elite_plus,
 
     arrival: {
       description:
@@ -272,6 +279,7 @@ export const packageFeatures: Record<PackageSlug, fixedPackageData> = {
 
   signature: {
     subTitle: "Private Suite",
+    image: signature,
 
     arrival: {
       description:
@@ -351,7 +359,6 @@ export const packageFeatures: Record<PackageSlug, fixedPackageData> = {
         },
       ],
     },
-
     connection: {
       description:
         "Enjoy a seamless arrival with our VVIP airport concierge service. Be greeted at the aircraft, transferred by private luxury vehicle, and welcomed into an exclusive VIP lounge. Relax or dine from a seasonal gourmet menu. When it’s time, pass through private security and be driven to your aircraft in a luxury car.",
@@ -392,6 +399,8 @@ export const packageFeatures: Record<PackageSlug, fixedPackageData> = {
 
   vip: {
     subTitle: "The Salon",
+    image: signature,
+
     arrival: {
       description:
         "Elevate your journey with our VIP Private Suite, created for travellers seeking ultimate privacy and exclusivity. Enjoy a personal greeting at the aircraft, private luxury vehicle transfer, and discreet escort to an exclusive VVIP lounge, with luggage handled seamlessly for a truly effortless arrival.",

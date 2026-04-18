@@ -45,7 +45,7 @@
   --radius-3xl: calc(var(--radius) + 12px);
   --radius-4xl: calc(var(--radius) + 16px);
 
-    --breakpoint-xs: 30rem;
+  --breakpoint-xs: 30rem;
 }
 
 :root {
@@ -139,7 +139,7 @@ html {
   }
   touch-action: auto;
 }
-.scrollbar-none::-webkit-scrollbar{
+.scrollbar-none::-webkit-scrollbar {
   display: none;
 }
 
@@ -149,17 +149,71 @@ html {
   backdrop-filter: blur(12px);
 }
 
-
 .scrollbar-minimal::-webkit-scrollbar {
   width: 4px;
 }
 
 .scrollbar-minimal::-webkit-scrollbar-thumb {
-  background-color: rgba(0,0,0,0.25);
+  background-color: rgba(0, 0, 0, 0.25);
   border-radius: 9999px;
 }
 
 .scrollbar-minimal {
   scrollbar-width: thin;
-  scrollbar-color: rgba(0,0,0,0.25) transparent;
+  scrollbar-color: rgba(0, 0, 0, 0.25) transparent;
 }
+
+/* Header styles */
+/* .animated-header {
+  animation: scroll-transition linear;
+  animation-timeline: scroll(y);
+  animation-range: 0px 200px;
+  animation-fill-mode: both;
+}
+
+@keyframes scroll-transition {
+  0% {
+    background-color: rgba(0, 0, 0, 0);
+    backdrop-filter: blur(0px);
+  }
+  100% {
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+  }
+} */
+
+.animated-header {
+  animation: header-bg linear;
+  animation-timeline: scroll(y);
+  animation-range: 0px 200px;
+  animation-fill-mode: both;
+}
+
+@keyframes header-bg {
+  0% {
+    background-color: rgba(0, 0, 0, 0);
+    backdrop-filter: blur(0px);
+  }
+  100% {
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+  }
+}
+
+/* hero section */
+.hero-image-wrapper::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    14.45deg,
+    rgba(2, 2, 2, 0.0546) -17.37%,
+    rgba(11, 11, 11, 0.78) 21.48%
+  );
+}
+
+/* expandable cards */
+  @keyframes fillTimeline {
+    from { width: 0%; }
+    to   { width: 100%; }
+  }

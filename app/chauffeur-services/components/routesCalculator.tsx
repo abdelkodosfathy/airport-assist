@@ -9,7 +9,7 @@ import { useTripErrors } from "@/store/tripErrorsStore";
 import { LocationInput } from "./LoactionInputs";
 import { usePickupPointsStore } from "@/store/pickupPointsStore";
 import { useTripStore } from "@/store/tripStore";
-  import { useShallow } from "zustand/react/shallow";
+import { useShallow } from "zustand/react/shallow";
 
 const KM_TO_MI = 0.621371;
 const LIBRARIES: "places"[] = ["places"];
@@ -19,59 +19,41 @@ export default function PickUpPoints() {
 
   const storeAirport = useAirportStore((state) => state.setAirport);
   const clearError = useTripErrors((state) => state.clearError);
+  const {
+    pickup,
+    dropoff,
+    distanceKm,
+    distanceMi,
+    duration,
+    loadingDist,
+    distanceError,
 
-  // const {
-  //   pickup,
-  //   dropoff,
-  //   distanceKm,
-  //   distanceMi,
-  //   duration,
-  //   loadingDist,
-  //   distanceError,
-  //   setPickup,
-  //   setDropoff,
-  //   setDistanceKm,
-  //   setDistanceMi,
-  //   setDuration,
-  //   setLoadingDist,
-  //   setDistanceError,
-  // } = usePickupPointsStore();
+    setPickup,
+    setDropoff,
+    setDistanceKm,
+    setDistanceMi,
+    setDuration,
+    setLoadingDist,
+    setDistanceError,
+  } = usePickupPointsStore(
+    useShallow((s) => ({
+      pickup: s.pickup,
+      dropoff: s.dropoff,
+      distanceKm: s.distanceKm,
+      distanceMi: s.distanceMi,
+      duration: s.duration,
+      loadingDist: s.loadingDist,
+      distanceError: s.distanceError,
 
-const {
-  pickup,
-  dropoff,
-  distanceKm,
-  distanceMi,
-  duration,
-  loadingDist,
-  distanceError,
-
-  setPickup,
-  setDropoff,
-  setDistanceKm,
-  setDistanceMi,
-  setDuration,
-  setLoadingDist,
-  setDistanceError,
-} = usePickupPointsStore(
-  useShallow((s) => ({
-    pickup: s.pickup,
-    dropoff: s.dropoff,
-    distanceKm: s.distanceKm,
-    distanceMi: s.distanceMi,
-    duration: s.duration,
-    loadingDist: s.loadingDist,
-    distanceError: s.distanceError,
-
-    setPickup: s.setPickup,
-    setDropoff: s.setDropoff,
-    setDistanceKm: s.setDistanceKm,
-    setDistanceMi: s.setDistanceMi,
-    setDuration: s.setDuration,
-    setLoadingDist: s.setLoadingDist,
-    setDistanceError: s.setDistanceError,
-  }))
-);
+      setPickup: s.setPickup,
+      setDropoff: s.setDropoff,
+      setDistanceKm: s.setDistanceKm,
+      setDistanceMi: s.setDistanceMi,
+      setDuration: s.setDuration,
+      setLoadingDist: s.setLoadingDist,
+      setDistanceError: s.setDistanceError,
+    })),
+  );
 
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!,
@@ -178,7 +160,6 @@ const {
         <LocationInput
           // i used gb for the backend: airport.city.iso2 --- but we use uk for google api
           countryRestriction={["uk", "gb", "fr"]} // you can use it for many countries or remove it to unlock the search
-          
           // countryRestriction="uk" //jsut remove it to unlock the search outside the uk
 
           onCountrySelect={(country) => console.log(country)}
@@ -191,6 +172,7 @@ const {
           }
           value={pickup}
           onChange={(s) => {
+            // console.log(s?.country);
             setPickup(s);
             clearError("from");
           }}
@@ -199,25 +181,28 @@ const {
           }}
           isLoaded={isLoaded}
         />
-        <div className="flex items-center gap-2 px-1">
-          <div className="flex-1 border-t border-dashed border-[#E0E0E0]" />
-          <div className="w-5 h-5 rounded-full border border-[#E0E0E0] bg-white flex items-center justify-center">
-            <div className="w-1.5 h-1.5 rounded-full bg-[#ACACAC]" />
-          </div>
-          <div className="flex-1 border-t border-dashed border-[#E0E0E0]" />
-        </div>
         {tripType === "one-way" ? (
-          <LocationInput
-            label="To"
-            placeholder="Search drop-off location or airport…"
-            value={dropoff}
-            onChange={(s) => {
-              setDropoff(s);
-              clearError("dropOff");
-            }}
-            onAirportSelect={storeAirport}
-            isLoaded={isLoaded}
-          />
+          <div>
+            <div className="flex items-center gap-2 px-1">
+              <div className="flex-1 border-t border-dashed border-[#E0E0E0]" />
+              <div className="w-5 h-5 rounded-full border border-[#E0E0E0] bg-white flex items-center justify-center">
+                <div className="w-1.5 h-1.5 rounded-full bg-[#ACACAC]" />
+              </div>
+              <div className="flex-1 border-t border-dashed border-[#E0E0E0]" />
+            </div>
+            <LocationInput
+              label="To"
+              className="pt-0"
+              placeholder="Search drop-off location or airport…"
+              value={dropoff}
+              onChange={(s) => {
+                setDropoff(s);
+                clearError("dropOff");
+              }}
+              onAirportSelect={storeAirport}
+              isLoaded={isLoaded}
+            />
+          </div>
         ) : null}
       </div>
 

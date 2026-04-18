@@ -7,6 +7,12 @@ import { Textarea } from "@/components/ui/textarea";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import CustomPhoneInput from "@/components/ui/phone-input";
+import { ReactNode } from "react";
+import CMail from "@/components/custom icons/CMail";
+import CPhone from "@/components/custom icons/CPhone";
+import CWhatsapp from "@/components/custom icons/c-whatsapp";
+import CLocationPin from "@/components/custom icons/c-locationPin";
+import PhoneInput from "@/components/ui/valid-phone";
 
 export default function ContactUsPage() {
   return (
@@ -60,6 +66,7 @@ export default function ContactUsPage() {
               Phone
             </Label>
             <CustomPhoneInput />
+           
           </div>
           <div className="space-y-2 col-span-2 mb-6">
             <Label htmlFor="first-name" className="font-semibold text-[15px]">
@@ -109,10 +116,26 @@ const ContactDetails = () => {
       </p>
 
       <ul className="space-y-2 mt-2">
-        <ContactItem title="Email" content="contact@defichain.com" />
-        <ContactItem title="Phone" content="+44 20 7946 0958" />
-        <ContactItem title="Whatsapp" content="+44 7700 900123" />
-        <ContactItem title="Address" content="221B Baker Street, Marylebone" />
+        <ContactItem
+          title="Email"
+          icon={<CMail />}
+          content="contact@defichain.com"
+        />
+        <ContactItem
+          title="Phone"
+          icon={<CPhone />}
+          content="+44 20 7946 0958"
+        />
+        <ContactItem
+          title="Whatsapp"
+          icon={<CWhatsapp />}
+          content="+44 7700 900123"
+        />
+        <ContactItem
+          title="Address"
+          icon={<CLocationPin />}
+          content="221B Baker Street, Marylebone"
+        />
       </ul>
     </div>
   );
@@ -121,14 +144,16 @@ const ContactDetails = () => {
 const ContactItem = ({
   title,
   content,
+  icon,
 }: {
   title: string;
   content: string;
+  icon: ReactNode;
 }) => {
   return (
     <li className="flex items-center gap-2">
-      {/* <CustomMail /> */}
-      <Image alt="mail" src={customMail} className="w-11 h-11" />
+      {/* <Image alt="mail" src={icon} className="w-11 h-11" /> */}
+      {icon}
       <div>
         <p className="font-[Manrope] text-[15px] font-normal leading-[22.61px] tracking-[-0.36px] text-[#62697D]">
           {title}

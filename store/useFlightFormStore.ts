@@ -1,47 +1,3 @@
-// "use client";
-
-// import { OptionType } from "@/components/custom inputs/search";
-// import { Airline } from "@/lib/types/airline";
-// import { create } from "zustand";
-
-// type FlightFormStore = {
-//   airline: Airline | null;
-//   flightNumber: string | null;
-//   arrivalTime: OptionType | null;
-//   serviceDuration: OptionType | null;
-//   fastTrack: boolean;
-
-//   setAirline: (value: Airline) => void;
-//   setFlightNumber: (value: string) => void;
-//   setArrivalTime: (value: OptionType) => void;
-//   setServiceDuration: (value: OptionType | null) => void;
-//   setFastTrack: (value: boolean) => void;
-//   resetForm: () => void;
-// };
-
-// export const useFlightFormStore = create<FlightFormStore>()((set) => ({
-//   airline: null,
-//   flightNumber: null,
-//   arrivalTime: null,
-//   serviceDuration: null,
-//   fastTrack: false,
-
-//   setAirline: (value) => set({ airline: value }),
-//   setFlightNumber: (value) => set({ flightNumber: value }),
-//   setArrivalTime: (value) => set({ arrivalTime: value }),
-//   setServiceDuration: (value) => set({ serviceDuration: value }),
-//   setFastTrack: (value) => set({ fastTrack: value }),
-
-//   resetForm: () =>
-//     set({
-//       airline: null,
-//       flightNumber: null,
-//       arrivalTime: null,
-//       serviceDuration: null,
-//       fastTrack: false,
-//     }),
-// }));
-
 "use client";
 
 import { OptionType } from "@/components/custom inputs/search";
@@ -54,7 +10,10 @@ type FlightFormStore = {
   flightNumber: string | null;
   arrivalTime: OptionType | null;
   serviceDuration: OptionType | null;
+
   fastTrack: boolean;
+
+  validationError: boolean;
 
   // connection-specific
   arrivalAirline: Airline | null;
@@ -67,6 +26,8 @@ type FlightFormStore = {
   setArrivalTime: (value: OptionType) => void;
   setServiceDuration: (value: OptionType | null) => void;
   setFastTrack: (value: boolean) => void;
+
+  setValidationError: (value: boolean) => void;
 
   setArrivalAirline: (value: Airline) => void;
   setArrivalFlightNumber: (value: string) => void;
@@ -82,6 +43,9 @@ const initialState = {
   arrivalTime: null,
   serviceDuration: null,
   fastTrack: false,
+
+  validationError: false,
+
   arrivalAirline: null,
   arrivalFlightNumber: null,
   departureAirline: null,
@@ -96,6 +60,8 @@ export const useFlightFormStore = create<FlightFormStore>()((set) => ({
   setArrivalTime: (value) => set({ arrivalTime: value }),
   setServiceDuration: (value) => set({ serviceDuration: value }),
   setFastTrack: (value) => set({ fastTrack: value }),
+
+  setValidationError: (value) => set({ validationError: value }),
 
   setArrivalAirline: (value) => set({ arrivalAirline: value }),
   setArrivalFlightNumber: (value) => set({ arrivalFlightNumber: value }),

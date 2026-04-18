@@ -73,7 +73,7 @@ const VerticalCausel = () => {
       link: "/our-services/vip-meet-and-greet",
       textContent:
         "Enhancing your journey with private greeter assistance and fast-track airport procedures.",
-      image: "/carousel/VipMeetAndGreet.png",
+      image: "/carousel/VipMeetAndGreet.webp",
       top: "top-30",
     },
     {
@@ -82,7 +82,7 @@ const VerticalCausel = () => {
       link: "/our-services/private-suite",
       textContent:
         "Our most exclusive offering, providing the highest level of luxury airport assistance across 500+ destinations worldwide.",
-      image: "/carousel/TarmacServices.png",
+      image: "/carousel/TarmacServices.webp",
       top: "top-40",
     },
     {

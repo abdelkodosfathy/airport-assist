@@ -1,5 +1,5 @@
 import { Check } from "lucide-react";
-import serviceImage from "@/public/services-image.jpg";
+import serviceImage from "@/public/services-image.webp";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";

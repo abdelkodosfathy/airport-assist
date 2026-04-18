@@ -8,8 +8,8 @@ import Calender from "../custom icons/calender";
 import { useDateStore } from "@/store/vipInputsStore";
 
 export type BookingDate = {
-  date: string;
-  time: string;
+  date: string | null;
+  time: string | null;
 };
 
 interface DatePickerInputProps {
@@ -37,8 +37,8 @@ const DatePickerInput = ({
   minDate = new Date(new Date().setHours(0, 0, 0, 0)), // Default to today at midnight
   maxDate,
 }: DatePickerInputProps) => {
-  const storeDate = useDateStore((state) => state.setBookingDate);
   const storedDate = useDateStore((state) => state.bookingDate);
+  const storeDate = useDateStore((state) => state.setBookingDate);
 
   const [isOpen, setIsOpen] = useState(false);
   const [currentMonth, setCurrentMonth] = useState(new Date());
@@ -61,18 +61,13 @@ const DatePickerInput = ({
 
   // Convert a Date object to "YYYY-MM-DD HH:mm"
   function formatDateForAPI(date: Date): BookingDate {
-    const pad = (n: number) => n.toString().padStart(2, "0");
-
-    const hours = pad(date.getHours());
-    const minutes = pad(date.getMinutes());
-
     return {
       date: date.toLocaleDateString("en-US", {
         month: "short", // Feb
         day: "2-digit", // 27
         year: "numeric", // 2026
       }),
-      time: `${hours}:${minutes}`,
+      time: null,
     };
   }
 

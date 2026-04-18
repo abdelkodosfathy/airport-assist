@@ -1,188 +1,114 @@
 "use client";
 
-import { useState, useEffect, useRef, useLayoutEffect } from "react";
+import { useEffect, useRef, useState } from "react";
+import { Card } from "@/components/ui/card";
+import Image from "next/image";
 import gsap from "gsap";
+import river from "@/public/hotel/expand/river.webp";
+import royal from "@/public/hotel/expand/royal.webp";
+import granville from "@/public/hotel/expand/granville.webp";
+import sutherland from "@/public/hotel/expand/sutherland.webp";
 
-export default function HoverExpandCards() {
-  const cards = [
-    {
-      id: 1,
-      title: "PRIVATE ENTRANCE",
-      textContent:
-        "Arrive at the Terminal through an independent access point, ensuring complete privacy and security.",
-      image: "/carousel/check-in-despacho.webp",
-    },
-    {
-      id: 2,
-      title: "Assisted check-in and baggage drop-off",
-      textContent:
-        "Arrive at the Terminal through an independent access point, ensuring complete privacy and security.",
-      image: "/carousel/concierge-dedicadoSSS.webp",
-    },
-    {
-      id: 3,
-      title: "DEDICATED CONCIERGE",
-      textContent:
-        "Arrive at the Terminal through an independent access point, ensuring complete privacy and security.",
-      image: "/carousel/entrada-privada.webp",
-    },
-    {
-      id: 4,
-      title: " On-site security and immigration",
-      textContent:
-        "Arrive at the Terminal through an independent access point, ensuring complete privacy and security.",
-      image: "/carousel/raiox.webp",
-    },
-    {
-      id: 5,
-      title: "On-site security and immigration",
-      textContent:
-        "Arrive at the Terminal through an independent access point, ensuring complete privacy and security.",
-      image: "/carousel/transfer.webp",
-    },
-  ];
+const data = [
+  { title: "River Suite", subtitle: "View River Suite", img: river },
+  { title: "Royal Suite", subtitle: "View Royal Suite", img: royal },
+  { title: "The Granville Suite", subtitle: "View The Granville Suite", img: granville },
+  { title: "Sutherland Suite", subtitle: "View Sutherland Suite", img: sutherland },
+];
 
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
-  const [key, setKey] = useState(0);
+export default function ExpandingCards() {
+  const cardsRef = useRef<HTMLDivElement[]>([]);
+  const activeRef = useRef(0);
+  const [, forceRender] = useState(0);
 
-  // ------------------------------------------
-  // GSAP overlay animation refs
-  // ------------------------------------------
-  const textRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const timelines = useRef<gsap.core.Timeline[]>([]);
+  const setRef = (el: HTMLDivElement | null, i: number) => {
+    if (el) cardsRef.current[i] = el;
+  };
 
-  useLayoutEffect(() => {
-    textRefs.current.forEach((el, i) => {
-      if (!el) return;
-
-      const tl = gsap.timeline({ paused: true });
-
-      tl.fromTo(
-        el,
-        { x: -600, opacity: 0 },
-        { x: 0, opacity: 1, duration: 0.6, ease: "power3.out", delay: 0.2 }
-      );
-
-      timelines.current[i] = tl;
-    });
+  useEffect(() => {
+    animate(0);
   }, []);
 
-  const handleMouseEnter = (index: number) => {
-    setIsPaused(true);
-    setActiveIndex(index);
-    setKey((prev) => prev + 1);
+  const animate = (index: number) => {
+    cardsRef.current.forEach((card, i) => {
+      const content = card?.querySelector(".content") as HTMLElement | null;
+      if (!card || !content) return;
 
-    // تشغيل الأنيميشن
-    timelines.current[index]?.play();
+      const isActive = i === index;
+
+      // ✅ Kill any running tweens on these elements before starting new ones
+      gsap.killTweensOf(card);
+      gsap.killTweensOf(content);
+
+      gsap.to(card, {
+        flex: isActive ? 7 : 1,
+        duration: 0.6,
+        ease: "power3.out",
+      });
+
+      if (isActive) {
+        gsap.set(content, { display: "block" });
+        gsap.fromTo(
+          content,
+          { x: -40, opacity: 0 },
+          {
+            x: 0,
+            opacity: 1,
+            duration: 0.5,
+            delay: 0.15,
+            ease: "power3.out",
+          }
+        );
+      } else {
+        // ✅ Set display:none immediately if it was already hidden
+        if (content.style.opacity === "0" || content.style.display === "none") {
+          gsap.set(content, { display: "none", opacity: 0, x: 0 });
+          return;
+        }
+
+        gsap.to(content, {
+          opacity: 0,
+          x: -20,
+          duration: 0.2, // ✅ أسرع شوية عشان ما يتراكمش
+          onComplete: () => {
+            gsap.set(content, { display: "none" });
+          },
+        });
+      }
+    });
   };
 
-  const handleMouseLeave = (index: number) => {
-    setIsPaused(false);
-    setKey((prev) => prev + 1);
-
-    // رجّع overlay للشمال
-    timelines.current[index]?.reverse();
+  const handleHover = (i: number) => {
+    if (activeRef.current === i) return; // ✅ نفس الكارت؟ ignore
+    activeRef.current = i;
+    forceRender(i); // optional: لو محتاج re-render
+    animate(i);
   };
-
-  // ------------------------------------------
-  // Auto-play slider
-  // ------------------------------------------
-  useEffect(() => {
-    if (isPaused) return;
-    // timelines.current[key]?.play()
-    const timer = setTimeout(() => {
-      setActiveIndex((prev) => {
-        // timelines.current[key]?.reverse()
-        return ((prev + 1) % cards.length)
-      })
-      setKey((prev) => prev + 1);
-
-    }, 3000);
-
-    return () => clearTimeout(timer);
-  }, [activeIndex, isPaused, cards.length]);
 
   return (
-    <section className="hidden xl:block bg-neutral-900 px-4 2xl:px-0">
-      <div className="max-w-360 mx-auto h-200 flex items-center">
-        <div className="w-full h-max max-h-155 mx-auto flex flex-nowrap gap-4">
-          {cards.map((card, index) => (
-            <div
-              key={card.id}
-              className="flex flex-col gap-3"
-              style={{
-                alignSelf: index % 2 === 0 ? "flex-end" : "flex-start",
-                flexGrow: index === activeIndex ? 5 : 1,
-                flexBasis: 0,
-                transition: "flex-grow 500ms ease-in-out",
-                minWidth: "60px",
-              }}
-            >
-              <div
-                onMouseEnter={() => handleMouseEnter(index)}
-                onMouseLeave={() => handleMouseLeave(index)}
-                className="relative overflow-hidden h-125 rounded-md cursor-pointer"
-              >
-                <div className="w-full h-full relative">
-                  <img
-                    src={card.image}
-                    alt={card.title}
-                    className="w-full h-full object-cover"
-                  />
+    <div className="flex w-full gap-3 h-[550px]">
+      {data.map((item, i) => (
+        <Card
+          key={i}
+          ref={(el) => setRef(el as HTMLDivElement, i)}
+          onMouseEnter={() => handleHover(i)}
+          className="relative flex-1 overflow-hidden border-none rounded-none cursor-pointer"
+        >
+          <Image
+            src={item.img}
+            alt={item.title}
+            fill
+            className="object-cover"
+          />
 
-                  {/* Overlay — أضف ref هنا */}
-                  <div
-                    className="absolute bottom-0 left-0 w-full text-white p-10 pt-12 
-                      bg-gradient-to-t from-black to-transparent"
-                  >
-                    {/* Container النصوص — اللي عليه الأنيميشن بس */}
-                    <div
-                      ref={(el) => {
-                        textRefs.current[index] = el;
-                      }}
-                      style={{ opacity: 0 }}
-                    >
-                      <h2 className="text-xl tracking-[0.3em] mb-10 w-120">
-                        {card.title}
-                      </h2>
-
-                      <p className="w-150">{card.textContent}</p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Timeline bar */}
-                <div className="absolute bottom-1 left-5 right-5 rounded-full  h-0.5 bg-white/20">
-                  {index === activeIndex && (
-                    <div
-                      key={key}
-                      className="h-full bg-white"
-                      style={{
-                        animation: isPaused
-                          ? "none"
-                          : "fillTimeline 3s linear forwards",
-                      }}
-                    />
-                  )}
-                </div>
-              </div>
-
-              <p className="text-white max-w-38 m-auto text-center px-2">
-                {/* {index !== activeIndex && card.title} */}
-                {card.title}
-              </p>
-            </div>
-          ))}
-
-          <style>{`
-        @keyframes fillTimeline {
-          from { width: 0%; }
-          to   { width: 100%; }
-        }
-      `}</style>
-        </div>
-      </div>
-    </section>
+          <div className="content absolute left-4 bottom-4 min-w-70 bg-white/75 px-4 py-2 hidden opacity-0">
+            <h4 className="text-xl tracking-[2px]">{item.title}</h4>
+            <p className="text-sm uppercase tracking-widest">
+              {item.subtitle}
+            </p>
+          </div>
+        </Card>
+      ))}
+    </div>
   );
 }

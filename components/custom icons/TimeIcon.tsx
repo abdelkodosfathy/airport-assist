@@ -34,9 +34,13 @@ const clockIcons = [
 const getClockIndex = (time?: string): number => {
   if (!time) return 0;
 
-  const [hours] = time.split(":").map(Number);
+  const [hours, minutes] = time.split(":").map(Number);
 
-  return hours % 12;
+  // لو الدقايق 30 أو أكتر نزود ساعة
+  const adjustedHour = minutes >= 30 ? hours + 1 : hours;
+
+  // return adjustedHour % 12;
+  return adjustedHour % 12 || 12;
 };
 
 type TimeIconProps = {
@@ -46,7 +50,7 @@ type TimeIconProps = {
 
 const TimeIcon: React.FC<TimeIconProps> = ({ time, size = 24, ...props }) => {
   const index = getClockIndex(time);
-  const Icon = clockIcons[index] || Clock1;
+  const Icon = clockIcons[index - 1] || Clock1;
 
   return <Icon size={size} {...props} />;
 };

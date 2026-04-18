@@ -4,18 +4,15 @@ import { useState } from "react";
 import { Minus, Plus } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { useCurrencyStore } from "@/store/currencyStore";
-import { useAirportStore } from "@/store/vipInputsStore";
+import { useAirportStore, useSingleAirportStore } from "@/store/vipInputsStore";
 import { usePrimaryPassengerStore } from "@/store/primaryPassengerStore";
 
 type BagsInputProps = {
   max?: number;
 };
 
-export const BagsInput = ({
-  max = 99,
-}: BagsInputProps) => {
-
-  const airport = useAirportStore((state) => state.airport);
+export const BagsInput = ({ max = 99 }: BagsInputProps) => {
+  const airport = useSingleAirportStore((state) => state.singleAirport);
   const freeBags = airport?.number_of_free_bags ?? 0;
   const blockCost = airport?.paid_bags_block_cost ?? 0;
   const blockSize = airport?.paid_bags_block_size ?? 0;
@@ -23,12 +20,12 @@ export const BagsInput = ({
   const currency = useCurrencyStore((s) => s.currency);
   // const currencyMark = useCurrencyStore((s) => s.currency);
 
+  const bagsNumber = usePrimaryPassengerStore((state) => state.numberOfBags);
+  const setBagsNumber = usePrimaryPassengerStore(
+    (state) => state.setNumberOfBags,
+  );
 
-
-  const bagsNumber = usePrimaryPassengerStore(state => state.numberOfBags);
-  const setBagsNumber = usePrimaryPassengerStore(state => state.setNumberOfBags);
-
-  const [cost, setCost] = useState(0);
+  // const [cost, setCost] = useState(0);
 
   const calculateCost = (bags: number) => {
     if (bags <= freeBags) return 0;
@@ -41,11 +38,12 @@ export const BagsInput = ({
   const updateValue = (newValue: number) => {
     const safeValue = Math.max(0, Math.min(max, newValue));
     const calculatedCost = calculateCost(safeValue);
-    
-    setCost(calculatedCost);
+
+    // setCost(calculatedCost);
     setBagsNumber(safeValue);
   };
 
+  const cost = calculateCost(bagsNumber);
   return (
     <div className="flex flex-1 justify-between items-center col-span-2">
       <p className="font-semibold">

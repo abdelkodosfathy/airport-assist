@@ -1,6 +1,6 @@
 import { StaticImageData } from "next/image";
 import Section from "./section";
-import serviceImage from "@/public/services-image.jpg";
+import serviceImage from "@/public/services-image.webp";
 
 type Props = {};
 

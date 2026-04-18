@@ -54,11 +54,9 @@ const AirportForm = (props: Props) => {
         <Label htmlFor="airport" className="mb-2">
           airport
         </Label>
-        {/* <Input /> */}
         <AirportSearchInput
-          // hideIcon
-          // inputClassName={"h-9 rounded-md bg-[#F4F4F4] border-[#E0E0E0]"}
-          className={"h-9 rounded-md bg-[#F4F4F4] border-[#E0E0E0]"}
+          
+          className={"h-11 rounded-md bg-[#F4F4F4] shadow-xs border border-[#E0E0E0]"}
         />
       </div>
       <div>
@@ -69,7 +67,7 @@ const AirportForm = (props: Props) => {
         <SelectDropdown
           id="serviceType"
           placeholder="Service Type"
-          inputClassName={"h-9 rounded-md bg-[#F4F4F4] border-[#E0E0E0]"}
+          inputClassName={"h-11 rounded-md bg-[#F4F4F4] border-[#E0E0E0]"}
           onSelect={handleServiceTypeSelect}
           storedServiceLabel={storedServiceType as ServiceType}
           options={servicesOptions}
@@ -79,22 +77,19 @@ const AirportForm = (props: Props) => {
         <Label htmlFor="passengers" className="mb-2">
           Passengers
         </Label>
-        {/* <Input className="bg-[#F4F4F4] border-[#E0E0E0]"/> */}
         <AdultsPicker
-          //   icon={<Adults />}
           placeholder="1 Adult - 0 Children"
           className="h-full"
-          inputClassName="h-9 rounded-md bg-[#F4F4F4] border-[#E0E0E0]"
+          inputClassName="h-11 rounded-md bg-[#F4F4F4] border-[#E0E0E0]"
         />
       </div>
       <div>
         <Label htmlFor="date" className="mb-2">
           Date
         </Label>
-        {/* <Input className="bg-[#F4F4F4] border-[#E0E0E0]"/> */}
         <DatePickerInput
           className="h-full"
-          inputClassName="h-9 rounded-md bg-[#F4F4F4] border-[#E0E0E0]"
+          inputClassName="h-11 rounded-md bg-[#F4F4F4] border-[#E0E0E0]"
         />
       </div>
       <BookNow service={storedServiceType} />
@@ -103,15 +98,17 @@ const AirportForm = (props: Props) => {
 };
 
 export default AirportForm;
+
 const BookNow = ({ service }: { service: ServiceType | null }) => {
   const storedAirport = useAirportStore((state) => state.airport);
   const storedDate = useDateStore((state) => state.bookingDate);
 
   const handleClick = (e: React.MouseEvent) => {
     const missing: string[] = [];
-
+    
     if (!storedAirport) missing.push("Airport");
-    if (!storedDate?.date || !storedDate?.time) missing.push("Date & time");
+    // if (!storedDate?.date || !storedDate?.time) missing.push("Date & time");
+    if (!storedDate?.date) missing.push("Date");
     if (!service) missing.push("Service type");
 
     if (missing.length > 0) {
@@ -127,7 +124,7 @@ const BookNow = ({ service }: { service: ServiceType | null }) => {
     <Button
       asChild
       variant="outline"
-      className="w-full mb-3 border-black hover:bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)] hover:text-white hover:border-none duration-0"
+      className="w-full border-black hover:bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)] hover:text-white hover:border-none duration-0"
     >
       <Link href="/vip-meet-and-greet" onClick={handleClick}>
         Book now <ArrowUpRight />

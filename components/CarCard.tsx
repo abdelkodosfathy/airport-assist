@@ -24,9 +24,10 @@ import {
 import Image from "next/image";
 import CarImageCarousel from "./CarImageCarousel";
 import { useCurrencyStore } from "@/store/currencyStore";
-import { usePickupPointsStore } from "@/store/pickupPointsStore";
-import { useAirportStore } from "@/store/vipInputsStore";
-import { useTripStore } from "@/store/tripStore";
+// import { usePickupPointsStore } from "@/store/pickupPointsStore";
+// import { useAirportStore, useSingleAirportStore } from "@/store/vipInputsStore";
+// import { useTripStore } from "@/store/tripStore";
+import { useCarPricing } from "@/lib/hooks/useCarPricing";
 
 const IMAGE_BASE =
   "https://airportassist-backend.aqaralex.com/storage/images/car-types-images/";
@@ -72,7 +73,7 @@ function getCarSlides(car: Car) {
     name: car.car_type_name,
   }));
 }
-function extractNumber(value: string): number {
+export function extractNumber(value: string): number {
   return parseFloat(value);
 }
 const CarCard = ({
@@ -82,35 +83,71 @@ const CarCard = ({
   onSelect,
   hideSupplementFee = false,
 }: CarCardProps) => {
-  const airport = useAirportStore((s) => s.airport);
-  const meetAndGreet = useTripStore((s) => s.meetAndGreet);
-  const bags = useTripStore((s) => s.luggage);
+  // const airport = useAirportStore((s) => s.airport);
+  // const singleAirport = useSingleAirportStore((s) => s.singleAirport);
+  // const meetAndGreet = useTripStore((s) => s.meetAndGreet);
+  // const bags = useTripStore((s) => s.luggage);
+  // const passengers = useTripStore((s) => s.passengers);
+
+  // const currencyMark = useCurrencyStore((state) => state.currencyMark);
+  // const distanceMi = usePickupPointsStore((s) => s.distanceMi);
+
+  // const miles = extractNumber(distanceMi ?? "0 mi");
+
+  // const paiedMiles = Math.max(miles - includedMiles, 0);
+  // const milesCost = paiedMiles * 4;
+  // const { name, subtitle } = parseCarName(car.car_type_name);
+  // const slides = getCarSlides(car);
+
+  // const passengersCost = (() => {
+  //   if (!meetAndGreet || !airport) return 0;
+
+  //   const airportPackage =
+  //     airport.airport_packages.find(
+  //       (p) => p.package.package_slug === "elite",
+  //     ) ??
+  //     airport.airport_packages.find(
+  //       (p) => p.package.package_slug === "elite_plus",
+  //     ) ??
+  //     airport.airport_packages.find(
+  //       (p) => p.package.package_slug === "signature",
+  //     ) ??
+  //     airport.airport_packages.find((p) => p.package.package_slug === "vip");
+
+  //   const freePassengers = airportPackage?.included_adults_count ?? 0;
+
+  //   const blockSize = 1;
+
+  //   const blockCost = airportPackage?.additional_adult_cost ?? 0;
+
+  //   const paidPassengers = Math.max(passengers - freePassengers, 0);
+
+  //   const blocks = Math.ceil(paidPassengers / blockSize);
+
+  //   return blocks * blockCost;
+  // })();
+  // const luggageCost = (() => {
+  //   if (!meetAndGreet || !airport) return 0;
+  //   const freeBags = airport.number_of_free_bags ?? 0;
+  //   const blockSize = airport.paid_bags_block_size ?? 1;
+  //   const blockCost = airport.paid_bags_block_cost ?? 0;
+
+  //   const paidBags = Math.max(bags - freeBags, 0);
+  //   const blocks = Math.ceil(paidBags / blockSize);
+
+  //   return blocks * blockCost;
+  // })();
+
+  // const totalCost = car.supplement_fee + milesCost + passengersCost + luggageCost ;
+
+  // console.log(airport);
+
+  const { totalCost } = useCarPricing({ car, includedMiles });
 
   const currencyMark = useCurrencyStore((state) => state.currencyMark);
-  const distanceMi = usePickupPointsStore((s) => s.distanceMi);
 
-  const miles = extractNumber(distanceMi ?? "0 mi");
-
-  const paiedMiles = Math.max(miles - 15, 0);
-
-  const milesCost = paiedMiles * 4;
   const { name, subtitle } = parseCarName(car.car_type_name);
   const slides = getCarSlides(car);
-
-  const luggageCost = (() => {
-    if (!meetAndGreet || !airport) return 0;
-
-    const freeBags = airport.number_of_free_bags ?? 0;
-    const blockSize = airport.paid_bags_block_size ?? 1;
-    const blockCost = airport.paid_bags_block_cost ?? 0;
-
-    const paidBags = Math.max(bags - freeBags, 0);
-    const blocks = Math.ceil(paidBags / blockSize);
-
-    return blocks * blockCost;
-  })();
-
-  const totalCost = car.supplement_fee + milesCost + luggageCost;
 
   return (
     <Dialog>
@@ -172,28 +209,11 @@ const CarCard = ({
               Includes up to {includedMiles} miles
             </p>
           </div>
-          <div>
-            <p className="text-[0.675rem] flex justify-between">
-              Price Per Mile{" "}
-              <span>
-                {currencyMark} {car.price_per_mile.toFixed(2)}
-              </span>
-            </p>
-            <p className="text-[0.675rem] flex justify-between">
-              Price Per Hour{" "}
-              <span>
-                {currencyMark} {car.price_per_hour.toFixed(2)}
-              </span>
-            </p>
-            {!hideSupplementFee ? (
-              <p className="text-[0.675rem] flex justify-between">
-                Supplement Fee{" "}
-                <span>
-                  {currencyMark} {car.supplement_fee}
-                </span>
-              </p>
-            ) : null}
-          </div>
+          <Prices
+            hideSupplementFee={hideSupplementFee}
+            currencyMark={currencyMark}
+            car={car}
+          />
         </div>
       </div>
 
@@ -268,3 +288,64 @@ const CarCard = ({
 };
 
 export default CarCard;
+
+const Prices = ({
+  hideSupplementFee,
+  currencyMark,
+  car,
+}: {
+  hideSupplementFee: boolean;
+  currencyMark: string;
+  car: Car;
+}) => {
+  return (
+    <div className="text-[#74747A]">
+      {hideSupplementFee ? (
+        <>
+          <div className="text-[0.8rem] flex justify-between">
+            <p>
+              Rate Per Mile
+              <span className="text-[0.7rem]"> (inside city)</span>
+            </p>
+            <span>
+              {currencyMark} {car.price_per_mile.toFixed(2)}
+            </span>
+          </div>
+
+          <div className="text-[0.8rem] flex justify-between">
+            <p>
+              Rate Per Mile
+              <span className="text-[0.7rem]"> (outside city)</span>
+            </p>
+            <span>
+              {currencyMark} {car.price_per_mile.toFixed(2)}
+            </span>
+          </div>
+        </>
+      ) : (
+        <>
+          <p className="text-[0.675rem] flex justify-between">
+            Price Per Mile
+            <span>
+              {currencyMark} {car.price_per_mile.toFixed(2)}
+            </span>
+          </p>
+
+          <p className="text-[0.675rem] flex justify-between">
+            Price Per Hour
+            <span>
+              {currencyMark} {car.price_per_hour.toFixed(2)}
+            </span>
+          </p>
+
+          <p className="text-[0.675rem] flex justify-between">
+            Supplement Fee
+            <span>
+              {currencyMark} {car.supplement_fee}
+            </span>
+          </p>
+        </>
+      )}
+    </div>
+  );
+};

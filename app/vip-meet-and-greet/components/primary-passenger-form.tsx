@@ -8,6 +8,8 @@ import DateOfBirth from "./DateOfBirth";
 import SelectDropdown from "@/components/custom inputs/SelectList";
 import { BagsInput } from "./bags-input";
 import { usePrimaryPassengerStore } from "@/store/primaryPassengerStore";
+import { useFlightFormStore } from "@/store/useFlightFormStore";
+import { LibPhoneInput } from "@/components/ui/lib-phone-input";
 
 const classesOptions = [
   { value: "economy", label: "Cabin Economy Class" },
@@ -53,20 +55,22 @@ const FirstNameInput = () => {
   const firstName = usePrimaryPassengerStore((state) => state.firstName);
   const setFirstName = usePrimaryPassengerStore((state) => state.setFirstName);
 
+  const thereIsError = useFlightFormStore((s) => s.validationError);
+  const validationError = thereIsError && !firstName;
+
   return (
     <div className="space-y-2">
-      <Label
-      // className={validationErrors.firstName ? "text-red-500" : ""}
-      >
+      <Label className={validationError ? "text-red-500" : ""}>
         First Name
-        {/* {validationErrors?.firstName && "*"} */}
+        {validationError && "*"}
       </Label>
       <Input
         value={firstName ?? ""}
         onChange={(e) => setFirstName(e.target.value)}
         placeholder="First Name"
-        className={`bg-[#F4F4F4]`}
-        // ${validationErrors.firstName ? "border-red-500 border" : ""}
+        className={`bg-[#F4F4F4]
+          ${validationError ? "border-red-500 border" : ""}
+          `}
       />
     </div>
   );
@@ -75,21 +79,22 @@ const LastNameInput = () => {
   const lastName = usePrimaryPassengerStore((state) => state.lastName);
   const setLastName = usePrimaryPassengerStore((state) => state.setLastName);
 
+  const thereIsError = useFlightFormStore((s) => s.validationError);
+  const validationError = thereIsError && !lastName;
+
   return (
     <div className="space-y-2">
-      <Label
-      // className={validationErrors.lastName ? "text-red-500" : ""}
-      >
+      <Label className={validationError ? "text-red-500" : ""}>
         Last Name
-        {/* {validationErrors?.lastName && "*"} */}
+        {validationError && "*"}
       </Label>
       <Input
         value={lastName ?? ""}
         onChange={(e) => setLastName(e.target.value)}
         placeholder="Last Name"
         className={`bg-[#F4F4F4] 
+          ${validationError ? "border-red-500 border" : ""}
           `}
-        // ${validationErrors.lastName ? "border-red-500 border" : ""}
       />
     </div>
   );
@@ -99,18 +104,22 @@ const DataOfBirthInput = () => {
   const setDateOfBirth = usePrimaryPassengerStore(
     (state) => state.setDateOfBirth,
   );
+
+  // const thereIsError = useFlightFormStore((s) => s.validationError);
+  // const validationError = thereIsError && !dateOfBirth;
+
+  const validationError = false;
+
   return (
     <div className="space-y-2">
-      <Label
-      //  className={validationErrors.dob ? "text-red-500" : ""}
-      >
+      <Label className={validationError ? "text-red-500" : ""}>
         Date Of Birth
-        {/* {validationErrors?.dob && "*"} */}
+        {validationError && "*"}
       </Label>
       <DateOfBirth
         onChange={setDateOfBirth}
         value={dateOfBirth}
-        // className={validationErrors.dob ? "border-red-500 border" : ""}
+        className={validationError ? "border-red-500 border" : ""}
       />
     </div>
   );
@@ -120,13 +129,16 @@ const TravelClassInput = () => {
   const setTravelClass = usePrimaryPassengerStore(
     (state) => state.setClassOfTravel,
   );
+  // const thereIsError = useFlightFormStore((s) => s.validationError);
+  // const validationError = thereIsError && !travelClass?.value;
+
+  const validationError = false;
+
   return (
     <div className="space-y-2">
-      <Label
-      // className={validationErrors.travelClass ? "text-red-500" : ""}
-      >
+      <Label className={validationError ? "text-red-500" : ""}>
         Class Of Travel
-        {/* {validationErrors?.travelClass && "*"} */}
+        {validationError && "*"}
       </Label>
       <SelectDropdown
         value={travelClass}
@@ -134,10 +146,8 @@ const TravelClassInput = () => {
         options={classesOptions}
         className="h-9 rounded-md"
         inputClassName={`rounded-md pl-4 pr-10 bg-[#F4F4F4] border
-                `}
-        //  ${validationErrors.travelClass
-        //   ? "border-red-500"
-        // : "border-[#E0E0E0]"}
+            ${validationError ? "border-red-500" : "border-[#E0E0E0]"}
+          `}
       />
     </div>
   );
@@ -146,21 +156,22 @@ const EmailInput = () => {
   const email = usePrimaryPassengerStore((state) => state.email);
   const setEmail = usePrimaryPassengerStore((state) => state.setEmail);
 
+  const thereIsError = useFlightFormStore((s) => s.validationError);
+  const validationError = thereIsError && !email;
+
   return (
     <div className="space-y-2">
-      <Label
-      // className={validationErrors.email ? "text-red-500" : ""}
-      >
+      <Label className={validationError ? "text-red-500" : ""}>
         Email
-        {/* {validationErrors?.email && "*"} */}
+        {validationError && "*"}
       </Label>
       <Input
         value={email ?? ""}
         onChange={(e) => setEmail(e.target.value)}
         placeholder="Email address"
         className={`bg-[#F4F4F4] 
+          ${validationError ? "border-red-500 border" : ""}
                 `}
-        // ${validationErrors.email ? "border-red-500 border" : ""}
       />
     </div>
   );
@@ -169,22 +180,41 @@ const PhoneInput = () => {
   const phone = usePrimaryPassengerStore((state) => state.phone);
   const setPhone = usePrimaryPassengerStore((state) => state.setPhone);
 
+  const thereIsError = useFlightFormStore((s) => s.validationError);
+  const validationError = thereIsError && !phone;
+
   return (
     <div className="space-y-2">
-      <Label
-      //  className={validationErrors.phone ? "text-red-500" : ""}
-      >
+      <Label className={validationError ? "text-red-500" : ""}>
         Phone
-        {/* {validationErrors?.phone && "*"} */}
+        {validationError && "*"}
       </Label>
       <CustomPhoneInput
         className="h-9 rounded-md"
         radius="7px"
         value={phone ?? ""}
         onChange={setPhone}
-        // validationClass={validationErrors.phone}
+        validationClass={validationError}
       />
     </div>
+    // <div className="space-y-2">
+    //   <Label className={validationError ? "text-red-500" : ""}>
+    //     Phone {validationError && "*"}
+    //   </Label>
+
+    //   {/* <PhoneInputLib
+    //     // value={phone ?? ""}
+    //     // onChange={(val, formatted, country, isValid) => {
+    //     //   setPhone(val);
+    //     //   // setValidationError(!isValid);
+    //     // }}
+    //     // className="w-full"
+    //     className=""
+    //     // inputClassName={`
+    //     //   rounded-md h-9 shadow-xs bg-[#F4F4F4] border
+    //     //     ${validationError ? "border-red-500" : "border-[#E0E0E0]"}`}
+    //   /> */}
+    // </div>
   );
 };
 const OtherPassengersInput = () => {
@@ -199,7 +229,7 @@ const OtherPassengersInput = () => {
     <div className="space-y-2 md:col-span-2">
       <Label>
         Other Passengers Information{" "}
-        <span className="text-sm text-muted-foreground">(optional)</span>
+        <span className="text-sm text-[#7A7A7A] lowercase">(optional)</span>
       </Label>
       <Textarea
         value={otherInfo ?? ""}
@@ -210,3 +240,116 @@ const OtherPassengersInput = () => {
     </div>
   );
 };
+
+// =========================================================================================
+// =========================================================================================
+// =========================================================================================
+
+// import React, { useState, useMemo, useEffect } from "react";
+// import {
+//   AsYouType,
+//   parsePhoneNumberFromString,
+//   CountryCode,
+// } from "libphonenumber-js";
+
+// type PhoneMeta = {
+//   isValid: boolean;
+//   country?: CountryCode;
+//   international?: string;
+//   national?: string;
+// };
+
+// type Props = {
+//   value?: string;
+//   onChange?: (value: string, meta: PhoneMeta) => void;
+//   defaultCountry?: CountryCode;
+//   className?: string;
+//   placeholder?: string;
+// };
+
+// function PhoneInputLib({
+//   value = "",
+//   onChange,
+//   defaultCountry = "EG",
+//   className = "",
+//   placeholder = "Enter phone number",
+// }: Props) {
+//   const [input, setInput] = useState(value);
+//   const [country, setCountry] = useState<CountryCode>(defaultCountry);
+
+//   // sync external value
+//   useEffect(() => {
+//     setInput(value);
+//   }, [value]);
+
+//   // 🔥 parse (source of truth for validation)
+//   const parsed = useMemo(() => {
+//     const phone = parsePhoneNumberFromString(input || "");
+
+//     if (!phone) {
+//       return {
+//         isValid: false,
+//         country: undefined,
+//         international: undefined,
+//         national: undefined,
+//       };
+//     }
+
+//     return {
+//       isValid: phone.isValid(),
+//       country: phone.country,
+//       international: phone.formatInternational(),
+//       national: phone.formatNational(),
+//     };
+//   }, [input]);
+
+//   const formatNumber = (value: string) => {
+//     const formatter = new AsYouType(country);
+//     formatter.input(value);
+
+//     return formatter.getChars();
+//   };
+//   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+//     const raw = e.target.value;
+
+//     // UI formatting only
+//     const formatted = formatNumber(raw);
+
+//     setInput(formatted);
+
+//     // parse once (source of truth)
+//     const phone = parsePhoneNumberFromString(raw);
+
+//     // auto detect country safely
+//     if (phone?.country) {
+//       setCountry(phone.country);
+//     }
+
+//     const meta: PhoneMeta = {
+//       isValid: phone?.isValid() ?? false,
+//       country: phone?.country,
+//       international: phone?.formatInternational(),
+//       national: phone?.formatNational(),
+//     };
+
+//     onChange?.(formatted, meta);
+//   };
+
+//   return (
+//     <div className={`flex items-center gap-2 ${className}`}>
+//       <input
+//         type="tel"
+//         value={input}
+//         onChange={handleChange}
+//         placeholder={placeholder}
+//         className="w-full px-3 py-2 border rounded-lg outline-none"
+//       />
+
+//       <div
+//         className={`w-3 h-3 rounded-full ${
+//           parsed.isValid ? "bg-green-500" : input ? "bg-red-500" : "bg-gray-300"
+//         }`}
+//       />
+//     </div>
+//   );
+// }

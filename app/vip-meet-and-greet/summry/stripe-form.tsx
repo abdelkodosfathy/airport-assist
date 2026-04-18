@@ -1,11 +1,9 @@
 "use client";
-import payments from "@/public/payments.png";
-import Image from "next/image";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import {
@@ -21,6 +19,9 @@ import { Country, CountryDropdown } from "@/components/ui/country-dropdown";
 import { AlertCircle } from "lucide-react";
 import { toast } from "sonner";
 import { Separator } from "@/components/ui/separator";
+import Visa from "@/components/custom icons/Visa";
+import MasterCard from "@/components/custom icons/MasterCard";
+import Amex from "@/components/custom icons/amex";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!,
@@ -46,30 +47,7 @@ const cardInputClass =
 
 // ── Root: fetches client secret and passes it down ───────────────────────────
 const StripeForm = ({ payFor = "bookings", booking_status }: Props) => {
-  // const searchParams = useSearchParams();
-  // const paramsUUID = searchParams.get("uuid");
-
-  // const [promoCode, setPromoCode] = useState("");
-  // const [clientSecret, setClientSecret] = useState<string | null>(null);
-  // const [fetchError, setFetchError] = useState<string | null>(null);
-
-  // useEffect(() => {
-  //   if (!paramsUUID) return;
-  //   const fetchClientSecret = async () => {
-  //     try {
-  //       const result = await apiPost(
-  //         `/${payFor}/${paramsUUID}/checkout/payment-intent`,
-  //         { payment_method: "stripe", promo_code: promoCode },
-  //       );
-  //       const secret = result?.data?.payment_intent?.clientSecret;
-  //       if (!secret) throw new Error("Client secret not returned from server.");
-  //       setClientSecret(secret);
-  //     } catch (err: any) {
-  //       setFetchError(err.message || "Something went wrong");
-  //     }
-  //   };
-  //   fetchClientSecret();
-  // }, [paramsUUID]);
+  
   const searchParams = useSearchParams();
   const paramsUUID = searchParams.get("uuid");
 
@@ -286,13 +264,18 @@ const CheckoutForm = ({
               }}
             />
           </div>
-          <Image
+          {/* <Image
             alt="payment ways"
             src={payments}
             width={105}
             height={40}
             className="shrink-0"
-          />
+          /> */}
+          <div className="flex items-center gap-2">
+            <Visa/>
+            <Amex/>
+            <MasterCard/>
+          </div>
         </div>
       </div>
       {/* Name on Card */}

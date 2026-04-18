@@ -1,17 +1,34 @@
 "use client";
 import { useCars } from "@/lib/hooks/useCars";
-import { memo } from "react";
+import { memo, useEffect } from "react";
 import { useTripStore } from "@/store/tripStore";
 import CarCardSkeleton from "@/components/CarCardSkeleton";
 import CarCard from "@/components/CarCard";
+import { usePickupPointsStore } from "@/store/pickupPointsStore";
 
 function CardPicker() {
   const selectedCar = useTripStore((state) => state.car);
-  const onSelectCar = useTripStore((state) => state.setCar);
-  const { data, isLoading, isError, error } = useCars();
+  const selectCar = useTripStore((state) => state.setCar);
+  const country = usePickupPointsStore((s) => s.pickup?.country);
+  const { data, isLoading, isError, error } = useCars(country ?? undefined);
+  
+  
+
+  // Reset selected car if it no longer exists after region/data change
+  useEffect(() => {
+    if (!data?.data.car_types || !selectedCar) return;
+
+    const isSelectedCarStillAvailable = data.data.car_types.some(
+      (car) => car.car_type_id === selectedCar.car_type_id,
+    );
+
+    if (!isSelectedCarStillAvailable) {
+      selectCar(null);
+    }
+  }, [data, selectedCar, selectCar]);
 
   if (isError) {
-    console.error("Error fetching airports:", error);
+    console.error("Error fetching cars:", error);
   }
 
   if (isLoading) {
@@ -33,7 +50,7 @@ function CardPicker() {
           car={car}
           selected={selectedCar?.car_type_id === car.car_type_id}
           onSelect={() => {
-            onSelectCar(car);
+            selectCar(car);
           }}
         />
       ))}

@@ -6,15 +6,16 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Mail, Phone, User } from "lucide-react";
-import Image from "next/image";
 
 import Separator from "@/components/ui/formSeparator";
 
-import payments from "@/public/payments.png";
 import { useEffect, useState } from "react";
 import { apiPost } from "@/lib/api";
 import { useRouter } from "next/navigation";
 import { useCurrencyStore } from "@/store/currencyStore";
+import Visa from "@/components/custom icons/Visa";
+import Amex from "@/components/custom icons/amex";
+import MasterCard from "@/components/custom icons/MasterCard";
 
 export default function Summary({
   // onBack,
@@ -29,8 +30,8 @@ export default function Summary({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-    const currency = useCurrencyStore((s) => s.currency);
-    const currencyMark = useCurrencyStore((s) => s.currencyMark);
+  const currency = useCurrencyStore((s) => s.currency);
+  const currencyMark = useCurrencyStore((s) => s.currencyMark);
 
   useEffect(() => {
     if (uuid.trim() === "") return;
@@ -205,12 +206,17 @@ export default function Summary({
               <IconInput
                 iconPosition="right"
                 icon={
-                  <Image
-                    alt="payment ways"
-                    src={payments}
-                    width={105}
-                    height={40}
-                  />
+                  // <Image
+                  //   alt="payment ways"
+                  //   src={payments}
+                  //   width={105}
+                  //   height={40}
+                  // />
+                  <div className="flex items-center gap-2">
+                    <Visa />
+                    <Amex />
+                    <MasterCard />
+                  </div>
                 }
                 id="cardNumber"
                 className="pl-4 rounded-md pr-16 bg-[#F4F4F4] border border-[#E0E0E0]"

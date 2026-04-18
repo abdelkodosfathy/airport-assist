@@ -3,14 +3,14 @@
 import { useState, useEffect, useRef, useLayoutEffect } from "react";
 import gsap from "gsap";
 import { useRouter } from "next/navigation";
-export const cards = [
+const cards = [
   {
     id: 1,
     title: "VIP Meet & Greet Services",
     link: "/our-services/vip-meet-and-greet",
     textContent:
       "Enhancing your journey with private greeter assistance and fast-track airport procedures.",
-    image: "/carousel/VipMeetAndGreet.png",
+    image: "/carousel/VipMeetAndGreet.webp",
     top: "top-30",
   },
   {
@@ -19,7 +19,7 @@ export const cards = [
     link: "/our-services/private-suite",
     textContent:
       "Our most exclusive offering, providing the highest level of luxury airport assistance across 500+ destinations worldwide.",
-    image: "/carousel/TarmacServices.png",
+    image: "/carousel/TarmacServices.webp",
     top: "top-40",
   },
   {
@@ -66,7 +66,7 @@ export default function HoverExpandCards() {
   const timelines = useRef<gsap.core.Timeline[]>([]);
   const titleTimelines = useRef<gsap.core.Timeline[]>([]);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     textRefs.current.forEach((el, i) => {
       if (!el) return;
 
@@ -152,10 +152,17 @@ export default function HoverExpandCards() {
                 className="relative overflow-hidden h-125 rounded-md cursor-pointer"
               >
                 <div className="w-full h-full relative">
+                  {/* <img
+                    src={card.image}
+                    alt={card.title}
+                    className="w-full h-full object-cover"
+                  /> */}
                   <img
                     src={card.image}
                     alt={card.title}
                     className="w-full h-full object-cover"
+                    loading="lazy"
+                    decoding="async"
                   />
 
                   {/* Overlay */}

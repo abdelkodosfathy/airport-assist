@@ -45,7 +45,31 @@ const ConnectionFlightForm = () => {
     (state) => state.setServiceDuration,
   );
 
-  const [validationErrors] = useState<ValidationErrors>({});
+  const validationError = useFlightFormStore((s) => s.validationError);
+
+  const hasError = (
+    key:
+      | "arrivalAirline"
+      | "arrivalFlightNumber"
+      | "departureAirline"
+      | "departureFlightNumber",
+  ) => {
+    const keys = {
+      arrivalAirline: arrivalAirline,
+      arrivalFlightNumber: arrivalFlightNumber,
+      departureAirline: departureAirline,
+      departureFlightNumber: departureFlightNumber,
+    };
+
+    if (validationError && !(keys[key] ?? "" !== "")) {
+      return true;
+    }
+    return false;
+  };
+  const arrivalAirlineError = hasError("arrivalAirline");
+  const arrivalFlightNumberError = hasError("arrivalFlightNumber");
+  const departureAirlineError = hasError("departureAirline");
+  const departureFlightNumberError = hasError("departureFlightNumber");
 
   return (
     <FormWrapper>
@@ -54,6 +78,8 @@ const ConnectionFlightForm = () => {
         <Label>Arrival Airline</Label>
         <AirlineSearchInput
           label="Airline"
+          // error={arrivalAirlineError}
+          inputClassName={`h-9 ${arrivalAirlineError && "border-red-500"}`}
           value={arrivalAirline}
           placeholder="Search arrival airline…"
           onSelect={setArrivalAirline}
@@ -64,7 +90,8 @@ const ConnectionFlightForm = () => {
         label="Arrival Flight Number"
         disabled={arrivalAirline === null}
         airline={arrivalAirline?.airline_code ?? ""}
-        validationErrors={validationErrors}
+        flightNumberError={arrivalFlightNumberError}
+        className={`h-9 ${arrivalFlightNumberError && "border-red-500"}`}
         value={arrivalFlightNumber ?? ""}
         onChange={setArrivalFlightNumber}
       />
@@ -75,6 +102,7 @@ const ConnectionFlightForm = () => {
         <AirlineSearchInput
           label="Airline"
           value={departureAirline}
+          inputClassName={`h-9 ${departureAirlineError && "border-red-500"}`}
           placeholder="Search departure airline…"
           onSelect={setDepartureAirline}
         />
@@ -83,16 +111,18 @@ const ConnectionFlightForm = () => {
       <FlightNumberInput
         label="Departure Flight Number"
         disabled={departureAirline === null}
+        flightNumberError={departureFlightNumberError}
+        className={`h-9 ${departureFlightNumberError && "border-red-500"}`}
         airline={departureAirline?.airline_code ?? ""}
-        validationErrors={validationErrors}
+        // validationErrors={}
         value={departureFlightNumber ?? ""}
         onChange={setDepartureFlightNumber}
       />
 
       {/* Row 3: Arrival Time + Service Duration */}
       <TimeRow
-        onServiceDurationChange={setServiceDuration}
-        validationErrors={validationErrors}
+      // onServiceDurationChange={setServiceDuration}
+      // validationErrors={validationErrors}
       />
       {/* 
       {fastTrackActive && <FastTrackCheckBox />} */}

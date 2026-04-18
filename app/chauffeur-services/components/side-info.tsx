@@ -49,7 +49,7 @@ const SideInfo = ({focusedStep = 5}: {focusedStep?: number}) => {
             Our dedicated team are available to discuss all aspects of our
             service.
           </p>
-          <ul className="text-[#7a7a7a] space-y-2 mt-2">
+          <ul className="normal-case text-[#7a7a7a] space-y-2 mt-2">
             <li className="flex gap-2">
               <Mail />
               <p>Contact@airport-assist.com</p>

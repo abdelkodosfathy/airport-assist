@@ -8,8 +8,12 @@ import {
   XIcon,
 } from "lucide-react";
 import Image from "next/image";
-import payments from "@/public/footer_payments.png";
 import Link from "next/link";
+import ApplePay from "./custom icons/applePay";
+import Visa from "./custom icons/Visa";
+import StripIcon from "./custom icons/StripIcon";
+import Amex from "./custom icons/amex";
+import MasterCard from "./custom icons/MasterCard";
 
 const Footer = () => {
   return (
@@ -32,7 +36,8 @@ const Footer = () => {
           <div className="lg:flex-[3]">
             {/* الصف الأول: المعلومات الأساسية */}
             {/* <div className="relative grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 pb-8"> */}
-            <div className="relative flex flex-col lg:flex-row justify-between pr-24 gap-2 pb-8">
+            {/* <div className="relative flex flex-col lg:flex-row justify-between pr-24 gap-2 pb-8"> */}
+            <div className="relative flex flex-col lg:flex-row justify-between gap-2 pb-8">
               <span className="absolute left-0 right-0 bottom-0 h-0.5 rounded-full transition-opacity duration-300 opacity-100 bg-[linear-gradient(90deg,rgba(153,120,95,0)_0%,rgba(171,155,144,0.4)_50%,rgba(153,120,95,0)_100%)]" />
 
               {/* Our Office */}
@@ -101,13 +106,13 @@ const Footer = () => {
                   </li> */}
                   <li>
                     {/* <Link href="/why-us-expand">About Us (expand)</Link> */}
-                    <Link href="/why-us-expand">About Us</Link>
+                    <Link href="/why-us">About Us</Link>
                   </li>
                   <li>
                     <Link href="/contact-us">Contact Us</Link>
                   </li>
                   <li>
-                    <Link href="/frequently-asked-questions">FAQs</Link>
+                    <Link href="/why-us?faq=true">FAQs</Link>
                   </li>
                 </ul>
               </div>
@@ -138,11 +143,11 @@ const Footer = () => {
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 pb-4">
               {/* الشعارات */}
               <div className="lg:col-span-3">
-                <p className="text-[#6D6D6D] my-4">
+                <p className="text-[#6D6D6D] my-4 normal-case">
                   Airport Assist is a proud member.
                 </p>
                 <div className="flex flex-wrap items-center gap-2">
-                  <a target="blank" href="https://bbga.aero/">
+                  {/* <a target="blank" href="https://bbga.aero/"> */}
                     <Image
                       width={108}
                       height={31}
@@ -150,8 +155,8 @@ const Footer = () => {
                       src="/footer/bbga.webp"
                       alt="BBGA"
                     />
-                  </a>
-                  <a target="blank" href="https://www.ebaa.org/">
+                  {/* </a> */}
+                  {/* <a target="blank" href="https://www.ebaa.org/"> */}
                     <Image
                       width={115}
                       height={31}
@@ -159,15 +164,15 @@ const Footer = () => {
                       src="/footer/ebaa.webp"
                       alt="BTA"
                     />
-                  </a>
-                  <Image
+                  {/* </a> */}
+                  {/* <Image
                     width={69}
                     height={31}
                     className=""
                     src="/footer/amac.webp"
                     alt="EBAA"
-                  />
-                  <a target="blank" href="https://www.thebta.org.uk/">
+                  /> */}
+                  {/* <a target="blank" href="https://www.thebta.org.uk/"> */}
                     <Image
                       width={180}
                       height={31}
@@ -175,21 +180,19 @@ const Footer = () => {
                       src="/footer/bta.webp"
                       alt="BTA"
                     />
-                  </a>
+                  {/* </a> */}
                 </div>
               </div>
 
               {/* طرق الدفع */}
               <div>
-                <p className="text-[rgb(138,131,124)] mt-4">We do accept</p>
-                <div>
-                  <Image
-                    width={147}
-                    height={38}
-                    src={payments}
-                    // className="grayscale"
-                    alt="Payment methods"
-                  />
+                <p className="text-[rgb(138,131,124)] mt-4 normal-case">We do accept</p>
+                <div className="flex gap-2 items-center">
+                  <ApplePay/>
+                  <Visa/>
+                  <Amex/>
+                  <MasterCard/>
+                  <StripIcon/>
                 </div>
               </div>
             </div>

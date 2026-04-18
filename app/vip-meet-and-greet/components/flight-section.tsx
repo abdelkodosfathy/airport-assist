@@ -9,21 +9,24 @@ import {
   useSingleAirportStore,
 } from "@/store/vipInputsStore";
 import { useCars } from "@/lib/hooks/useCars";
-import { useSingleAirport } from "@/lib/hooks/useAirports";
 import InnerToast from "@/components/ui/InnerToast";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { useEffect } from "react";
 
 const FlightSection = () => {
   const currentPackage = useAirportPackageStore(
     (state) => state.airportPackage,
   );
+  const country = useSingleAirportStore(
+    (state) => state.singleAirport?.city.iso2,
+  );
 
-  const country = useSingleAirportStore((state) => state.singleAirport)?.city
-    .iso2;
   const setCountry = useChauffeurDestinationStore((s) => s.setCountry);
-  setCountry(country ?? "");
-  console.log(country);
+  // setCountry(country ?? "");
+  useEffect(() => {
+    setCountry(country ?? "");
+  }, [country]);
 
   const { data, isLoading, isError, error } = useCars(country ?? undefined);
 

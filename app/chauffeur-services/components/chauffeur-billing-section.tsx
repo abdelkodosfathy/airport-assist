@@ -74,6 +74,7 @@
 
 import { Input } from "@/components/ui/input";
 import CustomPhoneInput from "@/components/ui/phone-input";
+import PhoneInput from "@/components/ui/valid-phone";
 import { useTripErrors } from "@/store/tripErrorsStore";
 import { useTripStore } from "@/store/tripStore";
 
@@ -181,10 +182,19 @@ const Phone = () => {
         setPhone(value);
         if (value) clearError("phone");
       }}
-      className={`h-11.25 rounded-md border 
+      className={`h-11.25 rounded-md border
             ${phoneError ? "border-red-500" : "border-transparent"}
             `}
       radius="7px"
     />
+    // <PhoneInput
+    //   value={phone}
+    //   onChange={(value: string) => {
+    //     setPhone(value);
+    //     if (value) clearError("phone");
+    //   }}
+    //   className="h-11 rounded-lg border bg-[#F4F4F4] shadow-xs"
+    //   selectorClassName="bg-[#E5E5E5] rounded-l-lg px-3"
+    // />
   );
 };

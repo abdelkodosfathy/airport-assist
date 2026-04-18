@@ -28,17 +28,28 @@ const SubmitButton = () => {
   const from = usePickupPointsStore((s) => s.pickup);
   const dropOff = usePickupPointsStore((s) => s.dropoff);
 
+  const date = useDateStore((s) => s.bookingDate);
+
   const handleSubmit = async () => {
     // ✅ getState — قراءة لحظية بدون subscription
     const { car, tripType, hours, firstName, lastName, email, phone } =
+    
       useTripStore.getState();
     const { airline: airlineId, flightNumber } = useFlightStore.getState();
     const { serviceType } = useServiceStore.getState();
-    const { bookingDate: date } = useDateStore.getState();
+    // const { bookingDate: date } = useDateStore.getState();
     const { airport } = useAirportStore.getState();
 
     const tripApiType = tripType === "one-way" ? "by_distance" : "by_hour";
     const tripDate = `${date?.date} ${date?.time}`;
+
+    const { isMultiDay } = useTripStore.getState();
+    const { dateTimeList } = useTripStore.getState();
+    const { meetAndGreet } = useTripStore.getState();
+    const { passengers } = useTripStore.getState();
+    const { luggage } = useTripStore.getState();
+
+    // console.log(tripDate);
 
     // ─── Validation ───────────────────────────────────────────────
     // const tripErrors = {
@@ -81,7 +92,12 @@ const SubmitButton = () => {
       },
       {
         key: "date",
-        condition: !date?.date || !date?.time,
+        condition: !isMultiDay && (!date?.date || !date?.time),
+        message: "Please select date and time",
+      },
+      {
+        key: "date",
+        condition: isMultiDay && dateTimeList.length === 0,
         message: "Please select date and time",
       },
       {
@@ -131,22 +147,36 @@ const SubmitButton = () => {
 
     formData.append("trip_type", tripApiType);
     formData.append("car_type_id", String(car?.car_type_id));
-    formData.append("trip_start_time", formatDateToAPI(tripDate));
 
-    formData.append(
-      "pickup_location[lat]",
-      String(from?.location?.lat),
-    );
-    formData.append(
-      "pickup_location[long]",
-      String(from?.location?.lng),
-    );
+    formData.append("pickup_location[lat]", String(from?.location?.lat));
+    formData.append("pickup_location[long]", String(from?.location?.lng));
+
+    formData.append("has_meet_and_greet", meetAndGreet ? "1" : "0");
+    formData.append("number_of_passengers", String(passengers) );
+    formData.append("number_of_bags", String(luggage) );
 
     if (tripApiType === "by_hour") {
       formData.append("hours_count", String(hours));
       formData.append("dropoff_location[lat]", String(from?.location?.lat)); // مؤقتا علي ما الباك يشيل منها الريكوايرد
       formData.append("dropoff_location[long]", String(from?.location?.lng)); // مؤقتا علي ما الباك يشيل منها الريكوايرد
+
+      if (isMultiDay) {
+        // formData.append("trip_start_time", formatDateToAPI());
+        dateTimeList.map((day, index) => {
+          const dayDate = `${day?.date} ${day?.time}`;
+
+          if (index === 0) {
+            formData.append("trip_start_time", formatDateToAPI(dayDate));
+          } else {
+            formData.append(
+              `other_trips[${index}][trip_timestamp]`,
+              formatDateToAPI(dayDate),
+            );
+          }
+        });
+      }
     } else {
+      formData.append("trip_start_time", formatDateToAPI(tripDate));
       formData.append("dropoff_location[lat]", String(dropOff?.location?.lat));
       formData.append("dropoff_location[long]", String(dropOff?.location?.lng));
       formData.append("flight[airline_id]", String(airlineId?.value));
@@ -161,7 +191,10 @@ const SubmitButton = () => {
     formData.append("contact[phone]", phone);
     formData.append("contact[email]", email);
 
-    formData.append("is_airport_trip", "1");
+    formData.append(
+      "is_airport_trip",
+      tripApiType === "by_distance" ? "1" : "0",
+    );
     formData.append(
       "airport_trip_direction",
       serviceType === "departure" ? "to_airport" : "from_airport",
@@ -190,11 +223,18 @@ const SubmitButton = () => {
       }
     } catch (e) {
       console.log(e);
-
-      toast.error("Something went wrong", {
-        position: "top-center",
-        description: "Please try again later.",
-      });
+      const err = e as { data?: { error?: string } };
+      if (err?.data?.error) {
+        toast.error("Something went wrong", {
+          position: "top-center",
+          description: err.data.error,
+        });
+      } else {
+        toast.error("Something went wrong", {
+          position: "top-center",
+          description: "Please try again later.",
+        });
+      }
     }
   };
 

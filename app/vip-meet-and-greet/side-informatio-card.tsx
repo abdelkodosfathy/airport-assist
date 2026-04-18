@@ -1,11 +1,11 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Arraival from "@/components/custom icons/arraival";
 import Calender from "@/components/custom icons/calender";
 import Connection from "@/components/custom icons/connection";
 import Depature from "@/components/custom icons/depature";
-import { CircleAlert, ClockPlus, Info, Mail } from "lucide-react";
+import { CircleAlert, ClockPlus, Info, Mail, Phone } from "lucide-react";
 import { useCurrencyStore } from "@/store/currencyStore";
 import {
   ServiceType,
@@ -33,6 +33,7 @@ import {
 } from "@/components/ui/tooltip";
 import { formatNumber } from "@/lib/formatNumbers";
 import { useCarStore } from "@/store/chauffeurStore";
+import Whatsapp from "@/components/custom icons/whatsapp";
 export type SideInformationCardRef = {
   getTotal: () => number | undefined;
   recalculate: () => void;
@@ -61,9 +62,13 @@ const SideInformationCard = () => {
 
   const isFastTrack = airport?.is_fast_track_active ?? false;
   const fastTrackCost = airport?.fast_track_cost ?? 0;
-  const airportPackage = useAirportPackageStore(
-    (state) => state.airportPackage,
-  );
+  const pkgSlug = useAirportPackageStore((state) => state.airportPackage)
+    ?.package.package_slug;
+  const airportPackages = airport?.airport_packages.filter((pkg) => {
+    return pkg.package.package_slug === pkgSlug;
+  });
+
+  const airportPackage = airportPackages ? airportPackages[0] : null;
   const fastTrackChecked = useFlightFormStore((state) => state.fastTrack);
   const numberOfBags = usePrimaryPassengerStore((state) => state.numberOfBags);
   const freeBags = airport?.number_of_free_bags; // edit it
@@ -71,16 +76,14 @@ const SideInformationCard = () => {
   const bagsBlockSize = airport?.paid_bags_block_size; // edit it
 
   const car = useCarStore((s) => s.car);
-
   const miles = useChauffeurDestinationStore((s) => s.miles);
   const additionalMiles = Math.max((miles ?? 0) - 15, 0);
-  const additionalMilesCost =
-    Math.ceil(additionalMiles) * (car?.price_per_mile ?? 0);
+  const additionalMilesCost = additionalMiles * (car?.price_per_mile ?? 0);
 
   const supplementFee =
-    airportPackage?.package.package_slug !== "elite_plus"
-      ? (car?.supplement_fee ?? 0)
-      : 0;
+    pkgSlug === "elite_plus"
+      ? Math.max((car?.supplement_fee ?? 0) - 180, 0)
+      : (car?.supplement_fee ?? 0);
 
   const hours = useFlightFormStore((state) => state.serviceDuration);
   const additionalHours = Math.max((Number(hours?.value) || 0) - 2, 0);
@@ -117,19 +120,32 @@ const SideInformationCard = () => {
     ? fastTrackCost * allPassengers
     : 0;
 
-  const additionalAdults =
-    storedAdults - (airportPackage?.included_adults_count ?? 0);
+  const includedAdults = airportPackage?.included_adults_count ?? 0;
 
-  const AdditionalPassengersCost =
-    Math.max(additionalAdults, 0) *
-    (airportPackage?.additional_adult_cost ?? 0);
+  const additionalAdults = storedAdults - includedAdults;
+
+  const isSpecialCase =
+    airport?.airport_code === "LHR" && pkgSlug === "signature";
+
+  const passengersBlock = Math.ceil(
+    Math.max(additionalAdults, 0) / includedAdults,
+  );
+  const AdditionalPassengersCost = isSpecialCase
+    ? passengersBlock * (airportPackage?.additional_adult_cost ?? 0)
+    : Math.max(additionalAdults, 0) *
+      (airportPackage?.additional_adult_cost ?? 0);
+
+  console.log(passengersBlock);
+  console.log(AdditionalPassengersCost);
+  console.log(isSpecialCase, pkgSlug);
+  console.log(includedAdults, additionalAdults);
 
   const [totalPrice, setTotalPrice] = useState<number>();
 
   const isLastMinute = useMemo(() => {
     if (!storedDate || !airport) return false;
 
-    const targetDate = new Date(storedDate.date);
+    const targetDate = new Date(storedDate.date ?? "");
     if (isNaN(targetDate.getTime())) return false;
     const diff = targetDate.getTime() - Date.now();
 
@@ -143,7 +159,7 @@ const SideInformationCard = () => {
   }, [airport, isLastMinute]);
 
   const additional_hour_cost =
-    storedServiceType === "connection"
+    storedServiceType !== "arrival"
       ? (airportPackage?.additional_hour_cost ?? 0)
       : 0;
   const additionalHourCost = additional_hour_cost * additionalHours;
@@ -153,57 +169,46 @@ const SideInformationCard = () => {
       ? (airportPackage?.connection_fees ?? 0)
       : 0;
 
-  const calculateTotal = useCallback(() => {
+  useEffect(() => {
     if (!airportPackage) return;
 
     const adultCost = airportPackage.adult_cost;
     const childCost = airportPackage.child_cost * storedChildren;
-    const hoursCost = additionalHours * (airport?.additional_hour_cost || 0);
-    const additionalAdults = Math.max(
-      storedAdults - airportPackage.included_adults_count,
-      0,
-    );
-
-    const additionalCost =
-      additionalAdults * airportPackage.additional_adult_cost;
+    // const additionalAdults = Math.max(
+    //   storedAdults - airportPackage.included_adults_count,
+    //   0,
+    // );
+    // const additionalCost =
+    //   additionalAdults * airportPackage.additional_adult_cost;
 
     const total =
       adultCost +
       childCost +
       calcBags +
-      additionalCost +
+      // additionalCost +
+      AdditionalPassengersCost +
       connectionCost +
       calculatedFastTrack +
       additionalMilesCost +
       supplementFee +
-      hoursCost;
+      additionalHourCost;
+
     setTotalPrice(total);
   }, [
+    currency,
     airportPackage,
     storedServiceType,
     miles,
-    car, // for price per hour, mile, supplement fee
+    car,
     calcBags,
     lastMinuteCost,
+    additionalHourCost,
     isFastTrack,
     hours,
     fastTrackChecked,
+    storedChildren,
+    storedAdults,
   ]);
-
-  useEffect(() => {
-    calculateTotal();
-  }, [
-    airportPackage,
-    miles,
-    car, // for price per hour, mile, supplement fee
-    calcBags,
-    lastMinuteCost,
-    isFastTrack,
-    hours,
-    fastTrackChecked,
-    storedServiceType,
-  ]);
-
   return (
     <div className="h-full flex-1 space-y-4 sticky top-26">
       <div className="bg-[#7B5A411C] rounded-2xl p-5">
@@ -279,13 +284,13 @@ const SideInformationCard = () => {
               hoursCost={additionalHourCost}
             />
           ) : null}
-          {additionalMilesCost > 0 ? (
-            <ChauffeurRow
-              supplementFee={supplementFee}
-              additionalMilesCost={additionalMilesCost}
-              currency={currency}
-            />
-          ) : null}
+          {/* {additionalMilesCost > 0 ? ( */}
+          <ChauffeurRow
+            supplementFee={supplementFee}
+            additionalMilesCost={additionalMilesCost}
+            currency={currency}
+          />
+          {/* ) : null} */}
           {lastMinuteCost > 0 ? (
             <LastMinuteRow
               currency={currency}
@@ -341,17 +346,17 @@ const Contacts = () => {
       <p className="text-sm text-[#7a7a7a] leading-[27px]">
         Our dedicated team are available to discuss all aspects of our service.
       </p>
-      <ul className="text-[#7a7a7a] space-y-2 mt-2">
+      <ul className="normal-case text-[#7a7a7a] space-y-2 mt-2">
         <li className="flex gap-2">
           <Mail />
           <p>Contact@airport-assist.com</p>
         </li>
         <li className="flex gap-2">
-          <Mail />
+          <Phone />
           <p>+44 20 4517 7711</p>
         </li>
         <li className="flex gap-2">
-          <Mail />
+          <Whatsapp />
           <p>Contact us via WhatsApp</p>
         </li>
       </ul>
@@ -528,36 +533,56 @@ const ChauffeurRow = ({
   additionalMilesCost: number;
   supplementFee: number;
 }) => {
-  return (
-    // <li className="flex justify-between gap-2 items-center font-semibold text-[#62697D]">
-    <li className="flex justify-between gap-2 font-semibold text-[#62697D]">
-      <div className="flex gap-2 items-center">
-        <Chauffeur />
-        <div className="flex items-center gap-2">
-          <p>
-            Chauffeur
-            <span className="text-[0.7rem] hidden xl:inline">
-              (included free for 15 miles)
-            </span>
-          </p>
+  const additionalSupplementFee = Math.max(supplementFee - 180, 0);
 
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Info size={16} className="xl:hidden cursor-pointer" />
-              </TooltipTrigger>
-              <TooltipContent className="bg-white text-[#7B5A41] shadow-lg">
-                <p>(included free for 15 miles)</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        </div>
-      </div>
-      <p>
-        <span className="text-xs">+{currency} </span>
-        {Math.ceil(additionalMilesCost + supplementFee)}
-      </p>
-    </li>
+  return (
+    <>
+      {additionalMilesCost > 0 ? (
+        <li className="flex justify-between gap-2 font-semibold text-[#62697D]">
+          <div className="flex gap-2 items-center">
+            <Chauffeur />
+            <div className="flex items-center gap-2">
+              <p>
+                Additional Miles{" "}
+                <span className="text-[0.7rem] hidden xl:inline">
+                  (included free for 15 miles)
+                </span>
+              </p>
+
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Info size={16} className="xl:hidden cursor-pointer" />
+                  </TooltipTrigger>
+                  <TooltipContent className="bg-white text-[#7B5A41] shadow-lg">
+                    <p>(included free for 15 miles)</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </div>
+          </div>
+          <p>
+            <span className="text-xs">+{currency} </span>
+            {Math.round(additionalMilesCost)}
+          </p>
+        </li>
+      ) : null}
+
+      {additionalSupplementFee > 0 ? (
+        <li className="flex justify-between gap-2 font-semibold text-[#62697D]">
+          <div className="flex gap-2 items-center">
+            <Chauffeur />
+            <div className="flex items-center gap-2">
+              <p>Addtional Supplement fee</p>
+            </div>
+          </div>
+          <p>
+            <span className="text-xs">+{currency} </span>
+            {Math.round(additionalSupplementFee)}
+          </p>
+        </li>
+      ) : null}
+    </>
   );
 };
 

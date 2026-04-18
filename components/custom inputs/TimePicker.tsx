@@ -96,11 +96,11 @@ const TimePickerInput = ({
       const formattedTime = formatTime(selectedHour, selectedMinute);
       if (storedTime?.date)
         storeTime({ date: storedTime.date, time: formattedTime });
-      setIsOpen(false);
       onChange?.(formattedTime);
       onTimeChange?.(formattedTime);
       onSelect?.(selectedHour, selectedMinute);
     }
+    setIsOpen(false);
   }, [
     selectedHour,
     selectedMinute,
@@ -125,6 +125,8 @@ const TimePickerInput = ({
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isOpen, handleTimeSelect]);
+
+ 
 
   const hours = Array.from({ length: 24 }, (_, i) => i); // 0 → 23
   const minutes = Array.from(

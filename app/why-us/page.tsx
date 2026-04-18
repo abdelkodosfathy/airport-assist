@@ -8,7 +8,7 @@ export default function ServicesLayout() {
     <main className="bg-[#F7F7F6] font-[Manrope]">
       <Header />
 
-      <section className="bg-[#1A1A1A] relative w-full h-140 text-white flex items-center overflow-hidden">
+      <section className="bg-[#1A1A1A] relative w-full h-114 text-white flex items-center overflow-hidden">
         {/* Hero content */}
         <div className="relative z-10 mx-auto max-w-340 px-12 flex gap-4 w-full justify-between">
           <div className="flex-1 flex flex-col justify-center">
@@ -65,37 +65,6 @@ const TopCard = ({ title, content }: { title: string; content: string }) => {
     <div>
       <h3 className="font-semibold tracking-[2.25px] mb-3">{title}</h3>
       <p className="text-sm text-[#6D6D6D]">{content}</p>
-    </div>
-  );
-};
-
-const InfoSection = ({ title }: { title: string }) => {
-  return (
-    <div>
-      <h3 className="font-semibold tracking-[2.25px] mb-3">{title}</h3>
-      {/* <pre className="text-sm text-[#6D6D6D]">{content}</pre> */}
-      <p className="text-sm text-[#6D6D6D]">
-        AIRPORT ASSIST’s Private Travel division specialises in VIP airport
-        assistance, luxury travel concierge services, and tailored travel
-        experiences for high-profile and discerning clients.
-      </p>
-      <p className="mt-3 text-sm text-[#6D6D6D]">
-        We are trusted globally for our:
-      </p>
-      <ul className="mb-3 list-disc ml-5">
-        <li className="text-sm text-[#6D6D6D]">
-          Discreet and professional service
-        </li>
-        <li className="text-sm text-[#6D6D6D]">
-          Fast-track airport assistance
-        </li>
-        <li className="text-sm text-[#6D6D6D]">Personalised travel planning</li>
-        <li className="text-sm text-[#6D6D6D]">Worldwide airport coverage</li>
-      </ul>
-      <p className="text-sm text-[#6D6D6D]">
-        From departure to arrival, we provide a smooth and stress-free journey
-        for travellers who value efficiency, privacy, and world-class service.
-      </p>
     </div>
   );
 };

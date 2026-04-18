@@ -10,7 +10,9 @@ import {
   useAirportStore,
   useChauffeurDestinationStore,
   useDateStore,
+  usePassengersStore,
   useServiceStore,
+  useSingleAirportStore,
 } from "@/store/vipInputsStore";
 import ChauffeurInputs from "./chauffeur-inputs";
 import { useFlightFormStore } from "@/store/useFlightFormStore";
@@ -58,8 +60,9 @@ export default function BookingForm() {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const setAirport = useAirportStore((s) => s.setAirport);
   const resetPackages = useAirportPackageStore((s) => s.resetAirportPackage);
+  const resetPassengers = usePassengersStore((s) => s.resetPassengers);
+  const resetDate = useDateStore((s) => s.resetBookingDate);
   const resetFlight = useFlightFormStore((s) => s.resetForm);
   const resetPrimary = usePrimaryPassengerStore((s) => s.resetPrimaryPassenger);
   const resetChauffeurDestinations = useChauffeurDestinationStore(
@@ -67,35 +70,81 @@ export default function BookingForm() {
   );
   const resetAdditionalData = useAdditionalServicesStore((s) => s.reset);
   const resetBillingData = useBillingStore((s) => s.reset);
+  const resetAirport = useAirportStore((s) => s.resetAirport);
+  const resetSingleAirport = useSingleAirportStore((s) => s.resetSingleAirport);
 
-  const resetData = () => {
+  // const resetData = () => {
+  //   resetPackages();
+  //   resetFlight();
+  //   resetPrimary();
+  //   resetChauffeurDestinations();
+  //   resetAdditionalData();
+  //   resetBillingData();
+  // };
+  const resetData = useCallback(() => {
     resetPackages();
     resetFlight();
     resetPrimary();
     resetChauffeurDestinations();
     resetAdditionalData();
     resetBillingData();
-  };
-  const resetForm = () => {
-    resetData();
-    setAirport(null);
-    setServiceType(null);
-  };
+  }, [
+    resetPackages,
+    resetFlight,
+    resetPrimary,
+    resetChauffeurDestinations,
+    resetAdditionalData,
+    resetBillingData,
+  ]);
 
+  // const resetForm = () => {
+  //   console.log("form rednered");
+  //   resetData();
+
+  //   resetDate();
+  //   resetAirport();
+  //   resetPassengers();
+  //   resetSingleAirport();
+  //   setServiceType(null);
+  // };
+  const resetForm = useCallback(() => {
+    resetData();
+    resetDate();
+    resetAirport();
+    resetPassengers();
+    resetSingleAirport();
+    setServiceType(null);
+  }, [
+    resetData,
+    resetDate,
+    resetAirport,
+    resetPassengers,
+    resetSingleAirport,
+    setServiceType,
+  ]);
+
+  // const handleTabChange = useCallback(
+  //   (tab: TabType) => {
+  //     resetForm();
+  //     setActiveTab(tab);
+  //     setErrors({});
+  //   },
+  //   [
+  //     resetPackages,
+  //     resetFlight,
+  //     resetPrimary,
+  //     resetChauffeurDestinations,
+  //     resetAdditionalData,
+  //     resetBillingData,
+  //   ],
+  // );
   const handleTabChange = useCallback(
     (tab: TabType) => {
       resetForm();
       setActiveTab(tab);
       setErrors({});
     },
-    [
-      resetPackages,
-      resetFlight,
-      resetPrimary,
-      resetChauffeurDestinations,
-      resetAdditionalData,
-      resetBillingData,
-    ],
+    [resetForm],
   );
 
   const validateForm = useCallback((): boolean => {
@@ -153,10 +202,13 @@ export default function BookingForm() {
   );
   console.log(activeTab);
 
+  useEffect(() => {
+    resetForm();
+  }, []);
   return (
-    <Card className="gap-4 xs:gap-6 lg:gap-4 booking-form opacity-0 mx-auto backdrop-blur-md bg-white/10 border-white/20 mt-8 md:mt-12 w-full max-w-[1272px] p-6 lg:p-7.5 transition-all duration-300">
+    <Card className="gap-4 xs:gap-6 lg:gap-4 booking-form opacity mx-auto backdrop-blur-md bg-white/10 border-white/20 mt-8 md:mt-12 w-full max-w-[1272px] p-6 lg:p-7.5 transition-all duration-300">
       {/* Tabs */}
-      <div className="flex flex-col items-start xs:flex-row xs:items-center flex-wrap gap-2 md:gap-4 justify-center lg:justify-start lg:mb-6">
+      <div className="flex flex-col items-start flex-row xs:items-center flex-wrap gap-2 md:gap-4 justify-center lg:justify-start lg:mb-6">
         <Button
           variant="ghost"
           onClick={() => handleTabChange("vip")}
@@ -164,7 +216,8 @@ export default function BookingForm() {
           aria-pressed={activeTab === "vip"}
           aria-label="VIP Meet & Greet Service Tab"
         >
-          <p>VIP Meet & Greet Service</p>
+            VIP Meet & Greet
+            <span className="hidden sm:block">Service</span>
           <span
             className={clsx(
               "absolute left-0 right-0 bottom-0.5 xs:-bottom-2 h-0.5 rounded-full transition-all duration-300",
@@ -174,7 +227,7 @@ export default function BookingForm() {
             )}
           />
         </Button>
-        <span className="hidden xs:inline-block w-0.75 h-9 rounded-3xl bg-linear-to-b from-white to-white/10" />
+        <span className="inline-block w-0.75 h-9 rounded-3xl bg-linear-to-b from-white to-white/10" />
         <Button
           variant="ghost"
           onClick={() => handleTabChange("chauffeur-services")}
@@ -182,7 +235,9 @@ export default function BookingForm() {
           aria-pressed={activeTab === "chauffeur-services"}
           aria-label="Chauffeur Services Tab"
         >
-          Chauffeur Services
+          Chauffeur
+            <span className="hidden sm:block">Service</span>
+
           <span
             className={clsx(
               "absolute left-0 right-0 bottom-0.5 xs:-bottom-2 h-0.5 rounded-full transition-all duration-300",
@@ -206,7 +261,7 @@ export default function BookingForm() {
           ) : (
             <ChauffeurInputs onReset={resetData} errors={errors} />
           )}
-          <button
+          {/* <button
             onClick={handleBookNow}
             disabled={isSubmitting}
             className="w-full h-10  lg:min-h-12 rounded-lg lg:rounded-none lg:rounded-r-xl border text-lg font-light border-white/30 text-white px-6 py-3 bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)] hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 transform cursor-pointer col-span-1 sm:col-span-2 lg:col-span-4"
@@ -216,6 +271,20 @@ export default function BookingForm() {
               {isSubmitting && <Loader2 className="w-4 h-4 animate-spin" />}
               {isSubmitting ? "BOOKING..." : "BOOK NOW"}
             </p>
+          </button> */}
+          <button
+            onClick={handleBookNow}
+            disabled={isSubmitting}
+            aria-label="Book now"
+            aria-busy={isSubmitting}
+            aria-live="polite"
+            className="w-full h-10 lg:min-h-12 rounded-lg lg:rounded-none lg:rounded-r-xl border text-lg font-light border-white/30 text-white px-6 py-3 bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)] hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 transform cursor-pointer col-span-1 sm:col-span-2 lg:col-span-4
+              focus:outline-none focus:ring-1 focus:ring-white/40 focus:ring-offset-1 focus:ring-offset-black"
+          >
+            <span className="flex items-center justify-center gap-2">
+              {isSubmitting && <Loader2 className="w-4 h-4 animate-spin" />}
+              {isSubmitting ? "Booking..." : "BOOK NOW"}
+            </span>
           </button>
         </div>
         {/* Global error message */}

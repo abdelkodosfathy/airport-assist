@@ -1,22 +1,21 @@
 // ── Flight Number Input ───────────────────────────────────────────────────────
 
 import { Label } from "@/components/ui/label";
-import { ValidationErrors } from "./types";
 import { Input } from "@/components/ui/input";
 
 interface FlightNumberInputProps {
   value: string;
   onChange: (value: string) => void;
   className?: string;
-  validationErrors: ValidationErrors;
   airline: string;
   disabled?: boolean;
   withoutLabel?: boolean;
   label?: string;
+  flightNumberError?:boolean,
 }
 
 export function FlightNumberInput({
-  validationErrors,
+  flightNumberError,
   value,
   onChange,
   airline,
@@ -35,8 +34,10 @@ export function FlightNumberInput({
   return (
     <div className="space-y-2">
       {!withoutLabel && (
-        <Label className={validationErrors.flightNumber ? "text-red-500" : ""}>
-          {label} {validationErrors.flightNumber && "*"}
+        // <Label className={validationErrors.flightNumber ? "text-red-500" : ""}>
+        //   {label} {validationErrors.flightNumber && "*"}
+        <Label className={flightNumberError ? "text-red-500" : ""}>
+          {label} {flightNumberError && "*"}
         </Label>
       )}
       <Input

@@ -2,8 +2,7 @@
 import ServiceSection from "@/app/our-services/components/services-section";
 import Image from "next/image";
 import { ReactNode } from "react";
-import serviceImage from "@/public/services-image.jpg";
-import { title } from "process";
+import serviceImage from "@/public/services-image.webp";
 
 type Props = {};
 

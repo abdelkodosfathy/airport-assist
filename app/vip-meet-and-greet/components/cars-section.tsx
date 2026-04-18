@@ -29,13 +29,14 @@ export type CarsSectionHandle = {
   getData: () => number;
 };
 
-const CarsSection = () => {
+const CarsSection = ({ isAdditional = false, onCancel}: { isAdditional?: boolean, onCancel?: () => void }) => {
   const serviceType = useServiceStore((s) => s.serviceType);
   const airport = useAirportStore((state) => state.airport);
   const destination = useChauffeurDestinationStore((s) => s.destination);
   const distanceMi = useChauffeurDestinationStore((m) => m.miles);
   const setDestination = useChauffeurDestinationStore((s) => s.setDestination);
   const setMiles = useChauffeurDestinationStore((m) => m.setMiles);
+  const setWithTrip = useChauffeurDestinationStore((m) => m.setWithTrip);
 
   const [distanceKm, setDistanceKm] = useState<string | null>(null);
   const [duration, setDuration] = useState<string | null>(null);
@@ -112,6 +113,16 @@ const CarsSection = () => {
   const [showSummary, setShowSummary] = useState(false);
   // const showSummary = !!destination?.location && !!selectedCar;
 
+  // useEffect(()=>{
+    // setShowSummary(false);
+  // }, [selectedCar?.car_type_id])
+
+  const handleAddChauffeur = () => {
+    setWithTrip(true);
+    console.log("true with trip");
+    
+    setShowSummary(true);
+  };
   return (
     <>
       {showSummary && selectedCar && destination ? (
@@ -160,6 +171,10 @@ const CarsSection = () => {
           {/* Destination input */}
           <div className="py-4">
             <LocationInput
+              //   onChange={(s) => {
+              //   setPickup(s);
+              //   clearError("from");
+              // }}
               label={serviceType === "arrival" ? "Drop Off" : "Pickup From"}
               placeholder="Search for drop off location…"
               value={destination}
@@ -167,30 +182,35 @@ const CarsSection = () => {
               isLoaded={isLoaded}
               isPickup={false}
               disableAirportsSearch={true}
-              countryRestriction={["uk", "fr"]} // you can use it for many countries or remove it to unlock the search
+              // countryRestriction={["uk", "fr"]} // you can use it for many countries or remove it to unlock the search
             />
           </div>
           {/* Cars list */}
           <div className="py-2">
             <CarsList />
           </div>
-          <Button
-            onClick={() => setShowSummary(true)}
-            disabled={!canAdd}
-            variant="outline"
-            className="
-          col-span-2 cursor-pointer border-black text-black
-          hover:border-[#664F31]
-          hover:bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)]
-          hover:text-white duration-0
-          disabled:opacity-50 disabled:cursor-not-allowed
-            
+          <div className="col-span-2">
+            {isAdditional ? (
+              <AdditionalChauffeur onCancel={onCancel}  canAdd={canAdd} onAddChauffeur={handleAddChauffeur} />
+            ) : (
+              <Button
+                onClick={handleAddChauffeur}
+                disabled={!canAdd}
+                variant="outline"
+                className="
+              col-span-2 cursor-pointer border-black text-black
+              hover:border-[#664F31]
+              hover:bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)]
+              hover:text-white duration-0
+              disabled:opacity-50 disabled:cursor-not-allowed
               hover:linear-gradient(179.26deg, #7B5A41 0.64%, #DFB08D 223.79%)
               h-7 font-[Manrope] font-normal py-0 px-8 rounded-full mt-2
             "
-          >
-            Add Chauffeur
-          </Button>
+              >
+                Add Chauffeur
+              </Button>
+            )}
+          </div>
         </div>
       )}
     </>
@@ -298,7 +318,7 @@ const CarSummary = ({
               // "
               className="
                 cursor-pointer border-black 
-                text-[#99A1AF]
+                text-[#7a7a7a]
                 hover:text-gray-500 hover:bg-gray-200 duration-0
                 h-7 font-[Manrope] font-normal py-0 rounded-full
               "
@@ -326,6 +346,55 @@ const CarSummary = ({
         }
         text="Chauffeur will wait 15 minutes free of charge"
       />
+    </div>
+  );
+};
+
+const AdditionalChauffeur = ({
+  onCancel,
+  onAddChauffeur,
+  canAdd,
+  loading,
+}: {
+  onCancel?: () => void;
+  onAddChauffeur: () => void;
+  canAdd:boolean,
+  loading?: boolean
+}) => {
+  // const additionalChauffeur = useChauffeurDestinationStore(
+  //   (s) => s.withAdditionalChauffeur,
+  // );
+  // const setAdditionalChauffeur = useChauffeurDestinationStore(
+  //   (s) => s.setWithAdditionalChauffeur,
+  // );
+  const resetChauffeur = useChauffeurDestinationStore(s => s.resetChauffeurDestination);
+  const setCar = useCarStore(s => s.setCar);
+
+  return (
+    <div className="flex items-center justify-between">
+      <Button
+        type="button"
+        onClick={() => {
+          resetChauffeur();
+          setCar(null);
+          if(onCancel){
+            onCancel();
+          }
+        }}
+        disabled={loading}
+        variant="outline"
+        className="px-6 cursor-pointer border-black text-black hover:border-[#664F31] hover:bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)] hover:text-white duration-0"
+      >
+       Cancel Chauffeur
+      </Button>
+      <Button
+        onClick={onAddChauffeur}
+        disabled={!canAdd }
+        variant="outline"
+        className="px-6 cursor-pointer border-black text-black hover:border-[#664F31] hover:bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)] hover:text-white duration-0"
+      >
+        Add Chauffeur
+      </Button>
     </div>
   );
 };

@@ -6,81 +6,34 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useSingleAirport } from "@/lib/hooks/useAirports";
-import { AirportPackage } from "@/lib/types/airport";
 import { useCurrencyStore } from "@/store/currencyStore";
-import { useAirportPackageStore } from "@/store/packageStore";
-import { useAirportStore, useSingleAirportStore } from "@/store/vipInputsStore";
-import { useQueryClient } from "@tanstack/react-query";
-import { useEffect } from "react";
+import Image from "next/image";
 
 export default function CurrencySelector() {
   const currency = useCurrencyStore((s) => s.currency);
   const setCurrency = useCurrencyStore((s) => s.setCurrency);
-  // const currencyLoading = useCurrencyStore((s) => s.currencyLoading);
-  // const setCurrencyLoading = useCurrencyStore((s) => s.setCurrencyLoading);
 
-  // const storedAirport = useAirportStore((state) => state.airport);
-
-  const airportPackage = useAirportPackageStore(
-    (state) => state.airportPackage,
-  );
-  const setAirportPackage = useAirportPackageStore(
-    (state) => state.setAirportPackage,
-  );
-
-  const singleAirport = useSingleAirportStore((state) => state.singleAirport);
-  const setSingleAirport = useSingleAirportStore(
-    (state) => state.setSingleAirport,
-  );
-  const {
-    data: airportQuery,
-    refetch,
-    isLoading,
-    isError,
-  } = useSingleAirport(singleAirport?.airport_id.toString() ?? "");
-  const airportResponse = airportQuery?.data?.airport;
-
-  console.log(isLoading);
-  console.log(airportResponse);
-
-  useEffect(() => {
-    if (airportResponse) {
-      setSingleAirport(airportResponse);
-    }
-    if (airportPackage) {
-      const newPackage = airportResponse?.airport_packages.find(
-        (pkg) =>
-          pkg.package.package_slug === airportPackage.package.package_slug,
-      );
-      setAirportPackage(newPackage as AirportPackage);
-    }
-  }, [airportResponse, setSingleAirport]);
-
-  const queryClient = useQueryClient();
-
-  useEffect(() => {
-    queryClient.invalidateQueries({ queryKey: ["singleAirport"] });
-  }, [currency]);
-  // useEffect(() => {
-  //   refetch();
-  // }, [currency]);
   return (
     <Select value={currency} onValueChange={setCurrency}>
       <SelectTrigger
+        aria-label="Select currency"
         className="min-h-10 backdrop-blur-md hover:backdrop-blur-xl
         bg-white/10 border border-white/20
         p-2 rounded-xl text-sm text-white
+        focus:outline-none focus:ring-2 focus:ring-white/50
         transition w-31 outline-none font-light hover:bg-transparent hover:text-white cursor-pointer"
       >
-        <SelectValue />
+        <SelectValue placeholder="GBP" />
       </SelectTrigger>
 
-      <SelectContent className="bg-white text-black" position="popper">
+      <SelectContent className="z-90 bg-white text-black" position="popper">
         <SelectItem value="USD">
           <div className="flex items-center gap-3">
-            <img
+            <Image
+              alt="US Dollar"
               src="/icons/usd.png"
+              width={32}
+              height={32}
               className="w-8 h-8 object-cover rounded-2xl"
             />
             USD
@@ -89,7 +42,10 @@ export default function CurrencySelector() {
 
         <SelectItem value="EUR">
           <div className="flex items-center gap-3">
-            <img
+            <Image
+              width={32}
+              height={32}
+              alt="EUR Euro"
               src="/icons/eur.webp"
               className="w-8 h-8 object-cover rounded-2xl"
             />
@@ -99,7 +55,10 @@ export default function CurrencySelector() {
 
         <SelectItem value="GBP">
           <div className="flex items-center gap-3">
-            <img
+            <Image
+              width={32}
+              height={32}
+              alt="GBP British Pound"
               src="/icons/gbp.png"
               className="w-8 h-8 object-cover rounded-2xl"
             />

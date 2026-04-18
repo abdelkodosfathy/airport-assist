@@ -10,7 +10,7 @@ import { apiGet } from "@/lib/api";
 import { AirportsResponse, SingleAirportResponse } from "@/lib/types/airport";
 
 export async function fetchAirports(search?: string): Promise<AirportsResponse> {
-  const params = search ? `?search=${encodeURIComponent(search)}` : '';
+  const params = search ? `?search=${encodeURIComponent(search)}` : '?is_in_popular=1';
   return apiGet(`/airports${params}`);
 }
 export async function fetchSingleAirport(airportID: string): Promise<SingleAirportResponse> {

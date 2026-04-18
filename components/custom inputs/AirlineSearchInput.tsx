@@ -240,6 +240,7 @@ interface AirlineSearchInputProps {
   error?: string;
   disabled?: boolean;
   className?: string;
+  inputClassName?: string;
 }
 
 // ── Component ─────────────────────────────────────────────────────────────────
@@ -250,6 +251,7 @@ export default function AirlineSearchInput({
   error,
   disabled,
   value,
+  inputClassName,
   className,
 }: AirlineSearchInputProps) {
   const [query, setQuery] = useState(value?.airline_name ?? "");
@@ -336,7 +338,7 @@ export default function AirlineSearchInput({
       <div className="relative">
         {/* Input row */}
         <div
-          className={`relative flex items-center h-11 rounded-lg border bg-[#F4F4F4] transition-colors ${
+          className={`relative flex items-center  rounded-lg border bg-[#F4F4F4] transition-colors ${inputClassName ? inputClassName : "h-11"} ${
             error
               ? "border-red-400"
               : open

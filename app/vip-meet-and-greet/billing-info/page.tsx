@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { useAirportStore } from "@/store/vipInputsStore";
 import { useRouter } from "next/navigation";
 import SubmitButton from "./submit-button";
+import { useAuthStore } from "@/store/authStore";
 // import Link from "next/link";
 
 export default function BillingInformation() {
@@ -50,6 +51,11 @@ export default function BillingInformation() {
       setEmail(primaryEmail ?? "");
     }
   }, [sameAsPrimary]);
+
+  const s = useAuthStore(s => s.user);
+
+  console.log(s);
+  
   return (
     <>
       <p className="font-[Manrope] font-medium text-[15.53px] leading-[130%] text-[#8E8E93] mb-3">

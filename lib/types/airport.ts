@@ -1,3 +1,5 @@
+import { Feature } from "./package";
+
 export type PackageSlug = "elite" | "elite_plus" | "signature" | "vip";
 export interface City {
   city_id: number;
@@ -28,8 +30,9 @@ export interface Airport {
   updated_at: string;
   deleted_at: string | null;
   min_hours_before_booking: number;
-  last_minute_strategy: string;
+  last_minute_strategy: "extra_fees" | "check";
   last_minute_cost: number;
+  last_minute_cost_pct?: number;
   number_of_free_bags: number;
   paid_bags_block_size: number;
   paid_bags_block_cost: number;
@@ -78,32 +81,38 @@ export interface AirportPackage {
   package: InnerPackage;
 }
 
-export interface SingleAirport {
-  additional_hour_cost: number;
-  airport_code: string;
-  airport_color: string | null;
-  airport_id: number;
-  airport_img: string | null;
-  airport_name: string;
-  connection_fees: number;
-  city: City;
-  city_id: number;
-  created_at: string;
-  deleted_at: string | null;
-  fast_track_cost: number;
-  is_fast_track_active: number;
-  last_minute_cost: number;
-  last_minute_strategy: string;
-  location_lat: number;
-  location_long: number;
-  min_hours_before_booking: number;
-  number_of_free_bags: number;
-  paid_bags_block_cost: number;
-  paid_bags_block_size: number;
-  status: boolean;
-  updated_at: string;
-  features: any[]; // لو عندك type محدد ممكن تغيّره
+// export interface SingleAirport {
+//   additional_hour_cost: number;
+//   airport_code: string;
+//   airport_color: string | null;
+//   airport_id: number;
+//   airport_img: string | null;
+//   airport_name: string;
+//   connection_fees: number;
+//   city: City;
+//   city_id: number;
+//   created_at: string;
+//   deleted_at: string | null;
+//   fast_track_cost: number;
+//   is_fast_track_active: number;
+//   is_golf_cart_active: number;
+//   last_minute_cost: number;
+//   last_minute_strategy: string;
+//   location_lat: number;
+//   location_long: number;
+//   min_hours_before_booking: number;
+//   number_of_free_bags: number;
+//   paid_bags_block_cost: number;
+//   paid_bags_block_size: number;
+//   status: boolean;
+//   updated_at: string;
+//   features: Feature[]; // لو عندك type محدد ممكن تغيّره
+//   airport_packages: AirportPackage[];
+// }
+export interface SingleAirport extends Airport {
+  features: Feature[];
   airport_packages: AirportPackage[];
+  starting_price:number;
 }
 
 export interface SingleAirportResponse {

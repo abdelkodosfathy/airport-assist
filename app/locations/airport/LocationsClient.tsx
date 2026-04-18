@@ -6,7 +6,11 @@ import { AirportPackage } from "@/lib/types/airport";
 import PackageCard from "./pkg-card";
 import AirportForm from "./airport-form";
 import { useQueryParam } from "@/lib/hooks/useParams";
-import { Mail } from "lucide-react";
+import CMail from "@/components/custom icons/CMail";
+import CPhone from "@/components/custom icons/CPhone";
+import CWhatsapp from "@/components/custom icons/c-whatsapp";
+import { useEffect } from "react";
+import { useAirportStore } from "@/store/vipInputsStore";
 
 export default function Locations() {
   // const airportId = useAirportStore((state) => state.airport?.airport_id);
@@ -15,6 +19,11 @@ export default function Locations() {
   const { data, isLoading, isError } = useSingleAirport(
     airportId?.toString() || "",
   );
+  const setAirport = useAirportStore((s) => s.setAirport);
+  useEffect(() => {
+    if (!data?.data.airport) return;
+    setAirport(data.data.airport);
+  }, [data]);
 
   if (isLoading) {
   }
@@ -49,21 +58,25 @@ export default function Locations() {
                 <h4 className="font-[Manrope] font-semibold">
                   Need more information?
                 </h4>
-                <p className="text-sm text-[#7a7a7a] leading-[27px]">
+                <p className="normal-case text-sm text-[#7a7a7a] leading-[27px]">
                   Our dedicated team are available to discuss all aspects of our
                   service.
                 </p>
-                <ul className="text-[#7a7a7a] space-y-2 mt-2">
-                  <li className="flex gap-2">
-                    <Mail />
+                <ul className="normal-case text-[#7a7a7a] space-y-2 mt-2">
+                  <li className="flex gap-2 items-center">
+                    <CMail />
                     <p>Contact@airport-assist.com</p>
                   </li>
-                  <li className="flex gap-2">
-                    <Mail />
+                  <li className="flex gap-2 items-center">
+                    {/* <Mail /> */}
+                    <CPhone />
+
                     <p>+44 20 4517 7711</p>
                   </li>
-                  <li className="flex gap-2">
-                    <Mail />
+                  <li className="flex gap-2 items-center">
+                    {/* <Mail /> */}
+                    <CWhatsapp />
+
                     <p>Contact us via WhatsApp</p>
                   </li>
                 </ul>

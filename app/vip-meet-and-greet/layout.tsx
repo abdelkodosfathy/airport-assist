@@ -4,7 +4,7 @@ import Header from "@/components/Header/Header";
 import Footer from "@/components/Footer";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import hero from "@/public/our-sercives-hero.jpg";
+import hero from "@/public/booking-hero.webp";
 import { useRouter } from "next/navigation";
 import {
   useAirportStore,
@@ -35,20 +35,20 @@ export default function ServicesLayout({
   const passengersText =
     totalPassengers === 1 ? "1 Passenger" : `${totalPassengers} Passengers`;
 
-  useEffect(() => {
-    if (storedAirport?.airport_name) {
-      const slug = storedAirport.airport_name
-        .toLowerCase()
-        .replace(/\s+/g, "-") // spaces → dashes
-        .replace(/[^a-z0-9-]/g, ""); // remove special chars
+  // useEffect(() => {
+  //   if (storedAirport?.airport_name) {
+  //     const slug = storedAirport.airport_name
+  //       .toLowerCase()
+  //       .replace(/\s+/g, "-") // spaces → dashes
+  //       .replace(/[^a-z0-9-]/g, ""); // remove special chars
 
-      // router.replace(`/vip-meet-and-greet?airport=${slug}`, { scroll: false });
-      router.replace(
-        `/vip-meet-and-greet?airport=${slug}&service=${storedServiceType}`,
-        { scroll: false },
-      );
-    }
-  }, [storedAirport?.airport_name]);
+  //     // router.replace(`/vip-meet-and-greet?airport=${slug}`, { scroll: false });
+  //     router.replace(
+  //       `/vip-meet-and-greet?airport=${slug}&service=${storedServiceType}`,
+  //       { scroll: false },
+  //     );
+  //   }
+  // }, [storedAirport?.airport_name]);
 
   return (
     <main className="bg-[#F7F7F6] font-[Manrope]">
@@ -61,18 +61,18 @@ export default function ServicesLayout({
             src={hero}
             alt="background"
             fill
-            className="object-cover w-full h-full"
+            className="object-[50%_10%] object-cover w-full h-full"
             priority
           />
 
           {/* Gradient overlay */}
-          <div
+          {/* <div
             className="absolute inset-0"
             style={{
               background:
                 "linear-gradient(14.45deg, rgba(2, 2, 2, 0.0546) -17.37%, rgba(11, 11, 11, 0.78) 21.48%)",
             }}
-          />
+          /> */}
         </div>
 
         {/* Hero content */}
@@ -104,7 +104,7 @@ export default function ServicesLayout({
         </div>
       </section>
 
-      <section className="overflow-visible w-full max-w-360 mx-auto mt-20 mb-26 px-4 relative">
+      <section className="overflow-visible w-full max-w-350 mx-auto mt-20 mb-26 px-4 relative">
         {children}
       </section>
 

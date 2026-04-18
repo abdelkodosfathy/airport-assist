@@ -49,7 +49,7 @@ const VipInputs = ({
       >
         <AirportSearchInput
           onReset={onReset}
-          className="bg-white h-10 lg:h-full rounded-lg lg:rounded-none lg:rounded-l-xl"
+          className="bg-white h-10 lg:h-full rounded-t-lg lg:rounded-none lg:rounded-l-xl"
         />
         {errors.airport && (
           <div id="airport-error" role="alert">

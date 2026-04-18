@@ -105,7 +105,7 @@ const FlightInputs = () => {
 
       <FlightNumberInput
         withoutLabel
-        validationErrors={errors}
+        // validationErrors={errors}
         disabled={selectedAirline === null}
         airline={selectedAirline?.label ?? ""}
         className={`bg-[#F4F4F4] h-11.25 border ${

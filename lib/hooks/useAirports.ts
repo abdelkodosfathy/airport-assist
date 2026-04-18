@@ -16,52 +16,59 @@
 // }
 
 // lib/hooks/useAirportSearch.ts
+
 "use client";
 
-// import { useQuery } from "@tanstack/react-query";
 import { fetchAirports, fetchSingleAirport } from "@/lib/api/airports";
 import { useCurrencyStore } from "@/store/currencyStore";
 
+import { useQuery, keepPreviousData } from "@tanstack/react-query";
+
 // export function useAirportSearch(search: string, enabled = true) {
 //   return useQuery({
 //     queryKey: ["airports", "search", search],
 //     queryFn: () => fetchAirports(search),
-//     enabled: enabled, // ← Remove the search.length check
+//     enabled,
+//     placeholderData: keepPreviousData, // ← keeps old results visible during refetch
 //     staleTime: 1000 * 60 * 5,
 //     gcTime: 1000 * 60 * 10,
 //     retry: 1,
 //   });
 // }
-import { useQuery, keepPreviousData } from "@tanstack/react-query";
+// // Hook for init airports
+// export function usePopularAirports() {
+//   return useQuery({
+//     queryKey: ["airports", "popular"],
+//     queryFn: () => fetchAirports(""), // أو fetchAirports("a") لو الـ API مش بيقبل فاضي
+//     staleTime: 1000 * 60 * 30,
+//     gcTime: 1000 * 60 * 60,
+//   });
+// }
+export function useAirports(search: string) {
+  const isSearching = search.trim().length > 0;
 
-export function useAirportSearch(search: string, enabled = true) {
   return useQuery({
-    queryKey: ["airports", "search", search],
-    queryFn: () => fetchAirports(search),
-    enabled,
-    placeholderData: keepPreviousData, // ← keeps old results visible during refetch
-    staleTime: 1000 * 60 * 5,
-    gcTime: 1000 * 60 * 10,
+    queryKey: ["airports", isSearching ? "search" : "popular", search],
+    queryFn: () => fetchAirports(isSearching ? search : ""),
+    staleTime: isSearching ? 1000 * 60 * 5 : 1000 * 60 * 30,
+    gcTime: isSearching ? 1000 * 60 * 10 : 1000 * 60 * 60,
+    placeholderData: keepPreviousData,
     retry: 1,
   });
 }
-// export function useAirportSearch(search: string, enabled = true) {
-//   return useQuery({
-//     queryKey: ["airports", "search", search],
-//     queryFn: () => fetchAirports(search),
-//     enabled: enabled && search.length > 0,
-//     staleTime: 1000 * 60 * 5,
-//     gcTime: 1000 * 60 * 10,
-//     retry: 1,
-//   });
-// }
-export function useSingleAirport(id: string) {
+
+// export function useSingleAirport(id: string) {
+export function useSingleAirport(id: string, enabled = true) {
+  const currency = useCurrencyStore((s) => s.currency);
   return useQuery({
-    queryKey: ["singleAirport", id],
+    queryKey: ["singleAirport", id, currency],
     queryFn: () => fetchSingleAirport(id),
     staleTime: 1000 * 60 * 5,
     gcTime: 1000 * 60 * 10,
     retry: 1,
-    enabled: !!id,
+    // enabled: !!id,
+    enabled: !!id && enabled,
+
+    placeholderData: (previousData) => previousData, // ← الداتا القديمة تفضل لحد ما الجديدة ترجع
   });
 }

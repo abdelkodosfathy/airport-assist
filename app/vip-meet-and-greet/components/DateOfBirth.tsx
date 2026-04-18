@@ -163,7 +163,7 @@
 // export default DateOfBirth;
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { ChevronDown } from "lucide-react";
 
 interface DateOfBirthProps {

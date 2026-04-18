@@ -1,24 +1,30 @@
-import { useAirportSearch } from "@/lib/hooks/useAirports";
+"use client";
+
+import { fetchAirports } from "@/lib/api/airports";
+// import { useAirportSearch } from "@/lib/hooks/useAirports";
+import { useAirports } from "@/lib/hooks/useAirports";
 import { Airport } from "@/lib/types/airport";
 import { AlertCircle, Loader2, MapPin, Plane } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 
+// ── Types ─────────────────────────────────────────────────────────────────────
 export type LatLng = { lat: number; lng: number };
 export type SuggestionKind = "airport" | "place";
 
 export interface Suggestion {
   id: string;
   kind: SuggestionKind;
-  label: string; // Primary display text  (e.g. "JFK – John F. Kennedy")
-  sublabel: string; // Secondary display text (e.g. "New York, USA")
-  location?: LatLng; // Resolved coordinates
-  placeId?: string; // Google placeId – needed for geocoding place results
-  iataCode?: string; // For airports
-  rawAirport?: Airport; // Original Airport object from the backend
-  googleTypes?: string[]; // Google Places types array (e.g. ["airport", "establishment"])
+  label: string;
+  sublabel: string;
+  location?: LatLng;
+  placeId?: string;
+  country?: string;
+  iataCode?: string;
+  rawAirport?: Airport;
+  googleTypes?: string[];
 }
-// ── Utility: map backend Airport → Suggestion ─────────────────────────────────
 
+// ── Utilities (خارج الـ component لتجنب إعادة الإنشاء في كل render) ──────────
 function airportToSuggestion(a: Airport): Suggestion {
   return {
     id: `airport-${a.airport_code ?? a.airport_id}`,
@@ -33,11 +39,109 @@ function airportToSuggestion(a: Airport): Suggestion {
         : undefined,
     iataCode: a.airport_code,
     rawAirport: a,
+    country: a.city.iso2,
   };
 }
 
-// ── Sub-component: Search Input with dropdown ─────────────────────────────────
+// ✅ FIX #2: نُقلت لبرة الـ component — مش بتتعمل re-create في كل render
+function bigrams(s: string): Set<string> {
+  const out = new Set<string>();
+  const n = s.toLowerCase().replace(/[^a-z0-9]/g, "");
+  for (let i = 0; i < n.length - 1; i++) out.add(n[i] + n[i + 1]);
+  return out;
+}
 
+function diceSimilarity(a: string, b: string): number {
+  const ba = bigrams(a);
+  const bb = bigrams(b);
+  if (ba.size === 0 && bb.size === 0) return 1;
+  if (ba.size === 0 || bb.size === 0) return 0;
+  let intersection = 0;
+  ba.forEach((bg) => {
+    if (bb.has(bg)) intersection++;
+  });
+  return (2 * intersection) / (ba.size + bb.size);
+}
+
+function haversineKm(
+  lat1: number,
+  lng1: number,
+  lat2: number,
+  lng2: number,
+): number {
+  const R = 6371;
+  const dLat = ((lat2 - lat1) * Math.PI) / 180;
+  const dLng = ((lng2 - lng1) * Math.PI) / 180;
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos((lat1 * Math.PI) / 180) *
+      Math.cos((lat2 * Math.PI) / 180) *
+      Math.sin(dLng / 2) ** 2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
+
+// ✅ FIX #7: الـ radius بقى 15km بدل 5 عشان يغطي المطارات الكبيرة زي Heathrow
+function findNearestAirport(
+  airports: Airport[],
+  lat: number,
+  lng: number,
+  radiusKm = 15,
+): Airport | null {
+  let nearest: Airport | null = null;
+  let minDist = Infinity;
+  for (const airport of airports) {
+    if (!airport.location_lat || !airport.location_long) continue;
+    const dist = haversineKm(
+      lat,
+      lng,
+      Number(airport.location_lat),
+      Number(airport.location_long),
+    );
+    if (dist < radiusKm && dist < minDist) {
+      minDist = dist;
+      nearest = airport;
+    }
+  }
+  return nearest;
+}
+
+/**
+ * بيدور على:
+ * 1. رمز IATA بين قوسين: (LHR), (JFK)
+ * 2. أسماء مطارات معروفة بدون كلمة Airport زي "Heathrow", "Gatwick"
+ * 3. أي نص بعده "Airport" أو "International"
+ */
+function extractAirportHints(
+  label: string,
+  sublabel: string,
+): {
+  iata: string | null;
+  name: string | null;
+} {
+  const combined = `${label} ${sublabel}`;
+
+  // 1. رمز IATA
+  const iataMatch = combined.match(/\b([A-Z]{3})\b/);
+  const iata = iataMatch ? iataMatch[1] : null;
+
+  // 2. اسم المطار — بيشمل كلمات airport / international / heathrow / gatwick إلخ
+  const namePatterns = [
+    /([A-Za-z\s\-]+(?:International|Airport|Heathrow|Gatwick|Stansted|Luton|City Airport))/i,
+  ];
+
+  let name: string | null = null;
+  for (const pattern of namePatterns) {
+    const match = combined.match(pattern);
+    if (match) {
+      name = match[1].trim();
+      break;
+    }
+  }
+
+  return { iata, name };
+}
+
+// ── Component ─────────────────────────────────────────────────────────────────
 interface LocationInputProps {
   label?: string;
   placeholder: string;
@@ -50,7 +154,7 @@ interface LocationInputProps {
   onCountrySelect?: (country: string) => void;
   className?: string;
   isPickup?: boolean;
-  countryRestriction?: string | string[]; // e.g. "uk" or ["uk", "ie"]
+  countryRestriction?: string | string[];
   disableAirportsSearch?: boolean;
   disableGoogleSearch?: boolean;
 }
@@ -72,40 +176,26 @@ export function LocationInput({
   disableGoogleSearch,
 }: LocationInputProps) {
   const [query, setQuery] = useState("");
-  // debouncedQuery drives useAirportSearch — kept as state so the hook re-runs reactively
   const [debouncedQuery, setDebouncedQuery] = useState("");
   const [placeSuggestions, setPlaceSuggestions] = useState<Suggestion[]>([]);
   const [open, setOpen] = useState(false);
   const [searchingPlaces, setSearchingPlaces] = useState(false);
-  const autocompleteService =
-    useRef<google.maps.places.AutocompleteService | null>(null);
-  const geocoder = useRef<google.maps.Geocoder | null>(null);
+
+  const isTypingRef = useRef(false);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // ✅ FIX #8: AbortController لإلغاء الـ requests القديمة ومنع race condition
+  const placesAbortRef = useRef<AbortController | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // ── Backend airport search via hook ────────────────────────────────────────
-  // `isFetching` (not `isLoading`) stays true during background refetches,
-  // so the spinner shows on every keystroke. `data` is kept from the previous
-  // query via `placeholderData: keepPreviousData` in the hook, so the list
-  // never empties while a new fetch is in-flight.
-  // const { data: airportData, isFetching: isLoadingAirports } = useAirportSearch(
-  //   debouncedQuery,
-  //   debouncedQuery.trim().length > 0,
-  // );
   const shouldSearchAirports =
-    debouncedQuery.trim().length > 0 && !disableAirportsSearch; // if there is query and fetching airports from backend are enabled
+    debouncedQuery.trim().length > 0 && !disableAirportsSearch;
 
-  const { data: airportData, isFetching: isLoadingAirports } = useAirportSearch(
+  const { data: airportData, isFetching: isLoadingAirports } = useAirports(
     debouncedQuery,
-    shouldSearchAirports,
+    // shouldSearchAirports,
   );
 
   const backendAirports: Airport[] = airportData?.data?.airports ?? [];
-
-    
-  // const airportSuggestions = backendAirports
-  //   .slice(0, 5)
-  //   .map(airportToSuggestion);
 
   const allowedCountries = countryRestriction
     ? (Array.isArray(countryRestriction)
@@ -123,72 +213,13 @@ export function LocationInput({
     .slice(0, 5)
     .map(airportToSuggestion);
 
-  // ── Deduplicate: strip Google Places results that represent airports ─────────
-  // Strategy A – Google marks the place type as "airport"
-  // Strategy B – display text contains an airport-specific keyword
-  // Strategy C – high bigram (Sørensen–Dice) similarity to a backend airport name.
-  //              Uses character bigrams so short city names like "Cairo" are never
-  //              confused with airport names — a score >= 0.75 is required, meaning
-  //              at least 75% of bigrams must overlap before we treat it as the same place.
-  const bigrams = (s: string): Set<string> => {
-    const out = new Set<string>();
-    const n = s.toLowerCase().replace(/[^a-z0-9]/g, "");
-    for (let i = 0; i < n.length - 1; i++) out.add(n[i] + n[i + 1]);
-    return out;
-  };
-  const diceSimilarity = (a: string, b: string): number => {
-    const ba = bigrams(a);
-    const bb = bigrams(b);
-    if (ba.size === 0 && bb.size === 0) return 1;
-    if (ba.size === 0 || bb.size === 0) return 0;
-    let intersection = 0;
-    ba.forEach((bg) => {
-      if (bb.has(bg)) intersection++;
-    });
-    return (2 * intersection) / (ba.size + bb.size);
-  };
-
-  const backendAirportNames = backendAirports.map((a) => a.airport_name);
-  const AIRPORT_KEYWORDS =
-    /\b(airport|airfield|terminal|aeroporto|aéroport|flughafen|aeropuerto)\b/i;
-  const DICE_THRESHOLD = 0.75;
-
-  const filteredPlaceSuggestions = placeSuggestions.filter((p) => {
-    const combined = `${p.label} ${p.sublabel}`.toLowerCase();
-
-    // A – explicit airport type flag set by Google
-    if (p.googleTypes?.includes("airport")) return false;
-
-    // B – keyword match in display text
-    if (AIRPORT_KEYWORDS.test(combined)) return false;
-
-    // C – fuzzy name match against a backend airport (high-confidence only)
-    if (
-      backendAirportNames.some(
-        (name) => diceSimilarity(p.label, name) >= DICE_THRESHOLD,
-      )
-    )
-      return false;
-
-    return true;
-  });
-
-  // Merged: backend airports first, then deduplicated places
   const suggestions: Suggestion[] = [
     ...airportSuggestions,
-    ...filteredPlaceSuggestions,
+    ...placeSuggestions,
   ];
-
   const isSearching = isLoadingAirports || searchingPlaces;
 
-  // ── Initialise Google services ─────────────────────────────────────────────
-  useEffect(() => {
-    if (!isLoaded) return;
-    autocompleteService.current = new google.maps.places.AutocompleteService();
-    geocoder.current = new google.maps.Geocoder();
-  }, [isLoaded]);
-
-  // ── Close dropdown on outside click ───────────────────────────────────────
+  // ── Close on outside click ─────────────────────────────────────────────────
   useEffect(() => {
     const handler = (e: MouseEvent) => {
       if (
@@ -202,118 +233,302 @@ export function LocationInput({
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
-  // ── Sync display when external value is cleared ────────────────────────────
+  // ── Sync display when value is cleared externally ──────────────────────────
   useEffect(() => {
-    if (!value) setQuery("");
+    if (!value && !isTypingRef.current) {
+      setQuery(""); // بيمسح بس لو مش بيكتب دلوقتي
+    }
+    isTypingRef.current = false;
   }, [value]);
 
-  // ── Open dropdown whenever new suggestions arrive ──────────────────────────
+  // ✅ FIX #4: نراقب الـ suggestions نفسها مش بس الـ length
   useEffect(() => {
     if (suggestions.length > 0 && debouncedQuery.trim()) setOpen(true);
-  }, [airportSuggestions.length, placeSuggestions.length]);
+  }, [suggestions.length, debouncedQuery]);
 
-  // ── Input change: debounce both airport hook query & Places API call ───────
+  // ── Input change handler ───────────────────────────────────────────────────
   const handleQueryChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
+      isTypingRef.current = true; // علامة إن المستخدم بيكتب
       const q = e.target.value;
       setQuery(q);
-      onChange(null); // clear selection on typing
+      onChange(null);
 
       if (!q.trim()) {
         setDebouncedQuery("");
         setPlaceSuggestions([]);
         setOpen(false);
+        if (debounceRef.current) clearTimeout(debounceRef.current);
         return;
       }
 
       if (debounceRef.current) clearTimeout(debounceRef.current);
+
       debounceRef.current = setTimeout(async () => {
-        // Drive the airport hook
         setDebouncedQuery(q);
 
-        // Google Places in parallel
-        if (!disableGoogleSearch && isLoaded && autocompleteService.current) {
+        if (!disableGoogleSearch && isLoaded) {
+          // ✅ FIX #8: إلغاء الـ request السابق قبل ما نبدأ جديد
+          if (placesAbortRef.current) {
+            placesAbortRef.current.abort();
+          }
+          const controller = new AbortController();
+          placesAbortRef.current = controller;
+
           setSearchingPlaces(true);
-          autocompleteService.current.getPlacePredictions(
-            {
+          try {
+            const request = {
               input: q,
-              componentRestrictions: countryRestriction // that makes the input locked on the country like "uk"
-                ? { country: countryRestriction }
+              includedRegionCodes: countryRestriction
+                ? Array.isArray(countryRestriction)
+                  ? countryRestriction
+                  : [countryRestriction]
                 : undefined,
-            },
-            (predictions, status) => {
-              setSearchingPlaces(false);
-              if (
-                status !== google.maps.places.PlacesServiceStatus.OK ||
-                !predictions
-              ) {
-                setPlaceSuggestions([]);
-                return;
-              }
-              setPlaceSuggestions(
-                predictions.slice(0, 5).map((p) => ({
-                  id: `place-${p.place_id}`,
-                  kind: "place" as SuggestionKind,
-                  // label: p.structured_formatting.main_text, // for formated simple address
-                  label: p.description, // for the full address without any formatting
-                  sublabel: p.structured_formatting.secondary_text ?? "",
-                  placeId: p.place_id,
-                  googleTypes: p.types,
-                })),
+            };
+
+            const { suggestions: predictions } =
+              await google.maps.places.AutocompleteSuggestion.fetchAutocompleteSuggestions(
+                request,
               );
-            },
-          );
+
+            // ✅ تجاهل النتيجة لو الـ request اتألغى
+            if (controller.signal.aborted) return;
+
+            if (predictions && predictions.length > 0) {
+              const validPredictions = predictions
+                .filter((p) => p.placePrediction != null)
+                .slice(0, 5)
+                .map((p) => {
+                  const placePred = p.placePrediction!;
+                  return {
+                    id: `place-${placePred.placeId}`,
+                    kind: "place" as SuggestionKind,
+                    label: placePred.mainText?.text ?? "",
+                    sublabel: placePred.secondaryText?.text ?? "",
+                    placeId: placePred.placeId,
+                    googleTypes: placePred.types,
+                  };
+                });
+              setPlaceSuggestions(validPredictions);
+            } else {
+              setPlaceSuggestions([]);
+            }
+          } catch (err: any) {
+            if (err?.name !== "AbortError") {
+              console.error("Places API Autocomplete Error:", err);
+            }
+            setPlaceSuggestions([]);
+          } finally {
+            if (!controller.signal.aborted) {
+              setSearchingPlaces(false);
+            }
+          }
         }
       }, 300);
     },
-    [isLoaded, onChange, disableGoogleSearch],
+    [isLoaded, onChange, disableGoogleSearch, countryRestriction],
   );
 
-  // ── Select a suggestion ────────────────────────────────────────────────────
+  // ── Select handler ─────────────────────────────────────────────────────────
   const handleSelect = useCallback(
-    (s: Suggestion) => {
+    async (s: Suggestion) => {
       setQuery(s.label);
       setOpen(false);
 
-      // Notify parent of selected airport object for store compatibility
+      // ── Airport مباشر من الـ backend list ────────────────────────────────
       if (s.kind === "airport" && s.rawAirport) {
         onAirportSelect?.(s.rawAirport);
         onChange(s);
-        const country = s.rawAirport.city.iso2 ?? "";
-        onCountrySelect?.(country);
+        onCountrySelect?.(s.rawAirport.city.iso2 ?? "");
         return;
       }
 
-      // Resolve place coordinates via Geocoder
-      if (s.placeId && geocoder.current) {
-        geocoder.current.geocode({ placeId: s.placeId }, (results, status) => {
-          if (status === "OK" && results?.[0]) {
-            const loc = results[0].geometry.location;
+      if (!s.placeId || !isLoaded) {
+        onChange(s);
+        return;
+      }
 
-            const countryComponent = results[0].address_components.find((c) =>
-              c.types.includes("country"),
+      try {
+        const place = new google.maps.places.Place({ id: s.placeId });
+
+        await place.fetchFields({
+          fields: [
+            "id",
+            "location",
+            "types",
+            "addressComponents",
+            "containingPlaces",
+            "displayName",
+          ],
+        });
+
+        let countryCode: string | null = null;
+
+        if (place.addressComponents) {
+          const countryComp = place.addressComponents.find((c) =>
+            c.types.includes("country"),
+          );
+
+          if (countryComp) {
+            countryCode = countryComp.shortText; // زي "EG", "US"
+          }
+        }
+
+        let airportNameToMatch: string | null = null;
+        let iataToMatch: string | null = null;
+
+        // ✅ FIX #5: استخراج ذكي من النص يشمل أسماء بدون كلمة "Airport"
+        const { iata, name } = extractAirportHints(s.label, s.sublabel);
+        iataToMatch = iata;
+        airportNameToMatch = name;
+
+        // ✅ FIX #6: بنجيب containingPlaces بس لو فعلاً محتاجينهم
+        const containingPlaces = (place as any).containingPlaces as
+          | any[]
+          | undefined;
+
+        if (!airportNameToMatch && !iataToMatch) {
+          // المكان نفسه مطار
+          if (place.types?.includes("airport") && place.displayName) {
+            airportNameToMatch = place.displayName;
+          }
+          // ✅ FIX #6: بنعمل fetch واحد بس للـ parent airport مش للكل
+          else if (containingPlaces && containingPlaces.length > 0) {
+            // نجرب نلاقي airport بدون fetch أول
+            const quickAirport = containingPlaces.find((p: any) =>
+              p.types?.includes("airport"),
             );
 
-            // const country = countryComponent?.long_name ?? "";
-
-            const country = countryComponent?.short_name ?? ""; // "US" | "EG" | "GB"
-
-            onCountrySelect?.(country);
-
-            onChange({ ...s, location: { lat: loc.lat(), lng: loc.lng() } });
-          } else {
-            onChange(s);
+            if (quickAirport) {
+              // عندنا الـ airport من غير fetch
+              airportNameToMatch = quickAirport.displayName ?? null;
+            } else {
+              // محتاجين نعمل fetch بس للأماكن اللي مش عندنا types ليها
+              const unknownPlaces = containingPlaces.filter(
+                (p: any) => !p.types || p.types.length === 0,
+              );
+              if (unknownPlaces.length > 0) {
+                await Promise.all(
+                  unknownPlaces.map((p: any) =>
+                    p.fetchFields({ fields: ["types", "displayName"] }),
+                  ),
+                );
+                const parentAirport = containingPlaces.find((p: any) =>
+                  p.types?.includes("airport"),
+                );
+                if (parentAirport?.displayName) {
+                  airportNameToMatch = parentAirport.displayName;
+                }
+              }
+            }
           }
-        });
-      } else {
+
+          // fallback: addressComponents
+          if (!airportNameToMatch && place.addressComponents) {
+            const airportComp = place.addressComponents.find((c) =>
+              c.types.includes("airport"),
+            );
+            if (airportComp) airportNameToMatch = airportComp.longText;
+          }
+        }
+
+        // ── المطابقة مع الـ Backend ──────────────────────────────────────────
+        let finalMatchedAirport: Airport | null = null;
+        const loc = place.location;
+
+        // 1. IATA في backendAirports المحملة
+        if (iataToMatch) {
+          finalMatchedAirport =
+            backendAirports.find(
+              (a) => a.airport_code?.toUpperCase() === iataToMatch,
+            ) ?? null;
+        }
+
+        // 2. الاسم في backendAirports المحملة
+        if (!finalMatchedAirport && airportNameToMatch) {
+          finalMatchedAirport =
+            backendAirports.find(
+              (a) =>
+                diceSimilarity(a.airport_name, airportNameToMatch!) >= 0.75,
+            ) ?? null;
+        }
+
+        // 3. الإحداثيات في backendAirports المحملة
+        // ✅ FIX #7: الـ radius بقى 15km
+        if (!finalMatchedAirport && loc) {
+          finalMatchedAirport = findNearestAirport(
+            backendAirports,
+            loc.lat(),
+            loc.lng(),
+          );
+        }
+
+        // ✅ FIX #9: لو disableAirportsSearch، الـ backendAirports فاضية
+        // فبنروح على الـ API مباشرة بدون ما ننتظر fallback
+        if (!finalMatchedAirport && (iataToMatch || airportNameToMatch)) {
+          const searchKeyword = iataToMatch || airportNameToMatch!;
+          try {
+            const fallbackResponse = await fetchAirports(searchKeyword);
+            const freshAirports = fallbackResponse.data?.airports ?? [];
+
+            if (iataToMatch) {
+              finalMatchedAirport =
+                freshAirports.find(
+                  (a) => a.airport_code?.toUpperCase() === iataToMatch,
+                ) ?? null;
+            }
+
+            if (!finalMatchedAirport && airportNameToMatch) {
+              finalMatchedAirport =
+                freshAirports.find(
+                  (a) =>
+                    diceSimilarity(a.airport_name, airportNameToMatch!) >= 0.75,
+                ) ?? null;
+            }
+
+            // ✅ FIX #7: نفس الـ radius الموحد
+            if (!finalMatchedAirport && loc) {
+              finalMatchedAirport = findNearestAirport(
+                freshAirports,
+                loc.lat(),
+                loc.lng(),
+              );
+            }
+          } catch (err) {
+            console.error("فشل جلب بيانات المطار الاحتياطية:", err);
+          }
+        }
+
+        // ── النتيجة النهائية ─────────────────────────────────────────────────
+        if (finalMatchedAirport) {
+          onAirportSelect?.(finalMatchedAirport);
+          onChange(airportToSuggestion(finalMatchedAirport));
+          onCountrySelect?.(finalMatchedAirport.city.iso2 ?? countryCode ?? "");
+          return;
+        }
+
+        // Fallback: مكان عادي (فندق، مقهى...)
+        if (loc) {
+          onChange({
+            ...s,
+            location: { lat: loc.lat(), lng: loc.lng() },
+            country: countryCode ?? "", // 👈 أضف دي
+          });
+        } else {
+          onChange(s);
+        }
+      } catch (err) {
+        console.error("Places API Details Error:", err);
         onChange(s);
       }
     },
-    [onChange, onAirportSelect, onCountrySelect],
+    // ✅ FIX #3: dependency array مكتملة
+    [onChange, onAirportSelect, onCountrySelect, backendAirports, isLoaded],
   );
 
   const displayValue = value ? value.label : query;
 
+  // ── UI ─────────────────────────────────────────────────────────────────────
   return (
     <div
       className={`flex flex-col gap-1.5 ${isPickup ? "" : "h-full"}`}
@@ -326,7 +541,6 @@ export function LocationInput({
       )}
 
       <div className={`relative ${isPickup ? "" : "h-full"}`}>
-        {/* Input */}
         <div
           className={`relative flex items-center h-11 rounded-lg border bg-[#F4F4F4] transition-colors ${
             error
@@ -336,7 +550,6 @@ export function LocationInput({
                 : "border-[#E0E0E0]"
           } ${className}`}
         >
-          {/* Kind icon */}
           <span className="pl-3 pr-2 text-[#ACACAC]">
             {value?.kind === "airport" ? (
               <Plane size={15} className="text-[#1A1A1A]" />
@@ -362,7 +575,6 @@ export function LocationInput({
           )}
         </div>
 
-        {/* Dropdown */}
         {open && suggestions.length > 0 && (
           <ul
             className="absolute z-50 mt-1.5 w-full rounded-xl border border-[#E8E8E8] bg-white shadow-xl overflow-hidden"
@@ -370,13 +582,12 @@ export function LocationInput({
           >
             {suggestions.map((s, i) => (
               <li key={s.id}>
-                {/* Divider between airports and places */}
                 {i > 0 && suggestions[i - 1].kind !== s.kind && (
                   <div className="mx-3 my-1 border-t border-dashed border-[#E8E8E8]" />
                 )}
                 <button
                   type="button"
-                  onMouseDown={(e) => e.preventDefault()} // prevent blur before click
+                  onMouseDown={(e) => e.preventDefault()}
                   onClick={() => handleSelect(s)}
                   className="w-full flex items-start gap-3 px-3.5 py-2.5 text-left hover:bg-[#F7F7F7] transition-colors group"
                 >
@@ -415,7 +626,6 @@ export function LocationInput({
         )}
       </div>
 
-      {/* Error */}
       {error && (
         <p className="flex items-center gap-1 text-xs text-red-500 mt-0.5">
           <AlertCircle size={11} />

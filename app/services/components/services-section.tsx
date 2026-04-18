@@ -5,7 +5,7 @@ import Image from "next/image";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import { Check } from "lucide-react";
-import serviceImage from "@/public/services-image.jpg";
+import serviceImage from "@/public/services-image.webp";
 
 gsap.registerPlugin(ScrollTrigger);
 

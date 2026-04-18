@@ -4,7 +4,7 @@ import { useLayoutEffect, useRef } from "react";
 import Image from "next/image";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
-import serviceImage from "@/public/services-image.jpg";
+import serviceImage from "@/public/services-image.webp";
 
 gsap.registerPlugin(ScrollTrigger);
 

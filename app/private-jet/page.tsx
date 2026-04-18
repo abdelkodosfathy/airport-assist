@@ -2,7 +2,7 @@ import React from "react";
 import Header from "@/components/Header/Header";
 import Footer from "@/components/Footer";
 import Image from "next/image";
-import serviceImage from "@/public/services-image.jpg";
+import serviceImage from "@/public/services-image.webp";
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -137,7 +137,7 @@ export default function ServicesLayout() {
 
           {/* Right Text */}
           <div className="flex-1 w-full lg:w-auto">
-            <p className="font-[Manrope] font-normal max-w-full lg:max-w-90 text-sm md:text-base leading-[150%] text-[#959595] mb-4 md:mb-6">
+            <p className="font-[Manrope] font-normal normal-case max-w-full lg:max-w-90 text-sm md:text-base leading-[150%] text-[#959595] mb-4 md:mb-6">
               Airport Assist concierge services welcome all travellers, while
               our exclusive plans unlock the service's most refined and
               personalised experience.

@@ -85,8 +85,6 @@ interface AdultsPickerProps {
   inputClassName?: string;
   icon?: ReactNode;
   iconPosition?: "left" | "right";
-  // onAdultsChange?: (adults: number) => void;
-  // onChildrenChange?: (children: number) => void;
 }
 
 const AdultsPicker = ({
@@ -97,16 +95,9 @@ const AdultsPicker = ({
   disabled = false,
   icon,
   iconPosition = "left",
-  // onAdultsChange,
-  // onChildrenChange,
 }: AdultsPickerProps) => {
-  // const [adults, setAdults] = useState(1);
-  // const [children, setChildren] = useState(0);
-
   const { adults, children, setAdults, setChildren } = usePassengersStore(state => state);
-
   const displayValue = `${adults} Adult - ${children} Children`;
-
   const [isOpen, setIsOpen] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
@@ -127,12 +118,10 @@ const AdultsPicker = ({
 
   const handleAdultsChange = (value: number) => {
     setAdults(value);
-    // onAdultsChange?.(value);
   };
 
   const handleChildrenChange = (value: number) => {
     setChildren(value);
-    // onChildrenChange?.(value);
   };
 
   return (

@@ -14,7 +14,7 @@ type CurrencyStore = {
 export const useCurrencyStore = create<CurrencyStore>()(
   persist(
     (set, get) => ({
-      currency: "USD",
+      currency: "GBP",
 
       setCurrency: (value: Currency) =>
         set({

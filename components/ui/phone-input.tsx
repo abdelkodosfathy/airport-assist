@@ -25,10 +25,12 @@ const CustomPhoneInput = memo(
         onChange={onChange}
         value={value}
         disabled={disabled}
-        defaultCountry="us"
-        preferredCountries={["gb", "us", "fr"]}
-        placeholder="0101 434 3413"
         className={`bg-[#F4F4F4] border overflow-visible ${validationClass ? "border-red-500" : "border-[#E0E0E0]"} overflow-hidden ${className ?? "h-11.25 rounded-xl"}`}
+        defaultCountry="gb"
+        preferredCountries={["gb", "us", "fr"]}
+        placeholder="+xx xxx xxxx xxx"
+        hideDropdown={false}
+
         inputProps={{
           style: {
             backgroundColor: "#F4F4F4",
@@ -60,3 +62,5 @@ const CustomPhoneInput = memo(
 CustomPhoneInput.displayName = "CustomPhoneInput";
 
 export default CustomPhoneInput;
+//
+

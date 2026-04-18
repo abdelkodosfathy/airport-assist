@@ -1,20 +1,22 @@
 import type { Metadata } from "next";
-import { Manrope, Nunito } from "next/font/google";
+import { Manrope } from "next/font/google";
 import "./globals.css";
 import Providers from "./providers";
 import { Toaster } from "sonner";
 import Whatsapp from "@/components/custom icons/whatsapp";
 
-const nunito = Nunito({
-  variable: "--font-nuito",
-  subsets: ["latin"],
-});
+// const manrope = Manrope({
+//   variable: "--font-manrope",
+//   subsets: ["latin"],
+// });
 
 const manrope = Manrope({
   variable: "--font-manrope",
   subsets: ["latin"],
+  display: "swap", // يعرض fallback font فوراً
+  preload: true, // يحمله قبل كل حاجة
+  fallback: ["sans-serif"],
 });
-
 export const metadata: Metadata = {
   title:
     "Airport Assist | VIP Meet & Greet, Fast Track & Luxury Airport Concierge",
@@ -48,16 +50,21 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`capitalize ${manrope.variable} ${nunito.variable}antialiased`}>
+      <body
+        //  className={`capitalize ${manrope.variable} antialiased`}
+        className={`capitalize ${manrope.variable} ${manrope.className} antialiased`}
+      >
         <Providers>{children}</Providers>
         {/* WhatsApp Floating Button */}
         <a
           href="https://wa.me/442045177711?text=Hello%20I%20would%20like%20to%20book%20airport%20assistance"
           target="_blank"
           rel="noopener noreferrer"
-          className="fixed bottom-5 right-5 z-50 text-white p-4 transition-all duration-300 hover:scale-110 w-max h-max"
+          aria-label="Chat on WhatsApp (opens in a new tab)"
+          className="fixed bottom-5 right-5 z-50 text-white p-4 transition-all duration-300 hover:scale-110 w-max h-max focus:outline-none focus:ring-2 focus:ring-green-500 rounded-full"
         >
           <Whatsapp className="w-12 h-12" />
+          <span className="sr-only">Chat on WhatsApp (opens in a new tab)</span>
         </a>
         <Toaster />
       </body>

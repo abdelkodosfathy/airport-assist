@@ -105,6 +105,12 @@ export default function PackageCards() {
       bracket: match[2],
     };
   }
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
   return (
     // <div className="flex gap-6 justify-center mt-8 flex-col lg:flex-row px-4 sm:px-8 lg:px-12 xl:px-28 flex-wrap">
     <div className="mx-auto max-w-360 flex gap-6 justify-center flex-col lg:flex-row sflex-wrap">
@@ -163,7 +169,8 @@ export default function PackageCards() {
                     </div>
                     <div className="font-manrope text-sm text-gray-700 truncate">
                       <p>
-                        {mainFeatureText} {bracket && <span className="text-xs">{bracket}</span>}
+                        {mainFeatureText}{" "}
+                        {bracket && <span className="text-xs">{bracket}</span>}
                       </p>
                       {/* {feature} */}
                     </div>
@@ -173,6 +180,7 @@ export default function PackageCards() {
             </ul>
 
             <Button
+              onClick={scrollToTop}
               variant="outline"
               className="w-max cursor-pointer border-black text-black group-hover:border-0 group-hover:bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)] group-hover:text-white hover:text-white duration-0"
             >

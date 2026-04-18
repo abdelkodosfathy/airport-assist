@@ -1,81 +1,16 @@
 "use client";
-import { Mail, Phone, User } from "lucide-react";
+import { Clock4, Info, Mail, Phone, User } from "lucide-react";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
-import { apiPost } from "@/lib/api";
 import { useCurrencyStore } from "@/store/currencyStore";
 import StrokeBag from "@/components/custom icons/strokeBag";
 import FigmaMessage from "@/components/custom icons/adults copy";
 import { Separator } from "@/components/ui/separator";
 import StripeForm from "./stripe-form";
-
-/* ------------------------------------------------------------------ */
-/*  Types                                                               */
-/* ------------------------------------------------------------------ */
-
-export interface TripUser {
-  user_id: number;
-  user_name: string;
-  user_img: string | null;
-  email: string;
-  phone: string;
-}
-
-export interface BookingSummary {
-  booking_id: number;
-  booking_uuid: string;
-  user_id: number;
-  package_id: number;
-  airport_id: number;
-  flight_id: number;
-  flight_2_id: number | null;
-
-  booking_status: string;
-  service_type: string;
-  booking_timestamp: string;
-
-  user_notes: string | null;
-  adult_passengers: number;
-  child_passengers: number;
-  infant_passengers: number;
-  number_of_bags: number;
-  additional_hours: number;
-
-  fast_track_enabled: number; // 0 | 1
-  wheelchair_assistance: number; // 0 | 1
-
-  trip_id: number | null;
-
-  infants_cost: number;
-  children_cost: number;
-  adults_cost: number;
-  bags_cost: number;
-  fast_track_cost: number;
-  last_minute_fees: number;
-  additional_hours_cost: number;
-  service_cost: number;
-  trip_cost: number;
-  promo_code_discount_value: number;
-  extra_cost: number;
-  subtotal: number;
-  tax_value: number;
-  total: number;
-  payment_fees: number;
-
-  promo_code_id: number | null;
-  payment_method_id: number;
-  paid_at: string | null;
-
-  created_at: string;
-  updated_at: string;
-  deleted_at: string | null;
-
-  user: TripUser;
-}
-
-/* ------------------------------------------------------------------ */
-/*  Helpers                                                             */
-/* ------------------------------------------------------------------ */
+import { useSingleBooking } from "@/lib/hooks/useBooking";
+import SummarySkeleton from "./summry-skeleton";
+import Image from "next/image";
+import InnerToast from "@/components/ui/InnerToast";
+import BookingStatusCard from "@/components/BookingStatusCard";
 
 export function formatDateTime(dateTimeString: string): {
   date: string;
@@ -114,47 +49,104 @@ function capitalise(str: string) {
 type Props = {};
 
 export default function Summary(props: Props) {
-  const currencyMark = useCurrencyStore((state) => state.currencyMark);
+  // const currencyMark = useCurrencyStore((state) => state.currencyMark);
   const currency = useCurrencyStore((state) => state.currency);
 
   const searchParams = useSearchParams();
   const uuid = searchParams.get("uuid");
 
-  const [data, setData] = useState<BookingSummary | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { data, isLoading, error } = useSingleBooking(uuid);
 
-  useEffect(() => {
-    if (!uuid) return;
-
-    const fetchData = async () => {
-      try {
-        const result = await apiPost(`/bookings/${uuid}/checkout/summary`, {
-          payment_method: "stripe",
-        });
-
-        // API returns the booking object directly inside result.data
-        setData(result.data.summary);
-        console.log(result.data);
-      } catch (err: any) {
-        setError(err.message || "Something went wrong");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [uuid]);
-
-  if (loading) return <SummarySkeleton />;
-  if (error) return <div>Error: {error}</div>;
+  if (isLoading) return <SummarySkeleton />;
+  if (error) return <div>Error loading booking</div>;
   if (!data) return null;
 
   const user = data.user;
   const bookingDate = formatDateTime(data.booking_timestamp);
 
   console.log(data);
+  const serviceType = data.service_type;
 
+  const rows = [
+    {
+      label: "Booking Date:",
+      value: `${bookingDate.date} ${bookingDate.time}`,
+    },
+
+    // ✈️ Flights
+    ...(serviceType === "connection"
+      ? [
+          {
+            label: "Arrival Flight Number:",
+            value: data.flight?.flight_number,
+          },
+          {
+            label: "Departure Flight Number:",
+            value: data.flight_2?.flight_number,
+          },
+        ]
+      : [
+          {
+            label: "Flight Number:",
+            value: data.flight?.flight_number,
+          },
+        ]),
+
+    {
+      label: "Number of Passengers:",
+      value: `${data.adult_passengers} Adults`,
+    },
+
+    // 👶 Children
+    ...(data.child_passengers > 0
+      ? [
+          {
+            label: "Number of Children:",
+            value: `${data.child_passengers} ${
+              data.child_passengers !== 1 ? "Children" : "Child"
+            }`,
+          },
+        ]
+      : []),
+
+    // 🧳 Bags
+    ...(data.number_of_bags > 0
+      ? [
+          {
+            label: "Number of Bags:",
+            value: data.number_of_bags,
+          },
+        ]
+      : []),
+
+    {
+      label: "Fast Track:",
+      value: data.fast_track_enabled ? "Included" : "Not included",
+    },
+
+    // ♿ Wheelchair
+    ...(data.wheelchair_assistance
+      ? [
+          {
+            label: "Special Request:",
+            value: "Wheelchair assistance",
+          },
+        ]
+      : []),
+
+    // 📝 Notes
+    ...(data.user_notes?.trim()
+      ? [
+          {
+            label: "User Notes:",
+            value: data.user_notes,
+          },
+        ]
+      : []),
+  ];
+
+
+  const totalPlusProccessingFee = data.total + data.payment_fees;
   return (
     <div>
       <div className="flex gap-4">
@@ -180,70 +172,38 @@ export default function Summary(props: Props) {
               </div>
             </div>
           </div>
-
-          {/* Booking / Flight Info */}
           <div className="px-10 py-6 w-full bg-white rounded-2xl shadow-md">
             <h2 className="text-lg font-semibold mb-4">
-              Booking Details &mdash; {capitalise(data.service_type)}
+              {/* Booking Details &mdash; {capitalise(data.service_type)} */}
+              {data.airport.airport_name} - {data.service_type} -{" "}
+              {data.package.package_name}
             </h2>
-            <div className="space-y-2 text-[#4A5565]">
-              <p className="flex justify-between">
-                <span>Booking Date:</span>
-                <span>
-                  {bookingDate.date} {bookingDate.time}
-                </span>
-              </p>
-              <p className="flex justify-between">
-                <span>Flight Time:</span>
-                <span>{data.flight_id}</span>
-              </p>
-              <p className="flex justify-between">
-                <span>Flight Number:</span>
-                <span>{data.flight_id}</span>
-              </p>
-              <p className="flex justify-between">
-                <span>Number of Passengers:</span>
-                <span>{data.adult_passengers} Adults</span>
-              </p>
-              <p className="flex justify-between">
-                <span>Number of Children:</span>
-                <span>
-                  {data.child_passengers} 
-                  {data.child_passengers !== 1 ? " Children" : "Child"}
-                </span>
-              </p>
-              <p className="flex justify-between">
-                <span>Number of Bags:</span>
-                <span>{data.number_of_bags}</span>
-              </p>
-              <p className="flex justify-between">
-                <span>Fast Track:</span>
-                <span>
-                  {data.fast_track_enabled ? "Included" : "Not included"}
-                </span>
-              </p>
-              <p className="flex justify-between">
-                <span>Special Requests:</span>
-                <span>
-                  {data.wheelchair_assistance
-                    ? "Wheelchair assistance"
-                    : data.user_notes || "None"}
-                </span>
-              </p>
-              <p className="flex justify-between">
-                <span>Chauffeur Include:</span>
-              </p>
-              <p className="flex justify-between">
-                <span>Distance:</span>
-              </p>
-              <p className="flex justify-between">
-                <span>From Address:</span>
-              </p>
-              <p className="flex justify-between">
-                <span>To Address:</span>
-              </p>
+
+            <div className="text-[#4A5565]">
+              {rows.map((row, i) => {
+                if (!row) return;
+                return (
+                  <div
+                    key={i}
+                    className="flex items-start gap-4 px-2 py-0.5 rounded-md hover:bg-gray-100 transition-colors"
+                  >
+                    <span className="w-[220px] flex-shrink-0">{row.label}</span>
+                    <span className="flex-1">{row.value}</span>
+                  </div>
+                );
+              })}
             </div>
           </div>
+          {data.trip && (
+            <Carpreef
+              car_name={data.trip.car_type.car_type_name}
+              car_image_src={data.trip.car_type.car_type_img}
+              pickupFrom={data.trip.pickup_location_title}
+              destination={data.trip.dropoff_location_title}
+              distanceMi={data.trip.distance_mile}
+              duration={`${data.trip.duration_minutes}`}
+            />
+          )}
 
           {/* Luggage assistance */}
           <div className="px-10 py-6 w-full bg-white rounded-2xl shadow-md flex gap-2 items-center">
@@ -254,38 +214,60 @@ export default function Summary(props: Props) {
           {/* Passenger file */}
           <div className="px-10 py-6 w-full bg-white rounded-2xl shadow-md flex gap-2 items-center">
             <FigmaMessage />
-            <p>Booking status: {capitalise(data.booking_status)}</p>
+
+            <p>Booking status: {data.booking_status ? capitalise(data.booking_status) : ""}</p>
           </div>
 
           {/* Payment breakdown */}
           <div className="px-10 py-6 w-full bg-white rounded-2xl shadow-md space-y-2">
-            <p>{data.airport_id} {data.service_type} {data.package_id}</p>
-            
-            {data.tax_value > 0 && (
-              <p className="flex justify-between">
-                <span>VAT</span>
-                <span>{/* {currencyMark} {data.tax_value.toFixed(2)} */}</span>
+            <div className="flex justify-between font-semibold">
+              <p>
+                {data.airport.airport_name} - {data.service_type} -{" "}
+                {data.package.package_name}
               </p>
-            )}
+              <p>
+                <span className="text-xs text-[#6A7282]">{currency} </span>
+                {data.service_cost}
+              </p>
+            </div>
+
+            {/* {data.tax_value > 0 && ( */}
+            <div className="flex justify-between">
+              <p>VAT</p>
+              <p>
+                <span className="text-xs text-[#6A7282]">{currency} </span>
+                {data.tax_value.toFixed(2)}
+              </p>
+            </div>
+            {/* )} */}
             {data.total > 0 && (
-              <p className="flex justify-between">
-                <span>Total</span>
-                <span>{currencyMark} {data.total.toFixed(2)}</span>
-              </p>
+              <div className="flex justify-between">
+                <p className="font-semibold">Subtotal: </p>
+                <p>
+                  <span className="text-xs text-[#6A7282]">{currency} </span>
+
+                  {data.subtotal.toFixed(2)}
+                </p>
+              </div>
             )}
             {data.payment_fees > 0 && (
-              <p className="flex justify-between">
-                <span>Processing fee</span>
-                <span>{/* {currencyMark} {data.tax_value.toFixed(2)} */}</span>
-              </p>
+              <div className="flex justify-between">
+                <p>Processing fee</p>
+                <p>
+                  <span className="text-xs text-[#6A7282]">{currency} </span>
+                  {data.payment_fees}{" "}
+                </p>
+              </div>
             )}
             <Separator />
-            <p className="flex justify-between font-bold">
-              <span>Subtotal:</span>
-              <span>
-                {currencyMark} {data.subtotal.toFixed(2)}
-              </span>
-            </p>
+
+            <div className="flex justify-between font-bold">
+              <p>Total:</p>
+              <p>
+                <span className="text-xs text-[#6A7282]">{currency} </span>
+                {totalPlusProccessingFee.toFixed(2)}
+              </p>
+            </div>
           </div>
         </div>
 
@@ -296,16 +278,24 @@ export default function Summary(props: Props) {
             <div className="font-[Manrope] flex items-center justify-between">
               <p className="text-[18.75px]">Total</p>
               <p className="font-bold font-[Arial]">
-                {currencyMark} {data.total.toFixed(2)}{" "}
-                <span className="font-light text-[#6A7282]">{currency}</span>
+                <span className="font-light text-[#6A7282]">{currency} </span>
+                {/* {data.total.toFixed(2)}{" "} */}
+                {totalPlusProccessingFee.toFixed(2)}{" "}
               </p>
             </div>
           </div>
 
           {/* Payment form */}
-          <StripeForm
+          {/* {
+            data.booking_status === "awaiting_payment" &&
+            <StripeForm
             //  uuid={data.booking_uuid}
             booking_status={data.booking_status}
+            />
+          } */}
+          <BookingStatusCard
+            booking_status={data.booking_status}
+            booking_uuid={data.booking_uuid}
           />
         </div>
       </div>
@@ -313,136 +303,64 @@ export default function Summary(props: Props) {
   );
 }
 
-/* ------------------------------------------------------------------ */
-/*  Skeleton                                                            */
-/* ------------------------------------------------------------------ */
-
-function SkeletonBox({ className }: { className?: string }) {
+const Carpreef = ({
+  car_name,
+  car_image_src,
+  distanceMi,
+  pickupFrom,
+  destination,
+  duration,
+}: {
+  car_name: string;
+  car_image_src: string;
+  distanceMi: number;
+  pickupFrom: string;
+  destination: string;
+  duration: string;
+}) => {
   return (
-    <div
-      className={`bg-gray-200 rounded-md animate-pulse ${className ?? ""}`}
-    />
-  );
-}
-
-function SummarySkeleton() {
-  return (
-    <div className="flex gap-4">
-      {/* Left column */}
-      <div className="flex-2 space-y-4">
-        {/* Contact Info skeleton */}
-        <div className="px-10 py-6 w-full bg-white rounded-2xl shadow-md space-y-4">
-          <SkeletonBox className="h-5 w-48" />
-          <div className="space-y-3">
-            <div className="flex gap-2 items-center">
-              <SkeletonBox className="h-5 w-5 rounded-full" />
-              <SkeletonBox className="h-4 w-40" />
-            </div>
-            <div className="flex gap-4">
-              <div className="flex gap-2 items-center">
-                <SkeletonBox className="h-5 w-5 rounded-full" />
-                <SkeletonBox className="h-4 w-48" />
-              </div>
-              <div className="flex gap-2 items-center">
-                <SkeletonBox className="h-5 w-5 rounded-full" />
-                <SkeletonBox className="h-4 w-32" />
-              </div>
-            </div>
+    <div className="px-10 py-6 w-full bg-white rounded-2xl shadow-md">
+      {/* <div
+      className="px-10 py-6 w-full bg-white rounded-2xl"
+      style={{ boxShadow: "0px 11.48px 114.76px 0px #A7A7A73D" }}
+    > */}
+      <div className="flex gap-12 mb-2">
+        <Image
+          width={216}
+          height={108.75}
+          src={`https://airportassist-backend.aqaralex.com/storage/images/car-types-images/${car_image_src}`}
+          alt="car image"
+        />
+        <div className="flex-1">
+          <div className="flex justify-between items-center mb-2">
+            <p className="flex gap-8 font-semibold items-center">
+              {car_name} <Info className="w-5 h-5 text-[#99A1AF]" />
+            </p>
           </div>
-        </div>
-
-        {/* Booking Details skeleton */}
-        <div className="px-10 py-6 w-full bg-white rounded-2xl shadow-md space-y-4">
-          <SkeletonBox className="h-5 w-56" />
-          <div className="space-y-3">
-            {Array.from({ length: 8 }).map((_, i) => (
-              <div key={i} className="flex justify-between">
-                <SkeletonBox className="h-4 w-36" />
-                <SkeletonBox className="h-4 w-24" />
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Luggage skeleton */}
-        <div className="px-10 py-6 w-full bg-white rounded-2xl shadow-md flex gap-2 items-center">
-          <SkeletonBox className="h-6 w-6 rounded-full" />
-          <SkeletonBox className="h-4 w-64" />
-        </div>
-
-        {/* File skeleton */}
-        <div className="px-10 py-6 w-full bg-white rounded-2xl shadow-md flex gap-2 items-center">
-          <SkeletonBox className="h-6 w-6 rounded-full" />
-          <SkeletonBox className="h-4 w-52" />
-        </div>
-
-        {/* Payment breakdown skeleton */}
-        <div className="px-10 py-6 w-full bg-white rounded-2xl shadow-md space-y-3">
-          {Array.from({ length: 4 }).map((_, i) => (
-            <div key={i} className="flex justify-between">
-              <SkeletonBox className="h-4 w-32" />
-              <SkeletonBox className="h-4 w-20" />
-            </div>
-          ))}
-          <div className="pt-1">
-            <div className="border-t border-gray-200 pt-3 flex justify-between">
-              <SkeletonBox className="h-5 w-16" />
-              <SkeletonBox className="h-5 w-24" />
-            </div>
-          </div>
+          <p className="text-sm text-[#4A5565]">
+            <span className="font-bold">Pickup location: </span>
+            {pickupFrom}
+          </p>
+          <p className="text-sm text-[#4A5565]">
+            <span className="font-bold">Drop Off Address: </span>
+            {destination}
+          </p>
+          <p className="text-sm text-[#4A5565]">
+            <span className="font-bold">Destination: </span>
+            {distanceMi} mi - {duration}
+          </p>
         </div>
       </div>
 
-      {/* Right column */}
-      <div className="h-full flex-1 space-y-4 sticky top-26">
-        {/* Total pill skeleton */}
-        <div className="bg-white rounded-2xl p-5 shadow-md flex items-center justify-between">
-          <SkeletonBox className="h-5 w-12" />
-          <SkeletonBox className="h-6 w-28" />
-        </div>
-
-        {/* Payment form skeleton */}
-        <div className="bg-white rounded-2xl p-5 space-y-4 shadow-md">
-          {/* Card number */}
-          <div className="space-y-2">
-            <SkeletonBox className="h-4 w-24" />
-            <SkeletonBox className="h-10 w-full rounded-md" />
+      <InnerToast
+        className="mb-0"
+        icon={
+          <div className="min-w-6 min-h-6 w-6 h-6 bg-[#7B5A41] rounded-full grid place-content-center">
+            <Clock4 className="w-5 h-5 text-white" />
           </div>
-          {/* Expiry + CVC */}
-          <div className="flex gap-3">
-            <div className="space-y-2 flex-1">
-              <SkeletonBox className="h-4 w-20" />
-              <SkeletonBox className="h-10 w-full rounded-md" />
-            </div>
-            <div className="space-y-2 flex-1">
-              <SkeletonBox className="h-4 w-24" />
-              <SkeletonBox className="h-10 w-full rounded-md" />
-            </div>
-          </div>
-          {/* Name on card */}
-          <div className="space-y-2">
-            <SkeletonBox className="h-4 w-28" />
-            <SkeletonBox className="h-10 w-full rounded-md" />
-          </div>
-          {/* Checkboxes */}
-          <div className="flex items-start gap-3">
-            <SkeletonBox className="h-6 w-6 rounded-md shrink-0" />
-            <SkeletonBox className="h-4 w-full mt-1" />
-          </div>
-          <div className="flex items-start gap-3">
-            <SkeletonBox className="h-6 w-6 rounded-md shrink-0" />
-            <SkeletonBox className="h-4 w-3/4 mt-1" />
-          </div>
-          {/* Button */}
-          <SkeletonBox className="h-11 w-full rounded-lg" />
-          {/* Stripe text */}
-          <SkeletonBox className="h-4 w-48 mx-auto" />
-        </div>
-      </div>
+        }
+        text="Chauffeur will wait 15 minutes free of charge"
+      />
     </div>
   );
-}
-
-/* ------------------------------------------------------------------ */
-/*  BookButton                                                          */
-/* ------------------------------------------------------------------ */
+};

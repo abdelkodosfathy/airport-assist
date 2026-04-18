@@ -1,4 +1,3 @@
-// import serviceImage from "@/public/services-image.jpg";
 import { Button } from "@/components/ui/button";
 import Image, { StaticImageData } from "next/image";
 

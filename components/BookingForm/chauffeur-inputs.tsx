@@ -34,8 +34,8 @@ const ChauffeurInputs = ({
       >
         <LocationInput
           // countryRestriction="uk" //jsut remove it to unlock the search outside the uk
-          countryRestriction={["uk", "fr", "gb"]} // you can use it for many countries or remove it to unlock the search
-          className="bg-white rounded-none rounded-l-xl h-full"
+          // countryRestriction={["uk", "fr", "gb"]} // you can use it for many countries or remove it to unlock the search
+          className="bg-white h-10 rounded-none rounded-t-lg lg:rounded-t-none lg:rounded-l-xl lg:h-full"
           placeholder="From"
           value={pickup}
           onChange={(s) => setPickup(s)}
@@ -56,7 +56,7 @@ const ChauffeurInputs = ({
         className={`col-span-1 sm:col-span-2 lg:col-span-5 ${errors.dropOff && "ring-2 ring-red-500"}`}
       >
         <LocationInput
-          className="bg-white rounded-none h-full"
+          className="bg-white rounded-none h-10 lg:h-full"
           placeholder="Drop Off"
           value={dropoff}
           onChange={(s) => setDropoff(s)}
@@ -93,7 +93,7 @@ const ChauffeurInputs = ({
         // disabled
           className="h-full"
           inputClassName={clsx(
-            "sm:rounded-bl-lg lg:rounded-none h-10 lg:h-full transition-all duration-200",
+            " rounded-b-lg sm:rounded-b-none sm:rounded-br-lg lg:rounded-none  h-10 lg:h-full transition-all duration-200",
             errors.date && "ring-2 ring-red-500 placeholder:text-red-500",
           )}
           aria-invalid={!!errors.date}

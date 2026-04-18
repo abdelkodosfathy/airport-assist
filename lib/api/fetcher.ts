@@ -4,12 +4,10 @@ import { API_BASE_URL } from "./config";
 export async function apiFetch(endpoint: string, options: RequestInit = {}) {
   const url = `${API_BASE_URL}${endpoint}`;
   const currency = useCurrencyStore.getState().currency;
-  console.log(currency);
-
   const isFormData = options.body instanceof FormData;
-  console.log(isFormData);
   
   const config: RequestInit = {
+    credentials: "include",
     headers: {
       // "Content-Type": "application/json",
       ...(!isFormData && { "Content-Type": "application/json" }),
@@ -23,8 +21,11 @@ export async function apiFetch(endpoint: string, options: RequestInit = {}) {
   try {
     const response = await fetch(url, config);
     const contentType = response.headers.get("content-type");
+    
     const isJson = contentType?.includes("application/json");
+
     const data = isJson ? await response.json() : await response.text();
+    console.log(data);
 
     if (!response.ok) {
       throw {
@@ -38,6 +39,8 @@ export async function apiFetch(endpoint: string, options: RequestInit = {}) {
 
     return data;
   } catch (error: any) {
+    console.log(error);
+
     if (error?.status) throw error;
 
     throw {
