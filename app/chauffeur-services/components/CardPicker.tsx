@@ -10,9 +10,16 @@ function CardPicker() {
   const selectedCar = useTripStore((state) => state.car);
   const selectCar = useTripStore((state) => state.setCar);
   const country = usePickupPointsStore((s) => s.pickup?.country);
-  const { data, isLoading, isError, error } = useCars(country ?? undefined);
-  
-  
+  const state_id = usePickupPointsStore((s) => s.pickup?.state_id);
+
+  console.log(country);
+  console.log(state_id);
+
+  // const { data, isLoading, isError, error } = useCars(country ?? undefined);
+  const { data, isLoading, isError } = useCars({
+    countryCode: country,
+    stateId: state_id,
+  });
 
   // Reset selected car if it no longer exists after region/data change
   useEffect(() => {
@@ -28,7 +35,7 @@ function CardPicker() {
   }, [data, selectedCar, selectCar]);
 
   if (isError) {
-    console.error("Error fetching cars:", error);
+    console.error("Error fetching cars:", isError);
   }
 
   if (isLoading) {

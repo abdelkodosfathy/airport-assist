@@ -5,7 +5,10 @@ import { useCars } from "@/lib/hooks/useCars";
 import { Car } from "@/lib/types/car";
 import { useCarStore } from "@/store/chauffeurStore";
 import { useAirportPackageStore } from "@/store/packageStore";
-import { useChauffeurDestinationStore, useSingleAirportStore } from "@/store/vipInputsStore";
+import {
+  useChauffeurDestinationStore,
+  useSingleAirportStore,
+} from "@/store/vipInputsStore";
 import { useEffect } from "react";
 
 export default function CarsList() {
@@ -16,10 +19,18 @@ export default function CarsList() {
   const selectedCar = useCarStore((state) => state.car);
   const carTypeId = selectedCar?.car_type_id;
   const setCar = useCarStore((state) => state.setCar);
-  // const country = useChauffeurDestinationStore((s) => s.country);
-  const country = useSingleAirportStore((s) => s.singleAirport?.city.iso2);
+  const country = useChauffeurDestinationStore((s) => s.country);
+  const state_id = useChauffeurDestinationStore((s) => s.state_id);
 
-  const { data, isLoading, isError, error } = useCars(country ?? undefined);
+  // const country = useSingleAirportStore((s) => s.singleAirport?.city.iso2);
+
+  // console.log(country);
+
+  // const { data, isLoading, isError, error } = useCars(country ?? undefined);
+  const { data, isLoading, isError } = useCars({
+    countryCode: country,
+    stateId: state_id,
+  });
 
   const handleSelect = (car: Car) => {
     setCar(car);
@@ -45,7 +56,7 @@ export default function CarsList() {
   }
 
   if (isError) {
-    console.error("Error fetching cars:", error);
+    console.error("Error fetching cars:", isError);
     return (
       <p className="text-sm text-red-500 mt-4">
         Failed to load car types. Please try again.

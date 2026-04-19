@@ -1,9 +1,9 @@
-import { useCurrencyStore } from "@/store/currencyStore";
+// import { useCurrencyStore } from "@/store/currencyStore";
 import { API_BASE_URL } from "./config";
 
 export async function apiFetch(endpoint: string, options: RequestInit = {}) {
   const url = `${API_BASE_URL}${endpoint}`;
-  const currency = useCurrencyStore.getState().currency;
+  // const currency = useCurrencyStore.getState().currency;
   const isFormData = options.body instanceof FormData;
   
   const config: RequestInit = {
@@ -12,7 +12,9 @@ export async function apiFetch(endpoint: string, options: RequestInit = {}) {
       // "Content-Type": "application/json",
       ...(!isFormData && { "Content-Type": "application/json" }),
 
-      currency: currency, // pass currency in header
+      // currency: currency,
+      currency: "gbp",
+
       ...(options.headers || {}),
     },
     ...options,

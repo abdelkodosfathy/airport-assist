@@ -19,6 +19,7 @@ export interface Suggestion {
   location?: LatLng;
   placeId?: string;
   country?: string;
+  state_id?: number;
   iataCode?: string;
   rawAirport?: Airport;
   googleTypes?: string[];
@@ -40,6 +41,7 @@ function airportToSuggestion(a: Airport): Suggestion {
     iataCode: a.airport_code,
     rawAirport: a,
     country: a.city.iso2,
+    state_id: a.city.state_id,
   };
 }
 
@@ -152,6 +154,7 @@ interface LocationInputProps {
   isLoaded: boolean;
   disabled?: boolean;
   onCountrySelect?: (country: string) => void;
+  onStateSelect?: (state: number) => void;
   className?: string;
   isPickup?: boolean;
   countryRestriction?: string | string[];
@@ -171,6 +174,7 @@ export function LocationInput({
   disabled,
   className,
   isPickup,
+  onStateSelect,
   countryRestriction,
   disableAirportsSearch,
   disableGoogleSearch,
@@ -340,6 +344,7 @@ export function LocationInput({
         onAirportSelect?.(s.rawAirport);
         onChange(s);
         onCountrySelect?.(s.rawAirport.city.iso2 ?? "");
+        onStateSelect?.(s.rawAirport.city.state_id ?? undefined);
         return;
       }
 
@@ -504,6 +509,8 @@ export function LocationInput({
           onAirportSelect?.(finalMatchedAirport);
           onChange(airportToSuggestion(finalMatchedAirport));
           onCountrySelect?.(finalMatchedAirport.city.iso2 ?? countryCode ?? "");
+          onStateSelect?.(finalMatchedAirport.city.state_id ?? undefined);
+
           return;
         }
 
@@ -512,7 +519,10 @@ export function LocationInput({
           onChange({
             ...s,
             location: { lat: loc.lat(), lng: loc.lng() },
-            country: countryCode ?? "", // 👈 أضف دي
+            country: countryCode ?? "",
+            state_id: undefined,
+            // مش حاطط state_id عشان مش موجودة ف جوجل زي الباك اند 
+            // احنا هنتعامل علي اساس ان دايما في مطار ف يبقي ال state_id تيجي دايما من المطار
           });
         } else {
           onChange(s);

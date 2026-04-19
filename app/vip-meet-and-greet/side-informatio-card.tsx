@@ -34,6 +34,8 @@ import {
 import { formatNumber } from "@/lib/formatNumbers";
 import { useCarStore } from "@/store/chauffeurStore";
 import Whatsapp from "@/components/custom icons/whatsapp";
+import { useConvertCurrency } from "@/lib/hooks/useConvertCurrency";
+
 export type SideInformationCardRef = {
   getTotal: () => number | undefined;
   recalculate: () => void;
@@ -58,6 +60,8 @@ const Icon = ({ serviceType }: { serviceType: ServiceType }) => {
 };
 
 const SideInformationCard = () => {
+  const { convert } = useConvertCurrency();
+
   const airport = useSingleAirportStore((state) => state.singleAirport);
 
   const isFastTrack = airport?.is_fast_track_active ?? false;
@@ -100,7 +104,7 @@ const SideInformationCard = () => {
     return blocks * bagsCost;
   }
 
-  const calcBags = calcBagsCost(
+  const BagsCost = calcBagsCost(
     numberOfBags,
     bagsCost ?? 0,
     bagsBlockSize ?? 0,
@@ -184,7 +188,7 @@ const SideInformationCard = () => {
     const total =
       adultCost +
       childCost +
-      calcBags +
+      BagsCost +
       // additionalCost +
       AdditionalPassengersCost +
       connectionCost +
@@ -200,7 +204,7 @@ const SideInformationCard = () => {
     storedServiceType,
     miles,
     car,
-    calcBags,
+    BagsCost,
     lastMinuteCost,
     additionalHourCost,
     isFastTrack,
@@ -222,6 +226,10 @@ const SideInformationCard = () => {
           <li className="text-[#62697D] my-2">
             Airport: {storedAirport?.airport_name}
           </li>
+          {/* <li className="text-[#62697D] my-2">
+            Converted: {convert(3385)}
+          </li> */}
+
           <li className="flex gap-2 items-center justify-between text-[#62697D] capitalize">
             <div className="flex gap-2 items-center">
               <Icon serviceType={storedServiceType as ServiceType} />{" "}
@@ -254,54 +262,54 @@ const SideInformationCard = () => {
             <ChildrenRow
               currency={currency}
               storedChildren={storedChildren}
-              child_cost={airportPackage?.child_cost ?? 0}
+              child_cost={convert(airportPackage?.child_cost ?? 0)}
             />
           ) : null}
 
           {isFastTrack && fastTrackChecked ? (
             <FastTrackRow
-              calculatedFastTrack={calculatedFastTrack}
+              calculatedFastTrack={convert(calculatedFastTrack)}
               currency={currency}
-              fastTrackCost={fastTrackCost}
-              passengersCount={allPassengers}
+              // fastTrackCost={convert(fastTrackCost)}
+              // passengersCount={allPassengers}
             />
           ) : null}
           {additionalAdults > 0 && AdditionalPassengersCost > 0 ? (
             <AdditionalPassengersRow
-              costPerPAX={airportPackage?.additional_adult_cost ?? 0}
+              costPerPAX={convert(airportPackage?.additional_adult_cost ?? 0)}
               currency={currency}
-              passengersCost={AdditionalPassengersCost}
+              passengersCost={convert(AdditionalPassengersCost)}
               numberOfPassengers={additionalAdults}
             />
           ) : null}
-          {(numberOfBags ?? 0) > 0 && (calcBags ?? 0 > 0) ? (
-            <PorterRow calcBags={calcBags} currency={currency} />
+          {(numberOfBags ?? 0) > 0 && (BagsCost ?? 0 > 0) ? (
+            <PorterRow BagsCost={convert(BagsCost)} currency={currency} />
           ) : null}
           {additionalHours > 0 ? (
             <AdditionalHoursRow
               currency={currency}
               hours={additionalHours}
-              hoursCost={additionalHourCost}
+              hoursCost={convert(additionalHourCost)}
             />
           ) : null}
           {/* {additionalMilesCost > 0 ? ( */}
           <ChauffeurRow
-            supplementFee={supplementFee}
-            additionalMilesCost={additionalMilesCost}
+            supplementFee={convert(supplementFee)}
+            additionalMilesCost={convert(additionalMilesCost)}
             currency={currency}
           />
           {/* ) : null} */}
           {lastMinuteCost > 0 ? (
             <LastMinuteRow
               currency={currency}
-              lastMinuteCost={lastMinuteCost}
+              lastMinuteCost={convert(lastMinuteCost)}
             />
           ) : null}
         </ul>
 
         {airportPackage || lastMinuteCost > 0 ? (
           <Total
-            totalPrice={totalPrice ?? 0 + (lastMinuteCost ?? 0)}
+            totalPrice={convert(totalPrice ?? 0 + (lastMinuteCost ?? 0))}
             currency={currency}
           />
         ) : null}
@@ -484,8 +492,8 @@ const FastTrackRow = ({
   calculatedFastTrack,
 }: {
   calculatedFastTrack: number;
-  passengersCount: number;
-  fastTrackCost: number;
+  // passengersCount: number;
+  // fastTrackCost: number;
   currency: string;
 }) => {
   return (
@@ -505,10 +513,10 @@ const FastTrackRow = ({
 };
 
 const PorterRow = ({
-  calcBags,
+  BagsCost,
   currency,
 }: {
-  calcBags: number;
+  BagsCost: number;
   currency: string;
 }) => {
   return (
@@ -518,7 +526,7 @@ const PorterRow = ({
       </div>
       <div>
         <span className="text-xs">+{currency} </span>
-        {(calcBags ?? 0 > 0) ? ` ${calcBags.toFixed(0)}` : null}
+        {(BagsCost ?? 0 > 0) ? ` ${BagsCost.toFixed(0)}` : null}
       </div>
     </li>
   );

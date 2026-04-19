@@ -155,7 +155,8 @@ export const usePassengersStore = create<PassengersStore>()(
 
 // ── Local store for chauffeur destination ─────────────────────────────────────
 type ChauffeurDestinationStore = {
-  country: string | null;
+  country?: string;
+  state_id?: number;
   miles: number | null;
   destination: Suggestion | null;
   supplementFee: number;
@@ -166,6 +167,7 @@ type ChauffeurDestinationStore = {
   setMiles: (m: number | null) => void;
   setSupplementFee: (s: number) => void;
   setCountry: (c: string) => void;
+  setStateID: (s: number) => void;
   resetChauffeurDestination: () => void;
 
   withAdditionalChauffeur: boolean;
@@ -174,8 +176,9 @@ type ChauffeurDestinationStore = {
 
 const initialState = {
   miles: 0,
-  country: null,
+  country: undefined,
   supplementFee: 0,
+  state_id:  undefined,
   destination: null,
   withTrip: false,
   withAdditionalChauffeur: false,
@@ -187,6 +190,7 @@ export const useChauffeurDestinationStore = create<ChauffeurDestinationStore>(
 
     setWithTrip: (s) => set({ withTrip: s }),
     setMiles: (m) => set({ miles: m }),
+    setStateID: (s) => set({ state_id: s }),
     setCountry: (s) => set({ country: s }),
     setSupplementFee: (s) => set({ supplementFee: s }),
     setDestination: (s) => set({ destination: s }),

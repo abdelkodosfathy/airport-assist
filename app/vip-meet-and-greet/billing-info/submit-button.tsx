@@ -138,13 +138,6 @@ const SubmitButton = () => {
         "wheelchair_assistance",
         String(wheelchair_assistance ? 1 : 0),
       );
-      // if (additional_hours ?? 0 > 0) {
-      //   formData.append("additional_hours", String(additional_hours));
-      // } else {
-      //   formData.append("additional_hours", String(0));
-      // }
-
-      // const hours = Math.max(additional_hours ?? 0, 0);
       
       const parsed = Number(additional_hours);
       const hours = Number.isFinite(parsed) ? Math.max(parsed, 0) : 0;
@@ -152,7 +145,7 @@ const SubmitButton = () => {
       
       formData.append("additional_hours", String(hours));
 
-      if (withTrip || package_slug === "elite_plus") {
+      if ((withTrip || package_slug === "elite_plus") && service_type !== "connection") {
         formData.append("with_trip", "1");
         formData.append("trip_type", "by_distance");
         formData.append("car_type_id", String(selectedCar?.car_type_id));

@@ -33,7 +33,6 @@ const SubmitButton = () => {
   const handleSubmit = async () => {
     // ✅ getState — قراءة لحظية بدون subscription
     const { car, tripType, hours, firstName, lastName, email, phone } =
-    
       useTripStore.getState();
     const { airline: airlineId, flightNumber } = useFlightStore.getState();
     const { serviceType } = useServiceStore.getState();
@@ -152,8 +151,8 @@ const SubmitButton = () => {
     formData.append("pickup_location[long]", String(from?.location?.lng));
 
     formData.append("has_meet_and_greet", meetAndGreet ? "1" : "0");
-    formData.append("number_of_passengers", String(passengers) );
-    formData.append("number_of_bags", String(luggage) );
+    formData.append("number_of_passengers", String(passengers));
+    formData.append("number_of_bags", String(luggage));
 
     if (tripApiType === "by_hour") {
       formData.append("hours_count", String(hours));
@@ -174,6 +173,8 @@ const SubmitButton = () => {
             );
           }
         });
+      } else {
+        formData.append("trip_start_time", formatDateToAPI(tripDate));
       }
     } else {
       formData.append("trip_start_time", formatDateToAPI(tripDate));

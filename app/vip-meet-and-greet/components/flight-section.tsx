@@ -21,6 +21,9 @@ const FlightSection = () => {
   const country = useSingleAirportStore(
     (state) => state.singleAirport?.city.iso2,
   );
+  const state_id = useSingleAirportStore(
+    (state) => state.singleAirport?.city.state_id,
+  );
 
   const setCountry = useChauffeurDestinationStore((s) => s.setCountry);
   // setCountry(country ?? "");
@@ -28,7 +31,11 @@ const FlightSection = () => {
     setCountry(country ?? "");
   }, [country]);
 
-  const { data, isLoading, isError, error } = useCars(country ?? undefined);
+  // const { data, isLoading, isError, error } = useCars(country ?? undefined);
+  const { data, isLoading, isError } = useCars({
+    countryCode: country,
+    stateId: state_id,
+  });
 
   const includingCars: boolean = (data?.data.total_result ?? 0) > 0;
   const serviceType = useServiceStore((s) => s.serviceType);

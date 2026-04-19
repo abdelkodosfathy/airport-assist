@@ -2,6 +2,7 @@
 
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
+import { useConvertCurrency } from "@/lib/hooks/useConvertCurrency";
 import { useCurrencyStore } from "@/store/currencyStore";
 import { useFlightFormStore } from "@/store/useFlightFormStore";
 import { useSingleAirportStore } from "@/store/vipInputsStore";
@@ -14,6 +15,7 @@ const FastTrackCheckBox = () => {
   const checkfastTrack = useFlightFormStore((state) => state.setFastTrack);
   const currencyMark = useCurrencyStore((state) => state.currencyMark);
 
+  const {convert} = useConvertCurrency();
   return (
     <div className="flex items-start col-span-2 gap-3">
       <Checkbox
@@ -28,7 +30,7 @@ const FastTrackCheckBox = () => {
       >
         Include Fast Track Service{" "}
         <span>
-          (+{currencyMark} {fastTrackCost}, Per PAX)
+          (+{currencyMark} {convert(fastTrackCost ?? 0)}, Per PAX)
         </span>
       </Label>
     </div>

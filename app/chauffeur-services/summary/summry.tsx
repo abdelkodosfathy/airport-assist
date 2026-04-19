@@ -90,7 +90,9 @@ function subtractMinutes(input: DateTime, minutesToSubtract: number): DateTime {
   };
 }
 
-const parseDateTime = (value: string): { date: string | null; time: string | null } => {
+const parseDateTime = (
+  value: string,
+): { date: string | null; time: string | null } => {
   if (!value) return { date: null, time: null };
 
   const [date, time] = value.split(" ");
@@ -102,13 +104,13 @@ const parseDateTime = (value: string): { date: string | null; time: string | nul
 };
 
 export default function Summry() {
-  const currencyMark = useCurrencyStore((state) => state.currencyMark);
+  const currencyMark = useCurrencyStore((state) => state.currency);
   const currency = useCurrencyStore((state) => state.currency);
   const searchParams = useSearchParams();
   const uuid = searchParams.get("uuid");
 
-  const storeDate = useDateStore(s => s.setBookingDate);
-  const storePassengers = useTripStore(s => s.set_passengers);
+  const storeDate = useDateStore((s) => s.setBookingDate);
+  const storePassengers = useTripStore((s) => s.set_passengers);
 
   const [data, setData] = useState<TripSummary | null>(null);
   const [loading, setLoading] = useState(true);
@@ -123,8 +125,10 @@ export default function Summry() {
           payment_method: "stripe",
         });
 
-        if(result) {
-          const resData = result.data.summary
+        if (result) {
+          console.log(result);
+
+          const resData = result.data.summary;
           setData(resData);
 
           // type BookingDate = {
@@ -133,8 +137,8 @@ export default function Summry() {
           // };
           const dateTime = parseDateTime(resData.trip_start_time);
 
-          storeDate(dateTime)
-          storePassengers(resData.number_of_passengers)
+          storeDate(dateTime);
+          storePassengers(resData.number_of_passengers);
 
           console.log(resData);
         }
@@ -284,12 +288,33 @@ export default function Summry() {
               boxShadow: "0px 11.48px 114.76px 0px #A7A7A73D",
             }}
           >
+            <div className="flex justify-between font-semibold">
+              <h2 className="text-[18.75px] mb-4 font-semibold">
+                {data.trip_type === "by_distance"
+                  ? "One Way Transfer "
+                  : "Hourly Trip "}
+                {data.other_trips && data.other_trips.length > 0 ? (
+                  // <span className="text-sm font-light text-[#7A7A7A] lowercase">(included {data.other_trips.length + 1} trips)
+                  <span className="text-sm font-light lowercase">(included {data.other_trips.length + 1} trips)
+                  </span>
+                ) : (
+                  null
+                )}
+              </h2>
+
+              <p>
+                <span className="text-xs text-[#6A7282]">{currency} </span>
+                {/* {data.subtotal} */}
+                {data.total}
+              </p>
+            </div>
+            {/* "by_distance" */}
             <p className="text-sm flex justify-between">
               {/* Base fare <span>{currency} 1,486.25</span> */}
-              Trip Cost
+              Processing fee
               <span>
                 {currency}
-                {trip.trip_cost}
+                {trip.payment_fees}
               </span>
             </p>
             <p className="text-sm flex justify-between">
@@ -297,7 +322,7 @@ export default function Summry() {
             </p>
             <p className="text-sm flex justify-between">
               {/* Transactio fee<span>$ 64.65</span> */}
-              Tax{" "}
+              VAT{" "}
               <span>
                 {currency}
                 {trip.tax_value}
@@ -309,7 +334,7 @@ export default function Summry() {
             <p className="text-lg flex justify-between">
               Total{" "}
               <span>
-                {currency} {trip.total}
+                {currency} {(trip.total + trip.payment_fees).toFixed(2)}
               </span>
             </p>
           </div>
@@ -319,8 +344,9 @@ export default function Summry() {
             <div className="font-[Manrope] flex items-center justify-between">
               <p className="text-[18.75px]">Total</p>
               <p className="font-bold font-[Arial]">
-                {currencyMark} {trip.total}{" "}
-                <span className="font-light text-[#6A7282]">{currency}</span>
+                {/* {currencyMark} {trip.total}{" "} */}
+                {currency} {(trip.total + trip.payment_fees).toFixed(2)}
+                {/* <span className="font-light text-[#6A7282]">{currency}</span> */}
               </p>
             </div>
           </div>

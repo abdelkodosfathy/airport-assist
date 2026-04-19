@@ -16,6 +16,7 @@ import { packageFeatures } from "@/lib/fixed-features";
 import { formatNumber } from "@/lib/formatNumbers";
 import Link from "next/link";
 import InnerToast from "@/components/ui/InnerToast";
+import { useConvertCurrency } from "@/lib/hooks/useConvertCurrency";
 
 const alertMessages = {
   arrival:
@@ -190,6 +191,8 @@ export default memo(function ServiceCard({
   const packageCost = isLHR ? service.adult_cost + service.connection_fees : service.adult_cost ;
   // const packageCost =  service.adult_cost + service.connection_fees;
 
+  const { convert } = useConvertCurrency();
+  
   const isFastTrackActive = useAirportStore((s) => s.airport?.is_fast_track_active);
   const isGolfCartActive = useAirportStore((s) => s.airport?.is_golf_cart_active);
 
@@ -202,7 +205,11 @@ export default memo(function ServiceCard({
     if (name.includes("GolfCart") && !isGolfCartActive) return false;
     return true;
   });
-  const formatedCost = formatNumber(Math.ceil(packageCost));
+
+
+  
+  const convertedCost = convert(packageCost);
+  const formatedCost = formatNumber(Math.round(convertedCost));
 
   // for yellow alert box
   const airportISO2 = useAirportStore((s) => s.airport?.city.iso2);

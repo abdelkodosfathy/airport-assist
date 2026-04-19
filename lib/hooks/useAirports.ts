@@ -59,9 +59,10 @@ export function useAirports(search: string) {
 
 // export function useSingleAirport(id: string) {
 export function useSingleAirport(id: string, enabled = true) {
-  const currency = useCurrencyStore((s) => s.currency);
+  // const currency = useCurrencyStore((s) => s.currency);
   return useQuery({
-    queryKey: ["singleAirport", id, currency],
+    // queryKey: ["singleAirport", id, currency],
+    queryKey: ["singleAirport", id],
     queryFn: () => fetchSingleAirport(id),
     staleTime: 1000 * 60 * 5,
     gcTime: 1000 * 60 * 10,
