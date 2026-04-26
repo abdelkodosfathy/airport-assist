@@ -20,7 +20,9 @@ export default function CarsList() {
   const carTypeId = selectedCar?.car_type_id;
   const setCar = useCarStore((state) => state.setCar);
   const country = useChauffeurDestinationStore((s) => s.country);
+  // const state_id = useChauffeurDestinationStore((s) => s.state_id);
   const state_id = useChauffeurDestinationStore((s) => s.state_id);
+  const airport_state_id = useSingleAirportStore((s) => s.singleAirport?.city.state_id);
 
   // const country = useSingleAirportStore((s) => s.singleAirport?.city.iso2);
 
@@ -29,8 +31,12 @@ export default function CarsList() {
   // const { data, isLoading, isError, error } = useCars(country ?? undefined);
   const { data, isLoading, isError } = useCars({
     countryCode: country,
-    stateId: state_id,
+    stateId: airport_state_id,
   });
+
+  
+  console.log(data);
+  
 
   const handleSelect = (car: Car) => {
     setCar(car);

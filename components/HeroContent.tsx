@@ -56,12 +56,9 @@ export default function HeroContent() {
           tracking-[2px] sm:tracking-[6%] md:tracking-[9%]
           mt-4 sm:mt-5
           text-[21.75px]
+          normal-case
           "
-          // opacity-0
-        // text-base sm:text-sm md:text-xl lg:text-2xl
-        // max-w-[90%] sm:max-w-[650px]
       >
-        {/* Luxury Airport VIP Concierge — seamless, private, stress-free travel. */}
         Luxury Airport VIP Concierge — seamless, private, stress-free travel.
       </p>
 

@@ -53,50 +53,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   };
   const currentLayout = layoutMap[segment ?? ""];
   return (
-    // <main className="bg-[#F7F7F6] font-[Manrope]">
-    //   <Header />
-
-    //   <section className="bg-[#1A1A1A] relative w-full h-114 text-white flex items-center overflow-hidden">
-    //     {/* Hero content */}
-    //     <div className="relative z-10 mx-auto max-w-340 px-12 flex gap-4 w-full justify-between">
-    //       <div className="flex-1 flex flex-col justify-center">
-    //         <p className="text-[#959595] text-[15.53px] font-medium">why</p>
-    //         <h1 className=" font-[Manrope] mb-6 text-[25.31px] tracking-[5.63px]">
-    //           {currentLayout.title}
-    //         </h1>
-    //         <p className="normal-case font-[Manrope] font-normal mb-8 text-sm leading-[150%] tracking-[1.5px] text-[#959595]">
-    //           {currentLayout.bodyContent}
-    //         </p>
-    //         <Button
-    //           asChild
-    //           variant="outline"
-    //           className=" w-fit py-5 border-white bg-one  hover:bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)] hover:text-white hover:border-transparent duration-0"
-    //         >
-    //           <Link href={"/contact-us"}>
-    //             <p>Enquire Now</p>
-    //             <ArrowUpRight className="size-md" />
-    //           </Link>
-    //         </Button>
-    //       </div>
-    //       <div className="flex-1">
-    //         <Image
-    //           alt="room image"
-    //           className="h-68 w-125 object-cover ml-auto rounded-lg"
-    //           src={currentLayout.img}
-    //         />
-    //       </div>
-    //     </div>
-    //   </section>
-
-    //   {children}
-
-    //   <Footer />
-    // </main>
     <main className="bg-[#F7F7F6] font-[Manrope]">
       <Header />
 
       <section className="bg-[#1A1A1A] relative w-full min-h-[300px] lg:min-h-114 text-white flex items-center overflow-hidden pb-10 xl:py-10 pt-24 xl:pt-10">
-        <div className="relative z-10 mx-auto max-w-340 px-4 sm:px-8 xl:px-12 flex flex-col xl:flex-row gap-8 xl:gap-6 w-full justify-between items-center">
+        <div className="relative z-10 mx-auto max-w-340 px-4 sm:px-8 xl:px-12 flex flex-col xl:flex-row gap-8 xl:gap-6 w-full justify-between items-center my-20">
           {/* Text */}
           <div className="flex-1 flex flex-col justify-center text-center xl:text-left w-full">
             <p className="text-[#959595] text-sm xl:text-[15.53px] font-medium">
@@ -121,10 +82,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </div>
 
           {/* Image */}
-          <div className="flex-1 w-full flex justify-center xl:justify-end">
+          <div className="flex-1  max-w-125 w-125  max-h-68.25 h-68.25 relative">
             <Image
               alt="room image"
-              className="w-full max-w-sm sm:max-w-md xl:max-w-none xl:w-full xl:h-68 lg:w-125 object-cover rounded-lg"
+              className="w-full h-full object-cover"
               src={currentLayout.img}
             />
           </div>
@@ -137,44 +98,3 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     </main>
   );
 }
-
-// import Header from "@/components/Header/Header";
-// import Footer from "@/components/Footer";
-// import Image from "next/image";
-// import InfoContainer from "./InfoContainer";
-// export default function ServicesLayout() {
-//   return (
-//     <main className="bg-[#F7F7F6] font-[Manrope]">
-//       <Header />
-
-//       <section className="bg-[#1A1A1A] relative w-full h-140 text-white flex items-center overflow-hidden">
-//         {/* Hero content */}
-//         <div className="relative z-10 mx-auto max-w-340 px-12 flex gap-4 w-full justify-between">
-//           <div className="flex-1 flex flex-col justify-center">
-//             <p className="text-[#959595] text-[15.53px] font-medium">why</p>
-//             <h1 className=" font-[Manrope] mb-6 text-[25.31px] tracking-[5.63px]">
-//               Airport Assist
-//             </h1>
-//             <p className=" font-[Manrope] font-normal mb-8 text-sm leading-[150%] tracking-[1.5px] text-[#959595]">
-//               Luxury Airport Concierge & Bespoke Travel Solutions Worldwide
-//               AIRPORT ASSIST is a leading provider of luxury airport concierge
-//               services and bespoke travel solutions for individuals, VIPs,
-//               celebrities, and corporate travellers. With decades of experience
-//               in premium travel management, we deliver discreet, seamless, and
-//               fully personalised journeys—from airport arrival to final
-//               destination.
-//             </p>
-//           </div>
-//           <div className="flex-1">
-//             <Image
-//               alt="room image"
-//               className="w-140 ml-auto rounded-lg"
-//               src={heroImage}
-//             />
-//           </div>
-//         </div>
-//       </section>
-//       <Footer />
-//     </main>
-//   );
-// }

@@ -2,6 +2,8 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { fetchCars } from "../api/cars";
+import { useSingleAirport } from "./useAirports";
+import { useSingleAirportStore } from "@/store/vipInputsStore";
 // import { useCurrencyStore } from "@/store/currencyStore";
 
 // export function useCars(countryCode?: string) {
@@ -26,9 +28,13 @@ export function useCars({
 }) {
   // const currency = useCurrencyStore((s) => s.currency);
 
+  const singleAirprot = useSingleAirportStore(s => s.singleAirport?.airport_id);
+  console.log(countryCode);
+  console.log(stateId);
+  
   return useQuery({
     // queryKey: ["car-types", countryCode, stateId, currency],
-    queryKey: ["car-types", countryCode, stateId],
+    queryKey: ["car-types", countryCode, stateId, singleAirprot],
     queryFn: () => fetchCars({ countryCode, stateId }),
     staleTime: 1000 * 60 * 5,
     gcTime: 1000 * 60 * 10,

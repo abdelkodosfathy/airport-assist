@@ -357,6 +357,7 @@ export default function AirlineSearchInput({
             disabled={disabled}
             value={displayValue}
             onChange={handleChange}
+            name="airline"
             onFocus={() => airlines.length > 0 && setOpen(true)}
             placeholder={placeholder}
             className="flex-1 bg-transparent text-sm text-[#1A1A1A] placeholder:text-[#ACACAC] outline-none truncate"

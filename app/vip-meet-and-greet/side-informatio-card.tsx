@@ -581,7 +581,7 @@ const ChauffeurRow = ({
           <div className="flex gap-2 items-center">
             <Chauffeur />
             <div className="flex items-center gap-2">
-              <p>Addtional Supplement fee</p>
+              <p>Supplement fee</p>
             </div>
           </div>
           <p>

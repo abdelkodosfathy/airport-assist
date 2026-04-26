@@ -14,11 +14,9 @@ import jetClass4 from "@/public/cars/jet-class/img_4.webp";
 import jetClass5 from "@/public/cars/jet-class/img_5.webp";
 
 import sclass_exterior from "@/public/cars/s-class/s-class_exterior.webp";
-import sclass1 from "@/public/cars/jet-class/img_1.webp";
-import sclass2 from "@/public/cars/jet-class/img_2.webp";
-import sclass3 from "@/public/cars/jet-class/img_3.webp";
-import sclass4 from "@/public/cars/jet-class/img_4.webp";
-import sclass5 from "@/public/cars/jet-class/img_5.webp";
+import sclass1 from "@/public/cars/s-class/img_1.webp";
+import sclass2 from "@/public/cars/s-class/img_2.webp";
+import sclass3 from "@/public/cars/s-class/img_3.webp";
 
 import rangeRover_exterior from "@/public/cars/range-rover/range-rover_exterior.webp";
 import ranegRover_1 from "@/public/cars/range-rover/img_1.webp";
@@ -80,8 +78,6 @@ export const CARS: CarSlider[] = [
       { src: sclass1, label: "INTERIOR" },
       { src: sclass2, label: "INTERIOR" },
       { src: sclass3, label: "INTERIOR" },
-      { src: sclass4, label: "INTERIOR" },
-      { src: sclass5, label: "INTERIOR" },
     ],
   },
   {

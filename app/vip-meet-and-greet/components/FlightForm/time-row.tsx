@@ -43,8 +43,7 @@ const TimeRow = () => {
         <Label
           className={`capitalize ${arrivalTimeError ? "text-red-500" : ""}`}
         >
-          {serviceType === "connection" ? "arrival" : serviceType} Time{" "}
-          {arrivalTimeError && "*"}
+          {serviceType === "connection" ? "arrival" : serviceType} Time {arrivalTimeError && "*"}
         </Label>
         <TimePickerInput
           value={arrivalTime?.value}

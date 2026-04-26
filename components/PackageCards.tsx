@@ -141,7 +141,7 @@ export default function PackageCards() {
           {/* Content */}
           <div className="flex flex-col flex-1 p-4 2xl:p-6">
             <div className="mb-4">
-              <p className="font-manrope truncate mt-2 text-sm 2xl:text-md font-normal text-[#61686e]">
+              <p className="normal-case font-manrope truncate mt-2 text-sm 2xl:text-md font-normal text-[#61686e]">
                 {pkg.description}
               </p>
             </div>

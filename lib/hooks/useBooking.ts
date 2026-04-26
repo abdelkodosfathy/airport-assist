@@ -1,9 +1,9 @@
 // import { BookingContext } from "@/contexts/BookingContext";
 // import { useContext } from "react";
 
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { SingleBooking } from "../types/booking";
-import { apiGet } from "../api";
+import { apiGet, apiPost } from "../api";
 
 // // Custom hook to use the booking context
 // export function useBooking() {
@@ -53,5 +53,23 @@ export function useSingleBooking(uuid: string | null, enabled = true) {
     gcTime: 1000 * 60 * 10,
 
     select: (data) => formatBookingData(data), 
+  });
+}
+
+export async function confirmBooking(uuid: string): Promise<SingleBooking> {
+  const res = await apiPost(`/bookings/${uuid}/confirm`);
+  return res.data.booking;
+}
+
+export function useConfirmBookingMutation() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (uuid: string) => confirmBooking(uuid),
+    onSuccess: (data) => {
+      // تحديث الكاش إذا كنا نريد تحديث بيانات الحجز في أماكن تانية
+      queryClient.invalidateQueries({ queryKey: ["booking"] });
+      console.log("Booking confirmed successfully", data);
+    },
   });
 }

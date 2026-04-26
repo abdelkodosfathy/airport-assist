@@ -2,14 +2,17 @@
 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import CustomPhoneInput from "@/components/ui/phone-input";
+// import CustomPhoneInput from "@/components/ui/phone-input";
+
+// import { PhoneInput as MyPhoneInput }   from "@/components/ui/phone-input/my-phone-input";
+
 import { Textarea } from "@/components/ui/textarea";
 import DateOfBirth from "./DateOfBirth";
 import SelectDropdown from "@/components/custom inputs/SelectList";
 import { BagsInput } from "./bags-input";
 import { usePrimaryPassengerStore } from "@/store/primaryPassengerStore";
 import { useFlightFormStore } from "@/store/useFlightFormStore";
-import { LibPhoneInput } from "@/components/ui/lib-phone-input";
+import CustomPhoneInput from "@/components/ui/phone-input";
 
 const classesOptions = [
   { value: "economy", label: "Cabin Economy Class" },
@@ -129,9 +132,6 @@ const TravelClassInput = () => {
   const setTravelClass = usePrimaryPassengerStore(
     (state) => state.setClassOfTravel,
   );
-  // const thereIsError = useFlightFormStore((s) => s.validationError);
-  // const validationError = thereIsError && !travelClass?.value;
-
   const validationError = false;
 
   return (
@@ -196,6 +196,14 @@ const PhoneInput = () => {
         onChange={setPhone}
         validationClass={validationError}
       />
+      {/* <CustomPhoneInput
+  value={value}
+  onChange={handleChange}
+  className="h-12 border rounded-xl bg-gray-100"
+  inputClassName="bg-transparent px-3 text-sm"
+  countryButtonClassName="px-4 bg-gray-200"
+  dropdownClassName="rounded-lg shadow-lg"
+/> */}
     </div>
     // <div className="space-y-2">
     //   <Label className={validationError ? "text-red-500" : ""}>
@@ -240,116 +248,3 @@ const OtherPassengersInput = () => {
     </div>
   );
 };
-
-// =========================================================================================
-// =========================================================================================
-// =========================================================================================
-
-// import React, { useState, useMemo, useEffect } from "react";
-// import {
-//   AsYouType,
-//   parsePhoneNumberFromString,
-//   CountryCode,
-// } from "libphonenumber-js";
-
-// type PhoneMeta = {
-//   isValid: boolean;
-//   country?: CountryCode;
-//   international?: string;
-//   national?: string;
-// };
-
-// type Props = {
-//   value?: string;
-//   onChange?: (value: string, meta: PhoneMeta) => void;
-//   defaultCountry?: CountryCode;
-//   className?: string;
-//   placeholder?: string;
-// };
-
-// function PhoneInputLib({
-//   value = "",
-//   onChange,
-//   defaultCountry = "EG",
-//   className = "",
-//   placeholder = "Enter phone number",
-// }: Props) {
-//   const [input, setInput] = useState(value);
-//   const [country, setCountry] = useState<CountryCode>(defaultCountry);
-
-//   // sync external value
-//   useEffect(() => {
-//     setInput(value);
-//   }, [value]);
-
-//   // 🔥 parse (source of truth for validation)
-//   const parsed = useMemo(() => {
-//     const phone = parsePhoneNumberFromString(input || "");
-
-//     if (!phone) {
-//       return {
-//         isValid: false,
-//         country: undefined,
-//         international: undefined,
-//         national: undefined,
-//       };
-//     }
-
-//     return {
-//       isValid: phone.isValid(),
-//       country: phone.country,
-//       international: phone.formatInternational(),
-//       national: phone.formatNational(),
-//     };
-//   }, [input]);
-
-//   const formatNumber = (value: string) => {
-//     const formatter = new AsYouType(country);
-//     formatter.input(value);
-
-//     return formatter.getChars();
-//   };
-//   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-//     const raw = e.target.value;
-
-//     // UI formatting only
-//     const formatted = formatNumber(raw);
-
-//     setInput(formatted);
-
-//     // parse once (source of truth)
-//     const phone = parsePhoneNumberFromString(raw);
-
-//     // auto detect country safely
-//     if (phone?.country) {
-//       setCountry(phone.country);
-//     }
-
-//     const meta: PhoneMeta = {
-//       isValid: phone?.isValid() ?? false,
-//       country: phone?.country,
-//       international: phone?.formatInternational(),
-//       national: phone?.formatNational(),
-//     };
-
-//     onChange?.(formatted, meta);
-//   };
-
-//   return (
-//     <div className={`flex items-center gap-2 ${className}`}>
-//       <input
-//         type="tel"
-//         value={input}
-//         onChange={handleChange}
-//         placeholder={placeholder}
-//         className="w-full px-3 py-2 border rounded-lg outline-none"
-//       />
-
-//       <div
-//         className={`w-3 h-3 rounded-full ${
-//           parsed.isValid ? "bg-green-500" : input ? "bg-red-500" : "bg-gray-300"
-//         }`}
-//       />
-//     </div>
-//   );
-// }

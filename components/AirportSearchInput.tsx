@@ -69,20 +69,11 @@ export default function AirportSearchInput({
   // `data` retains the previous query's results while a new fetch is in-flight
   // because the hook uses `placeholderData: keepPreviousData`. This prevents the
   // dropdown from blanking out between keystrokes.
-  // const { data: popularData,isFetching:  popularLoading } = usePopularAirports();
-  // const { data, isFetching } = useAirportSearch(
-  //   debouncedQuery,
-  //   debouncedQuery.trim().length > 0,
-  // );
   const { data, isFetching } = useAirports(debouncedQuery);
   const fetchedAirports = data?.data?.airports ?? [];
   // const searchResults = data?.data?.airports;
   // const popularResults = popularData?.data?.airports;
 
-  // const allAirports = useMemo(() => {
-  //   if (debouncedQuery.trim() && searchResults?.length) return searchResults;
-  //   return popularResults ?? [];
-  // }, [searchResults, popularResults, debouncedQuery]);
 
 
   // Client-side filter على الـ query الحالي (مش الـ debounced)
@@ -142,8 +133,8 @@ export default function AirportSearchInput({
     }
   }, [airports.length, isFocused]);
 
-  console.log(open);
 
+  
   return (
     <div
       className={`flex flex-col gap-1.5 ${className ?? ""}`}
@@ -170,19 +161,15 @@ export default function AirportSearchInput({
           </span>
 
           <Input
-            // onFocus={() => airports.length > 0 && setOpen(true)}
-            // onFocus={() => {
-            //   setIsFocused(true);
-            //   if (airports.length > 0) setOpen(true);
-            // }}
             onFocus={() => {
               setIsFocused(true);
               setOpen(true);
             }}
             onBlur={() => setIsFocused(false)}
+
             name="airport-search"
-            // disabled={disabled || isFetching || popularLoading}
-            disabled={disabled || isFetching }
+            disabled={disabled ?? false }
+            readOnly={isFetching}
             value={displayValue}
             onChange={handleChange}
             placeholder={placeholder}

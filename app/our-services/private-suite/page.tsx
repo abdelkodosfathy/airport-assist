@@ -2,7 +2,23 @@
 import ServiceSection from "@/app/our-services/components/services-section";
 import Image from "next/image";
 import { ReactNode } from "react";
-import serviceImage from "@/public/services-image.webp";
+
+import arrivalArrival from "@/public/private-suite/Arrival/Arrival.webp";
+import arrivalExclusiveLounge from "@/public/private-suite/Arrival/EXCLUSIVE LOUNGE.webp";
+import arrivalSeamlessExit from "@/public/private-suite/Arrival/Leaving the Airport – Seamless Exit .webp";
+
+import connectionArrival from "@/public/private-suite/Connection/Arrival.webp";
+import connectionDeparture from "@/public/private-suite/Connection/Departure.webp";
+
+import departureBoarding from "@/public/private-suite/Departure/BOARDING.webp";
+import departureExclusiveLounge from "@/public/private-suite/Departure/EXCLUSIVE LOUNGE.webp";
+import departureFineDiningLuxuryShopping from "@/public/private-suite/Departure/FINE DINING & LUXURY SHOPPING.webp";
+import departureGreetingCurbside from "@/public/private-suite/Departure/Greeting – Curbside .webp";
+
+import checkingInImage from "@/public/private-suite/Checking In.webp";
+import immigrationAndCustomsImage from "@/public/private-suite/IMMIGRATION AND CUSTOMS.webp";
+import securityImage from "@/public/private-suite/Security.webp";
+import { Card } from "../vip-meet-and-greet/page";
 
 type Props = {};
 
@@ -32,6 +48,7 @@ const page = (props: Props) => {
             Departure
           </h2>
           <ServiceSection
+            image={departureGreetingCurbside}
             left
             title={"Greeting – Curbside"}
             content={
@@ -39,15 +56,18 @@ const page = (props: Props) => {
             }
           />
           <ServiceSection
+            image={departureExclusiveLounge}
             title="EXCLUSIVE LOUNGE"
             content="Each private lounge is thoughtfully curated to provide an elegant, tranquil setting for relaxation, focused work, or time spent with guests and family."
           />
           <ServiceSection
+            image={departureFineDiningLuxuryShopping}
             left
             title="FINE DINING & LUXURY SHOPPING"
             content="From exquisite light bites to indulgent dishes, everything is freshly prepared daily and complemented by a premium drinks service. Relax in refined comfort, where every detail is designed to make you feel at home, and enhance your experience with a personalised shopping journey through the terminals."
           />
           <ServiceSection
+            image={departureBoarding}
             title="BOARDING"
             content="Security formalities are completed discreetly within the Private Suite, before a private luxury drive delivers you directly to your aircraft."
           />
@@ -68,24 +88,25 @@ const page = (props: Props) => {
             Arrival
           </h2>
           <ServiceSection
+            image={arrivalArrival}
             left
-            title={"Greeting – Curbside"}
+            title={"Arrival"}
             content={
-              "You will be welcomed at our private suite by a dedicated doorman and escorted inside to your personal butler. Until your flight is called, relax in your private lounge and enjoy the experience at your own pace"
+              "Step off the aircraft to a personal welcome, a luxury transfer to your private lounge, and seamless luggage handling—effortless from the very first moment."
             }
           />
           <ServiceSection
+            image={arrivalExclusiveLounge}
             title="EXCLUSIVE LOUNGE"
-            content="Each private lounge is thoughtfully curated to provide an elegant, tranquil setting for relaxation, focused work, or time spent with guests and family."
+            content="
+            Settle into your private lounge, enjoy refined hospitality and à la carte dining, or spend time with guests as immigration formalities are handled discreetly within the suite.
+            "
           />
           <ServiceSection
+            image={arrivalSeamlessExit}
             left
-            title="FINE DINING & LUXURY SHOPPING"
-            content="From exquisite light bites to indulgent dishes, everything is freshly prepared daily and complemented by a premium drinks service. Relax in refined comfort, where every detail is designed to make you feel at home, and enhance your experience with a personalised shopping journey through the terminals."
-          />
-          <ServiceSection
-            title="BOARDING"
-            content="Security formalities are completed discreetly within the Private Suite, before a private luxury drive delivers you directly to your aircraft."
+            title="Leaving the Airport – Seamless Exit"
+            content="With immigration complete and luggage returned, your chauffeur-driven vehicle awaits to take you seamlessly to your destination."
           />
           <div className="flex justify-center my-4">
             <button className=" px-10 py-2 rounded-[16px] border-2 border-[#966B4B] text-white font-normal text-base bg-gradient-to-b from-[#7B5A41] to-[#b98761]">
@@ -104,6 +125,7 @@ const page = (props: Props) => {
             Connection
           </h2>
           <ServiceSection
+            image={connectionArrival}
             left
             title={"Arrival"}
             content={
@@ -111,6 +133,7 @@ const page = (props: Props) => {
             }
           />
           <ServiceSection
+            image={connectionDeparture}
             title="Departure"
             content="When it’s time to depart, you’ll move seamlessly through private security and be driven in comfort directly to your aircraft."
           />
@@ -141,6 +164,7 @@ const page = (props: Props) => {
         <div className="relative w-full">
           <Card
             title={"Checking In"}
+            image={checkingInImage}
             content={
               "Upon arrival, we’ll take care of your passports, flight details, and luggage. Your airline will weigh and tag your bags and issue your boarding pass and baggage tags, all of which are returned to you before your flight. Every step is handled while you relax in the comfort of your private lounge."
             }
@@ -148,6 +172,7 @@ const page = (props: Props) => {
             dir={"left"}
           />
           <Card
+            image={securityImage}
             title={"Security"}
             content={
               "For our VIP guests, private security is conducted within the exclusive suite, allowing you to remain in a discreet and comfortable environment at all times. While all security procedures fully comply with standard aviation regulations, they are carried out privately within the suite, ensuring the same level of safety with added comfort, privacy, and ease."
@@ -156,6 +181,7 @@ const page = (props: Props) => {
             imagePosition={"mid"}
           />
           <Card
+            image={immigrationAndCustomsImage}
             title={"IMMIGRATION AND CUSTOMS"}
             content={
               "While you relax in the comfort of your private lounge, your passport is presented to on-site Border Force officers on your behalf, with any additional checks handled discreetly in private if required. All customs formalities are seamlessly managed for you, including any declarations, allowing your arrival to remain calm, effortless, and entirely discreet."
@@ -176,8 +202,9 @@ const page = (props: Props) => {
             service, offering effortless collection and drop-off between the airport
             and your home. Guests booking our Elite Plus Service will be invited to
             provide their pick-up or drop-off details during the booking process,
-            allowing us to tailor every aspect of the journey to their needs. From
-            the moment your chauffeur arrives, every stage of your transfer is
+            allowing us to tailor every aspect of the journey to their needs. 
+            \n
+            From the moment your chauffeur arrives, every stage of your transfer is
             managed with precision, comfort, and style. Enjoy a smooth, stress-free,
             door-to-door experience in a luxury vehicle, ensuring the perfect start
             or finish to your travel.."
@@ -187,7 +214,9 @@ const page = (props: Props) => {
             content="Your booking includes up to two hours of service for departures
               and one hour for arrivals. If you wish to extend your time with
               us, please let us know at the time of booking so we can make the
-              necessary arrangements. For suite access, your booking allows for
+              necessary arrangements. 
+              \n
+              For suite access, your booking allows for
               up to two hours of use. If you would like to extend your stay or
               enhance your services, please speak to us before you arrive, and
               we will be happy to assist."
@@ -198,10 +227,14 @@ const page = (props: Props) => {
             designed to secure the finest luxury and designer accommodations
             tailored to your preferences. Whether you seek elegant comfort,
             contemporary sophistication, or a world-renowned five-star
-            experience, our team will curate the perfect stay for you. Simply
+            experience, our team will curate the perfect stay for you. 
+            \n
+            Simply
             share your requirements with us before you arrive, and we will
             handle every detail — from securing the ideal room category to
-            arranging special requests and personalised amenities. Relax in
+            arranging special requests and personalised amenities. 
+            \n
+            Relax in
             complete confidence, knowing your stay has been crafted for
             comfort, style, and an effortlessly seamless experience."
           />
@@ -212,9 +245,13 @@ const page = (props: Props) => {
               private jet booking service. Whether you require a last-minute
               charter, a tailored itinerary, or a specific aircraft type, our
               team will curate a seamless and discreet experience from start to
-              finish. Simply let us know your preferences before you arrive, and
+              finish. 
+              \n
+              Simply let us know your preferences before you arrive, and
               we will handle every detail — from securing your preferred jet to
-              coordinating ground services and on-board comforts. Enjoy a truly
+              coordinating ground services and on-board comforts. 
+              \n
+              Enjoy a truly
               elevated journey, defined by privacy, exclusivity, and effortless
               luxury."
           />
@@ -226,6 +263,22 @@ const page = (props: Props) => {
 
 export default page;
 
+// const AdditionalServicesItem = ({
+//   title,
+//   content,
+// }: {
+//   title: string;
+//   content: string;
+// }) => {
+//   return (
+//     <div className="px-10 py-6">
+//       <h3 className="font-semibold text-[18px] tracking-[2.8px] mb-3">
+//         {title}
+//       </h3>
+//       <p className="text-[#6D6D6D] leading-[130%] whitespace-pre-line">{content}</p>
+//     </div>
+//   );
+// };
 const AdditionalServicesItem = ({
   title,
   content,
@@ -234,11 +287,21 @@ const AdditionalServicesItem = ({
   content: string;
 }) => {
   return (
-    <div className="px-10 py-6">
-      <h3 className="font-semibold text-[18px] tracking-[2.8px] mb-3">
+    <div className="px-6 md:px-10 py-8 border-b border-gray-100 last:border-0 hover:bg-gray-50/50 transition-colors duration-300">
+      {/* العنوان بلمسة فخمة: Uppercase + Tracking */}
+      <h3 className="font-bold text-[16px] uppercase tracking-[3px] text-[#1a1a1a] mb-4">
         {title}
       </h3>
-      <p className="text-[#6D6D6D] leading-[130%]">{content}</p>
+
+      {/* النص بمسافات مريحة للعين */}
+      <p className="flex flex-col gap-4 text-[#6D6D6D] normal-case leading-[1.6]">
+        {content.split("\\n").map((line, index) => (
+          <span key={index}>
+            {line}
+            {/* <br /> */}
+          </span>
+        ))}
+      </p>
     </div>
   );
 };
@@ -262,39 +325,39 @@ interface CardProps {
   dir: "left" | "right";
   imagePosition: "bottom" | "top" | "mid";
 }
-const Card = ({ title, content, dir, imagePosition }: CardProps) => {
-  // Determine image positioning classes based on imagePosition prop
-  const getImagePositionClass = () => {
-    switch (imagePosition) {
-      case "top":
-        return "bottom-30";
-      case "mid":
-        return "top-1/2 -translate-y-1/2";
-      case "bottom":
-        return "top-21.75";
-      default:
-        return "top-1/2 -translate-y-1/2";
-    }
-  };
+// const Card = ({ title, content, dir, imagePosition }: CardProps) => {
+//   // Determine image positioning classes based on imagePosition prop
+//   const getImagePositionClass = () => {
+//     switch (imagePosition) {
+//       case "top":
+//         return "bottom-30";
+//       case "mid":
+//         return "top-1/2 -translate-y-1/2";
+//       case "bottom":
+//         return "top-21.75";
+//       default:
+//         return "top-1/2 -translate-y-1/2";
+//     }
+//   };
 
-  const positionClass = getImagePositionClass();
-  return (
-    <div className="relative w-full h-120">
-      <div
-        className={`absolute top-0 ${dir === "right" ? "right-2/7 pr-46.75" : "left-2/7 pl-46.75"} h-80 flex flex-col justify-center bg-white py-13.5 font-Manrope w-full`}
-      >
-        <div className={`${dir === "right" && "ml-auto"}`}>
-          <p className="tracking-[4.6px] text-[20px] uppercase">{title}</p>
-          <p className="leading-10 mt-2 text-lg text-[#6D6D6D] w-162.5">
-            {content}
-          </p>
-        </div>
-        <Image
-          src={serviceImage}
-          alt="service name"
-          className={`w-95 h-66.25 absolute -${dir}-60.25 ${positionClass}`}
-        />
-      </div>
-    </div>
-  );
-};
+//   const positionClass = getImagePositionClass();
+//   return (
+//     <div className="relative w-full h-120">
+//       <div
+//         className={`absolute top-0 ${dir === "right" ? "right-2/7 pr-46.75" : "left-2/7 pl-46.75"} h-80 flex flex-col justify-center bg-white py-13.5 font-Manrope w-full`}
+//       >
+//         <div className={`${dir === "right" && "ml-auto"}`}>
+//           <p className="tracking-[4.6px] text-[20px] uppercase">{title}</p>
+//           <p className="leading-10 mt-2 text-lg text-[#6D6D6D] w-162.5">
+//             {content}
+//           </p>
+//         </div>
+//         <Image
+//           src={serviceImage}
+//           alt="service name"
+//           className={`w-95 h-66.25 absolute -${dir}-60.25 ${positionClass}`}
+//         />
+//       </div>
+//     </div>
+//   );
+// };

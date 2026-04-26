@@ -1,23 +1,75 @@
-// import ServiceSection from "../components/services-section";
-
-// type Props = {};
-
-// const page = (props: Props) => {
-//   return (
-//     <>
-//       <ServiceSection/>
-//       <ServiceSection left />
-//       <ServiceSection />
-//     </>
-//   );
-// };
-
-// export default page;
-
 import ServiceSection from "@/app/our-services/components/services-section";
 import Image from "next/image";
 import { ReactNode } from "react";
-import serviceImage from "@/public/services-image.webp";
+
+import arrivalPersonalMeetGreet from "@/public/vip_meet&greet/Arrival – Personal Meet & Greet.webp";
+import arrival from "@/public/vip_meet&greet/Arrival.webp";
+import boardingEscortToGate from "@/public/vip_meet&greet/Boarding – Escort to Gate.webp";
+import checkingIn from "@/public/vip_meet&greet/Checking In.webp";
+import connectingDifferentTerminal from "@/public/vip_meet&greet/Connecting – Different Terminal .webp";
+import connectingSameTerminal from "@/public/vip_meet&greet/Connecting – Same Terminal Transfers.webp";
+import greetingCurbsideMeetGreet from "@/public/vip_meet&greet/Greeting – Curbside Meet & Greet .webp";
+import immigrationFastTrackAssistance from "@/public/vip_meet&greet/Immigration Fast-Track Assistance.webp";
+import immigrationFormalitiesFastTrack from "@/public/vip_meet&greet/Immigration Formalities – Fast-Track .webp";
+import leavingAirportSeamlessExit from "@/public/vip_meet&greet/Leaving the Airport – Seamless Exit .webp";
+import seamlessGateToGateTransfer from "@/public/vip_meet&greet/Seamless Gate-to-Gate Transfer.webp";
+import securityFastTrackEscort from "@/public/vip_meet&greet/Security Fast-Track Escort.webp";
+import securityFastTrackEscort2 from "@/public/vip_meet&greet/Security – Fast-Track Escort.webp";
+
+const vipMeetGreetImages = [
+  {
+    title: "Arrival – Personal Meet & Greet",
+    image: arrivalPersonalMeetGreet,
+  },
+  {
+    title: "Arrival",
+    image: arrival,
+  },
+  {
+    title: "Boarding – Escort to Gate",
+    image: boardingEscortToGate,
+  },
+  {
+    title: "Checking In",
+    image: checkingIn,
+  },
+  {
+    title: "Connecting – Different Terminal",
+    image: connectingDifferentTerminal,
+  },
+  {
+    title: "Connecting – Same Terminal Transfers",
+    image: connectingSameTerminal,
+  },
+  {
+    title: "Greeting – Curbside Meet & Greet",
+    image: greetingCurbsideMeetGreet,
+  },
+  {
+    title: "Immigration Fast-Track Assistance",
+    image: immigrationFastTrackAssistance,
+  },
+  {
+    title: "Immigration Formalities – Fast-Track",
+    image: immigrationFormalitiesFastTrack,
+  },
+  {
+    title: "Leaving the Airport – Seamless Exit",
+    image: leavingAirportSeamlessExit,
+  },
+  {
+    title: "Seamless Gate-to-Gate Transfer",
+    image: seamlessGateToGateTransfer,
+  },
+  {
+    title: "Security Fast-Track Escort",
+    image: securityFastTrackEscort,
+  },
+  {
+    title: "Security – Fast-Track Escort",
+    image: securityFastTrackEscort2,
+  },
+];
 
 type Props = {};
 
@@ -47,18 +99,20 @@ const page = (props: Props) => {
             Departure
           </h2>
           <ServiceSection
-            left
             title={"Greeting – Curbside Meet & Greet "}
+            image={vipMeetGreetImages[6].image}
             content={
               "Enjoy a personalised curbside welcome with luggage assistance and seamless escort into the terminal. We handle check-in, baggage drop, and boarding passes for a smooth, stress-free departure."
             }
           />
           <ServiceSection
+            image={vipMeetGreetImages[12].image}
+            left
             title="Security – Fast-Track Escort"
             content="Enjoy fast-track security with personal escort, followed by seamless guidance to your airport lounge for a calm, stress-free pre-flight experience."
           />
           <ServiceSection
-            left
+            image={vipMeetGreetImages[2].image}
             title="Boarding – Escort to Gate"
             content="When boarding begins, your greeter escorts you to the gate, ensuring a smooth and timely boarding experience."
           />
@@ -79,6 +133,7 @@ const page = (props: Props) => {
             Arrival
           </h2>
           <ServiceSection
+            image={vipMeetGreetImages[0].image}
             left
             title={"Arrival – Personal Meet & Greet"}
             content={
@@ -86,15 +141,19 @@ const page = (props: Props) => {
             }
           />
           <ServiceSection
+            image={vipMeetGreetImages[8].image}
             title="Immigration Formalities – Fast-Track "
             content="When boarding begins, your greeter escorts you to the gate, ensuring a smooth and timely boarding experience."
           />
-          <ServiceSection
+          {/* <ServiceSection
+            image={vipMeetGreetImages[9].image}
             left
             title="FINE DINING & LUXURY SHOPPING"
             content="From exquisite light bites to indulgent dishes, everything is freshly prepared daily and complemented by a premium drinks service. Relax in refined comfort, where every detail is designed to make you feel at home, and enhance your experience with a personalised shopping journey through the terminals."
-          />
+          /> */}
           <ServiceSection
+            image={vipMeetGreetImages[9].image}
+            left
             title="Leaving the Airport – Seamless Exit "
             content="Porter-assisted baggage collection with seamless escort through customs and arrivals to your onward transportation."
           />
@@ -115,21 +174,26 @@ const page = (props: Props) => {
             Connection
           </h2>
           <ServiceSection
-            left
+            image={vipMeetGreetImages[10].image}
             title={"Seamless Gate-to-Gate Transfer"}
             content={
               "Seamless gate-to-gate assistance with personal escort, ensuring a smooth and stress-free flight connection."
             }
           />
           <ServiceSection
+            left
+            image={vipMeetGreetImages[1].image}
             title="Arrival"
             content="Be welcomed at the jet bridge by a personal greeter with a nameboard, offering seamless guidance from the moment you disembark."
           />
           <ServiceSection
+            image={vipMeetGreetImages[5].image}
             title="Connecting – Same Terminal Transfers"
             content="Same-terminal connections with personal escort through security and seamless guidance to your departure gate."
           />
           <ServiceSection
+            left
+            image={vipMeetGreetImages[4].image}
             title="Connecting – Different Terminal"
             content="Inter-terminal connections with shuttle or private transfer, security escort, and seamless guidance to the lounge or boarding gate."
           />
@@ -151,7 +215,8 @@ const page = (props: Props) => {
           </h2>
           <p className="text-center flex flex-col mt-3.5 font-medium ">
             <span>
-              With Airport Assist, every airport formality is expertly managed on your behalf, ensuring a seamless,
+              With Airport Assist, every airport formality is expertly managed
+              on your behalf, ensuring a seamless,
             </span>
             <span>stress-free journey from start to finish.</span>
           </p>
@@ -159,6 +224,7 @@ const page = (props: Props) => {
         <div className="relative w-full">
           <Card
             title={"Checking In"}
+            image={vipMeetGreetImages[3].image}
             content={
               "Smooth, Comfortable, and Hassle-Free We handle your passports, luggage, and boarding passes, ensuring a smooth, queue-free check-in experience. Enjoy a queue-free check-in experience while we handle all formalities on your behalf."
             }
@@ -167,6 +233,7 @@ const page = (props: Props) => {
           />
           <Card
             title={"Security Fast-Track Escort"}
+            image={vipMeetGreetImages[11].image}
             content={
               "Personal fast-track escort through security with seamless guidance to your airport lounge."
             }
@@ -175,6 +242,7 @@ const page = (props: Props) => {
           />
           <Card
             title={"Immigration Fast-Track Assistance"}
+            image={vipMeetGreetImages[7].image}
             content={
               "Passengers will be escorted directly to the immigration area upon arrival. Our greeter will guide them through the fast-track immigration lane, ensuring a smooth, efficient, and stress-free process from the moment they land."
             }
@@ -274,13 +342,16 @@ const ListItem = ({
     </li>
   );
 };
+import { StaticImageData } from "next/image";
+
 interface CardProps {
   title: string;
   content: string;
   dir: "left" | "right";
   imagePosition: "bottom" | "top" | "mid";
+  image: StaticImageData;
 }
-const Card = ({ title, content, dir, imagePosition }: CardProps) => {
+export const Card = ({ title, content, dir, imagePosition, image }: CardProps) => {
   // Determine image positioning classes based on imagePosition prop
   const getImagePositionClass = () => {
     switch (imagePosition) {
@@ -303,14 +374,14 @@ const Card = ({ title, content, dir, imagePosition }: CardProps) => {
       >
         <div className={`${dir === "right" && "ml-auto"}`}>
           <p className="tracking-[4.6px] text-[20px] uppercase">{title}</p>
-          <p className="leading-10 mt-2 text-lg text-[#6D6D6D] w-162.5">
+          <p className="leading-10 normal-case mt-2 text-[#6D6D6D] w-162.5">
             {content}
           </p>
         </div>
         <Image
-          src={serviceImage}
+          src={image}
           alt="service name"
-          className={`w-95 h-66.25 absolute -${dir}-60.25 ${positionClass}`}
+          className={`w-95 aspect-76/53 absolute -${dir}-60.25 ${positionClass}`}
         />
       </div>
     </div>

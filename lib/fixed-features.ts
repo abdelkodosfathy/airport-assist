@@ -26,11 +26,6 @@ export type fixedPackageData = {
   image: StaticImageData;
 } & Record<ServiceType, ServiceTypeData>;
 
-// export const packageFeatures: Record<
-//   PackageSlug,
-//   Record<ServiceType, ServiceTypeData>
-// > = {
-
 export const packageFeatures: Record<PackageSlug, fixedPackageData> = {
   elite: {
     subTitle: "VIP Meet & Greet",
@@ -42,7 +37,7 @@ export const packageFeatures: Record<PackageSlug, fixedPackageData> = {
         {
           icon: AirportAgent,
           title: "Airport Agent",
-          description: "Personalised sign meet at gate",
+          description: "Personalised sign meet at gate.",
         },
         {
           icon: GolfCart,
@@ -57,12 +52,12 @@ export const packageFeatures: Record<PackageSlug, fixedPackageData> = {
         {
           icon: FastTrackSpecialLane,
           title: "Fast Track - Special lane",
-          description: "Immigration fast-track",
+          description: "Immigration fast-track.",
         },
         {
           icon: BaggageHandling,
           title: "Baggage Handling",
-          description: "Baggage assistance",
+          description: "Baggage assistance.",
         },
         {
           icon: AirportExiting,
@@ -78,17 +73,17 @@ export const packageFeatures: Record<PackageSlug, fixedPackageData> = {
         {
           icon: AirportAgent,
           title: "Airport Agent",
-          description: "Personalised sign meet at gate",
+          description: "Personal greeting at curbside.",
         },
         {
           icon: BaggageHandling,
           title: "Baggage Handling",
-          description: "Baggage assistance",
+          description: "Baggage assistance.",
         },
         {
           icon: CheckIn,
           title: "Check In.",
-          description: "Assistance with check-in.",
+          description: "Assistance with check-in",
         },
         {
           icon: FastTrackSecurity,
@@ -102,7 +97,7 @@ export const packageFeatures: Record<PackageSlug, fixedPackageData> = {
         },
         {
           icon: Boarding,
-          title: "Boarding.",
+          title: "Boarding",
           description: "Escort to the boarding gate.",
         },
       ],
@@ -114,7 +109,7 @@ export const packageFeatures: Record<PackageSlug, fixedPackageData> = {
         {
           icon: AirportAgent,
           title: "Airport Agent",
-          description: "Personalised sign meet at gate",
+          description: "Personalised sign meet at gate.",
         },
         {
           icon: GolfCart,
@@ -124,18 +119,18 @@ export const packageFeatures: Record<PackageSlug, fixedPackageData> = {
 
         {
           icon: TransferToSecondGate,
-          title: "Transfer to the second gate.",
+          title: "Transfer to the second gate",
           description: "Escort to same or other terminal.",
         },
         {
           icon: FastTrackSecurity,
-          title: "Fast Track - Security.",
-          description: "Escort passengers to security",
+          title: "Fast Track - Security",
+          description: "Escort passengers to security.",
         },
         {
           icon: Boarding,
           title: "Boarding",
-          description: "Escort to the boarding gate",
+          description: "Escort to the boarding gate.",
         },
       ],
     },
@@ -149,11 +144,10 @@ export const packageFeatures: Record<PackageSlug, fixedPackageData> = {
       description:
         "Upon arrival, your greeter will meet you at the aircraft or airbridge, escort you through fast-track immigration, assist with baggage claim, and coordinate your transfer to the waiting driver—ensuring a smooth and effortless airport arrival experience.",
       features: [
-        // ممكن تاخد elite وتزود عليه
         {
           icon: AirportAgent,
           title: "Airport Agent",
-          description: "Personalised sign meet at gate",
+          description: "Personalised sign meet at gate.",
         },
         {
           icon: GolfCart,
@@ -168,12 +162,12 @@ export const packageFeatures: Record<PackageSlug, fixedPackageData> = {
         {
           icon: FastTrackSpecialLane,
           title: "Fast Track - Special lane",
-          description: "Immigration fast-track",
+          description: "Immigration fast-track.",
         },
         {
           icon: BaggageHandling,
           title: "Baggage Handling",
-          description: "Baggage assistance",
+          description: "Baggage assistance.",
         },
         {
           icon: AirportExiting,
@@ -200,22 +194,22 @@ export const packageFeatures: Record<PackageSlug, fixedPackageData> = {
         {
           icon: AirportAgent,
           title: "Airport Agent",
-          description: "Personalised sign meet at gate",
+          description: "Personal greeting at curbside.",
         },
         {
           icon: BaggageHandling,
           title: "Baggage Handling",
-          description: "Baggage assistance",
+          description: "Baggage assistance.",
         },
         {
           icon: CheckIn,
-          title: "Check In.",
+          title: "Check In",
           description: "Assistance with check-in.",
         },
         {
           icon: FastTrackSecurity,
-          title: "Fast Track - Security.",
-          description: "Escort passengers to security",
+          title: "Fast Track - Security",
+          description: "Escort passengers to security.",
         },
         {
           icon: GolfCart,
@@ -224,7 +218,7 @@ export const packageFeatures: Record<PackageSlug, fixedPackageData> = {
         },
         {
           icon: Boarding,
-          title: "Boarding.",
+          title: "Boarding",
           description: "Escort to the boarding gate.",
         },
       ],
@@ -236,7 +230,7 @@ export const packageFeatures: Record<PackageSlug, fixedPackageData> = {
         {
           icon: AirportAgent,
           title: "Airport Agent",
-          description: "Personalised sign meet at gate",
+          description: "Personalised sign meet at gate.",
         },
         {
           icon: GolfCart,
@@ -246,12 +240,12 @@ export const packageFeatures: Record<PackageSlug, fixedPackageData> = {
         {
           icon: PassportControl,
           title: "Passport Control",
-          description: "Immigration fast-track",
+          description: "Immigration fast-track.",
         },
         {
           icon: BaggageHandling,
           title: "Baggage Handling",
-          description: "Baggage assistance",
+          description: "Baggage assistance.",
         },
         {
           icon: ChauffeurServiceIcon,
@@ -260,18 +254,23 @@ export const packageFeatures: Record<PackageSlug, fixedPackageData> = {
         },
         {
           icon: CheckIn,
-          title: "Check In.",
+          title: "Check In",
           description: "Assistance with check-in.",
         },
         {
           icon: FastTrackSecurity,
-          title: "Fast Track - Security ",
-          description: "Escort passengers to security",
+          title: "Fast Track - Security",
+          description: "Escort passengers to security.",
+        },
+        {
+          icon: GolfCart,
+          title: "Golf Cart",
+          description: "Buggy to gate (where available).",
         },
         {
           icon: Boarding,
           title: "Boarding",
-          description: "Escort to the boarding gate",
+          description: "Escort to the boarding gate.",
         },
       ],
     },
@@ -288,27 +287,27 @@ export const packageFeatures: Record<PackageSlug, fixedPackageData> = {
         {
           icon: AirportAgent,
           title: "Airport Agent",
-          description: "Personalised sign meet at gate",
+          description: "Personalised sign meet at gate.",
         },
         {
           icon: ChauffeurServiceIcon,
           title: "Chauffeur Service",
-          description: "Greeted by a professional chauffeur.",
+          description: "Chauffeur transfer to the private lounge.",
         },
         {
           icon: PrivateImmigration,
-          title: "Private immigration.",
-          description: "Exclusive immigration service",
+          title: "Private immigration",
+          description: "Exclusive immigration service.",
         },
         {
           icon: PrivateLounge,
-          title: "Private Lounge.",
+          title: "Private Lounge",
           description: "Access to a private lounge.",
         },
         {
           icon: BaggageHandling,
           title: "Baggage Handling",
-          description: "Baggage assistance",
+          description: "Baggage assistance.",
         },
         {
           icon: ChauffeurServiceIcon,
@@ -330,32 +329,32 @@ export const packageFeatures: Record<PackageSlug, fixedPackageData> = {
         {
           icon: AirportAgent,
           title: "Airport Agent",
-          description: "Personalised sign meet at gate",
+          description: "Personal greeting at curbside.",
         },
         {
           icon: BaggageHandling,
           title: "Baggage Handling",
-          description: "Baggage assistance",
+          description: "Baggage assistance.",
         },
         {
           icon: CheckIn,
-          title: "Check In.",
-          description: "Assistance with check-in.",
+          title: "Check In",
+          description: "Private assistance with check-in.",
         },
         {
           icon: PrivateLounge,
-          title: "Private Lounge.",
+          title: "Private Lounge",
           description: "Access to a private lounge.",
         },
         {
           icon: PrivateSecurity,
-          title: "Private Security.",
-          description: "Exclusive Secuirty service",
+          title: "Private Security",
+          description: "Exclusive Secuirty service.",
         },
         {
           icon: ChauffeurServiceIcon,
           title: "Chauffeur Service",
-          description: "Chauffeur transfer to the plane .",
+          description: "Chauffeur transfer to the plane.",
         },
       ],
     },
@@ -366,7 +365,7 @@ export const packageFeatures: Record<PackageSlug, fixedPackageData> = {
         {
           icon: AirportAgent,
           title: "Airport Agent",
-          description: "Personalised sign meet at gate",
+          description: "Personalised sign meet at gate.",
         },
         {
           icon: ChauffeurServiceIcon,
@@ -375,23 +374,23 @@ export const packageFeatures: Record<PackageSlug, fixedPackageData> = {
         },
         {
           icon: PrivateImmigration,
-          title: "Private immigration.",
-          description: "Exclusive immigration service",
+          title: "Private immigration",
+          description: "Exclusive immigration service.",
         },
         {
           icon: PrivateLounge,
-          title: "Private Lounge.",
+          title: "Private Lounge",
           description: "Access to a private lounge.",
         },
         {
           icon: PrivateSecurity,
-          title: "Private Security.",
-          description: "Exclusive Secuirty service",
+          title: "Private Security",
+          description: "Exclusive Secuirty service.",
         },
         {
           icon: ChauffeurServiceIcon,
           title: "Chauffeur Service",
-          description: "Chauffeur transfer to the plane .",
+          description: "Chauffeur transfer to the plane.",
         },
       ],
     },
@@ -408,7 +407,7 @@ export const packageFeatures: Record<PackageSlug, fixedPackageData> = {
         {
           icon: AirportAgent,
           title: "Airport Agent",
-          description: "Personalised sign meet at gate",
+          description: "Personalised sign meet at gate.",
         },
         {
           icon: ChauffeurServiceIcon,
@@ -417,18 +416,18 @@ export const packageFeatures: Record<PackageSlug, fixedPackageData> = {
         },
         {
           icon: PrivateImmigration,
-          title: "Private immigration.",
-          description: "Exclusive immigration service",
+          title: "Private immigration",
+          description: "Exclusive immigration service.",
         },
         {
           icon: PrivateLounge,
-          title: "Private Lounge.",
+          title: "Private Lounge",
           description: "Access to a private lounge.",
         },
         {
           icon: BaggageHandling,
           title: "Baggage Handling",
-          description: "Baggage assistance",
+          description: "Baggage assistance.",
         },
         {
           icon: ChauffeurServiceIcon,
@@ -450,32 +449,32 @@ export const packageFeatures: Record<PackageSlug, fixedPackageData> = {
         {
           icon: AirportAgent,
           title: "Airport Agent",
-          description: "Personalised sign meet at gate",
+          description: "Personalised sign meet at gate.",
         },
         {
           icon: BaggageHandling,
           title: "Baggage Handling",
-          description: "Baggage assistance",
+          description: "Baggage assistance.",
         },
         {
           icon: CheckIn,
-          title: "Check In.",
+          title: "Check In",
           description: "Assistance with check-in.",
         },
         {
           icon: PrivateLounge,
-          title: "Private Lounge.",
+          title: "Private Lounge",
           description: "Access to a private lounge.",
         },
         {
           icon: PrivateSecurity,
-          title: "Private Security.",
-          description: "Exclusive Secuirty service",
+          title: "Private Security",
+          description: "Exclusive Secuirty service.",
         },
         {
           icon: ChauffeurServiceIcon,
           title: "Chauffeur Service",
-          description: "Chauffeur transfer to the plane .",
+          description: "Chauffeur transfer to the plane.",
         },
       ],
     },
@@ -486,7 +485,7 @@ export const packageFeatures: Record<PackageSlug, fixedPackageData> = {
         {
           icon: AirportAgent,
           title: "Airport Agent",
-          description: "Personalised sign meet at gate",
+          description: "Personalised sign meet at gate.",
         },
         {
           icon: ChauffeurServiceIcon,
@@ -495,23 +494,23 @@ export const packageFeatures: Record<PackageSlug, fixedPackageData> = {
         },
         {
           icon: PrivateImmigration,
-          title: "Private immigration.",
-          description: "Exclusive immigration service",
+          title: "Private immigration",
+          description: "Exclusive immigration service.",
         },
         {
           icon: PrivateLounge,
-          title: "Private Lounge.",
+          title: "Private Lounge",
           description: "Access to a private lounge.",
         },
         {
           icon: PrivateSecurity,
-          title: "Private Security.",
-          description: "Exclusive Secuirty service",
+          title: "Private Security",
+          description: "Exclusive Secuirty service.",
         },
         {
           icon: ChauffeurServiceIcon,
           title: "Chauffeur Service",
-          description: "Chauffeur transfer to the plane .",
+          description: "Chauffeur transfer to the plane.",
         },
       ],
     },

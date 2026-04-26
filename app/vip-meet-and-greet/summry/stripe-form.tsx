@@ -16,18 +16,19 @@ import {
 } from "@stripe/react-stripe-js";
 import { apiPost } from "@/lib/api";
 import { Country, CountryDropdown } from "@/components/ui/country-dropdown";
-import { AlertCircle } from "lucide-react";
+import { AlertCircle, CheckCircle } from "lucide-react";
 import { toast } from "sonner";
 import { Separator } from "@/components/ui/separator";
 import Visa from "@/components/custom icons/Visa";
 import MasterCard from "@/components/custom icons/MasterCard";
 import Amex from "@/components/custom icons/amex";
+// import { useConvertCurrency } from "@/lib/hooks/useConvertCurrency";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!,
 );
 
-type Props = { payFor?: "bookings" | "trips"; booking_status: string };
+type Props = { payFor?: "bookings" | "trips"; booking_status?: string };
 
 const cardElementStyle = {
   style: {
@@ -46,8 +47,9 @@ const cardInputClass =
   "px-4 h-11 py-3 bg-[#F4F4F4] border border-[#E0E0E0] rounded-md w-full transition-colors focus-within:border-[#664F31] shadow-xs";
 
 // ── Root: fetches client secret and passes it down ───────────────────────────
-const StripeForm = ({ payFor = "bookings", booking_status }: Props) => {
-  
+const StripeForm = ({ payFor = "bookings", 
+  // booking_status
+ }: Props) => {
   const searchParams = useSearchParams();
   const paramsUUID = searchParams.get("uuid");
 
@@ -124,7 +126,7 @@ const StripeForm = ({ payFor = "bookings", booking_status }: Props) => {
         onCheckPromotionCode={() => {}}
       /> */}
       <CheckoutForm
-        booking_status={booking_status}
+        // booking_status={booking_status}
         clientSecret={clientSecret}
         promoError={promoError}
         promoLoading={promoLoading}
@@ -147,13 +149,13 @@ export default StripeForm;
 //   onCheckPromotionCode: (promotionCode: string) => void;
 // }) => {
 const CheckoutForm = ({
-  booking_status,
+  // booking_status,
   clientSecret,
   onApplyPromo,
   promoError,
   promoLoading,
 }: {
-  booking_status: string;
+  // booking_status: string;
   clientSecret: string;
   onApplyPromo: (code: string) => void;
   promoError: string | null;
@@ -188,7 +190,7 @@ const CheckoutForm = ({
     !address.trim() ||
     !postCode.trim() ||
     !country ||
-    booking_status !== "awaiting_payment" ||
+    // booking_status !== "awaiting_payment" ||
     loading;
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -245,11 +247,39 @@ const CheckoutForm = ({
     setLoading(false);
   };
 
+  if (success) {
+    return (
+      <div className="bg-white rounded-2xl p-10 flex flex-col items-center text-center space-y-6 shadow-md animate-in fade-in zoom-in duration-500">
+        <div className="w-20 h-20 rounded-full bg-green-50 flex items-center justify-center">
+          <CheckCircle size={48} className="text-green-500" />
+        </div>
+        
+        <div className="space-y-2">
+          <h2 className="text-2xl font-bold text-gray-900">Payment Successful!</h2>
+          <p className="text-gray-500 leading-relaxed">
+            Thank you for your booking. Your reservation has been confirmed and you will receive an email shortly.
+          </p>
+        </div>
+
+        <div className="w-full pt-4">
+          <Button 
+            onClick={() => window.location.reload()} // أو توجيه لصفحة الـ My Bookings
+            className="w-full bg-[#1a1a1a] text-white py-4 rounded-xl font-semibold"
+          >
+            View My Booking
+          </Button>
+        </div>
+        
+        <p className="text-xs text-gray-400">Transaction ID: {clientSecret.split('_secret')[0]}</p>
+      </div>
+    );
+  }
+
   return (
     <form
       onSubmit={handleSubmit}
       className={`bg-white rounded-2xl p-5 grid grid-cols-2 gap-x-3 gap-y-4 shadow-md ${
-        loading || success ? "opacity-60 pointer-events-none" : ""
+        loading ? "opacity-60 pointer-events-none" : ""
       }`}
     >
       {/* Card Number */}
@@ -272,9 +302,9 @@ const CheckoutForm = ({
             className="shrink-0"
           /> */}
           <div className="flex items-center gap-2">
-            <Visa/>
-            <Amex/>
-            <MasterCard/>
+            <Visa />
+            <Amex />
+            <MasterCard />
           </div>
         </div>
       </div>
@@ -286,7 +316,8 @@ const CheckoutForm = ({
           value={nameOnCard}
           onChange={(e) => setNameOnCard(e.target.value)}
           placeholder="Full name as on card"
-          className="pl-4 h-11 rounded-md bg-[#F4F4F4] border border-[#E0E0E0] shadow-none focus-visible:ring-0 focus-visible:border-[#664F31]"
+          // className="pl-4 h-11 rounded-md bg-[#F4F4F4] border border-[#E0E0E0] shadow-none focus-visible: focus-visible:border-[#664F31]"
+          className="pl-4 h-11 rounded-md bg-[#F4F4F4] border border-[#E0E0E0] shadow-xs focus-visible:shadow-none"
         />
       </div>
       {/* Expiry */}
@@ -311,7 +342,7 @@ const CheckoutForm = ({
           value={address}
           onChange={(e) => setAddress(e.target.value)}
           placeholder="Billing address"
-          className="pl-4 h-11 rounded-md bg-[#F4F4F4] border border-[#E0E0E0] shadow-none focus-visible:ring-0 focus-visible:border-[#664F31]"
+          className="pl-4 h-11 rounded-md bg-[#F4F4F4] border border-[#E0E0E0] shadow-xs focus-visible:shadow-none"
         />
       </div>
       {/* Post Code + Country — same row */}
@@ -322,7 +353,7 @@ const CheckoutForm = ({
           value={postCode}
           onChange={(e) => setPostCode(e.target.value)}
           placeholder="Post code"
-          className="pl-4 h-11 rounded-md bg-[#F4F4F4] border border-[#E0E0E0] shadow-none focus-visible:ring-0 focus-visible:border-[#664F31]"
+          className="pl-4 h-11 rounded-md bg-[#F4F4F4] border border-[#E0E0E0] shadow-xs focus-visible:shadow-none"
         />
       </div>
       <div className="space-y-2 col-span-1">
@@ -330,7 +361,7 @@ const CheckoutForm = ({
         <CountryDropdown
           placeholder="Select country"
           onChange={(c: Country) => setCountry(c.alpha2)}
-          className="w-full h-11 pl-4 rounded-md bg-[#F4F4F4] border border-[#E0E0E0] shadow-none focus:ring-0 focus:border-[#664F31] text-sm"
+          className="w-full h-11 pl-4 rounded-md bg-[#F4F4F4] border border-[#E0E0E0] shadow-xs text-sm"
         />
       </div>
       <Separator className="col-span-2" />
@@ -410,38 +441,6 @@ const CheckoutForm = ({
   );
 };
 
-// const PromoCode = ({ onApply }: { onApply: (code: string) => void }) => {
-//   const [promo, setPromo] = useState("");
-
-//   const handleApplyPromo = () => {
-//     if (promo.trim() !== "") {
-//       onApply(promo);
-//     }
-//   };
-
-//   return (
-//     <div className="gap-3 col-span-2">
-//       <div className="flex gap-2 items-stretch">
-//         <Input
-//           value={promo}
-//           onChange={(e) => setPromo(e.target.value)}
-//           id="promo_code"
-//           placeholder="Promotion Code"
-//           className="pl-4 h-11 rounded-md bg-[#F4F4F4] border border-[#E0E0E0] shadow-none focus-visible:ring-0 focus-visible:border-[#664F31]"
-//         />
-//         <Button
-//           disabled={promo.trim() === ""}
-//           onClick={handleApplyPromo}
-//           variant="outline"
-//           className="w-max h-11 cursor-pointer border-black text-black hover:border-[#664F31] hover:bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)] hover:text-white duration-0"
-//         >
-//           Apply
-//         </Button>
-//       </div>
-//     </div>
-//   );
-// };
-
 const PromoCode = ({
   onApply,
   error,
@@ -467,7 +466,7 @@ const PromoCode = ({
           }}
           id="promo_code"
           placeholder="Promotion Code"
-          className="pl-4 h-11 rounded-md bg-[#F4F4F4] border border-[#E0E0E0] shadow-none focus-visible:ring-0 focus-visible:border-[#664F31]"
+          className="pl-4 h-11 rounded-md bg-[#F4F4F4] border border-[#E0E0E0] shadow-xs focus-visible:ring-0 focus-visible:border-[#664F31]"
         />
         <Button
           disabled={promo.trim() === "" || loading}

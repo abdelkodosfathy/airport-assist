@@ -10,6 +10,7 @@ import ByHourSummary from "./ByHourSummary";
 import { TripSummary } from "@/types/trip";
 import { useDateStore } from "@/store/vipInputsStore";
 import { useTripStore } from "@/store/tripStore";
+import { useConvertCurrency } from "@/lib/hooks/useConvertCurrency";
 
 export function formatMinutes(totalMinutes: number): string {
   if (!Number.isFinite(totalMinutes) || totalMinutes < 0) {
@@ -104,7 +105,9 @@ const parseDateTime = (
 };
 
 export default function Summry() {
-  const currencyMark = useCurrencyStore((state) => state.currency);
+  // const currencyMark = useCurrencyStore((state) => state.currency);
+
+  const { convert } = useConvertCurrency();
   const currency = useCurrencyStore((state) => state.currency);
   const searchParams = useSearchParams();
   const uuid = searchParams.get("uuid");
@@ -233,50 +236,6 @@ export default function Summry() {
           </div>
 
           {/* trip summry */}
-          {/* <div
-            className="px-10 py-6 w-full bg-white rounded-2xl"
-            style={{
-              boxShadow: "0px 11.48px 114.76px 0px #A7A7A73D",
-            }}
-          >
-            <h2 className="text-[18.75px] mb-4 font-semibold">
-              {data.trip_type === "by_distance"
-                ? "One Way Transfer"
-                : "Hourly trip"}
-            </h2>
-            <div className="space-y-6 *:hover:bg-gray-100">
-              <p className=" flex justify-between">
-                <span className="flex-1 flex gap-2">
-                  <Calendar color="#7B5A41" /> {date.date}
-                </span>
-                <span className="flex-1 flex gap-2">
-                  <Clock10 color="#7B5A41" />
-                  {date.time}
-                </span>
-              </p>
-              <p className="flex justify-between">
-                <span className="flex-1 flex gap-2">
-                  <MapPin color="#7B5A41" /> {trip.pickup_location_title}
-                </span>
-              </p>
-              <p className="flex justify-between">
-                <span className="flex-1 flex gap-2">
-                  <Flag color="#7B5A41" /> {trip.dropoff_location_title}
-                </span>
-              </p>
-              <p className="flex justify-between">
-                <span className="flex-1 flex gap-2">
-                  <Gauge color="#7B5A41" />{" "}
-                  {milesToKm(trip.distance_mile).toFixed(2)} km /{" "}
-                  {trip.distance_mile.toFixed(2)} mi
-                </span>
-                <span className="flex-1 flex gap-2">
-                  <Clock10 color="#7B5A41" />{" "}
-                  {formatMinutes(trip.duration_minutes)}
-                </span>
-              </p>
-            </div>
-          </div> */}
           {data.trip_type === "by_distance" ? (
             <ByDistanceSummary data={data} />
           ) : (
@@ -295,17 +254,16 @@ export default function Summry() {
                   : "Hourly Trip "}
                 {data.other_trips && data.other_trips.length > 0 ? (
                   // <span className="text-sm font-light text-[#7A7A7A] lowercase">(included {data.other_trips.length + 1} trips)
-                  <span className="text-sm font-light lowercase">(included {data.other_trips.length + 1} trips)
+                  <span className="text-sm font-light lowercase">
+                    (included {data.other_trips.length + 1} trips)
                   </span>
-                ) : (
-                  null
-                )}
+                ) : null}
               </h2>
 
               <p>
                 <span className="text-xs text-[#6A7282]">{currency} </span>
                 {/* {data.subtotal} */}
-                {data.total}
+                {convert(data.total)}
               </p>
             </div>
             {/* "by_distance" */}
@@ -313,8 +271,7 @@ export default function Summry() {
               {/* Base fare <span>{currency} 1,486.25</span> */}
               Processing fee
               <span>
-                {currency}
-                {trip.payment_fees}
+                {currency} {convert(trip.payment_fees)}
               </span>
             </p>
             <p className="text-sm flex justify-between">
@@ -324,8 +281,7 @@ export default function Summry() {
               {/* Transactio fee<span>$ 64.65</span> */}
               VAT{" "}
               <span>
-                {currency}
-                {trip.tax_value}
+                {currency} {convert(trip.tax_value)}
               </span>
             </p>
             {/* <p className="text-sm flex justify-between">
@@ -334,7 +290,7 @@ export default function Summry() {
             <p className="text-lg flex justify-between">
               Total{" "}
               <span>
-                {currency} {(trip.total + trip.payment_fees).toFixed(2)}
+                {currency} {convert(trip.total + trip.payment_fees)}
               </span>
             </p>
           </div>
@@ -345,7 +301,7 @@ export default function Summry() {
               <p className="text-[18.75px]">Total</p>
               <p className="font-bold font-[Arial]">
                 {/* {currencyMark} {trip.total}{" "} */}
-                {currency} {(trip.total + trip.payment_fees).toFixed(2)}
+                {currency} {convert(trip.total + trip.payment_fees)}
                 {/* <span className="font-light text-[#6A7282]">{currency}</span> */}
               </p>
             </div>

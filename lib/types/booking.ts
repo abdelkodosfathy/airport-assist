@@ -17,6 +17,7 @@ export type BookingStatus =
   | "in_progress"
   | "rejected"
   | "completed_successfully"
+  | "pending"
   | "faild";
 export interface BookingSummary {
   booking_id: number;

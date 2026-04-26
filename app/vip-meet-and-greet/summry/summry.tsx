@@ -11,6 +11,7 @@ import SummarySkeleton from "./summry-skeleton";
 import Image from "next/image";
 import InnerToast from "@/components/ui/InnerToast";
 import BookingStatusCard from "@/components/BookingStatusCard";
+import { useConvertCurrency } from "@/lib/hooks/useConvertCurrency";
 
 export function formatDateTime(dateTimeString: string): {
   date: string;
@@ -50,6 +51,7 @@ type Props = {};
 
 export default function Summary(props: Props) {
   // const currencyMark = useCurrencyStore((state) => state.currencyMark);
+  const { convert } = useConvertCurrency();
   const currency = useCurrencyStore((state) => state.currency);
 
   const searchParams = useSearchParams();
@@ -145,7 +147,6 @@ export default function Summary(props: Props) {
       : []),
   ];
 
-
   const totalPlusProccessingFee = data.total + data.payment_fees;
   return (
     <div>
@@ -174,7 +175,6 @@ export default function Summary(props: Props) {
           </div>
           <div className="px-10 py-6 w-full bg-white rounded-2xl shadow-md">
             <h2 className="text-lg font-semibold mb-4">
-              {/* Booking Details &mdash; {capitalise(data.service_type)} */}
               {data.airport.airport_name} - {data.service_type} -{" "}
               {data.package.package_name}
             </h2>
@@ -215,7 +215,10 @@ export default function Summary(props: Props) {
           <div className="px-10 py-6 w-full bg-white rounded-2xl shadow-md flex gap-2 items-center">
             <FigmaMessage />
 
-            <p>Booking status: {data.booking_status ? capitalise(data.booking_status) : ""}</p>
+            <p>
+              Booking status:{" "}
+              {data.booking_status ? capitalise(data.booking_status) : ""}
+            </p>
           </div>
 
           {/* Payment breakdown */}
@@ -227,26 +230,33 @@ export default function Summary(props: Props) {
               </p>
               <p>
                 <span className="text-xs text-[#6A7282]">{currency} </span>
-                {data.service_cost}
+                {convert(data.service_cost)}
               </p>
             </div>
 
-            {/* {data.tax_value > 0 && ( */}
+            {data.trip && (
+              <div className="flex justify-between">
+                <p>Chauffuer</p>
+                <p>
+                  <span className="text-xs text-[#6A7282]">{currency} </span>
+                  {convert(data.trip.trip_cost)}
+                </p>
+              </div>
+            )}
             <div className="flex justify-between">
               <p>VAT</p>
               <p>
                 <span className="text-xs text-[#6A7282]">{currency} </span>
-                {data.tax_value.toFixed(2)}
+                {convert(data.tax_value)}
               </p>
             </div>
             {/* )} */}
             {data.total > 0 && (
               <div className="flex justify-between">
                 <p className="font-semibold">Subtotal: </p>
-                <p>
+                <p className="font-semibold">
                   <span className="text-xs text-[#6A7282]">{currency} </span>
-
-                  {data.subtotal.toFixed(2)}
+                  {convert(data.subtotal)}
                 </p>
               </div>
             )}
@@ -255,7 +265,7 @@ export default function Summary(props: Props) {
                 <p>Processing fee</p>
                 <p>
                   <span className="text-xs text-[#6A7282]">{currency} </span>
-                  {data.payment_fees}{" "}
+                  {convert(data.payment_fees)}{" "}
                 </p>
               </div>
             )}
@@ -265,7 +275,7 @@ export default function Summary(props: Props) {
               <p>Total:</p>
               <p>
                 <span className="text-xs text-[#6A7282]">{currency} </span>
-                {totalPlusProccessingFee.toFixed(2)}
+                {convert(totalPlusProccessingFee)}
               </p>
             </div>
           </div>
@@ -286,13 +296,7 @@ export default function Summary(props: Props) {
           </div>
 
           {/* Payment form */}
-          {/* {
-            data.booking_status === "awaiting_payment" &&
-            <StripeForm
-            //  uuid={data.booking_uuid}
-            booking_status={data.booking_status}
-            />
-          } */}
+
           <BookingStatusCard
             booking_status={data.booking_status}
             booking_uuid={data.booking_uuid}
@@ -347,7 +351,7 @@ const Carpreef = ({
           </p>
           <p className="text-sm text-[#4A5565]">
             <span className="font-bold">Destination: </span>
-            {distanceMi} mi - {duration}
+            {distanceMi} mi - {duration} mins
           </p>
         </div>
       </div>

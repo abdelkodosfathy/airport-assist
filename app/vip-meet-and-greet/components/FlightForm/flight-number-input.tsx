@@ -44,6 +44,7 @@ export function FlightNumberInput({
         disabled={disabled}
         type="text"
         value={value}
+        name="flight number"
         onChange={handleChange}
         placeholder={`${airlinePrefix || "EX"} 1234`}
         maxLength={7}

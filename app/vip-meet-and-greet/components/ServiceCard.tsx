@@ -297,7 +297,7 @@ export default memo(function ServiceCard({
 
           {/* Description */}
           <div ref={descRef} className="overflow-hidden">
-            <p className="text-sm text-[#7A7A7A]">
+            <p className="text-sm text-[#7A7A7A] normal-case">
               {fixedPackageService.description}
             </p>
           </div>
@@ -411,7 +411,7 @@ const FeatureCard = ({ icon: Icon, title, description }: FeatureCardProps) => (
     </div>
     <div className="space-y-1">
       <p className="tracking-0 font-[Manrope] font-bold">{title}</p>
-      <p className="text-sm text-[#7A7A7A]">{description}</p>
+      <p className="text-sm text-[#7A7A7A] normal-case">{description}</p>
     </div>
   </div>
 );
