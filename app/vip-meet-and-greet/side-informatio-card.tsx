@@ -35,6 +35,7 @@ import { formatNumber } from "@/lib/formatNumbers";
 import { useCarStore } from "@/store/chauffeurStore";
 import Whatsapp from "@/components/custom icons/whatsapp";
 import { useConvertCurrency } from "@/lib/hooks/useConvertCurrency";
+import { PackageSlug } from "@/lib/types/airport";
 
 export type SideInformationCardRef = {
   getTotal: () => number | undefined;
@@ -401,6 +402,8 @@ const ChildrenRow = ({
   storedChildren: number;
   currency: string;
 }) => {
+  const formatedCost = formatNumber((child_cost * storedChildren).toFixed(0));
+
   return (
     <li className="flex justify-between items-center font-semibold text-[#62697D]">
       <p className="flex gap-2">
@@ -410,7 +413,7 @@ const ChildrenRow = ({
       {(child_cost ?? 0 > 0) ? (
         <p>
           <span className="text-xs">+{currency} </span>
-          {(child_cost * storedChildren).toFixed(0)}
+          {formatedCost}
         </p>
       ) : null}
     </li>
@@ -427,13 +430,15 @@ const AdditionalPassengersRow = ({
   costPerPAX: number;
   numberOfPassengers: number;
 }) => {
+  const formatedCost = formatNumber(passengersCost?.toFixed(0));
+
   return (
     <li className="flex justify-between gap-2 font-semibold text-[#62697D]">
       <div className="flex gap-2 items-center">
         <AdditionalPassengers />
-        <div className="flex items-center gap-2">
-          <p className="">
-            Additional Passengers{" "}
+        <div className="flex items-center gap-2 w-fit">
+          <p className="w-fit">
+            Additional Passengers
             <span className="text-xs hidden 2xl:inline">
               (+{currency} {costPerPAX} per PAX)
             </span>
@@ -454,7 +459,7 @@ const AdditionalPassengersRow = ({
       </div>
       <p>
         <span className="text-xs">+{currency} </span>
-        {passengersCost?.toFixed(0)}
+        {formatedCost}
       </p>
     </li>
   );
@@ -469,6 +474,8 @@ const AdditionalHoursRow = ({
   currency: string;
   hoursCost: number;
 }) => {
+  const formatedCost = formatNumber(hoursCost);
+
   return (
     <li className="flex gap-2 items-center font-semibold text-[#62697D] justify-between">
       <div className="flex gap-2 items-center">
@@ -479,7 +486,7 @@ const AdditionalHoursRow = ({
         <div>
           <p>
             <span className="text-xs">+{currency} </span>
-            {hoursCost}
+            {formatedCost}
           </p>
         </div>
       ) : null}
@@ -492,10 +499,9 @@ const FastTrackRow = ({
   calculatedFastTrack,
 }: {
   calculatedFastTrack: number;
-  // passengersCount: number;
-  // fastTrackCost: number;
   currency: string;
 }) => {
+  const formatedCost = formatNumber(calculatedFastTrack?.toFixed(0));
   return (
     <li className="flex justify-between gap-2 items-center font-semibold text-[#62697D]">
       <div className="flex gap-2 items-center">
@@ -506,7 +512,7 @@ const FastTrackRow = ({
       </div>
       <p>
         <span className="text-xs">+{currency} </span>
-        {calculatedFastTrack?.toFixed(0)}
+        {formatedCost}
       </p>
     </li>
   );
@@ -519,6 +525,7 @@ const PorterRow = ({
   BagsCost: number;
   currency: string;
 }) => {
+  const formatedCost = formatNumber(BagsCost.toFixed(0));
   return (
     <li className="flex gap-2 items-center font-semibold text-[#62697D] justify-between">
       <div className="flex gap-2 items-center">
@@ -526,7 +533,7 @@ const PorterRow = ({
       </div>
       <div>
         <span className="text-xs">+{currency} </span>
-        {(BagsCost ?? 0 > 0) ? ` ${BagsCost.toFixed(0)}` : null}
+        {(BagsCost ?? 0 > 0) ? `${formatedCost}` : null}
       </div>
     </li>
   );
@@ -541,8 +548,8 @@ const ChauffeurRow = ({
   additionalMilesCost: number;
   supplementFee: number;
 }) => {
-  const additionalSupplementFee = Math.max(supplementFee - 180, 0);
-
+  const formatedAdditionalMiles = formatNumber(Math.round(additionalMilesCost));
+  const formatedSupplementFee = formatNumber(Math.round(supplementFee));
   return (
     <>
       {additionalMilesCost > 0 ? (
@@ -571,12 +578,12 @@ const ChauffeurRow = ({
           </div>
           <p>
             <span className="text-xs">+{currency} </span>
-            {Math.round(additionalMilesCost)}
+            {formatedAdditionalMiles}
           </p>
         </li>
       ) : null}
 
-      {additionalSupplementFee > 0 ? (
+      {supplementFee > 0 ? (
         <li className="flex justify-between gap-2 font-semibold text-[#62697D]">
           <div className="flex gap-2 items-center">
             <Chauffeur />
@@ -586,7 +593,7 @@ const ChauffeurRow = ({
           </div>
           <p>
             <span className="text-xs">+{currency} </span>
-            {Math.round(additionalSupplementFee)}
+            {formatedSupplementFee}
           </p>
         </li>
       ) : null}
@@ -601,6 +608,8 @@ const LastMinuteRow = ({
   currency: string;
   lastMinuteCost: number;
 }) => {
+
+  const formatedCost = formatNumber(lastMinuteCost.toFixed(0))
   return (
     <li className="flex justify-between gap-2 items-center font-semibold text-[#62697D]">
       <p className="flex items-center gap-2">
@@ -608,7 +617,7 @@ const LastMinuteRow = ({
       </p>
       <p>
         <span className="text-xs">+{currency} </span>
-        {lastMinuteCost.toFixed(0)}
+        {formatedCost}
       </p>
     </li>
   );

@@ -1,17 +1,26 @@
 "use client";
 import { Clock4, Info, Mail, Phone, User } from "lucide-react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useCurrencyStore } from "@/store/currencyStore";
-import StrokeBag from "@/components/custom icons/strokeBag";
-import FigmaMessage from "@/components/custom icons/adults copy";
 import { Separator } from "@/components/ui/separator";
-import StripeForm from "./stripe-form";
-import { useSingleBooking } from "@/lib/hooks/useBooking";
+import {
+  useConfirmBookingMutation,
+  useSingleBooking,
+} from "@/lib/hooks/useBooking";
 import SummarySkeleton from "./summry-skeleton";
 import Image from "next/image";
 import InnerToast from "@/components/ui/InnerToast";
-import BookingStatusCard from "@/components/BookingStatusCard";
+import {
+  // BookingStatusCard,
+  ConfirmationActions,
+} from "@/components/BookingStatusCard";
 import { useConvertCurrency } from "@/lib/hooks/useConvertCurrency";
+import { formatNumber } from "@/lib/formatNumbers";
+import StripeForm from "./stripe-form";
+import { SingleBooking } from "@/lib/types/booking";
+import { useState } from "react";
+import ThankYou from "./thank-you/thank-you";
+import WaitingListContent from "./wait-list/WaitingListContent";
 
 export function formatDateTime(dateTimeString: string): {
   date: string;
@@ -39,10 +48,6 @@ export function formatDateTime(dateTimeString: string): {
   return { date, time };
 }
 
-function capitalise(str: string) {
-  return str.charAt(0).toUpperCase() + str.slice(1).replace(/_/g, " ");
-}
-
 /* ------------------------------------------------------------------ */
 /*  Component                                                           */
 /* ------------------------------------------------------------------ */
@@ -50,9 +55,11 @@ function capitalise(str: string) {
 type Props = {};
 
 export default function Summary(props: Props) {
-  // const currencyMark = useCurrencyStore((state) => state.currencyMark);
   const { convert } = useConvertCurrency();
   const currency = useCurrencyStore((state) => state.currency);
+  // const [confirmed, setConfirmed] = useState<boolean>(false);
+  // const router = useRouter();
+  const confirmMutation = useConfirmBookingMutation();
 
   const searchParams = useSearchParams();
   const uuid = searchParams.get("uuid");
@@ -63,6 +70,18 @@ export default function Summary(props: Props) {
   if (error) return <div>Error loading booking</div>;
   if (!data) return null;
 
+  if (
+    data.booking_status === "scheduled" ||
+    confirmMutation.data?.booking_status === "scheduled"
+  ) {
+    // setConfirmed(true);
+    return <ThankYou data={data} />;
+  } else if (
+    data.booking_status === "checking_availability" ||
+    confirmMutation.data?.booking_status === "checking_availability"
+  ) {
+    return <WaitingListContent data={data} />;
+  }
   const user = data.user;
   const bookingDate = formatDateTime(data.booking_timestamp);
 
@@ -148,6 +167,13 @@ export default function Summary(props: Props) {
   ];
 
   const totalPlusProccessingFee = data.total + data.payment_fees;
+
+  const subtotalPlusVAT = data.subtotal + data.tax_value;
+
+  console.log(data.package.package_slug);
+  console.log(data.airport.last_minute_strategy);
+  console.log(data.airport.min_hours_before_booking);
+
   return (
     <div>
       <div className="flex gap-4">
@@ -206,20 +232,20 @@ export default function Summary(props: Props) {
           )}
 
           {/* Luggage assistance */}
-          <div className="px-10 py-6 w-full bg-white rounded-2xl shadow-md flex gap-2 items-center">
+          {/* <div className="px-10 py-6 w-full bg-white rounded-2xl shadow-md flex gap-2 items-center">
             <StrokeBag />
             <p>Luggage assistance: Porter Services</p>
-          </div>
+          </div> */}
 
           {/* Passenger file */}
-          <div className="px-10 py-6 w-full bg-white rounded-2xl shadow-md flex gap-2 items-center">
+          {/* <div className="px-10 py-6 w-full bg-white rounded-2xl shadow-md flex gap-2 items-center">
             <FigmaMessage />
 
             <p>
               Booking status:{" "}
               {data.booking_status ? capitalise(data.booking_status) : ""}
             </p>
-          </div>
+          </div> */}
 
           {/* Payment breakdown */}
           <div className="px-10 py-6 w-full bg-white rounded-2xl shadow-md space-y-2">
@@ -228,45 +254,23 @@ export default function Summary(props: Props) {
                 {data.airport.airport_name} - {data.service_type} -{" "}
                 {data.package.package_name}
               </p>
-              <p>
-                <span className="text-xs text-[#6A7282]">{currency} </span>
-                {convert(data.service_cost)}
-              </p>
+              <p>{formatNumber(convert(data.subtotal))}</p>
             </div>
 
-            {data.trip && (
-              <div className="flex justify-between">
-                <p>Chauffuer</p>
-                <p>
-                  <span className="text-xs text-[#6A7282]">{currency} </span>
-                  {convert(data.trip.trip_cost)}
-                </p>
-              </div>
-            )}
             <div className="flex justify-between">
               <p>VAT</p>
-              <p>
-                <span className="text-xs text-[#6A7282]">{currency} </span>
-                {convert(data.tax_value)}
+              <p>{formatNumber(convert(data.tax_value))}</p>
+            </div>
+            <div className="flex justify-between">
+              <p className="font-semibold">Subtotal: </p>
+              <p className="font-semibold">
+                {formatNumber(convert(subtotalPlusVAT))}
               </p>
             </div>
-            {/* )} */}
-            {data.total > 0 && (
-              <div className="flex justify-between">
-                <p className="font-semibold">Subtotal: </p>
-                <p className="font-semibold">
-                  <span className="text-xs text-[#6A7282]">{currency} </span>
-                  {convert(data.subtotal)}
-                </p>
-              </div>
-            )}
             {data.payment_fees > 0 && (
               <div className="flex justify-between">
                 <p>Processing fee</p>
-                <p>
-                  <span className="text-xs text-[#6A7282]">{currency} </span>
-                  {convert(data.payment_fees)}{" "}
-                </p>
+                <p>{formatNumber(convert(data.payment_fees))} </p>
               </div>
             )}
             <Separator />
@@ -275,7 +279,7 @@ export default function Summary(props: Props) {
               <p>Total:</p>
               <p>
                 <span className="text-xs text-[#6A7282]">{currency} </span>
-                {convert(totalPlusProccessingFee)}
+                {formatNumber(convert(totalPlusProccessingFee))}
               </p>
             </div>
           </div>
@@ -290,16 +294,23 @@ export default function Summary(props: Props) {
               <p className="font-bold font-[Arial]">
                 <span className="font-light text-[#6A7282]">{currency} </span>
                 {/* {data.total.toFixed(2)}{" "} */}
-                {totalPlusProccessingFee.toFixed(2)}{" "}
+                {formatNumber(totalPlusProccessingFee.toFixed(2))}{" "}
               </p>
             </div>
           </div>
 
-          {/* Payment form */}
-
-          <BookingStatusCard
+          {/* <BookingStatusCard
             booking_status={data.booking_status}
             booking_uuid={data.booking_uuid}
+          /> */}
+
+          {/* <StripeForm /> */}
+          <PayOrConfirm
+            onConfirm={() => {
+              if (data.booking_uuid) confirmMutation.mutate(data.booking_uuid);
+              // console.log("sad");
+            }}
+            data={data}
           />
         </div>
       </div>
@@ -367,4 +378,37 @@ const Carpreef = ({
       />
     </div>
   );
+};
+
+const PayOrConfirm = ({
+  data,
+  onConfirm,
+}: {
+  onConfirm: () => void;
+  data: SingleBooking;
+}) => {
+  const confirmMutation = useConfirmBookingMutation();
+
+  const slug = data.package.package_slug;
+  const strategy = data.airport.last_minute_strategy;
+  const minHours = data.airport.min_hours_before_booking;
+
+  const raw = data.booking_timestamp;
+  const bookingTime = new Date(raw.replace(" ", "T")).getTime();
+  const now = Date.now();
+  const diffInHours = (bookingTime - now) / (1000 * 60 * 60);
+
+  const isCloseToBooking = diffInHours <= minHours;
+  const mustConfirm = strategy === "check" && isCloseToBooking;
+
+  if (slug === "signature" || slug === "vip" || mustConfirm) {
+    return (
+      <ConfirmationActions
+        onConfirm={onConfirm}
+        isLoading={confirmMutation.isPending}
+      />
+    );
+  }
+
+  return <StripeForm />;
 };

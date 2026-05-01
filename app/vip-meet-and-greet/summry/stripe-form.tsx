@@ -3,7 +3,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import {
@@ -47,9 +47,10 @@ const cardInputClass =
   "px-4 h-11 py-3 bg-[#F4F4F4] border border-[#E0E0E0] rounded-md w-full transition-colors focus-within:border-[#664F31] shadow-xs";
 
 // ── Root: fetches client secret and passes it down ───────────────────────────
-const StripeForm = ({ payFor = "bookings", 
+const StripeForm = ({
+  payFor = "bookings",
   // booking_status
- }: Props) => {
+}: Props) => {
   const searchParams = useSearchParams();
   const paramsUUID = searchParams.get("uuid");
 
@@ -107,7 +108,6 @@ const StripeForm = ({ payFor = "bookings",
           <p className="text-sm font-semibold text-[#1a1a1a]">
             Payment unavailable
           </p>
-          {/* <p className="text-xs text-[#74747A] text-center">{fetchError}</p> */}
         </div>
       </div>
     );
@@ -120,13 +120,7 @@ const StripeForm = ({ payFor = "bookings",
 
   return (
     <Elements stripe={stripePromise} options={{ clientSecret }}>
-      {/* <CheckoutForm
-        booking_status={booking_status}
-        clientSecret={clientSecret}
-        onCheckPromotionCode={() => {}}
-      /> */}
       <CheckoutForm
-        // booking_status={booking_status}
         clientSecret={clientSecret}
         promoError={promoError}
         promoLoading={promoLoading}
@@ -138,18 +132,7 @@ const StripeForm = ({ payFor = "bookings",
 
 export default StripeForm;
 
-// ── Inner form ───────────────────────────────────────────────────────────────
-// const CheckoutForm = ({
-//   booking_status,
-//   clientSecret,
-//   onCheckPromotionCode,
-// }: {
-//   booking_status: string;
-//   clientSecret: string;
-//   onCheckPromotionCode: (promotionCode: string) => void;
-// }) => {
 const CheckoutForm = ({
-  // booking_status,
   clientSecret,
   onApplyPromo,
   promoError,
@@ -192,6 +175,7 @@ const CheckoutForm = ({
     !country ||
     // booking_status !== "awaiting_payment" ||
     loading;
+  // const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -224,12 +208,32 @@ const CheckoutForm = ({
       },
     );
 
+    // if (error) {
+    //   toast.error("Payment failed", {
+    //     description: error.message ?? "Something went wrong, please try again.",
+    //   });
+    // } else if (paymentIntent?.status === "succeeded") {
+    //   setSuccess(true);
+    //   toast.success("Payment successful!", {
+    //     description: "Your booking has been confirmed.",
+    //     position: "top-center",
+    //     style: {
+    //       background: "white",
+    //       color: "#664F31",
+    //       border: "none",
+    //     },
+    //     classNames: {
+    //       icon: "text-[#664F31]",
+    //     },
+    //   });
+    // }
+
     if (error) {
       toast.error("Payment failed", {
         description: error.message ?? "Something went wrong, please try again.",
       });
     } else if (paymentIntent?.status === "succeeded") {
-      setSuccess(true);
+      // setSuccess(true);
       toast.success("Payment successful!", {
         description: "Your booking has been confirmed.",
         position: "top-center",
@@ -242,6 +246,8 @@ const CheckoutForm = ({
           icon: "text-[#664F31]",
         },
       });
+
+      // router.push("summry/thank-you");
     }
 
     setLoading(false);
@@ -253,24 +259,29 @@ const CheckoutForm = ({
         <div className="w-20 h-20 rounded-full bg-green-50 flex items-center justify-center">
           <CheckCircle size={48} className="text-green-500" />
         </div>
-        
+
         <div className="space-y-2">
-          <h2 className="text-2xl font-bold text-gray-900">Payment Successful!</h2>
+          <h2 className="text-2xl font-bold text-gray-900">
+            Payment Successful!
+          </h2>
           <p className="text-gray-500 leading-relaxed">
-            Thank you for your booking. Your reservation has been confirmed and you will receive an email shortly.
+            Thank you for your booking. Your reservation has been confirmed and
+            you will receive an email shortly.
           </p>
         </div>
 
         <div className="w-full pt-4">
-          <Button 
+          <Button
             onClick={() => window.location.reload()} // أو توجيه لصفحة الـ My Bookings
             className="w-full bg-[#1a1a1a] text-white py-4 rounded-xl font-semibold"
           >
             View My Booking
           </Button>
         </div>
-        
-        <p className="text-xs text-gray-400">Transaction ID: {clientSecret.split('_secret')[0]}</p>
+
+        <p className="text-xs text-gray-400">
+          Transaction ID: {clientSecret.split("_secret")[0]}
+        </p>
       </div>
     );
   }

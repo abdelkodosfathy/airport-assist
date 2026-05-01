@@ -1,4 +1,5 @@
 import React from "react";
+import { PackageSlug } from "./airport";
 
 export type Feature = {
   icon: React.FC<React.SVGProps<SVGSVGElement>>;
@@ -15,7 +16,7 @@ export interface Package {
   service_type: string;
   package_name: string;
   package_description: string;
-  package_slug: string;
+  package_slug: PackageSlug;
   status: boolean;
   created_at: string;
   updated_at: string;

@@ -16,14 +16,15 @@ type Props = {
   booking_uuid?: string;
 };
 
-function StripeRenderer({ booking_uuid }: { booking_uuid?: string }) {
-  return (
-    <StripeForm
-    // booking_status="awaiting_payment"
-    // uuid={booking_uuid}
-    />
-  );
-}
+// function StripeRenderer({ booking_uuid }: { booking_uuid?: string }) {
+//   return (
+//     <StripeForm
+//     />
+//   );
+// }
+// function StripeRenderer() {
+//   return <StripeForm />;
+// }
 
 export const statusConfig: Record<
   BookingStatus,
@@ -57,7 +58,8 @@ export const statusConfig: Record<
     iconBg: "bg-yellow-100",
     title: "Awaiting Payment",
     description: "Please complete your payment to continue.",
-    render: (props) => <StripeRenderer {...props} />,
+    // render: (props) => <StripeRenderer {...props} />,
+    render: (props) => <StripeForm />,
   },
 
   checking_availability: {
@@ -105,37 +107,35 @@ export const statusConfig: Record<
 //   booking_status,
 //   booking_uuid,
 // }: Props) {
-//   // استخدام الـ Mutation بدلاً من الـ Query
 //   const confirmMutation = useConfirmBookingMutation();
 
-//   const config = statusConfig[booking_status];
-//   const Icon = config.icon;
-//   console.log(confirmMutation);
-//   console.log(confirmMutation.isSuccess);
-//   console.log(confirmMutation.data?.booking_status === "awaiting_payment");
+//   // الـ status الفعلي = نتيجة الـ mutation لو نجحت، غير كده الـ prop العادي
+//   const effectiveStatus: BookingStatus = confirmMutation.isSuccess
+//     ? confirmMutation.data?.booking_status
+//     : booking_status;
 
-//   // 1. حالة الـ Pending (عرض أزرار التأكيد والتعديل)
-//   if (booking_status === "pending") {
+//   const config = statusConfig[effectiveStatus];
+//   const Icon = config.icon;
+
+//   if (effectiveStatus === "pending") {
 //     return (
 //       <ConfirmationActions
-//         // عند الضغط، ننفذ الميوتيشن
 //         onConfirm={() => {
-//           if (booking_uuid) {
-//             confirmMutation.mutate(booking_uuid);
-//           }
+//           if (booking_uuid) confirmMutation.mutate(booking_uuid);
 //         }}
-//         // نمرر حالة التحميل لتعطيل الزر وإظهار Spinner
 //         isLoading={confirmMutation.isPending}
 //       />
 //     );
+//   } else {
+//     console.log("add the confirm + payment logic");
 //   }
 
-//   // 2. إذا كانت الحالة أصبحت "awaiting_payment" أو نجحت العملية
-//   if (booking_status === "awaiting_payment" || (confirmMutation.isSuccess && confirmMutation.data?.booking_status === "awaiting_payment")) {
-//     return <StripeForm/>;
+//   if (config.render) {
+//     return (
+//       <>{config.render({ booking_status: effectiveStatus, booking_uuid })}</>
+//     );
 //   }
 
-//   // 3. باقي الحالات (Success, Fail, etc.)
 //   return (
 //     <div className="bg-white rounded-2xl p-6 shadow-md flex flex-col items-center gap-4 border border-gray-50">
 //       <div
@@ -153,100 +153,7 @@ export const statusConfig: Record<
 //   );
 // }
 
-
-// export default function BookingStatusCard({
-//   booking_status,
-//   booking_uuid,
-// }: Props) {
-//   const confirmMutation = useConfirmBookingMutation();
-//   const config = statusConfig[booking_status];
-//   const Icon = config.icon;
-
-//   // 1. تحقق أولاً: هل نجحت العملية؟ أو هل الحالة أصلاً awaiting_payment؟
-//   // نضع هذا الشرط في البداية "لأنه يكسر الحالة القديمة"
-//   if (
-//     booking_status === "awaiting_payment" ||
-//     (confirmMutation.isSuccess &&
-//       confirmMutation.data?.booking_status === "awaiting_payment")
-//   ) {
-//     return <StripeForm />;
-//   }
-
-//   // 2. إذا لم تنجح بعد، وكان الـ Prop القادم من الأب لا يزال pending
-//   if (booking_status === "pending") {
-//     return (
-//       <ConfirmationActions
-//         onConfirm={() => {
-//           if (booking_uuid) {
-//             confirmMutation.mutate(booking_uuid);
-//           }
-//         }}
-//         isLoading={confirmMutation.isPending}
-//       />
-//     );
-//   }
-
-//   // 3. باقي الحالات (Success, Fail, etc.)
-//   return (
-//     <div className="bg-white rounded-2xl p-6 shadow-md flex flex-col items-center gap-4 border border-gray-50">
-//       <div
-//         className={`w-12 h-12 rounded-full flex items-center justify-center ${config.iconBg}`}
-//       >
-//         <Icon size={24} className={config.iconColor} />
-//       </div>
-//       <div className="flex flex-col items-center gap-1 text-center">
-//         <p className="text-base font-bold text-[#1a1a1a]">{config.title}</p>
-//         <p className="text-sm text-[#74747A] leading-relaxed">
-//           {config.description}
-//         </p>
-//       </div>
-//     </div>
-//   );
-// }
-
-export default function BookingStatusCard({
-  booking_status,
-  booking_uuid,
-}: Props) {
-  const confirmMutation = useConfirmBookingMutation();
-
-  // الـ status الفعلي = نتيجة الـ mutation لو نجحت، غير كده الـ prop العادي
-  const effectiveStatus: BookingStatus = confirmMutation.isSuccess
-    ? confirmMutation.data?.booking_status
-    : booking_status;
-
-  const config = statusConfig[effectiveStatus];
-  const Icon = config.icon;
-
-  if (effectiveStatus === "pending") {
-    return (
-      <ConfirmationActions
-        onConfirm={() => {
-          if (booking_uuid) confirmMutation.mutate(booking_uuid);
-        }}
-        isLoading={confirmMutation.isPending}
-      />
-    );
-  }
-
-  if (config.render) {
-    return <>{config.render({ booking_status: effectiveStatus, booking_uuid })}</>;
-  }
-
-  return (
-    <div className="bg-white rounded-2xl p-6 shadow-md flex flex-col items-center gap-4 border border-gray-50">
-      <div className={`w-12 h-12 rounded-full flex items-center justify-center ${config.iconBg}`}>
-        <Icon size={24} className={config.iconColor} />
-      </div>
-      <div className="flex flex-col items-center gap-1 text-center">
-        <p className="text-base font-bold text-[#1a1a1a]">{config.title}</p>
-        <p className="text-sm text-[#74747A] leading-relaxed">{config.description}</p>
-      </div>
-    </div>
-  );
-}
-
-function ConfirmationActions({
+export function ConfirmationActions({
   onConfirm,
   isLoading,
 }: {
@@ -254,7 +161,7 @@ function ConfirmationActions({
   isLoading: boolean;
 }) {
   return (
-    <div className="flex flex-col gap-3 w-full p-4 bg-white rounded-2xl shadow-sm border border-gray-100">
+    <div className="flex flex-col gap-3 w-full p-4 bg-white rounded-2xl shadow-md">
       <div className="flex items-center gap-3 mb-2">
         <div className="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center">
           <Clock className="text-blue-600" size={20} />
@@ -277,7 +184,6 @@ function ConfirmationActions({
           variant="outline"
           className="w-full cursor-pointer border-black text-black hover:border-[#664F31] hover:bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)] hover:text-white duration-0"
         >
-          {/* <p className="text-lg font-normal font-[Manrope]"> */}
           {isLoading ? (
             <>
               <Loader2 className="animate-spin" size={18} />
@@ -286,7 +192,6 @@ function ConfirmationActions({
           ) : (
             "Confirm & Proceed to Payment"
           )}
-          {/* </p> */}
         </Button>
       </div>
     </div>

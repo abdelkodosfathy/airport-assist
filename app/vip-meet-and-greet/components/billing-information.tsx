@@ -85,7 +85,7 @@ const BillingInformation = forwardRef<BillingInformationRef>((_, ref) => {
 
         <Label
           htmlFor="same_as_primary"
-          className="text-sm leading-relaxed cursor-pointer"
+          className="text-sm normal-case leading-relaxed cursor-pointer"
         >
           Same as a primary passenger
         </Label>
