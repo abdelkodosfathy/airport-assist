@@ -29,6 +29,7 @@ import { useCurrencyStore } from "@/store/currencyStore";
 // import { useTripStore } from "@/store/tripStore";
 import { useCarPricing } from "@/lib/hooks/useCarPricing";
 import { useConvertCurrency } from "@/lib/hooks/useConvertCurrency";
+import { useTripStore } from "@/store/tripStore";
 
 const IMAGE_BASE =
   "https://airportassist-backend.aqaralex.com/storage/images/car-types-images/";
@@ -85,7 +86,8 @@ const CarCard = ({
   hideSupplementFee = false,
 }: CarCardProps) => {
   const { convert } = useConvertCurrency();
-  const { totalCost } = useCarPricing({ car, includedMiles });
+  const totalCost = useCarPricing({ car, includedMiles }).totalCost;
+  const meetAndGreet = useTripStore((s) => s.meetAndGreet);
 
   const currencyMark = useCurrencyStore((state) => state.currencyMark);
 
@@ -153,6 +155,7 @@ const CarCard = ({
             </p>
           </div>
           <Prices
+            meetAndGreet={meetAndGreet}
             hideSupplementFee={hideSupplementFee}
             currencyMark={currencyMark}
             car={car}
@@ -234,19 +237,22 @@ export default CarCard;
 
 const Prices = ({
   hideSupplementFee,
+  meetAndGreet = false,
   currencyMark,
   car,
 }: {
   hideSupplementFee: boolean;
+  meetAndGreet?: boolean;
   currencyMark: string;
   car: Car;
 }) => {
   const { convert } = useConvertCurrency();
-  const convertedPerMile = convert(car.price_per_mile);
-  const convertedPerHour = convert(car.price_per_hour);
-  const convertedSupplementFee = convert(car.supplement_fee);
+  const convertedPerMile = convert(car.price_per_mile); // add the fixed .00
+  const convertedPerHour = convert(car.price_per_hour); // add the fixed .00
+  const convertedSupplementFee = convert(car.supplement_fee); // add the fixed .00
+
   return (
-    <div className="text-[#74747A]">
+    <div className="text-[#74747A] space-y-1">
       {hideSupplementFee ? (
         <>
           <div className="text-[0.8rem] flex justify-between">
@@ -255,7 +261,7 @@ const Prices = ({
               <span className="text-[0.7rem]"> (inside city)</span>
             </p>
             <span>
-              {currencyMark} {convertedPerMile}
+              {currencyMark} {convertedPerMile.toFixed(2)}
             </span>
           </div>
 
@@ -264,8 +270,8 @@ const Prices = ({
               Rate Per Mile
               <span className="text-[0.7rem]"> (outside city)</span>
             </p>
-            <span>
-              {currencyMark} {convertedPerMile}
+            <span className="whitespace-nowrap">
+              {currencyMark} {convertedPerMile.toFixed(2)}
             </span>
           </div>
         </>
@@ -274,23 +280,32 @@ const Prices = ({
           <p className="text-[0.675rem] flex justify-between">
             Price Per Mile
             <span>
-              {currencyMark} {convertedPerMile}
+              {currencyMark} {convertedPerMile.toFixed(2)}
             </span>
           </p>
 
           <p className="text-[0.675rem] flex justify-between">
             Price Per Hour
             <span>
-              {currencyMark} {convertedPerHour}
+              {currencyMark} {convertedPerHour.toFixed(2)}
             </span>
           </p>
 
           <p className="text-[0.675rem] flex justify-between">
             Supplement Fee
-            <span>
-              {currencyMark} {convertedSupplementFee}
+            {meetAndGreet ? " (meet & greet)" : ""}
+            <span className="whitespace-nowrap">
+              {currencyMark} {convertedSupplementFee.toFixed(2)}
             </span>
           </p>
+          {/* {meetAndGreet ? (
+            <p className="text-[0.675rem] flex justify-between">
+              Meet and greet
+              <span>
+                {currencyMark} {convertedSupplementFee.toFixed(2)}
+              </span>
+            </p>
+          ) : null} */}
         </>
       )}
     </div>

@@ -194,7 +194,8 @@ const BillingAddress = forwardRef<BillingAddressRef>((_, ref) => {
 
         <div className="space-y-2 md:col-span-2">
           <Label htmlFor="postcode" className={getLabelClass(errors.postcode)}>
-            Post Code
+            {/* usa zip code */}
+            Post/Zip Code
           </Label>
           <Input
             id="postcode"

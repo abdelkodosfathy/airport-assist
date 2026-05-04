@@ -84,7 +84,7 @@ const ChauffeurBillingSection = () => {
       <h4 className="font-manrope font-medium text-[18.75px] leading-[1.3]">
         Contact Information
       </h4>
-      <p className="mt-2 text-[#6D6D6D]">
+      <p className="mt-2 normal-case text-[#6D6D6D]">
         Main point of communication for this reservation
       </p>
 

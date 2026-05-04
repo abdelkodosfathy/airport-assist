@@ -34,8 +34,11 @@ const Page = () => {
   }, [airportResponse]);
 
   useEffect(() => {
+    console.log(storedAirport);
     if (!storedAirport) {
-      router.replace("/");
+      // router.replace("/");
+      console.log("go back");
+      
     }
   }, [storedAirport, router]);
 

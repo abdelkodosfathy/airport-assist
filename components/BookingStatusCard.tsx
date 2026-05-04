@@ -9,7 +9,7 @@ import {
   CalendarSearch,
 } from "lucide-react";
 import { Button } from "./ui/button";
-import { useConfirmBookingMutation } from "@/lib/hooks/useBooking";
+// import { useConfirmBookingMutation } from "@/lib/hooks/useBooking";
 
 type Props = {
   booking_status: BookingStatus;
@@ -162,18 +162,14 @@ export function ConfirmationActions({
 }) {
   return (
     <div className="flex flex-col gap-3 w-full p-4 bg-white rounded-2xl shadow-md">
-      <div className="flex items-center gap-3 mb-2">
-        <div className="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center">
-          <Clock className="text-blue-600" size={20} />
-        </div>
-        <div>
-          <h3 className="text-sm font-bold text-gray-900">
-            Review Your Booking
+      <div className="mb-2">
+          <h3 className="text-sm font-bold mb-2">
+            Check availability
           </h3>
-          <p className="text-xs text-gray-500">
-            Please confirm your details before payment.
+          <p className="text-xs">
+            Thanks for your interest! We're checking availability and will
+            notify you as soon as a space becomes available.
           </p>
-        </div>
       </div>
 
       <div className="flex flex-col gap-2">

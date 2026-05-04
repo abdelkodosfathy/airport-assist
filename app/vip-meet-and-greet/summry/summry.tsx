@@ -1,6 +1,6 @@
 "use client";
 import { Clock4, Info, Mail, Phone, User } from "lucide-react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useCurrencyStore } from "@/store/currencyStore";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -19,8 +19,16 @@ import { formatNumber } from "@/lib/formatNumbers";
 import StripeForm from "./stripe-form";
 import { SingleBooking } from "@/lib/types/booking";
 import { useState } from "react";
-import ThankYou from "./thank-you/thank-you";
+// import ThankYou from "./thank-you/thank-you";
 import WaitingListContent from "./wait-list/WaitingListContent";
+import StrokeBag from "@/components/custom icons/strokeBag";
+import FigmaMessage from "@/components/custom icons/adults copy";
+import {
+  useSuccessPopupStore,
+  useWaitListPopupStore,
+} from "@/store/useSuccessPopupStore";
+import { SuccessPopup, WaitListPopup } from "@/components/SuccessPopup";
+// import SuccessPopup from "./success";
 
 export function formatDateTime(dateTimeString: string): {
   date: string;
@@ -63,6 +71,8 @@ export default function Summary(props: Props) {
 
   const searchParams = useSearchParams();
   const uuid = searchParams.get("uuid");
+  const openSuccessPopup = useSuccessPopupStore((s) => s.open);
+  const openWaitListPopup = useWaitListPopupStore((s) => s.open);
 
   const { data, isLoading, error } = useSingleBooking(uuid);
 
@@ -75,12 +85,18 @@ export default function Summary(props: Props) {
     confirmMutation.data?.booking_status === "scheduled"
   ) {
     // setConfirmed(true);
-    return <ThankYou data={data} />;
+    // return <ThankYou data={data} />;
+    console.log(data.booking_uuid);
+    openSuccessPopup(data.booking_uuid);
+    console.log("opeeennnsss");
   } else if (
     data.booking_status === "checking_availability" ||
     confirmMutation.data?.booking_status === "checking_availability"
   ) {
-    return <WaitingListContent data={data} />;
+    openWaitListPopup(data.booking_uuid);
+    console.log("opeeennn");
+    
+    // return <WaitingListContent data={data} />;
   }
   const user = data.user;
   const bookingDate = formatDateTime(data.booking_timestamp);
@@ -175,146 +191,153 @@ export default function Summary(props: Props) {
   console.log(data.airport.min_hours_before_booking);
 
   return (
-    <div>
-      <div className="flex gap-4">
-        {/* ── Left column ─────────────────────────────────────────── */}
-        <div className="flex-2 space-y-4">
-          {/* Contact Info */}
-          <div className=" px-10 py-6 w-full bg-white rounded-2xl shadow-md">
-            <h2 className="text-lg font-semibold mb-4">Contact Information</h2>
-            <div className="text-[#4A5565] space-y-2">
-              <div className="flex gap-2 items-center">
-                <User />
-                <p>{user.user_name}</p>
-              </div>
-              <div className="flex gap-4">
+    <>
+      <SuccessPopup /> {/* ← مش محتاج props خالص */}
+      <WaitListPopup /> {/* ← مش محتاج props خالص */}
+      <div>
+        <div className="flex gap-4">
+          {/* ── Left column ─────────────────────────────────────────── */}
+          <div className="flex-2 space-y-4">
+            {/* Contact Info */}
+            <div className=" px-10 py-6 w-full bg-white rounded-2xl shadow-md">
+              <h2 className="text-lg font-semibold mb-4">
+                Contact Information
+              </h2>
+              <div className="text-[#4A5565] space-y-2">
                 <div className="flex gap-2 items-center">
-                  <Mail />
-                  <p className="lowercase">{user.email}</p>
+                  <User />
+                  <p>{user.user_name}</p>
                 </div>
-                <div className="flex gap-2 items-center">
-                  <Phone />
-                  <p>{user.phone}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="px-10 py-6 w-full bg-white rounded-2xl shadow-md">
-            <h2 className="text-lg font-semibold mb-4">
-              {data.airport.airport_name} - {data.service_type} -{" "}
-              {data.package.package_name}
-            </h2>
-
-            <div className="text-[#4A5565]">
-              {rows.map((row, i) => {
-                if (!row) return;
-                return (
-                  <div
-                    key={i}
-                    className="flex items-start gap-4 px-2 py-0.5 rounded-md hover:bg-gray-100 transition-colors"
-                  >
-                    <span className="w-[220px] flex-shrink-0">{row.label}</span>
-                    <span className="flex-1">{row.value}</span>
+                <div className="flex gap-4">
+                  <div className="flex gap-2 items-center">
+                    <Mail />
+                    <p className="lowercase">{user.email}</p>
                   </div>
-                );
-              })}
+                  <div className="flex gap-2 items-center">
+                    <Phone />
+                    <p>{user.phone}</p>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
-          {data.trip && (
-            <Carpreef
-              car_name={data.trip.car_type.car_type_name}
-              car_image_src={data.trip.car_type.car_type_img}
-              pickupFrom={data.trip.pickup_location_title}
-              destination={data.trip.dropoff_location_title}
-              distanceMi={data.trip.distance_mile}
-              duration={`${data.trip.duration_minutes}`}
-            />
-          )}
-
-          {/* Luggage assistance */}
-          {/* <div className="px-10 py-6 w-full bg-white rounded-2xl shadow-md flex gap-2 items-center">
-            <StrokeBag />
-            <p>Luggage assistance: Porter Services</p>
-          </div> */}
-
-          {/* Passenger file */}
-          {/* <div className="px-10 py-6 w-full bg-white rounded-2xl shadow-md flex gap-2 items-center">
-            <FigmaMessage />
-
-            <p>
-              Booking status:{" "}
-              {data.booking_status ? capitalise(data.booking_status) : ""}
-            </p>
-          </div> */}
-
-          {/* Payment breakdown */}
-          <div className="px-10 py-6 w-full bg-white rounded-2xl shadow-md space-y-2">
-            <div className="flex justify-between font-semibold">
-              <p>
+            <div className="px-10 py-6 w-full bg-white rounded-2xl shadow-md">
+              <h2 className="text-lg font-semibold mb-4">
                 {data.airport.airport_name} - {data.service_type} -{" "}
                 {data.package.package_name}
-              </p>
-              <p>{formatNumber(convert(data.subtotal))}</p>
-            </div>
+              </h2>
 
-            <div className="flex justify-between">
-              <p>VAT</p>
-              <p>{formatNumber(convert(data.tax_value))}</p>
-            </div>
-            <div className="flex justify-between">
-              <p className="font-semibold">Subtotal: </p>
-              <p className="font-semibold">
-                {formatNumber(convert(subtotalPlusVAT))}
-              </p>
-            </div>
-            {data.payment_fees > 0 && (
-              <div className="flex justify-between">
-                <p>Processing fee</p>
-                <p>{formatNumber(convert(data.payment_fees))} </p>
+              <div className="text-[#4A5565]">
+                {rows.map((row, i) => {
+                  if (!row) return;
+                  return (
+                    <div
+                      key={i}
+                      className="flex items-start gap-4 px-2 py-0.5 rounded-md hover:bg-gray-100 transition-colors"
+                    >
+                      <span className="w-[220px] flex-shrink-0">
+                        {row.label}
+                      </span>
+                      <span className="flex-1">{row.value}</span>
+                    </div>
+                  );
+                })}
               </div>
+            </div>
+            {data.trip && (
+              <Carpreef
+                car_name={data.trip.car_type.car_type_name}
+                car_image_src={data.trip.car_type.car_type_img}
+                pickupFrom={data.trip.pickup_location_title}
+                destination={data.trip.dropoff_location_title}
+                distanceMi={data.trip.distance_mile}
+                duration={`${data.trip.duration_minutes}`}
+              />
             )}
-            <Separator />
 
-            <div className="flex justify-between font-bold">
-              <p>Total:</p>
+            {/* Luggage assistance */}
+            <div className="px-10 py-6 w-full bg-white rounded-2xl shadow-md flex gap-2 items-center">
+              <StrokeBag />
+              <p>Luggage assistance: Porter Services</p>
+            </div>
+
+            {/* Passenger file */}
+            <div className="px-10 py-6 w-full bg-white rounded-2xl shadow-md flex gap-2 items-center">
+              <FigmaMessage />
+
               <p>
-                <span className="text-xs text-[#6A7282]">{currency} </span>
-                {formatNumber(convert(totalPlusProccessingFee))}
+                Booking status:{" "}
+                {/* {data.booking_status ? capitalise(data.booking_status) : ""} */}
+                {data.booking_status}
               </p>
             </div>
-          </div>
-        </div>
 
-        {/* ── Right column (sticky) ────────────────────────────────── */}
-        <div className="h-full flex-1 space-y-4 sticky top-26">
-          {/* Total pill */}
-          <div className="bg-white rounded-2xl p-5 shadow-md">
-            <div className="font-[Manrope] flex items-center justify-between">
-              <p className="text-[18.75px]">Total</p>
-              <p className="font-bold font-[Arial]">
-                <span className="font-light text-[#6A7282]">{currency} </span>
-                {/* {data.total.toFixed(2)}{" "} */}
-                {formatNumber(totalPlusProccessingFee.toFixed(2))}{" "}
-              </p>
+            {/* Payment breakdown */}
+            <div className="px-10 py-6 w-full bg-white rounded-2xl shadow-md space-y-2">
+              <div className="flex justify-between font-semibold">
+                <p>
+                  {data.airport.airport_name} - {data.service_type} -{" "}
+                  {data.package.package_name}
+                </p>
+                <p>{formatNumber(convert(data.subtotal))}</p>
+              </div>
+
+              <div className="flex justify-between">
+                <p>VAT</p>
+                <p>{formatNumber(convert(data.tax_value))}</p>
+              </div>
+              <div className="flex justify-between">
+                <p className="font-semibold">Subtotal: </p>
+                <p className="font-semibold">
+                  {formatNumber(convert(subtotalPlusVAT))}
+                </p>
+              </div>
+              {data.payment_fees > 0 && (
+                <div className="flex justify-between">
+                  <p>Processing fee</p>
+                  <p>{formatNumber(convert(data.payment_fees))} </p>
+                </div>
+              )}
+              <Separator />
+
+              <div className="flex justify-between font-bold">
+                <p>Total:</p>
+                <p>
+                  <span className="text-xs text-[#6A7282]">{currency} </span>
+                  {formatNumber(convert(totalPlusProccessingFee))}
+                </p>
+              </div>
             </div>
           </div>
 
-          {/* <BookingStatusCard
-            booking_status={data.booking_status}
-            booking_uuid={data.booking_uuid}
-          /> */}
+          {/* ── Right column (sticky) ────────────────────────────────── */}
+          {data.booking_status !== "scheduled" &&
+          data.booking_status !== "checking_availability" ? (
+            <div className="h-full flex-1 space-y-4 sticky top-26">
+              <div className="bg-white rounded-2xl p-5 shadow-md">
+                <div className="font-[Manrope] flex items-center justify-between">
+                  <p className="text-[18.75px]">Total</p>
+                  <p className="font-bold font-[Arial]">
+                    <span className="font-light text-[#6A7282]">
+                      {currency}{" "}
+                    </span>
+                    {/* {data.total.toFixed(2)}{" "} */}
+                    {formatNumber(totalPlusProccessingFee.toFixed(2))}{" "}
+                  </p>
+                </div>
+              </div>
 
-          {/* <StripeForm /> */}
-          <PayOrConfirm
-            onConfirm={() => {
-              if (data.booking_uuid) confirmMutation.mutate(data.booking_uuid);
-              // console.log("sad");
-            }}
-            data={data}
-          />
+              <PayOrConfirm
+                onConfirm={() => {
+                  if (data.booking_uuid)
+                    confirmMutation.mutate(data.booking_uuid);
+                }}
+                data={data}
+              />
+            </div>
+          ) : null}
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

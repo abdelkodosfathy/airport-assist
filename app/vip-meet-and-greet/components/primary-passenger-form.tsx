@@ -137,7 +137,7 @@ const TravelClassInput = () => {
   return (
     <div className="space-y-2">
       <Label className={validationError ? "text-red-500" : ""}>
-        Class Of Travel
+        Cabin class
         {validationError && "*"}
       </Label>
       <SelectDropdown

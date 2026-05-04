@@ -2,7 +2,7 @@
 
 import { useCurrencyStore } from "@/store/currencyStore";
 // import { formatNumber } from "../formatNumbers";
-export function useConvertCurrency() {
+export function useConvertCurrency(fixedTo: number = 2) {
   const currency = useCurrencyStore((s) => s.currency);
   const rates = useCurrencyStore((s) => s.rates);
 
@@ -11,7 +11,7 @@ export function useConvertCurrency() {
 
     const converted = gbpAmount * rates[currency];
 
-    return Number(converted.toFixed(2)); // 👈 يرجع number مش string
+    return Number(converted.toFixed(fixedTo)); // 👈 يرجع number مش string
   };
 
   return { convert, currency };

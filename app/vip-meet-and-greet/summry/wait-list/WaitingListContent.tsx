@@ -56,7 +56,7 @@ export default function WaitingListContent({ data }: { data: SingleBooking }) {
                 i < arr.length - 1 ? "border-b border-[#F3F4F6]" : ""
               }`}
             >
-              <span className="text-[14px] text-[#6A7282]">{row.label}</span>
+              <span className="text-[14px] text-black">{row.label}</span>
               <span
                 className={`text-[14px] font-semibold text-[#111827] ${row.label.toLowerCase() === "reference" && "normal-case"}`}
               >

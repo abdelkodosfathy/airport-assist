@@ -39,7 +39,7 @@ const AlertRow = () => {
   if (tripType === "one-way") {
     return (
       <div className="max-w-6/11 w-full">
-        <InnerToast text="One-way is a professional chauffeur service from point A to point B." />
+        <InnerToast text="Direct chauffeur transfer from point A to point B, with 15 minutes complimentary waiting time." />
       </div>
     );
   } else {
@@ -53,7 +53,7 @@ const AlertRow = () => {
 
 const PickupForm = () => {
   return (
-    <div className=" max-w-6/11 h-full w-full flex flex-col gap-4">
+    <div className=" max-w-1/2 xl:max-w-6/11 h-full w-full flex flex-col gap-4">
       <div className="shadow-md px-4.5 py-5 bg-white rounded-2xl ">
         <div className="mb-2">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full ">

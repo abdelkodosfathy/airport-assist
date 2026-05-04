@@ -56,7 +56,7 @@ const UploadField = ({
   if (!file) {
     return (
       <div className="p-4 space-y-4 bg-[#F4F4F4] border border-[#E0E0E0] rounded-lg">
-        <p className="text-sm">{description}</p>
+        <p className="text-sm normal-case">{description}</p>
 
         <p className="normal-case text-[#7B5A41] flex items-center gap-1 font-bold">
           <ArrowDownToLineIcon />

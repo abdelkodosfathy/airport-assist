@@ -35,20 +35,6 @@ export default function ServicesLayout({
   const passengersText =
     totalPassengers === 1 ? "1 Passenger" : `${totalPassengers} Passengers`;
 
-  // useEffect(() => {
-  //   if (storedAirport?.airport_name) {
-  //     const slug = storedAirport.airport_name
-  //       .toLowerCase()
-  //       .replace(/\s+/g, "-") // spaces → dashes
-  //       .replace(/[^a-z0-9-]/g, ""); // remove special chars
-
-  //     // router.replace(`/vip-meet-and-greet?airport=${slug}`, { scroll: false });
-  //     router.replace(
-  //       `/vip-meet-and-greet?airport=${slug}&service=${storedServiceType}`,
-  //       { scroll: false },
-  //     );
-  //   }
-  // }, [storedAirport?.airport_name]);
 
   return (
     <main className="bg-[#F7F7F6] font-[Manrope]">

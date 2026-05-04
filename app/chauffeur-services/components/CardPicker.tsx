@@ -21,6 +21,8 @@ function CardPicker() {
     stateId: state_id,
   });
 
+  console.log(data);
+  
   // Reset selected car if it no longer exists after region/data change
   useEffect(() => {
     if (!data?.data.car_types || !selectedCar) return;
@@ -49,7 +51,7 @@ function CardPicker() {
     );
   }
   return (
-    <div className="grid grid-cols-2 gap-3 w-5/11 h-fit">
+    <div className="grid grid-cols-2 gap-3 max-w-5/10 xl:w-5/11 h-fit">
       {data?.data.car_types.map((car, index) => (
         <CarCard
           includedMiles={18}

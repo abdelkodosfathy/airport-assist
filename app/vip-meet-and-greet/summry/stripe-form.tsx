@@ -3,7 +3,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import {
@@ -16,12 +16,16 @@ import {
 } from "@stripe/react-stripe-js";
 import { apiPost } from "@/lib/api";
 import { Country, CountryDropdown } from "@/components/ui/country-dropdown";
-import { AlertCircle, CheckCircle } from "lucide-react";
+import { AlertCircle } from "lucide-react";
 import { toast } from "sonner";
 import { Separator } from "@/components/ui/separator";
 import Visa from "@/components/custom icons/Visa";
 import MasterCard from "@/components/custom icons/MasterCard";
 import Amex from "@/components/custom icons/amex";
+import Link from "next/link";
+// import SuccessPopup from "./success";
+import { useSuccessPopupStore } from "@/store/useSuccessPopupStore";
+import { SuccessPopup } from "@/components/SuccessPopup";
 // import { useConvertCurrency } from "@/lib/hooks/useConvertCurrency";
 
 const stripePromise = loadStripe(
@@ -146,6 +150,7 @@ const CheckoutForm = ({
 }) => {
   const stripe = useStripe();
   const elements = useElements();
+  const openSuccessPopup = useSuccessPopupStore((s) => s.open);
 
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [reservationConfirmed, setReservationConfirmed] = useState(false);
@@ -208,247 +213,251 @@ const CheckoutForm = ({
       },
     );
 
-    // if (error) {
-    //   toast.error("Payment failed", {
-    //     description: error.message ?? "Something went wrong, please try again.",
-    //   });
-    // } else if (paymentIntent?.status === "succeeded") {
-    //   setSuccess(true);
-    //   toast.success("Payment successful!", {
-    //     description: "Your booking has been confirmed.",
-    //     position: "top-center",
-    //     style: {
-    //       background: "white",
-    //       color: "#664F31",
-    //       border: "none",
-    //     },
-    //     classNames: {
-    //       icon: "text-[#664F31]",
-    //     },
-    //   });
-    // }
-
     if (error) {
       toast.error("Payment failed", {
         description: error.message ?? "Something went wrong, please try again.",
       });
     } else if (paymentIntent?.status === "succeeded") {
       // setSuccess(true);
-      toast.success("Payment successful!", {
-        description: "Your booking has been confirmed.",
-        position: "top-center",
-        style: {
-          background: "white",
-          color: "#664F31",
-          border: "none",
-        },
-        classNames: {
-          icon: "text-[#664F31]",
-        },
-      });
+      openSuccessPopup(clientSecret); // ← بدل setSuccess(true)
+      console.log(paymentIntent);
+      
 
-      // router.push("summry/thank-you");
+      // toast.success("Payment successful!", {
+      //   description: "Your booking has been confirmed.",
+      //   position: "top-center",
+      //   style: {
+      //     background: "white",
+      //     color: "#664F31",
+      //     border: "none",
+      //   },
+      //   classNames: {
+      //     icon: "text-[#664F31]",
+      //   },
+      // });
     }
 
     setLoading(false);
   };
 
-  if (success) {
-    return (
-      <div className="bg-white rounded-2xl p-10 flex flex-col items-center text-center space-y-6 shadow-md animate-in fade-in zoom-in duration-500">
-        <div className="w-20 h-20 rounded-full bg-green-50 flex items-center justify-center">
-          <CheckCircle size={48} className="text-green-500" />
-        </div>
+  // if (success) {
+  //   return (
+  //     <div className="bg-white rounded-2xl p-10 flex flex-col items-center text-center space-y-6 shadow-md animate-in fade-in zoom-in duration-500">
+  //       <div className="w-20 h-20 rounded-full bg-green-50 flex items-center justify-center">
+  //         <CheckCircle size={48} className="text-green-500" />
+  //       </div>
 
-        <div className="space-y-2">
-          <h2 className="text-2xl font-bold text-gray-900">
-            Payment Successful!
-          </h2>
-          <p className="text-gray-500 leading-relaxed">
-            Thank you for your booking. Your reservation has been confirmed and
-            you will receive an email shortly.
-          </p>
-        </div>
+  //       <div className="space-y-2">
+  //         <h2 className="text-2xl font-bold text-gray-900">
+  //           Payment Successful!
+  //         </h2>
+  //         <p className="text-gray-500 leading-relaxed">
+  //           Thank you for your booking. Your reservation has been confirmed and
+  //           you will receive an email shortly.
+  //         </p>
+  //       </div>
 
-        <div className="w-full pt-4">
-          <Button
-            onClick={() => window.location.reload()} // أو توجيه لصفحة الـ My Bookings
-            className="w-full bg-[#1a1a1a] text-white py-4 rounded-xl font-semibold"
-          >
-            View My Booking
-          </Button>
-        </div>
+  //       <div className="w-full pt-4">
+  //         <Button
+  //           onClick={() => window.location.reload()} // أو توجيه لصفحة الـ My Bookings
+  //           className="w-full bg-[#1a1a1a] text-white py-4 rounded-xl font-semibold"
+  //         >
+  //           View My Booking
+  //         </Button>
+  //       </div>
 
-        <p className="text-xs text-gray-400">
-          Transaction ID: {clientSecret.split("_secret")[0]}
-        </p>
-      </div>
-    );
-  }
+  //       <p className="text-xs text-gray-400">
+  //         Transaction ID: {clientSecret.split("_secret")[0]}
+  //       </p>
+  //     </div>
+  //   );
+  // }
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className={`bg-white rounded-2xl p-5 grid grid-cols-2 gap-x-3 gap-y-4 shadow-md ${
-        loading ? "opacity-60 pointer-events-none" : ""
-      }`}
-    >
-      {/* Card Number */}
-      <div className="space-y-2 col-span-2">
-        <Label>Card number</Label>
-        <div className={`${cardInputClass} flex items-center pr-4`}>
-          <div className="flex-1">
-            <CardNumberElement
-              options={cardElementStyle}
-              onChange={(e) => {
-                setCardComplete(e.complete);
-              }}
-            />
-          </div>
-          {/* <Image
+    <>
+      <SuccessPopup />
+      <form
+        onSubmit={handleSubmit}
+        className={`bg-white rounded-2xl p-5 grid grid-cols-2 gap-x-3 gap-y-4 shadow-md ${
+          loading ? "opacity-60 pointer-events-none" : ""
+        }`}
+      >
+        {/* Card Number */}
+        <div className="space-y-2 col-span-2">
+          <Label>Card number</Label>
+          <div className={`${cardInputClass} flex items-center pr-4`}>
+            <div className="flex-1">
+              <CardNumberElement
+                options={cardElementStyle}
+                onChange={(e) => {
+                  setCardComplete(e.complete);
+                }}
+              />
+            </div>
+            {/* <Image
             alt="payment ways"
             src={payments}
             width={105}
             height={40}
             className="shrink-0"
           /> */}
-          <div className="flex items-center gap-2">
-            <Visa />
-            <Amex />
-            <MasterCard />
+            <div className="flex items-center gap-2">
+              <Visa />
+              <Amex />
+              <MasterCard />
+            </div>
           </div>
         </div>
-      </div>
-      {/* Name on Card */}
-      <div className="space-y-2 col-span-2">
-        <Label htmlFor="name-on-card">Name on card</Label>
-        <Input
-          id="name-on-card"
-          value={nameOnCard}
-          onChange={(e) => setNameOnCard(e.target.value)}
-          placeholder="Full name as on card"
-          // className="pl-4 h-11 rounded-md bg-[#F4F4F4] border border-[#E0E0E0] shadow-none focus-visible: focus-visible:border-[#664F31]"
-          className="pl-4 h-11 rounded-md bg-[#F4F4F4] border border-[#E0E0E0] shadow-xs focus-visible:shadow-none"
-        />
-      </div>
-      {/* Expiry */}
-      <div className="space-y-2 col-span-1">
-        <Label>Expiry date</Label>
-        <div className={cardInputClass}>
-          <CardExpiryElement options={cardElementStyle} />
+        {/* Name on Card */}
+        <div className="space-y-2 col-span-2">
+          <Label htmlFor="name-on-card">Name on card</Label>
+          <Input
+            id="name-on-card"
+            value={nameOnCard}
+            onChange={(e) => setNameOnCard(e.target.value)}
+            placeholder="Full name as on card"
+            // className="pl-4 h-11 rounded-md bg-[#F4F4F4] border border-[#E0E0E0] shadow-none focus-visible: focus-visible:border-[#664F31]"
+            className="pl-4 h-11 rounded-md bg-[#F4F4F4] border border-[#E0E0E0] shadow-xs focus-visible:shadow-none"
+          />
         </div>
-      </div>
-      {/* CVC */}
-      <div className="space-y-2 col-span-1">
-        <Label>Security code</Label>
-        <div className={cardInputClass}>
-          <CardCvcElement options={cardElementStyle} />
+        {/* Expiry */}
+        <div className="space-y-2 col-span-1">
+          <Label>Expiry date</Label>
+          <div className={cardInputClass}>
+            <CardExpiryElement options={cardElementStyle} />
+          </div>
         </div>
-      </div>
-      {/* Address */}
-      <div className="space-y-2 col-span-2">
-        <Label htmlFor="address">Address</Label>
-        <Input
-          id="address"
-          value={address}
-          onChange={(e) => setAddress(e.target.value)}
-          placeholder="Billing address"
-          className="pl-4 h-11 rounded-md bg-[#F4F4F4] border border-[#E0E0E0] shadow-xs focus-visible:shadow-none"
+        {/* CVC */}
+        <div className="space-y-2 col-span-1">
+          <Label>Security code</Label>
+          <div className={cardInputClass}>
+            <CardCvcElement options={cardElementStyle} />
+          </div>
+        </div>
+        {/* Address */}
+        <div className="space-y-2 col-span-2">
+          <Label htmlFor="address">Address</Label>
+          <Input
+            id="address"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+            placeholder="Billing address"
+            className="pl-4 h-11 rounded-md bg-[#F4F4F4] border border-[#E0E0E0] shadow-xs focus-visible:shadow-none"
+          />
+        </div>
+        {/* Post Code + Country — same row */}
+        <div className="space-y-2 col-span-1">
+          <Label htmlFor="post-code">Post code</Label>
+          <Input
+            id="post-code"
+            value={postCode}
+            onChange={(e) => setPostCode(e.target.value)}
+            placeholder="Post code"
+            className="pl-4 h-11 rounded-md bg-[#F4F4F4] border border-[#E0E0E0] shadow-xs focus-visible:shadow-none"
+          />
+        </div>
+        <div className="space-y-2 col-span-1">
+          <Label>Country</Label>
+          <CountryDropdown
+            placeholder="Select country"
+            onChange={(c: Country) => setCountry(c.alpha2)}
+            className="w-full h-11 pl-4 rounded-md bg-[#F4F4F4] border border-[#E0E0E0] shadow-xs text-sm"
+          />
+        </div>
+        <Separator className="col-span-2" />
+        {/* promotion code */}
+        {/* <PromoCode onApply={onApplyPromo} /> ← مرر مباشرة */}
+        <Separator className="col-span-2" />
+        <PromoCode
+          onApply={onApplyPromo}
+          error={promoError}
+          loading={promoLoading}
         />
-      </div>
-      {/* Post Code + Country — same row */}
-      <div className="space-y-2 col-span-1">
-        <Label htmlFor="post-code">Post code</Label>
-        <Input
-          id="post-code"
-          value={postCode}
-          onChange={(e) => setPostCode(e.target.value)}
-          placeholder="Post code"
-          className="pl-4 h-11 rounded-md bg-[#F4F4F4] border border-[#E0E0E0] shadow-xs focus-visible:shadow-none"
-        />
-      </div>
-      <div className="space-y-2 col-span-1">
-        <Label>Country</Label>
-        <CountryDropdown
-          placeholder="Select country"
-          onChange={(c: Country) => setCountry(c.alpha2)}
-          className="w-full h-11 pl-4 rounded-md bg-[#F4F4F4] border border-[#E0E0E0] shadow-xs text-sm"
-        />
-      </div>
-      <Separator className="col-span-2" />
-      {/* promotion code */}
-      {/* <PromoCode onApply={onApplyPromo} /> ← مرر مباشرة */}
-      <Separator className="col-span-2" />
-      <PromoCode
-        onApply={onApplyPromo}
-        error={promoError}
-        loading={promoLoading}
-      />
-      {/* Confirm reservation */}
-      <div className="flex items-start gap-3 col-span-2">
-        <Checkbox
-          id="i-confirm"
-          checked={reservationConfirmed}
-          onCheckedChange={(v) => setReservationConfirmed(!!v)}
-          className="cursor-pointer w-6 h-6 rounded-md bg-[#F4F4F4] data-[state=checked]:bg-[#664F31] data-[state=checked]:border-[#664F31] shrink-0"
-        />
-        <Label
-          htmlFor="i-confirm"
-          className="text-sm leading-relaxed cursor-pointer"
-        >
-          I confirm that I have reviewed and verified the accuracy of this
-          reservation.
-        </Label>
-      </div>
-      {/* Terms */}
-      <div className="flex items-start gap-3 col-span-2">
-        <Checkbox
-          id="i-agree"
-          checked={termsAccepted}
-          onCheckedChange={(v) => setTermsAccepted(!!v)}
-          className="cursor-pointer w-6 h-6 rounded-md bg-[#F4F4F4] data-[state=checked]:bg-[#664F31] data-[state=checked]:border-[#664F31] shrink-0"
-        />
-        <Label
+        {/* Confirm reservation */}
+        <div className="flex items-start gap-3 col-span-2">
+          <Checkbox
+            id="i-confirm"
+            checked={reservationConfirmed}
+            onCheckedChange={(v) => setReservationConfirmed(!!v)}
+            className="cursor-pointer w-6 h-6 rounded-md bg-[#F4F4F4] data-[state=checked]:bg-[#664F31] data-[state=checked]:border-[#664F31] shrink-0"
+          />
+          <Label
+            htmlFor="i-confirm"
+            className="text-sm normal-case leading-relaxed cursor-pointer"
+          >
+            I confirm that i have reviewed and verified the accuracy of this
+            reservation.
+          </Label>
+        </div>
+        {/* Terms */}
+        <div className="flex items-start gap-3 col-span-2">
+          <Checkbox
+            id="i-agree"
+            checked={termsAccepted}
+            onCheckedChange={(v) => setTermsAccepted(!!v)}
+            className="cursor-pointer w-6 h-6 rounded-md bg-[#F4F4F4] data-[state=checked]:bg-[#664F31] data-[state=checked]:border-[#664F31] shrink-0"
+          />
+          {/* <Label
           htmlFor="i-agree"
-          className="text-sm leading-relaxed cursor-pointer"
+          className="text-sm normal-case leading-relaxed cursor-pointer"
         >
           I have read and agree to the website terms and conditions *
-        </Label>
-      </div>
-      {/* Book Now */}
-      {!success && (
-        <Button
-          type="submit"
-          disabled={isPayDisabled}
-          variant="outline"
-          className="
+        </Label> */}
+
+          <Label
+            htmlFor="i-agree"
+            className="text-sm normal-case leading-relaxed cursor-pointer"
+          >
+            <p>
+              I have read and agree to the website{" "}
+              <span>
+                <Link
+                  href={"/terms-and-conditions"}
+                  className="font-semibold underline"
+                >
+                  terms and conditions
+                </Link>{" "}
+              </span>
+            </p>
+          </Label>
+        </div>
+        {/* Book Now */}
+        {!success && (
+          <Button
+            type="submit"
+            disabled={isPayDisabled}
+            variant="outline"
+            className="
           col-span-2 w-full cursor-pointer border-black text-black
           hover:border-[#664F31]
           hover:bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)]
           hover:text-white duration-0 rounded-lg py-5 px-7
           disabled:opacity-50 disabled:cursor-not-allowed
         "
-        >
-          <p className="text-sm font-normal font-[Manrope]">
-            {loading ? "Processing..." : "Pay Now"}
-          </p>
-        </Button>
-      )}
-      {errorMessage && (
-        <div className="col-span-2 flex items-start gap-3 px-4 py-3 rounded-xl border border-red-200 bg-red-50">
-          <div className="shrink-0 w-5 h-5 rounded-full bg-red-100 flex items-center justify-center mt-0.5">
-            <AlertCircle size={12} className="text-red-500" />
+          >
+            <p className="text-sm font-normal font-[Manrope]">
+              {loading ? "Processing..." : "Pay Now"}
+            </p>
+          </Button>
+        )}
+        {errorMessage && (
+          <div className="col-span-2 flex items-start gap-3 px-4 py-3 rounded-xl border border-red-200 bg-red-50">
+            <div className="shrink-0 w-5 h-5 rounded-full bg-red-100 flex items-center justify-center mt-0.5">
+              <AlertCircle size={12} className="text-red-500" />
+            </div>
+            <div className="flex flex-col gap-0.5">
+              <p className="text-sm font-semibold text-red-600">
+                Payment failed
+              </p>
+              <p className="text-xs text-red-400">{errorMessage}</p>
+            </div>
           </div>
-          <div className="flex flex-col gap-0.5">
-            <p className="text-sm font-semibold text-red-600">Payment failed</p>
-            <p className="text-xs text-red-400">{errorMessage}</p>
-          </div>
-        </div>
-      )}
-      <p className="text-[#74747A] col-span-2 text-center">
-        Secure checkout powered by <span className="font-bold">stripe</span>
-      </p>
-    </form>
+        )}
+        <p className="text-[#74747A] col-span-2 text-center">
+          Secure checkout powered by <span className="font-bold">stripe</span>
+        </p>
+      </form>
+    </>
   );
 };
 

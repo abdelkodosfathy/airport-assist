@@ -19,9 +19,14 @@ export const TripBasedInputs = () => {
 const AirportTransfare = () => {
   return (
     <div className="my-2">
-      <h3 className="mb-2 font-semibold">Flight</h3>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-4 w-full">
-        <FlightInputs />
+        <div className="col-span-2">
+          <h3 className="mb-2 font-semibold">Flight</h3>
+          {/* <div className="grid max-w-[70rem]:grid-cols-2 gap-4"> */}
+          <div className="grid min-[70rem]:grid-cols-2 gap-4">
+            <FlightInputs />
+          </div>
+        </div>
 
         <div className="col-span-2">
           <h3 className="mb-2 font-semibold">Transfer Time</h3>
