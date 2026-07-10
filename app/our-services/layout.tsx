@@ -12,6 +12,7 @@ import private_suite from "@/public/static-pages/private_suite.webp";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
+import MainButton from "@/components/MainButton";
 export default function Layout({ children }: { children: React.ReactNode }) {
   const segment = useSelectedLayoutSegment();
   type LayoutItem = {
@@ -56,8 +57,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <main className="bg-[#F7F7F6] font-[Manrope]">
       <Header />
 
-      <section className="bg-[#1A1A1A] relative w-full min-h-[300px] lg:min-h-114 text-white flex items-center overflow-hidden pb-10 xl:py-10 pt-24 xl:pt-10">
-        <div className="relative z-10 mx-auto max-w-340 px-4 sm:px-8 xl:px-12 flex flex-col xl:flex-row gap-8 xl:gap-6 w-full justify-between items-center my-20">
+      <section className="bg-[#1A1A1A] relative w-full min-h-75 lg:min-h-114 text-white flex items-center overflow-hidden pb-4 sm:pb-10 xl:py-10 pt-24 xl:pt-10">
+        <div className="relative z-10 mx-auto max-w-340 px-4 sm:px-8 xl:px-12 flex flex-col xl:flex-row gap-8 xl:gap-6 w-full justify-between items-center mt-12 xl:mt-20 xl:my-20">
           {/* Text */}
           <div className="flex-1 flex flex-col justify-center text-center xl:text-left w-full">
             <p className="text-[#959595] text-sm xl:text-[15.53px] font-medium">
@@ -69,20 +70,17 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <p className="normal-case font-[Manrope] font-normal mb-6 xl:mb-8 text-sm leading-[150%] tracking-[1px] xl:tracking-[1.5px] text-[#959595] max-w-md mx-auto xl:mx-0">
               {currentLayout.bodyContent}
             </p>
-            <Button
-              asChild
-              variant="outline"
-              className="w-fit mx-auto xl:mx-0 py-5 border-white bg-transparent hover:bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)] hover:text-white hover:border-transparent duration-0"
+            <MainButton
+              href={"/contact-us"}
+              className=" mx-auto xl:mx-0 bg-transparent py-5 border-white text-white"
             >
-              <Link href={"/contact-us"}>
-                <p>Enquire Now</p>
-                <ArrowUpRight className="size-4" />
-              </Link>
-            </Button>
+              <p>Enquire Now</p>
+              <ArrowUpRight className="size-4" />
+            </MainButton>
           </div>
 
           {/* Image */}
-          <div className="flex-1  max-w-125 w-125  max-h-68.25 h-68.25 relative">
+          <div className="flex-1  max-w-125 sm:w-125  xl:max-h-68.25 sm:h-68.25 relative">
             <Image
               alt="room image"
               className="w-full h-full object-cover"

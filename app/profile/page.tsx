@@ -5,7 +5,7 @@ import { gsap } from "gsap";
 import { LogOut, ArrowRight } from "lucide-react";
 import { useAuthStore } from "@/store/authStore";
 import { ProtectedPage } from "@/components/ProtectedPage";
-import { apiPost } from "@/lib/api/http";
+import { apiGet, apiPost } from "@/lib/api/http";
 import { useRouter } from "next/navigation";
 import {
   CalendarIcon,
@@ -82,7 +82,7 @@ const OrderCard = ({ order, index }: OrderCardProps) => {
       className="bg-[#F4F4F4] border border-[#E0E0E0] rounded-lg overflow-hidden cursor-pointer flex flex-col"
     >
       <div className="flex flex-col gap-6 p-6">
-        <BookingStatusBadge status={order.booking_status}/>
+        <BookingStatusBadge status={order.booking_status} />
         <p className="text-[#8F8F8F]">Order Number</p>
         {/* <p className="text-2xl font-bold">{order.id}</p> */}
         <p className="text-2xl font-bold lowercase">{order.booking_uuid}</p>
@@ -93,8 +93,8 @@ const OrderCard = ({ order, index }: OrderCardProps) => {
             {order.created_at}
           </p>
           {/* <p className="flex gap-2"> */}
-            {/* <MapPinIcon /> */}
-            {/* {order.location} */}
+          {/* <MapPinIcon /> */}
+          {/* {order.location} */}
           {/* </p> */}
         </div>
       </div>
@@ -234,11 +234,14 @@ const SidebarNav = ({ active, onSelect }: SidebarNavProps) => {
 
   const handleLogout = async () => {
     try {
-      await apiPost("/auth/logout");
-    } catch (_) {
+      const res = await apiGet("/auth/logout");
+      console.log(res);
+      
+    } catch (error) {
+      console.error("Logout failed:", error);
     } finally {
-      logout();
-      router.push("/login");
+      // logout();
+      // router.replace("/login");
     }
   };
 
@@ -469,8 +472,6 @@ export default function ProfilePage() {
     </ProtectedPage>
   );
 }
-
-
 
 interface Props {
   status: keyof typeof statusConfig;

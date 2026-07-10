@@ -128,8 +128,9 @@ const UploadFilesSection = ({ onFocus }: { onFocus?: () => void }) => {
   const slug = selectedPackage?.package.package_slug;
   const dataFilesRequierd = slug === "signature" || slug === "vip"; // vip refers to signature salone
   return (
-    <div onClick={onFocus} className="px-10 py-6 bg-white rounded-2xl">
-      <h4 className="font-medium mb-2 text-[18.75px]">
+    // <div onClick={onFocus} className="px-10 py-6 bg-white rounded-2xl">
+    <div onClick={onFocus} className="p-5 shadow-sm bg-white rounded-2xl">
+      <h4 className="font-medium mb-2">
         Additional Services & Information
       </h4>
 

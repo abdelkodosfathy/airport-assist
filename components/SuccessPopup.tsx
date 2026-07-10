@@ -13,12 +13,12 @@ import {
   useSuccessPopupStore,
   useWaitListPopupStore,
 } from "@/store/useSuccessPopupStore";
-import { CheckCircle2, Clock1, Clock4 } from "lucide-react";
+import { CheckCircle2, Clock4 } from "lucide-react";
 import Link from "next/link";
 
 export const SuccessPopup = () => {
   const { isOpen, clientSecret, close } = useSuccessPopupStore();
-
+  
   return (
     <Dialog open={isOpen}>
       <DialogContent

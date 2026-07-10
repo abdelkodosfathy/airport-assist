@@ -44,61 +44,34 @@ const VipInputs = ({
 
   return (
     <>
-      <div
-        className={`col-span-1 sm:col-span-2 lg:col-span-6 rounded-l-xl  ${errors.airport && "ring-2 ring-red-500  "}`}
-      >
-        <AirportSearchInput
-          onReset={onReset}
-          className="bg-white h-10 lg:h-full rounded-t-lg lg:rounded-none lg:rounded-l-xl"
-        />
-        {errors.airport && (
-          <div id="airport-error" role="alert">
-            <ErrorMessage message={errors.airport} />
-          </div>
-        )}
-      </div>
+      <AirportSearchInput
+        onReset={onReset}
+        className="bg-white lg:h-full rounded-t-lg lg:rounded-none lg:rounded-l-xl"
+        errorMsg={errors.airport}
+      />
 
-      <div className="col-span-1 sm:col-span-2 lg:col-span-4">
-        <SelectDropdown
-          id="serviceType"
-          placeholder="Service Type"
-          inputClassName={clsx(
-            "rounded-none h-full capitalize",
-            errors.serviceType &&
-              "ring-2 ring-red-500 placeholder:text-red-500",
-          )}
-          className=" bg-white  h-10 lg:h-full rounded-lg lg:rounded-none"
-          onSelect={handleServiceTypeSelect}
-          storedServiceLabel={storedServiceType as ServiceType}
-          options={servicesOptions}
-          aria-invalid={!!errors.serviceType}
-          aria-describedby={
-            errors.serviceType ? "serviceType-error" : undefined
-          }
-        />
-        {errors.serviceType && (
-          <div id="serviceType-error" role="alert">
-            <ErrorMessage message={errors.serviceType} />
-          </div>
-        )}
-      </div>
+      <SelectDropdown
+        id="serviceType"
+        placeholder="Service Type"
+        inputClassName="rounded-none h-full capitalize"
+        className=" bg-white  h-11 lg:h-full rounded-lg lg:rounded-none"
+        onSelect={handleServiceTypeSelect}
+        storedServiceLabel={storedServiceType as ServiceType}
+        options={servicesOptions}
+        aria-invalid={!!errors.serviceType}
+        aria-describedby={errors.serviceType ? "serviceType-error" : undefined}
+        errorMsg={errors.serviceType}
+      />
 
-      <div className="col-span-1 sm:col-span-1 lg:col-span-3">
-        <DatePickerInput
-          className="h-full"
-          inputClassName={clsx(
-            "sm:rounded-bl-lg lg:rounded-none  h-10 lg:h-full transition-all duration-200",
-            errors.date && "ring-2 ring-red-500 placeholder:text-red-500",
-          )}
-          aria-invalid={!!errors.date}
-          aria-describedby={errors.date ? "date-error" : undefined}
-        />
-        {errors.date && (
-          <div id="date-error" role="alert">
-            <ErrorMessage message={errors.date} />
-          </div>
-        )}
-      </div>
+      {/* <div className="col-span-1 sm:col-span-1 lg:col-span-3"> */}
+      <DatePickerInput
+        className="h-full"
+        inputClassName="sm:rounded-bl-lg lg:rounded-none  h-10 lg:h-full transition-all duration-200"
+        aria-invalid={!!errors.date}
+        aria-describedby={errors.date ? "date-error" : undefined}
+        errorMsg={errors.date}
+      />
+
 
       <div className="col-span-1 sm:col-span-1 lg:col-span-3">
         <AdultsPicker
@@ -115,7 +88,7 @@ const VipInputs = ({
 export default VipInputs;
 
 // Error display helper
-const ErrorMessage = ({ message }: { message?: string }) => {
+export const ErrorMessage = ({ message }: { message?: string }) => {
   if (!message) return null;
   return (
     <div className="absolute flex items-center gap-1 bg-white rounded-lg p-4 text-red-500 text-sm mt-4 animate-in fade-in slide-in-from-top-1 duration-200">

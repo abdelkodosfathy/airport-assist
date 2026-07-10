@@ -167,7 +167,7 @@ export default function PackageCards() {
                     <div className="flex items-center justify-center w-3.75 h-3.75 rounded-full bg-black group-hover:bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)] transition-all duration-300 flex-shrink-0">
                       <Check className="w-2.25 h-2.25 text-white  stroke-4" />
                     </div>
-                    <div className="font-manrope text-sm text-gray-700 truncate">
+                    <div className="font-manrope text-sm text-gray-700 truncate normal-case">
                       <p>
                         {mainFeatureText}{" "}
                         {bracket && <span className="text-xs">{bracket}</span>}

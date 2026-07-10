@@ -166,7 +166,7 @@ export function ConfirmationActions({
           <h3 className="text-sm font-bold mb-2">
             Check availability
           </h3>
-          <p className="text-xs">
+          <p className="text-xs normal-case">
             Thanks for your interest! We're checking availability and will
             notify you as soon as a space becomes available.
           </p>
@@ -183,10 +183,10 @@ export function ConfirmationActions({
           {isLoading ? (
             <>
               <Loader2 className="animate-spin" size={18} />
-              Confirming...
+              submiting...
             </>
           ) : (
-            "Confirm & Proceed to Payment"
+            "submit"
           )}
         </Button>
       </div>

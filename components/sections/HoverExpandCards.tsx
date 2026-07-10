@@ -181,7 +181,7 @@ export default function HoverExpandCards() {
                         {card.title}
                       </h2>
 
-                      <p className="w-150">{card.textContent}</p>
+                      <p className="w-150 normal-case">{card.textContent}</p>
                     </div>
                   </div>
                 </div>

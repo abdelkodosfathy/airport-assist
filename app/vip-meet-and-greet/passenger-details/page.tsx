@@ -2,7 +2,6 @@
 
 import { useEffect } from "react";
 import SideInformationCard from "../side-informatio-card"; // SideInformationCardRef,
-import { Button } from "@/components/ui/button";
 import Steps from "../components/steps";
 import FlightSection from "../components/flight-section";
 import {
@@ -14,6 +13,7 @@ import { useRouter } from "next/navigation";
 import { useFlightFormStore } from "@/store/useFlightFormStore";
 import { usePrimaryPassengerStore } from "@/store/primaryPassengerStore";
 import { useSingleAirport } from "@/lib/hooks/useAirports";
+import MainButton from "@/components/MainButton";
 export type currentPage = "packages" | "flight" | "billing" | "summry";
 
 const Page = () => {
@@ -58,14 +58,13 @@ const Page = () => {
         <FlightSection />
         <SideInformationCard />
       </div>
-      <Continue href="/vip-meet-and-greet/billing-info" />
     </>
   );
 };
 
 export default Page;
 
-const Continue = ({ href }: { href: string }) => {
+export const Continue = ({ href }: { href: string }) => {
   const serviceType = useServiceStore((state) => state.serviceType);
 
   if (serviceType === "connection") {
@@ -98,11 +97,8 @@ const ArrivalDepartureContinue = ({ navigateTo }: { navigateTo: string }) => {
     (phone ?? "" !== "") &&
     (arrivalTime ?? "" !== "");
   return (
-    <Button
-      type="button"
-      variant="outline"
+    <MainButton
       onClick={() => {
-        console.log(isValid);
         if (!isValid) {
           setValidationErrors(true);
           return;
@@ -110,10 +106,9 @@ const ArrivalDepartureContinue = ({ navigateTo }: { navigateTo: string }) => {
 
         router.push(navigateTo);
       }}
-      className="mt-6 w-max cursor-pointer border-black text-black hover:border-[#664F31] hover:bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)] hover:text-white duration-0"
     >
-      <p className="text-lg font-normal font-[Manrope]">Continue</p>
-    </Button>
+      Continue
+    </MainButton>
   );
 };
 const ConnectionContinue = ({ navigateTo }: { navigateTo: string }) => {
@@ -146,21 +141,16 @@ const ConnectionContinue = ({ navigateTo }: { navigateTo: string }) => {
     (arrivalTime ?? "" !== "");
 
   return (
-    <Button
-      type="button"
-      variant="outline"
+    <MainButton
       onClick={() => {
-        console.log("conncetion", isValid);
         if (!isValid) {
           setValidationErrors(true);
           return;
         } // يمنع النافيجيت
-
         router.push(navigateTo);
       }}
-      className="mt-6 w-max cursor-pointer border-black text-black hover:border-[#664F31] hover:bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)] hover:text-white duration-0"
     >
-      <p className="text-lg font-normal font-[Manrope]">Continue</p>
-    </Button>
+      Continue
+    </MainButton>
   );
 };

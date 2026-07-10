@@ -86,7 +86,7 @@ export default function ExpandingCards() {
   };
 
   return (
-    <div className="flex w-full gap-3 h-[550px]">
+    <div className="flex w-full gap-3 h-[550px] max-w-360">
       {data.map((item, i) => (
         <Card
           key={i}

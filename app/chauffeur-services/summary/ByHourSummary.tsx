@@ -8,10 +8,7 @@ interface Props {
 
 export default function ByHourSummary({ data }: Props) {
   return (
-    <div
-      className="px-10 py-6 w-full bg-white rounded-2xl"
-      style={{ boxShadow: "0px 11.48px 114.76px 0px #A7A7A73D" }}
-    >
+    <div className="px-10 py-6 w-full bg-white rounded-2xl shadow-md">
       <h2 className="text-[18.75px] mb-4 font-semibold">Hourly Trip</h2>
 
       <div className="space-y-6">

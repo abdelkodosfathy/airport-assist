@@ -7,6 +7,7 @@ import { useAirports } from "@/lib/hooks/useAirports";
 import { useAirportStore } from "@/store/vipInputsStore";
 import { Airport } from "@/lib/types/airport";
 import { Input } from "./ui/input";
+import { ErrorMessage } from "./BookingForm/vip-inputs";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -17,6 +18,7 @@ interface AirportSearchInputProps {
   onReset?: () => void;
   disabled?: boolean;
   className?: string;
+  errorMsg?: string;
 }
 
 // ── Component ─────────────────────────────────────────────────────────────────
@@ -27,6 +29,7 @@ export default function AirportSearchInput({
   onSelect,
   onReset = () => {},
   disabled,
+  errorMsg,
   className,
 }: AirportSearchInputProps) {
   const [query, setQuery] = useState("");
@@ -38,6 +41,7 @@ export default function AirportSearchInput({
   const containerRef = useRef<HTMLDivElement>(null);
 
   const storeAirport = useAirportStore((state) => state.setAirport);
+  const resetAirport = useAirportStore((state) => state.resetAirport);
   const storedAirport = useAirportStore((state) => state.airport);
 
   // ── Sync display with store (e.g. pre-filled from outside) ────────────────
@@ -50,7 +54,8 @@ export default function AirportSearchInput({
     }
     // console.log(storedAirport);
   }, [storedAirport]);
-
+  console.log(storedAirport);
+  
   // ── Close on outside click ────────────────────────────────────────────────
   useEffect(() => {
     const handler = (e: MouseEvent) => {
@@ -74,8 +79,6 @@ export default function AirportSearchInput({
   // const searchResults = data?.data?.airports;
   // const popularResults = popularData?.data?.airports;
 
-
-
   // Client-side filter على الـ query الحالي (مش الـ debounced)
   const airports: Airport[] = useMemo(() => {
     if (!query.trim()) return fetchedAirports;
@@ -98,6 +101,7 @@ export default function AirportSearchInput({
     const q = e.target.value;
     setQuery(q);
     setSelected(null);
+    // resetAirport();
 
     if (!q.trim()) {
       setDebouncedQuery("");
@@ -133,133 +137,140 @@ export default function AirportSearchInput({
     }
   }, [airports.length, isFocused]);
 
-
-  
   return (
     <div
-      className={`flex flex-col gap-1.5 ${className ?? ""}`}
-      ref={containerRef}
+      className={`col-span-1 sm:col-span-2 lg:col-span-6 rounded-l-xl  ${errorMsg && !selected ? "ring-2 ring-red-500" : ""}`}
     >
-      {/* Label */}
-      {label && (
-        <label className="text-xs font-medium text-[#747474] uppercase tracking-widest">
-          {label}
-        </label>
-      )}
-
-      <div className="relative w-full">
-        {/* Input row */}
-        <div
-          className={`relative flex items-center h-11 rounded-lg transition-colors`}
-        >
-          {/* Icon */}
-          <span className="pl-3 pr-2 flex-shrink-0">
-            <Plane
-              size={15}
-              className={selected ? "text-[#1A1A1A]" : "text-[#ACACAC]"}
-            />
-          </span>
-
-          <Input
-            onFocus={() => {
-              setIsFocused(true);
-              setOpen(true);
-            }}
-            onBlur={() => setIsFocused(false)}
-
-            name="airport-search"
-            disabled={disabled ?? false }
-            readOnly={isFetching}
-            value={displayValue}
-            onChange={handleChange}
-            placeholder={placeholder}
-            className="shadow-none outline-none border-none flex-1 bg-transparent text-sm text-[#1A1A1A] placeholder:text-[#ACACAC] pr-9 truncate"
-            autoComplete="off"
-          />
-
-          {/* IATA badge when selected */}
-          {selected?.airport_code && (
-            <span className="mr-3 flex-shrink-0 text-[10px] font-bold tracking-widest text-[#747474] bg-[#E8E8E8] px-1.5 py-0.5 rounded">
-              {selected.airport_code}
-            </span>
-          )}
-
-          {/* Spinner */}
-          {/* {isFetching || !popularLoading && ( */}
-          {isFetching && (
-            <Loader2
-              size={14}
-              className="absolute right-3 text-[#ACACAC] animate-spin"
-            />
-          )}
-        </div>
-
-        {/* Dropdown */}
-        {open && airports.length > 0 && (
-          <ul
-            className="absolute z-50 mt-1.5 w-full rounded-xl border border-[#E8E8E8] bg-white shadow-xl overflow-hidden"
-            style={{ maxHeight: 280, overflowY: "auto" }}
-          >
-            <li className="px-3.5 pt-2.5 pb-1">
-              <span className="text-[10px] font-semibold uppercase tracking-widest text-[#ACACAC]">
-                {airports.length}{" "}
-                {airports.length === 1 ? "airport" : "airports"} found
-              </span>
-            </li>
-
-            {airports.map((airport, i) => (
-              <li key={`${airport.airport_id ?? airport.airport_code}-${i}`}>
-                <button
-                  type="button"
-                  onMouseDown={(e) => e.preventDefault()}
-                  onClick={() => handleSelect(airport)}
-                  className="w-full flex items-start gap-3 px-3.5 py-2.5 text-left hover:bg-[#F7F7F7] transition-colors"
-                >
-                  {/* Airport icon badge */}
-                  <span className="mt-0.5 flex-shrink-0 w-6 h-6 rounded-md bg-[#1A1A1A] text-white flex items-center justify-center">
-                    <Plane size={12} />
-                  </span>
-
-                  {/* Names */}
-                  <div className="min-w-0 flex-1">
-                    <p className="text-sm font-medium text-[#1A1A1A] truncate leading-tight">
-                      {airport.airport_name}
-                    </p>
-                    {airport.city && (
-                      <p className="text-xs text-[#ACACAC] truncate mt-0.5">
-                        {[airport.city.city_name, airport.city.country_name]
-                          .filter(Boolean)
-                          .join(", ")}
-                      </p>
-                    )}
-                  </div>
-
-                  {/* IATA code */}
-                  {airport.airport_code && (
-                    <span className="ml-auto flex-shrink-0 text-[10px] font-bold tracking-widest text-[#747474] bg-[#F0F0F0] px-1.5 py-0.5 rounded mt-0.5">
-                      {airport.airport_code}
-                    </span>
-                  )}
-                </button>
-              </li>
-            ))}
-          </ul>
+      <div
+        className={`flex flex-col gap-1.5 ${className ?? ""}`}
+        ref={containerRef}
+      >
+        {/* Label */}
+        {label && (
+          <label className="text-xs font-medium text-[#747474] uppercase tracking-widest">
+            {label}
+          </label>
         )}
 
-        {/* Empty state */}
-        {open &&
-          debouncedQuery.trim() &&
-          // !isFetching || !popularLoading &&
-          !isFetching &&
-          airports.length === 0 && (
-            <div className="absolute z-50 mt-1.5 w-full rounded-xl border border-[#E8E8E8] bg-white shadow-xl px-4 py-6 text-center">
-              <Plane size={20} className="mx-auto text-[#DEDEDE] mb-2" />
-              <p className="text-sm text-[#ACACAC]">
-                No airports found for "{debouncedQuery}"
-              </p>
-            </div>
+        <div className="relative w-full">
+          {/* Input row */}
+          <div
+            className={`relative flex items-center h-11 rounded-lg transition-colors`}
+          >
+            {/* Icon */}
+            <span className="pl-3 pr-2 flex-shrink-0">
+              <Plane
+                size={15}
+                className={selected ? "text-[#1A1A1A]" : "text-[#ACACAC]"}
+              />
+            </span>
+
+            <Input
+              onFocus={() => {
+                setIsFocused(true);
+                setOpen(true);
+              }}
+              onBlur={() => setIsFocused(false)}
+              name="airport-search"
+              disabled={disabled ?? false}
+              readOnly={isFetching}
+              value={displayValue}
+              onChange={handleChange}
+              placeholder={placeholder}
+              className="shadow-none outline-none border-none flex-1 bg-transparent text-sm text-[#1A1A1A] placeholder:text-[#ACACAC] pr-9 truncate"
+              autoComplete="off"
+            />
+
+            {/* IATA badge when selected */}
+            {selected?.airport_code && (
+              <span className="mr-3 flex-shrink-0 text-[10px] font-bold tracking-widest text-[#747474] bg-[#E8E8E8] px-1.5 py-0.5 rounded">
+                {selected.airport_code}
+              </span>
+            )}
+
+            {/* Spinner */}
+            {/* {isFetching || !popularLoading && ( */}
+            {isFetching && (
+              <Loader2
+                size={14}
+                className="absolute right-3 text-[#ACACAC] animate-spin"
+              />
+            )}
+          </div>
+
+          {/* Dropdown */}
+          {open && airports.length > 0 && (
+            <ul
+              className="absolute z-50 mt-1.5 w-full rounded-xl border border-[#E8E8E8] bg-white shadow-xl overflow-hidden"
+              style={{ maxHeight: 280, overflowY: "auto" }}
+              data-lenis-prevent
+            >
+              <li className="px-3.5 pt-2.5 pb-1">
+                <span className="text-[10px] font-semibold uppercase tracking-widest text-[#ACACAC]">
+                  {airports.length}{" "}
+                  {airports.length === 1 ? "airport" : "airports"} found
+                </span>
+              </li>
+
+              {airports.map((airport, i) => (
+                <li key={`${airport.airport_id ?? airport.airport_code}-${i}`}>
+                  <button
+                    type="button"
+                    onMouseDown={(e) => e.preventDefault()}
+                    onClick={() => handleSelect(airport)}
+                    className="w-full flex items-start gap-3 px-3.5 py-2.5 text-left hover:bg-[#F7F7F7] transition-colors"
+                  >
+                    {/* Airport icon badge */}
+                    <span className="mt-0.5 flex-shrink-0 w-6 h-6 rounded-md bg-[#1A1A1A] text-white flex items-center justify-center">
+                      <Plane size={12} />
+                    </span>
+
+                    {/* Names */}
+                    <div className="min-w-0 flex-1">
+                      <p className="text-sm font-medium text-[#1A1A1A] truncate leading-tight">
+                        {airport.airport_name}
+                      </p>
+                      {airport.city && (
+                        <p className="text-xs text-[#ACACAC] truncate mt-0.5">
+                          {[airport.city.city_name, airport.city.country_name]
+                            .filter(Boolean)
+                            .join(", ")}
+                        </p>
+                      )}
+                    </div>
+
+                    {/* IATA code */}
+                    {airport.airport_code && (
+                      <span className="ml-auto flex-shrink-0 text-[10px] font-bold tracking-widest text-[#747474] bg-[#F0F0F0] px-1.5 py-0.5 rounded mt-0.5">
+                        {airport.airport_code}
+                      </span>
+                    )}
+                  </button>
+                </li>
+              ))}
+            </ul>
           )}
+
+          {/* Empty state */}
+          {open &&
+            debouncedQuery.trim() &&
+            // !isFetching || !popularLoading &&
+            !isFetching &&
+            airports.length === 0 && (
+              <div className="absolute z-50 mt-1.5 w-full rounded-xl border border-[#E8E8E8] bg-white shadow-xl px-4 py-6 text-center">
+                <Plane size={20} className="mx-auto text-[#DEDEDE] mb-2" />
+                <p className="text-sm text-[#ACACAC]">
+                  No airports found for "{debouncedQuery}"
+                </p>
+              </div>
+            )}
+        </div>
       </div>
+      {errorMsg && !selected ? (
+        <div id="airport-error" role="alert">
+          <ErrorMessage message={errorMsg} />
+        </div>
+      ) : null}
     </div>
   );
 }

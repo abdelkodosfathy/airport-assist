@@ -18,6 +18,7 @@ import InnerToast from "@/components/ui/InnerToast";
 import Image from "next/image";
 import { Car } from "@/lib/types/car";
 import { useCarStore } from "@/store/chauffeurStore";
+import MainButton from "@/components/MainButton";
 
 // ── Constants ─────────────────────────────────────────────────────────────────
 const KM_TO_MI = 0.621371;
@@ -29,7 +30,13 @@ export type CarsSectionHandle = {
   getData: () => number;
 };
 
-const CarsSection = ({ isAdditional = false, onCancel}: { isAdditional?: boolean, onCancel?: () => void }) => {
+const CarsSection = ({
+  isAdditional = false,
+  onCancel,
+}: {
+  isAdditional?: boolean;
+  onCancel?: () => void;
+}) => {
   const serviceType = useServiceStore((s) => s.serviceType);
   const airport = useAirportStore((state) => state.airport);
   const destination = useChauffeurDestinationStore((s) => s.destination);
@@ -114,13 +121,13 @@ const CarsSection = ({ isAdditional = false, onCancel}: { isAdditional?: boolean
   // const showSummary = !!destination?.location && !!selectedCar;
 
   // useEffect(()=>{
-    // setShowSummary(false);
+  // setShowSummary(false);
   // }, [selectedCar?.car_type_id])
 
   const handleAddChauffeur = () => {
     setWithTrip(true);
     console.log("true with trip");
-    
+
     setShowSummary(true);
   };
   return (
@@ -136,12 +143,12 @@ const CarsSection = ({ isAdditional = false, onCancel}: { isAdditional?: boolean
         />
       ) : (
         <div
-          style={{ boxShadow: "0px 11.48px 114.76px 0px #A7A7A73D" }}
-          className="px-10 py-6 bg-white rounded-2xl"
+          // className="px-10 py-6 bg-white rounded-2xl"
+          className="p-5 shadow-sm bg-white rounded-2xl"
         >
           {/* Header */}
           <div className="flex justify-between items-center">
-            <h4 className="font-manrope font-medium text-[18.75px] leading-[1.3] tracking-normal">
+            <h4 className="font-manrope font-medium leading-[1.3] tracking-normal">
               Chauffeur Services
             </h4>
 
@@ -186,29 +193,37 @@ const CarsSection = ({ isAdditional = false, onCancel}: { isAdditional?: boolean
             />
           </div>
           {/* Cars list */}
-          <div className="py-2">
-            <CarsList />
-          </div>
+          {/* <div className="py-2"> */}
+          <CarsList />
+          {/* </div> */}
           <div className="col-span-2">
             {isAdditional ? (
-              <AdditionalChauffeur onCancel={onCancel}  canAdd={canAdd} onAddChauffeur={handleAddChauffeur} />
+              <AdditionalChauffeur
+                onCancel={onCancel}
+                canAdd={canAdd}
+                onAddChauffeur={handleAddChauffeur}
+              />
             ) : (
-              <Button
-                onClick={handleAddChauffeur}
-                disabled={!canAdd}
-                variant="outline"
-                className="
-              col-span-2 cursor-pointer border-black text-black
-              hover:border-[#664F31]
-              hover:bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)]
-              hover:text-white duration-0
-              disabled:opacity-50 disabled:cursor-not-allowed
-              hover:linear-gradient(179.26deg, #7B5A41 0.64%, #DFB08D 223.79%)
-              h-7 font-[Manrope] font-normal py-0 px-8 rounded-full mt-2
-            "
-              >
+              //   <Button
+              //     onClick={handleAddChauffeur}
+              //     disabled={!canAdd}
+              //     variant="outline"
+              //     className="
+              //   col-span-2 cursor-pointer border-black text-black
+              //   hover:border-[#664F31]
+              //   hover:bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)]
+              //   hover:text-white duration-0
+              //   disabled:opacity-50 disabled:cursor-not-allowed
+              //   hover:linear-gradient(179.26deg, #7B5A41 0.64%, #DFB08D 223.79%)
+              //   h-7 font-[Manrope] font-normal py-0 px-8 rounded-full mt-2
+              // "
+              //   >
+              //     Add Chauffeur
+              //   </Button>
+
+              <MainButton onClick={handleAddChauffeur} disabled={!canAdd}>
                 Add Chauffeur
-              </Button>
+              </MainButton>
             )}
           </div>
         </div>
@@ -289,7 +304,8 @@ const CarSummary = ({
 }) => {
   return (
     <div
-      className="px-10 py-6 w-full bg-white rounded-2xl"
+      // className="px-10 py-6 w-full bg-white rounded-2xl"
+      className="p-5 w-full bg-white rounded-2xl"
       style={{ boxShadow: "0px 11.48px 114.76px 0px #A7A7A73D" }}
     >
       <div className="flex gap-12 mb-2">
@@ -358,8 +374,8 @@ const AdditionalChauffeur = ({
 }: {
   onCancel?: () => void;
   onAddChauffeur: () => void;
-  canAdd:boolean,
-  loading?: boolean
+  canAdd: boolean;
+  loading?: boolean;
 }) => {
   // const additionalChauffeur = useChauffeurDestinationStore(
   //   (s) => s.withAdditionalChauffeur,
@@ -367,34 +383,28 @@ const AdditionalChauffeur = ({
   // const setAdditionalChauffeur = useChauffeurDestinationStore(
   //   (s) => s.setWithAdditionalChauffeur,
   // );
-  const resetChauffeur = useChauffeurDestinationStore(s => s.resetChauffeurDestination);
-  const setCar = useCarStore(s => s.setCar);
+  const resetChauffeur = useChauffeurDestinationStore(
+    (s) => s.resetChauffeurDestination,
+  );
+  const setCar = useCarStore((s) => s.setCar);
 
   return (
     <div className="flex items-center justify-between">
-      <Button
-        type="button"
+      <MainButton
         onClick={() => {
           resetChauffeur();
           setCar(null);
-          if(onCancel){
+          if (onCancel) {
             onCancel();
           }
         }}
         disabled={loading}
-        variant="outline"
-        className="px-6 cursor-pointer border-black text-black hover:border-[#664F31] hover:bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)] hover:text-white duration-0"
       >
-       Cancel Chauffeur
-      </Button>
-      <Button
-        onClick={onAddChauffeur}
-        disabled={!canAdd }
-        variant="outline"
-        className="px-6 cursor-pointer border-black text-black hover:border-[#664F31] hover:bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)] hover:text-white duration-0"
-      >
+        Cancel Chauffeur
+      </MainButton>
+      <MainButton onClick={onAddChauffeur} disabled={!canAdd}>
         Add Chauffeur
-      </Button>
+      </MainButton>
     </div>
   );
 };

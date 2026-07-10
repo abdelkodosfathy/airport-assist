@@ -24,6 +24,9 @@ export interface Airport {
   airport_color: string | null;
   location_lat: number;
   location_long: number;
+  is_in_popular: boolean;
+  is_golf_cart_active: number;
+
   city_id: number;
   status: boolean;
   created_at: string;
@@ -37,11 +40,21 @@ export interface Airport {
   paid_bags_block_size: number;
   paid_bags_block_cost: number;
   is_fast_track_active: number;
-  is_golf_cart_active: number;
   fast_track_cost: number;
-  additional_hour_cost: number;
-  connection_fees: number;
+  starting_price: number;
   city: City;
+  airport_packages: AirportPackage[];
+
+  // not added yet to the response d10/m6/y2026
+  closed_dates: ClosedDate[];
+}
+
+interface ClosedDate {
+  closed_date_id: number;
+  airport_id: number;
+  closed_date: string; // yyyy-mm-dd
+  created_at: string; // ISO datetime
+  updated_at: string; // ISO datetime
 }
 
 export interface AirportsResponse {
@@ -81,38 +94,10 @@ export interface AirportPackage {
   package: InnerPackage;
 }
 
-// export interface SingleAirport {
-//   additional_hour_cost: number;
-//   airport_code: string;
-//   airport_color: string | null;
-//   airport_id: number;
-//   airport_img: string | null;
-//   airport_name: string;
-//   connection_fees: number;
-//   city: City;
-//   city_id: number;
-//   created_at: string;
-//   deleted_at: string | null;
-//   fast_track_cost: number;
-//   is_fast_track_active: number;
-//   is_golf_cart_active: number;
-//   last_minute_cost: number;
-//   last_minute_strategy: string;
-//   location_lat: number;
-//   location_long: number;
-//   min_hours_before_booking: number;
-//   number_of_free_bags: number;
-//   paid_bags_block_cost: number;
-//   paid_bags_block_size: number;
-//   status: boolean;
-//   updated_at: string;
-//   features: Feature[]; // لو عندك type محدد ممكن تغيّره
-//   airport_packages: AirportPackage[];
-// }
 export interface SingleAirport extends Airport {
   features: Feature[];
   airport_packages: AirportPackage[];
-  starting_price:number;
+  starting_price: number;
 }
 
 export interface SingleAirportResponse {

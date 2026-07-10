@@ -70,6 +70,7 @@ export const CARS: CarSlider[] = [
   {
     id: "s-class",
     name: "Mercedes S-Class",
+    newShape: true,
     passengers: 2,
     desc: "Premium Sedan – A refined and spacious travel experience, offering exceptional comfort for up to 2 passengers.",
     luggage: 2,

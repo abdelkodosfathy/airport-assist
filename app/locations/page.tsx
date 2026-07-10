@@ -4,6 +4,7 @@ import { PrivateSuites } from "@/components/sections";
 import { Button } from "@/components/ui/button";
 import { ArrowUpRight } from "lucide-react";
 import CardsList from "./CardsList";
+import MainButton from "@/components/MainButton";
 
 export default function Locations() {
 
@@ -48,13 +49,16 @@ export default function Locations() {
               our exclusive plans unlock the service's most refined and
               personalised experience.
             </p>
-            <Button
+            <MainButton>
+              Contact Us
+            <ArrowUpRight className="size-4 md:size-5" />
+            </MainButton>
+            {/* <Button
               variant="outline"
               className="w-full sm:w-auto min-w-[140px] rounded-xl py-4 md:py-5 border-black hover:bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)] hover:text-white hover:border-white duration-0"
             >
               <p>Contact Us</p>
-              <ArrowUpRight className="size-4 md:size-5" />
-            </Button>
+            </Button> */}
           </div>
         </div>
       </section>

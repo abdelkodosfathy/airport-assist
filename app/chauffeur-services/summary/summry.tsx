@@ -11,6 +11,8 @@ import { TripSummary } from "@/types/trip";
 import { useDateStore } from "@/store/vipInputsStore";
 import { useTripStore } from "@/store/tripStore";
 import { useConvertCurrency } from "@/lib/hooks/useConvertCurrency";
+import { Separator } from "@/components/ui/separator";
+import { formatNumber } from "@/lib/formatNumbers";
 
 export function formatMinutes(totalMinutes: number): string {
   if (!Number.isFinite(totalMinutes) || totalMinutes < 0) {
@@ -211,12 +213,7 @@ export default function Summry() {
     <div>
       <div className="flex gap-4">
         <div className="flex-2 flex flex-col gap-4">
-          <div
-            className="px-10 py-6 w-full bg-white rounded-2xl"
-            style={{
-              boxShadow: "0px 11.48px 114.76px 0px #A7A7A73D",
-            }}
-          >
+          <div className="px-10 py-6 w-full bg-white rounded-2xl shadow-md">
             <h2 className="text-[18.75px] mb-4 font-semibold">
               Contact Information
             </h2>
@@ -241,68 +238,59 @@ export default function Summry() {
           ) : (
             <ByHourSummary data={data} />
           )}
-          <div
-            className="px-10 py-6 space-y-2 w-full bg-white rounded-2xl"
-            style={{
-              boxShadow: "0px 11.48px 114.76px 0px #A7A7A73D",
-            }}
-          >
+
+          <div className="px-10 py-6 w-full bg-white rounded-2xl shadow-md space-y-2">
             <div className="flex justify-between font-semibold">
-              <h2 className="text-[18.75px] mb-4 font-semibold">
+              <p>
                 {data.trip_type === "by_distance"
                   ? "One Way Transfer "
                   : "Hourly Trip "}
-                {data.other_trips && data.other_trips.length > 0 ? (
-                  // <span className="text-sm font-light text-[#7A7A7A] lowercase">(included {data.other_trips.length + 1} trips)
-                  <span className="text-sm font-light lowercase">
-                    (included {data.other_trips.length + 1} trips)
-                  </span>
-                ) : null}
-              </h2>
 
-              <p>
-                <span className="text-xs text-[#6A7282]">{currency} </span>
-                {/* {data.subtotal} */}
-                {convert(data.total)}
+                {data.has_meet_and_greet ? "(meet & greet)" : ""}
+              </p>
+              <p>{formatNumber(convert(data.subtotal).toFixed(2))}</p>
+            </div>
+
+            <div className="flex justify-between">
+              <p>VAT</p>
+              <p>{formatNumber(convert(data.tax_value).toFixed(2))}</p>
+            </div>
+            <div className="flex justify-between">
+              <p className="font-semibold">Subtotal:</p>
+              <p className="font-semibold">
+                {formatNumber(
+                  convert(data.subtotal + data.tax_value).toFixed(2),
+                )}
               </p>
             </div>
-            {/* "by_distance" */}
-            <p className="text-sm flex justify-between">
-              {/* Base fare <span>{currency} 1,486.25</span> */}
-              Processing fee
-              <span>
-                {currency} {convert(trip.payment_fees)}
-              </span>
-            </p>
-            <p className="text-sm flex justify-between">
-              {/* Meet & greet<span>$50.00</span> */}
-            </p>
-            <p className="text-sm flex justify-between">
-              {/* Transactio fee<span>$ 64.65</span> */}
-              VAT{" "}
-              <span>
-                {currency} {convert(trip.tax_value)}
-              </span>
-            </p>
-            {/* <p className="text-sm flex justify-between">
-              payment fees<span>{currency} {trip.payment_fees}</span>
-            </p> */}
-            <p className="text-lg flex justify-between">
-              Total{" "}
-              <span>
-                {currency} {convert(trip.total + trip.payment_fees)}
-              </span>
-            </p>
+            {data.payment_fees > 0 && (
+              <div className="flex justify-between">
+                <p>Processing fee</p>
+                <p>{formatNumber(convert(data.payment_fees).toFixed(2))} </p>
+              </div>
+            )}
+            <Separator />
+
+            <div className="flex justify-between font-bold">
+              <p>Total:</p>
+              <p>
+                <span className="text-xs text-[#6A7282]">{currency} </span>
+                {currency}{" "}
+                {formatNumber(
+                  convert(trip.total + trip.payment_fees).toFixed(2),
+                )}
+              </p>
+            </div>
           </div>
         </div>
         <div className="h-full flex-1 space-y-4 sticky top-26">
-          <div className="bg-white rounded-2xl p-5">
+          <div className="bg-white rounded-2xl p-5 shadow-md">
             <div className="font-[Manrope] flex items-center justify-between">
               <p className="text-[18.75px]">Total</p>
               <p className="font-bold font-[Arial]">
                 {/* {currencyMark} {trip.total}{" "} */}
-                {currency} {convert(trip.total + trip.payment_fees)}
-                {/* <span className="font-light text-[#6A7282]">{currency}</span> */}
+                {currency}{" "}
+                {formatNumber(convert(trip.total + trip.payment_fees))}
               </p>
             </div>
           </div>

@@ -53,7 +53,7 @@ export default function CarsList() {
 
   if (isLoading) {
     return (
-      <div className="grid grid-cols-3 gap-3 mt-4">
+      <div className="grid grid-cols-3 gap-3 my-3">
         {Array.from({ length: 4 }).map((_, i) => (
           <CarCardSkeleton key={i} />
         ))}
@@ -82,7 +82,7 @@ export default function CarsList() {
   }
 
   return (
-    <div className="grid grid-cols-3 gap-3 mt-4">
+    <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-3 my-3">
       {data?.data.car_types.map((car, index) => {
         return (
           <CarCard

@@ -32,8 +32,8 @@
 //   },
 // }));
 // store/authStore.ts
-
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 export interface AuthUser {
   user_id: number;
@@ -62,19 +62,31 @@ interface AuthState {
   logout: () => void;
 }
 
-export const useAuthStore = create<AuthState>((set) => ({
-  user: null,
-  isAuthenticated: false,
+export const useAuthStore = create<AuthState>()(
+  persist(
+    (set) => ({
+      user: null,
+      isAuthenticated: false,
 
-  login: (user) => {
-    set({ user, isAuthenticated: true });
-  },
+      login: (user) =>
+        set({
+          user,
+          isAuthenticated: true,
+        }),
 
-  setUser: (user) => {
-    set({ user });
-  },
+      setUser: (user) =>
+        set({
+          user,
+        }),
 
-  logout: () => {
-    set({ user: null, isAuthenticated: false });
-  },
-}));
+      logout: () =>
+        set({
+          user: null,
+          isAuthenticated: false,
+        }),
+    }),
+    {
+      name: "auth-storage",
+    }
+  )
+);

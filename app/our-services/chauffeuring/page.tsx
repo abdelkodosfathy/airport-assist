@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowUpRight } from "lucide-react";
 import { CARS } from "@/lib/fixed-cars-sliders";
 import Link from "next/link";
+import MainButton from "@/components/MainButton";
 
 type Props = {};
 
@@ -63,26 +64,41 @@ export default function page(props: Props) {
             bg-[linear-gradient(90deg,rgba(153,120,95,0)_0%,rgba(171,155,144,0.4)_50%,rgba(153,120,95,0)_100%)]
           "
         />
+        <div className="max-w-360 mx-auto">
+          <h3 className="font-manrope font-normal mb-4 md:mb-6 text-base sm:text-lg md:text-[1.25rem] text-white leading-[100%] flex items-center tracking-[0.2em] sm:tracking-[0.3em] md:tracking-[7.5px] capitalize">
+            WHERE EVERY DETAIL TRANSFORMS THE JOURNEY
+          </h3>
 
-        <h3 className="font-manrope font-normal mb-4 md:mb-6 text-base sm:text-lg md:text-[20px] text-white leading-[100%] flex items-center tracking-[0.2em] sm:tracking-[0.3em] md:tracking-[7.5px] capitalize">
-          WHERE EVERY DETAIL TRANSFORMS THE JOURNEY
-        </h3>
-
-        <p className="font-[Manrope] font-normal flex-col mb-8 md:mb-12 lg:mb-15 text-xs sm:text-sm md:text-normal leading-[170%] text-[#C8C8C8]">
-          <span className="block normal-case">
-            Thoughtfully designed with understated elegance, our services offer
-            a refined setting to relax, work, or spend
-          </span>
-          <span className="block">meaningful time with guests and family.</span>
-        </p>
-        <div className="relative flex flex-wrap gap-6">
+          <p className="font-[Manrope] font-normal flex-col mb-8 md:mb-12 lg:mb-15 text-xs sm:text-sm md:text-normal leading-[170%] text-[#C8C8C8]">
+            <span className="block normal-case">
+              Thoughtfully designed with understated elegance, our services
+              offer a refined setting to relax, work, or spend
+            </span>
+            <span className="block">
+              meaningful time with guests and family.
+            </span>
+          </p>
+        </div>
+        <div className="relative flex flex-wrap flex-col sm:flex-row gap-6 max-w-360 mx-auto">
           <FlyByCard
+            title={"FLY BY PRIVATE JET"}
+            text={
+              "Our clients predominately choose to travel by charted jet for reasons of convenience and ease"
+            }
             image={flyByPrivateJetImage}
           />
           <FlyByCard
+            title={"FLY BY helicopter"}
+            text={
+              "Avoid ground traffic with seamless private helicopter transfers between the terminal and a network of exclusive helipads."
+            }
             image={flyByHelicopterImage}
           />
           <FlyByCard
+            title={"private connection"}
+            text={
+              "Seamless connections between commercial flights and private aircraft or helicopters, with comprehensive handling services included."
+            }
             image={privateConnectionImage}
           />
         </div>
@@ -112,7 +128,7 @@ export default function page(props: Props) {
               className=" min-w-[140px] py-5 border-black hover:bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)] hover:text-white hover:border-white duration-0"
             >
               <Link href={"/contact-us"}>
-              <p>Contact Us</p>
+                <p>Contact Us</p>
               </Link>
               <ArrowUpRight className="size-4 md:size-5" />
             </Button>
@@ -167,14 +183,18 @@ export default function page(props: Props) {
 const FlyByCard = ({
   image,
   className,
+  title = "",
+  text = "",
 }: {
   image: StaticImageData;
   className?: string;
+  title: string;
+  text: string;
 }) => {
   return (
     <div
-      className={`font-[Manrope] bg-white overflow-hidden rounded-md w-full flex flex-col 
-        flex-1 min-w-70 max-w-60 mx-auto sm:mx-0 sm:max-w-[calc(50%-12px)]
+      className={`font-[Manrope] shrink-0 min-w-1/3 lg:min-w-auto bg-white overflow-hidden rounded-md w-full flex flex-col 
+        flex-1 mx-auto sm:mx-0 sm:max-w-[calc(50%-12px)]
         ${className}`}
     >
       {/* IMAGE */}
@@ -191,31 +211,34 @@ const FlyByCard = ({
       {/* CONTENT */}
       <div className="flex flex-col flex-1 px-4 md:px-6 py-5 sm:py-7 md:py-9">
         <p
-          className="font-medium text-base sm:text-normal md:text-[18x] lg:text-[20px]
+          className="font-medium uppercase sm:text-normal md:text-[18x] lg:text-[20px]
           mb-3 sm:mb-5 md:mb-8 leading-tight tracking-[0.2em] sm:tracking-[0.25em] md:tracking-[0.3em]"
         >
-          FLY BY HELICOPTER
+          {title}
         </p>
 
         <p
           className="font-normal text-xs sm:text-sm md:text-base text-[#6D6D6D]
           leading-relaxed flex-1 mb-6 md:mb-10 normal-case"
         >
-          Our clients predominantly choose to travel by chartered jet for
-          reasons of convenience and ease.
+          {text}
         </p>
 
         {/* BUTTON */}
-        <Button
+        {/* <Button
           variant="outline"
           className="w-full sm:w-max flex items-center justify-center gap-2
           border-black text-black
           hover:bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)]
-          hover:text-white transition-all duration-300"
+          hover:text-white transition-none"
         >
           <span className="text-sm sm:text-base">Enquire Now</span>
           <ArrowUpRight className="size-4 sm:size-5" />
-        </Button>
+          </Button> */}
+        <MainButton>
+          <span>Enquire Now</span>
+          <ArrowUpRight className="size-4 sm:size-5" />
+        </MainButton>
       </div>
     </div>
   );

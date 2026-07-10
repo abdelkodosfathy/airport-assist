@@ -10,7 +10,7 @@ import { useAuthStore } from "@/store/authStore";
 export default function Header() {
   const [open, setOpen] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
-  const isAuthenticated = useAuthStore(s => s.isAuthenticated);
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
   useEffect(() => {
     if (open) {
       document.body.style.overflow = "hidden";
@@ -43,10 +43,10 @@ export default function Header() {
       {/* <div className="mx-auto max-w-360 flex items-center justify-between py-1"> */}
       <div className="mx-auto max-w-360 flex items-center justify-between py-3 lg:py-1">
         {/* Logo */}
-        <Link
+        {/* <Link
           href="/"
           aria-label="Go to homepage"
-          className="shrink-0 focus:outline-none focus:ring-2 focus:ring-primary rounded"
+          className="shrink-0 focus-visible:ring-primary rounded"
         >
           <Image
             src="/logo.png"
@@ -56,6 +56,21 @@ export default function Header() {
             className="h-auto"
             priority
           />
+        </Link> */}
+        <Link
+          href="/"
+          aria-label="Go to homepage"
+          className="shrink-0 rounded focus-visible:ring-primary"
+        >
+          <div className="relative w-28 sm:w-32 md:w-36 lg:w-40 xl:w-42 aspect-[168/71]">
+            <Image
+              src="/logo.png"
+              alt="Airport Assist homepage"
+              fill
+              priority
+              className="object-contain"
+            />
+          </div>
         </Link>
 
         {/* Desktop Navigation */}
@@ -144,7 +159,7 @@ export default function Header() {
               ? "opacity-100 scale-100 translate-y-0"
               : "opacity-0 scale-95 -translate-y-2 pointer-events-none"
           }`}
-              >
+      >
         <div className="space-y-2">
           <button
             onClick={() => setMobileServicesOpen((prev) => !prev)}
@@ -173,7 +188,10 @@ export default function Header() {
             </li>
 
             <li>
-              <Link href="/our-services/hotel" onClick={() => setMobileServicesOpen(false)}>
+              <Link
+                href="/our-services/hotel"
+                onClick={() => setMobileServicesOpen(false)}
+              >
                 Hotel Service
               </Link>
             </li>

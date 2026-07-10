@@ -24,12 +24,10 @@ import {
 import Image from "next/image";
 import CarImageCarousel from "./CarImageCarousel";
 import { useCurrencyStore } from "@/store/currencyStore";
-// import { usePickupPointsStore } from "@/store/pickupPointsStore";
-// import { useAirportStore, useSingleAirportStore } from "@/store/vipInputsStore";
-// import { useTripStore } from "@/store/tripStore";
 import { useCarPricing } from "@/lib/hooks/useCarPricing";
 import { useConvertCurrency } from "@/lib/hooks/useConvertCurrency";
 import { useTripStore } from "@/store/tripStore";
+import { formatNumber } from "@/lib/formatNumbers";
 
 const IMAGE_BASE =
   "https://airportassist-backend.aqaralex.com/storage/images/car-types-images/";
@@ -155,6 +153,7 @@ const CarCard = ({
             </p>
           </div>
           <Prices
+            totalCost={totalCost}
             meetAndGreet={meetAndGreet}
             hideSupplementFee={hideSupplementFee}
             currencyMark={currencyMark}
@@ -239,8 +238,10 @@ const Prices = ({
   hideSupplementFee,
   meetAndGreet = false,
   currencyMark,
+  totalCost,
   car,
 }: {
+  totalCost?: number;
   hideSupplementFee: boolean;
   meetAndGreet?: boolean;
   currencyMark: string;
@@ -249,8 +250,13 @@ const Prices = ({
   const { convert } = useConvertCurrency();
   const convertedPerMile = convert(car.price_per_mile); // add the fixed .00
   const convertedPerHour = convert(car.price_per_hour); // add the fixed .00
-  const convertedSupplementFee = convert(car.supplement_fee); // add the fixed .00
 
+  // const supplementFee = car.supplement_fee;
+  // const plusMeetAndGreet = 2;
+
+  // const convertedSupplementFee = convert(car.supplement_fee); // add the fixed .00
+
+  const totalCostFormated = formatNumber(convert(totalCost ?? 0));
   return (
     <div className="text-[#74747A] space-y-1">
       {hideSupplementFee ? (
@@ -277,6 +283,13 @@ const Prices = ({
         </>
       ) : (
         <>
+          <div className="flex justify-between">
+            <p className="font-semibold md:text-lg text-black">Total</p>
+            <p className="font-semibold md:text-lg text-black">
+              {currencyMark}
+              {totalCostFormated}
+            </p>
+          </div>
           <p className="text-[0.675rem] flex justify-between">
             Price Per Mile
             <span>
@@ -291,13 +304,13 @@ const Prices = ({
             </span>
           </p>
 
-          <p className="text-[0.675rem] flex justify-between">
+          {/* <p className="text-[0.675rem] flex justify-between">
             Supplement Fee
             {meetAndGreet ? " (meet & greet)" : ""}
             <span className="whitespace-nowrap">
               {currencyMark} {convertedSupplementFee.toFixed(2)}
             </span>
-          </p>
+          </p> */}
           {/* {meetAndGreet ? (
             <p className="text-[0.675rem] flex justify-between">
               Meet and greet

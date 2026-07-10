@@ -9,7 +9,7 @@ const ExclusiveContent = () => {
       <h2 className="font-manrope text-center font-normal text-[25px] leading-[100%] tracking-[10px] uppercase">
         Discover exclusive content
       </h2>
-      <p className="mx-auto pt-6 text-gray-500 font-normal text-normal leading-[150%] tracking-widest text-center font-[manrope] max-w-xl">
+      <p className="normal-case mx-auto pt-6 text-gray-500 font-normal text-normal leading-[150%] tracking-widest text-center font-[manrope] max-w-xl">
         Receive insider tips on VIP airport services, fast-track travel advice,
         and exclusive updates.
       </p>
@@ -36,7 +36,7 @@ const ExclusiveContent = () => {
             <h3 className="mt-6 text-[15px] font-[manrope] font-semibold tracking-[3px]">
               VIP AIRPORT MEET & GREET, FAST TRACK at Heathrow
             </h3>
-            <p className="text-[#6D6D6D] text-[13px] mt-4  font-[manrope] font-medium text-normal">
+            <p className="text-[#6D6D6D] text-[13px] mt-4  font-[manrope] font-medium text-normal normal-case">
               Experience Ultimate Luxury and Convenience with VIP Services at
               London Heathrow Airport
             </p>
@@ -54,7 +54,7 @@ const ExclusiveContent = () => {
             <h3 className="mt-6 text-[15px] font-[manrope] font-semibold tracking-[3px]">
               VIP Fast Track at Charles de Gaulle Airport
             </h3>
-            <p className="text-[#6D6D6D] text-[13px] mt-4 font-[manrope] font-medium">
+            <p className="text-[#6D6D6D] text-[13px] mt-4 font-[manrope] font-medium normal-case">
               Avoid long waits at security and immigration with Airport Assist’s
               CDG Fast Track
             </p>

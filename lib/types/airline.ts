@@ -2,9 +2,9 @@ export interface Airline {
   airline_id: number;
   airline_code: string;
   airline_name: string;
-  airline_img: string;
-  country_id: number;
-  country: {
+  airline_img?: string;
+  country_id?: number;
+  country?: {
     country_id: number;
     flag_img: string;
     country_name: string;

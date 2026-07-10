@@ -1,12 +1,13 @@
 import * as React from "react";
 
-const Arraival: React.FC<React.SVGProps<SVGElement>> = (props) => (
+const Arraival: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="23"
     height="19"
     fill="none"
     viewBox="0 0 23 19"
+    {...props}
   >
     <g clipPath="url(#clip0_1335_1498)">
       <path

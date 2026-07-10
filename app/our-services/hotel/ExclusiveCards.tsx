@@ -3,39 +3,38 @@ import a_night_on_us from "@/public/hotel/cards/a-night-on-us.webp";
 import london_calling from "@/public/hotel/cards/london-calling.webp";
 import stay_savour from "@/public/hotel/cards/stay&savour.webp";
 
+const cards = [
+  {
+    image: a_night_on_us,
+    title: "A Night on us",
+  },
+  {
+    image: london_calling,
+    title: "London Calling",
+  },
+  {
+    image: stay_savour,
+    title: "Stay & Savour",
+  },
+];
+
 export default function ExclusiveCards() {
   return (
-    <div className="flex mb-22.5 justify-center mt-8 flex-col lg:flex-row px-4 sm:px-8 lg:px-12 xl:px-28 flex-wrap">
-      <div className="relative w-1/3 px-3">
-        <Image
-          src={a_night_on_us}
-          className="h-147.5 aspect-2/3 object-cover"
-          alt="women helping man"
-        />
-        <div className="absolute  bg-white/75 uppercase text-xl tracking-[3px] text-center py-4 z-10 left-8 right-8 bottom-4">
-          <p>A Night on us</p>
+    // px-4 sm:px-8 lg:px-12 xl:px-28
+    <div className="mt-8 flex flex-col lg:flex-row flex-wrap justify-center max-w-308 mx-auto gap-6.25">
+      {cards.map((card) => (
+        <div key={card.title} className="relative flex-1">
+          <Image
+            src={card.image}
+            alt={card.title}
+            className="h-136 aspect-5/7 object-cover"
+          />
+
+          <div className="absolute left-8 right-8 bottom-4 z-10 bg-white/75 py-4 text-center text-xl uppercase tracking-[3px]">
+            <p>{card.title}</p>
+          </div>
         </div>
-      </div>
-      <div className="relative w-1/3 px-3">
-        <Image
-          src={london_calling}
-          className="h-147.5 aspect-2/3 object-cover"
-          alt="women helping man"
-        />
-        <div className="absolute  bg-white/75 uppercase text-xl tracking-[3px] text-center py-4 z-10 left-9 right-8 bottom-4">
-          <p>London Calling</p>
-        </div>
-      </div>
-      <div className="relative w-1/3 px-3">
-        <Image
-          src={stay_savour}
-          className="h-147.5 aspect-2/3 object-cover"
-          alt="women helping man"
-        />
-        <div className="absolute  bg-white/75 uppercase text-xl tracking-[3px] text-center py-4 z-10 left-9 right-8 bottom-4">
-          <p>Stay & Savour</p>
-        </div>
-      </div>
+      ))}
     </div>
   );
 }

@@ -2,14 +2,9 @@
 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-// import CustomPhoneInput from "@/components/ui/phone-input";
-
-// import { PhoneInput as MyPhoneInput }   from "@/components/ui/phone-input/my-phone-input";
-
-import { Textarea } from "@/components/ui/textarea";
+// import { Textarea } from "@/components/ui/textarea";
 import DateOfBirth from "./DateOfBirth";
 import SelectDropdown from "@/components/custom inputs/SelectList";
-import { BagsInput } from "./bags-input";
 import { usePrimaryPassengerStore } from "@/store/primaryPassengerStore";
 import { useFlightFormStore } from "@/store/useFlightFormStore";
 import CustomPhoneInput from "@/components/ui/phone-input";
@@ -23,12 +18,10 @@ const PrimaryPassengerForm = ({ onFocus }: { onFocus?: () => void }) => {
   return (
     <div
       onClick={() => onFocus?.()}
-      style={{
-        boxShadow: "0px 11.48px 114.76px 0px #A7A7A73D",
-      }}
-      className="px-10 py-6 bg-white rounded-2xl"
+      // className="px-10 py-6 bg-white rounded-2xl"
+      className="p-5 shadow-sm bg-white rounded-2xl"
     >
-      <h4 className="font-manrope font-medium text-[18.75px]">
+      <h4 className="font-manrope font-medium">
         Primary Passenger
       </h4>
       <span className="inline-block w-full h-0.5 bg-[#CFCFCF]" />
@@ -43,10 +36,9 @@ const PrimaryPassengerForm = ({ onFocus }: { onFocus?: () => void }) => {
           <PhoneInput />
 
           {/* separator */}
-          <span className="inline-block col-span-2 h-0.5 bg-[#CFCFCF]" />
+          {/* <span className="inline-block col-span-2 h-0.5 bg-[#CFCFCF]" /> */}
 
-          <BagsInput />
-          <OtherPassengersInput />
+          {/* <OtherPassengersInput /> */}
         </div>
       </div>
     </div>
@@ -107,9 +99,6 @@ const DataOfBirthInput = () => {
   const setDateOfBirth = usePrimaryPassengerStore(
     (state) => state.setDateOfBirth,
   );
-
-  // const thereIsError = useFlightFormStore((s) => s.validationError);
-  // const validationError = thereIsError && !dateOfBirth;
 
   const validationError = false;
 
@@ -196,55 +185,42 @@ const PhoneInput = () => {
         onChange={setPhone}
         validationClass={validationError}
       />
-      {/* <CustomPhoneInput
-  value={value}
-  onChange={handleChange}
-  className="h-12 border rounded-xl bg-gray-100"
-  inputClassName="bg-transparent px-3 text-sm"
-  countryButtonClassName="px-4 bg-gray-200"
-  dropdownClassName="rounded-lg shadow-lg"
-/> */}
-    </div>
-    // <div className="space-y-2">
-    //   <Label className={validationError ? "text-red-500" : ""}>
-    //     Phone {validationError && "*"}
-    //   </Label>
-
-    //   {/* <PhoneInputLib
-    //     // value={phone ?? ""}
-    //     // onChange={(val, formatted, country, isValid) => {
-    //     //   setPhone(val);
-    //     //   // setValidationError(!isValid);
-    //     // }}
-    //     // className="w-full"
-    //     className=""
-    //     // inputClassName={`
-    //     //   rounded-md h-9 shadow-xs bg-[#F4F4F4] border
-    //     //     ${validationError ? "border-red-500" : "border-[#E0E0E0]"}`}
-    //   /> */}
-    // </div>
-  );
-};
-const OtherPassengersInput = () => {
-  const otherInfo = usePrimaryPassengerStore(
-    (state) => state.otherPassengersInfo,
-  );
-  const setOtherInfo = usePrimaryPassengerStore(
-    (state) => state.setOtherPassengersInfo,
-  );
-
-  return (
-    <div className="space-y-2 md:col-span-2">
-      <Label>
-        Other Passengers Information{" "}
-        <span className="text-sm text-[#7A7A7A] lowercase">(optional)</span>
-      </Label>
-      <Textarea
-        value={otherInfo ?? ""}
-        onChange={(e) => setOtherInfo(e.target.value)}
-        placeholder="Passengers Information"
-        className="bg-[#F4F4F4]"
-      />
     </div>
   );
 };
+// const OtherPassengersInput = () => {
+//   return (
+//     <div className="space-y-2 md:col-span-2">
+//       <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-6 w-full">
+//         <FirstNameInput />
+//         <LastNameInput />
+//         <DataOfBirthInput />
+//         <TravelClassInput />
+//       </div>
+//     </div>
+//   );
+// };
+
+// const OtherPassengersInput = () => {
+//   const otherInfo = usePrimaryPassengerStore(
+//     (state) => state.otherPassengersInfo,
+//   );
+//   const setOtherInfo = usePrimaryPassengerStore(
+//     (state) => state.setOtherPassengersInfo,
+//   );
+
+//   return (
+//     <div className="space-y-2 md:col-span-2">
+//       <Label>
+//         Other Passengers Informations
+//         <span className="text-sm text-[#7A7A7A] lowercase">(optional)</span>
+//       </Label>
+//       <Textarea
+//         value={otherInfo ?? ""}
+//         onChange={(e) => setOtherInfo(e.target.value)}
+//         placeholder="Passengers Information"
+//         className="bg-[#F4F4F4]"
+//       />
+//     </div>
+//   );
+// };

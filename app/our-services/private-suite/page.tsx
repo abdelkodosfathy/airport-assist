@@ -1,6 +1,5 @@
 // import ServiceSection from "@/app/services/components/services-section";
 import ServiceSection from "@/app/our-services/components/services-section";
-import Image from "next/image";
 import { ReactNode } from "react";
 
 import arrivalArrival from "@/public/private-suite/Arrival/Arrival.webp";
@@ -18,7 +17,8 @@ import departureGreetingCurbside from "@/public/private-suite/Departure/Greeting
 import checkingInImage from "@/public/private-suite/Checking In.webp";
 import immigrationAndCustomsImage from "@/public/private-suite/IMMIGRATION AND CUSTOMS.webp";
 import securityImage from "@/public/private-suite/Security.webp";
-import { Card } from "../vip-meet-and-greet/page";
+import { Card } from "../private-jet/page";
+import MainButton from "@/components/MainButton";
 
 type Props = {};
 
@@ -29,8 +29,10 @@ const page = (props: Props) => {
         <h2 className="text-center text-[22.6px] tracking-[7.06px] uppercase">
           OUR Private Suite Services{" "}
         </h2>
-        <div className="mx-auto w-max mt-7.5">
-          <ul className="flex gap-17 mb-7.5">
+        {/* <div className="mx-auto w-max mt-7.5"> */}
+        <div className="mx-auto mt-7.5 max-w-189.25">
+          {/* <ul className="flex gap-17 mb-7.5"> */}
+          <ul className="flex flex-wrap gap-4 justify-between mb-7.5">
             <ListItem href={"#departure"}>Departure</ListItem>
             <ListItem href={"#arrival"}>Arrival </ListItem>
             <ListItem href={"#connection"}>Connection</ListItem>
@@ -72,9 +74,10 @@ const page = (props: Props) => {
             content="Security formalities are completed discreetly within the Private Suite, before a private luxury drive delivers you directly to your aircraft."
           />
           <div className="flex justify-center my-4">
-            <button className=" px-10 py-2 rounded-[16px] border-2 border-[#966B4B] text-white font-normal text-base bg-gradient-to-b from-[#7B5A41] to-[#b98761]">
+            {/* <button className=" px-10 py-2 rounded-[16px] border-2 border-[#966B4B] text-white font-normal text-base bg-gradient-to-b from-[#7B5A41] to-[#b98761]">
               Book Now
-            </button>
+            </button> */}
+            <MainButton className="px-5">Book Now</MainButton>
           </div>
         </div>
       </section>
@@ -109,9 +112,10 @@ const page = (props: Props) => {
             content="With immigration complete and luggage returned, your chauffeur-driven vehicle awaits to take you seamlessly to your destination."
           />
           <div className="flex justify-center my-4">
-            <button className=" px-10 py-2 rounded-[16px] border-2 border-[#966B4B] text-white font-normal text-base bg-gradient-to-b from-[#7B5A41] to-[#b98761]">
+            {/* <button className=" px-10 py-2 rounded-[16px] border-2 border-[#966B4B] text-white font-normal text-base bg-gradient-to-b from-[#7B5A41] to-[#b98761]">
               Book Now
-            </button>
+            </button> */}
+            <MainButton className="px-5">Book Now</MainButton>
           </div>
         </div>
       </section>
@@ -139,9 +143,11 @@ const page = (props: Props) => {
           />
 
           <div className="flex justify-center my-4">
-            <button className=" px-10 py-2 rounded-[16px] border-2 border-[#966B4B] text-white font-normal text-base bg-gradient-to-b from-[#7B5A41] to-[#b98761]">
+            <MainButton className="px-5">Book Now</MainButton>
+
+            {/* <button className=" px-10 py-2 rounded-[16px] border-2 border-[#966B4B] text-white font-normal text-base bg-gradient-to-b from-[#7B5A41] to-[#b98761]">
               Book Now
-            </button>
+            </button> */}
           </div>
         </div>
       </section>
@@ -153,7 +159,7 @@ const page = (props: Props) => {
           <h2 className="text-[22.6px]  tracking-[7.06px] text-center uppercase">
             Formalities Taken Care Of
           </h2>
-          <p className="text-center flex flex-col mt-3.5 font-medium ">
+          <p className="text-center normal-case flex flex-col mt-3.5 font-medium ">
             <span>
               Your time is yours. Every detail is seamlessly managed within our
               exclusive private suite, away from
@@ -164,7 +170,7 @@ const page = (props: Props) => {
         <div className="relative w-full">
           <Card
             title={"Checking In"}
-            image={checkingInImage}
+            imgSrc={checkingInImage}
             content={
               "Upon arrival, we’ll take care of your passports, flight details, and luggage. Your airline will weigh and tag your bags and issue your boarding pass and baggage tags, all of which are returned to you before your flight. Every step is handled while you relax in the comfort of your private lounge."
             }
@@ -172,7 +178,7 @@ const page = (props: Props) => {
             dir={"left"}
           />
           <Card
-            image={securityImage}
+            imgSrc={securityImage}
             title={"Security"}
             content={
               "For our VIP guests, private security is conducted within the exclusive suite, allowing you to remain in a discreet and comfortable environment at all times. While all security procedures fully comply with standard aviation regulations, they are carried out privately within the suite, ensuring the same level of safety with added comfort, privacy, and ease."
@@ -181,7 +187,7 @@ const page = (props: Props) => {
             imagePosition={"mid"}
           />
           <Card
-            image={immigrationAndCustomsImage}
+            imgSrc={immigrationAndCustomsImage}
             title={"IMMIGRATION AND CUSTOMS"}
             content={
               "While you relax in the comfort of your private lounge, your passport is presented to on-site Border Force officers on your behalf, with any additional checks handled discreetly in private if required. All customs formalities are seamlessly managed for you, including any declarations, allowing your arrival to remain calm, effortless, and entirely discreet."
@@ -191,11 +197,12 @@ const page = (props: Props) => {
           />
         </div>
       </section>
-      <section className="overflow-hidden w-full mt-15.75 pb-12 px-4 relative">
-        <h2 className="mx-24 text-[22.6px] uppercase tracking-[7px] mb-6">
+      <section className="overflow-hidden w-full mt-15.75 pb-12 px-4 relative max-w-360 mx-auto">
+        <h2 className="text-[22.6px] uppercase tracking-[7px] mb-6">
           Additional Service
         </h2>
-        <div className="rounded-lg bg-white shadow-sm mx-24">
+        <div className="rounded-lg bg-white shadow-sm">
+          {/* <div className="rounded-lg bg-white shadow-sm mx-24"> */}
           <AdditionalServicesItem
             title="Chauffeur Service"
             content=" Experience true convenience and elegance with our premium chauffeur
@@ -279,7 +286,7 @@ export default page;
 //     </div>
 //   );
 // };
-const AdditionalServicesItem = ({
+export const AdditionalServicesItem = ({
   title,
   content,
 }: {
@@ -289,9 +296,7 @@ const AdditionalServicesItem = ({
   return (
     <div className="px-6 md:px-10 py-8 border-b border-gray-100 last:border-0 hover:bg-gray-50/50 transition-colors duration-300">
       {/* العنوان بلمسة فخمة: Uppercase + Tracking */}
-      <h3 className="font-bold text-[16px] uppercase tracking-[3px] text-[#1a1a1a] mb-4">
-        {title}
-      </h3>
+      <h3 className="font-bold tracking-[3px] text-[#1a1a1a] mb-4">{title}</h3>
 
       {/* النص بمسافات مريحة للعين */}
       <p className="flex flex-col gap-4 text-[#6D6D6D] normal-case leading-[1.6]">

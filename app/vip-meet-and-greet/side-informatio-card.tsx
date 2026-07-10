@@ -1,11 +1,19 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import Arraival from "@/components/custom icons/arraival";
 import Calender from "@/components/custom icons/calender";
 import Connection from "@/components/custom icons/connection";
 import Depature from "@/components/custom icons/depature";
-import { CircleAlert, ClockPlus, Info, Mail, Phone } from "lucide-react";
+import {
+  ChevronDown,
+  ChevronUp,
+  CircleAlert,
+  ClockPlus,
+  Info,
+  Mail,
+  Phone,
+} from "lucide-react";
 import { useCurrencyStore } from "@/store/currencyStore";
 import {
   ServiceType,
@@ -34,8 +42,9 @@ import {
 import { formatNumber } from "@/lib/formatNumbers";
 import { useCarStore } from "@/store/chauffeurStore";
 import Whatsapp from "@/components/custom icons/whatsapp";
+import { gsap } from "gsap";
+
 import { useConvertCurrency } from "@/lib/hooks/useConvertCurrency";
-import { PackageSlug } from "@/lib/types/airport";
 
 export type SideInformationCardRef = {
   getTotal: () => number | undefined;
@@ -65,6 +74,50 @@ const SideInformationCard = () => {
 
   const airport = useSingleAirportStore((state) => state.singleAirport);
 
+  const [isCollapsed, setIsCollapsed] = useState(false);
+
+  const contentRef = useRef<HTMLDivElement>(null);
+  useLayoutEffect(() => {
+    if (window.innerWidth < 1024) {
+      setIsCollapsed(true);
+    }
+  }, []);
+  useLayoutEffect(() => {
+    if (!contentRef.current) return;
+
+    if (window.innerWidth < 1024) {
+      gsap.set(contentRef.current, {
+        height: 0,
+      });
+    }
+  }, []);
+  const toggleCollapse = () => {
+    if (!contentRef.current) return;
+
+    const el = contentRef.current;
+
+    if (isCollapsed) {
+      gsap.to(el, {
+        height: el.scrollHeight,
+        duration: 0.35,
+        ease: "power2.out",
+        onComplete: () => {
+          gsap.set(el, { height: "auto" });
+        },
+      });
+    } else {
+      gsap.set(el, { height: el.offsetHeight });
+
+      gsap.to(el, {
+        height: 0,
+        duration: 0.35,
+        ease: "power2.inOut",
+      });
+    }
+
+    setIsCollapsed(!isCollapsed);
+  };
+
   const isFastTrack = airport?.is_fast_track_active ?? false;
   const fastTrackCost = airport?.fast_track_cost ?? 0;
   const pkgSlug = useAirportPackageStore((state) => state.airportPackage)
@@ -76,9 +129,9 @@ const SideInformationCard = () => {
   const airportPackage = airportPackages ? airportPackages[0] : null;
   const fastTrackChecked = useFlightFormStore((state) => state.fastTrack);
   const numberOfBags = usePrimaryPassengerStore((state) => state.numberOfBags);
-  const freeBags = airport?.number_of_free_bags; // edit it
-  const bagsCost = airport?.paid_bags_block_cost; // edit it
-  const bagsBlockSize = airport?.paid_bags_block_size; // edit it
+  const freeBags = airport?.number_of_free_bags;
+  const bagsCost = airport?.paid_bags_block_cost;
+  const bagsBlockSize = airport?.paid_bags_block_size;
 
   const car = useCarStore((s) => s.car);
   const miles = useChauffeurDestinationStore((s) => s.miles);
@@ -179,13 +232,6 @@ const SideInformationCard = () => {
 
     const adultCost = airportPackage.adult_cost;
     const childCost = airportPackage.child_cost * storedChildren;
-    // const additionalAdults = Math.max(
-    //   storedAdults - airportPackage.included_adults_count,
-    //   0,
-    // );
-    // const additionalCost =
-    //   additionalAdults * airportPackage.additional_adult_cost;
-
     const total =
       adultCost +
       childCost +
@@ -215,98 +261,110 @@ const SideInformationCard = () => {
     storedAdults,
   ]);
   return (
-    <div className="h-full flex-1 space-y-4 sticky top-26">
-      <div className="bg-[#7B5A411C] rounded-2xl p-5">
-        <h4 className="font-[Manrope]">
-          {!airportPackage?.package.package_name || packageName?.trim() === ""
-            ? "Please select a package"
-            : `Quote for Service: ${packageName}`}
-        </h4>
-        <span className="block w-full h-0.5 my-2 bg-[#CFCFCF]"></span>
-        <ul className="space-y-3">
-          <li className="text-[#62697D] my-2">
-            Airport: {storedAirport?.airport_name}
-          </li>
-          {/* <li className="text-[#62697D] my-2">
-            Converted: {convert(3385)}
-          </li> */}
+    <div className="fixed bottom-0 left-0 z-90 lg:z-10 w-full lg:bottom-auto lg:sticky h-max lg:h-full flex-1 space-y-4 lg:top-24">
+      <div className="bg-[#eae6e2] shadow-sm rounded-t-2xl lg:rounded-2xl p-5">
+        <div className="flex items-center justify-between gap-3">
+          <h4 className="font-[Manrope]">
+            {!airportPackage?.package.package_name || packageName?.trim() === ""
+              ? "Please select a package"
+              : `Quote for Service: ${packageName}`}
+          </h4>
 
-          <li className="flex gap-2 items-center justify-between text-[#62697D] capitalize">
-            <div className="flex gap-2 items-center">
-              <Icon serviceType={storedServiceType as ServiceType} />{" "}
-              {storedServiceType}
-            </div>
-            {connectionCost > 0 ? (
-              <div className="font-semibold">
-                <span className="text-xs">+{currency} </span>
-                {connectionCost}
+          <button
+            type="button"
+            onClick={toggleCollapse}
+            className="lg:hidden shrink-0"
+          >
+            {isCollapsed ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+          </button>
+        </div>
+        {/* start of collabsable */}
+        <div ref={contentRef} className="overflow-hidden">
+          <FormSeparator />
+
+          <ul className="space-y-3">
+            <li className="text-[#62697D] my-2">
+              Airport: {storedAirport?.airport_name}
+            </li>
+            <li className="flex gap-2 items-center justify-between text-[#62697D] capitalize">
+              <div className="flex gap-2 items-center">
+                <Icon serviceType={storedServiceType as ServiceType} />{" "}
+                {storedServiceType}
               </div>
+              {connectionCost > 0 ? (
+                <div className="font-semibold">
+                  <span className="text-xs">+{currency} </span>
+                  {connectionCost}
+                </div>
+              ) : null}
+            </li>
+            <li className="flex gap-2 items-center text-[#62697D]">
+              <Calender />
+              {storedDate?.date}
+            </li>
+          </ul>
+
+          <FormSeparator />
+          <ul className="space-y-3">
+            {
+              <AdultsRow
+                includedAdults={airportPackage?.included_adults_count ?? 0}
+                storedAdults={storedAdults}
+              />
+            }
+
+            {storedChildren > 0 ? (
+              <ChildrenRow
+                currency={currency}
+                storedChildren={storedChildren}
+                child_cost={convert(airportPackage?.child_cost ?? 0)}
+              />
             ) : null}
-          </li>
-          <li className="flex gap-2 items-center text-[#62697D]">
-            <Calender />
-            {storedDate?.date}
-          </li>
-        </ul>
 
-        <span className="block w-full h-0.5 my-2 bg-[#CFCFCF]"></span>
+            {isFastTrack && fastTrackChecked ? (
+              <FastTrackRow
+                calculatedFastTrack={convert(calculatedFastTrack)}
+                currency={currency}
+                // fastTrackCost={convert(fastTrackCost)}
+                // passengersCount={allPassengers}
+              />
+            ) : null}
+            {additionalAdults > 0 && AdditionalPassengersCost > 0 ? (
+              <AdditionalPassengersRow
+                costPerPAX={convert(airportPackage?.additional_adult_cost ?? 0)}
+                currency={currency}
+                passengersCost={convert(AdditionalPassengersCost)}
+                numberOfPassengers={additionalAdults}
+              />
+            ) : null}
+            {(numberOfBags ?? 0) > 0 && (BagsCost ?? 0 > 0) ? (
+              <PorterRow BagsCost={convert(BagsCost)} currency={currency} />
+            ) : null}
+            {additionalHours > 0 ? (
+              <AdditionalHoursRow
+                currency={currency}
+                hours={additionalHours}
+                hoursCost={convert(additionalHourCost)}
+              />
+            ) : null}
+            {/* {additionalMilesCost > 0 ? ( */}
+            <ChauffeurRow
+              supplementFee={convert(supplementFee)}
+              additionalMilesCost={convert(additionalMilesCost)}
+              currency={currency}
+            />
+            {/* ) : null} */}
+            {lastMinuteCost > 0 ? (
+              <LastMinuteRow
+                currency={currency}
+                lastMinuteCost={convert(lastMinuteCost)}
+              />
+            ) : null}
+          </ul>
+          <FormSeparator />
+        </div>
 
-        <ul className="space-y-3">
-          {
-            <AdultsRow
-              includedAdults={airportPackage?.included_adults_count ?? 0}
-              storedAdults={storedAdults}
-            />
-          }
-
-          {storedChildren > 0 ? (
-            <ChildrenRow
-              currency={currency}
-              storedChildren={storedChildren}
-              child_cost={convert(airportPackage?.child_cost ?? 0)}
-            />
-          ) : null}
-
-          {isFastTrack && fastTrackChecked ? (
-            <FastTrackRow
-              calculatedFastTrack={convert(calculatedFastTrack)}
-              currency={currency}
-              // fastTrackCost={convert(fastTrackCost)}
-              // passengersCount={allPassengers}
-            />
-          ) : null}
-          {additionalAdults > 0 && AdditionalPassengersCost > 0 ? (
-            <AdditionalPassengersRow
-              costPerPAX={convert(airportPackage?.additional_adult_cost ?? 0)}
-              currency={currency}
-              passengersCost={convert(AdditionalPassengersCost)}
-              numberOfPassengers={additionalAdults}
-            />
-          ) : null}
-          {(numberOfBags ?? 0) > 0 && (BagsCost ?? 0 > 0) ? (
-            <PorterRow BagsCost={convert(BagsCost)} currency={currency} />
-          ) : null}
-          {additionalHours > 0 ? (
-            <AdditionalHoursRow
-              currency={currency}
-              hours={additionalHours}
-              hoursCost={convert(additionalHourCost)}
-            />
-          ) : null}
-          {/* {additionalMilesCost > 0 ? ( */}
-          <ChauffeurRow
-            supplementFee={convert(supplementFee)}
-            additionalMilesCost={convert(additionalMilesCost)}
-            currency={currency}
-          />
-          {/* ) : null} */}
-          {lastMinuteCost > 0 ? (
-            <LastMinuteRow
-              currency={currency}
-              lastMinuteCost={convert(lastMinuteCost)}
-            />
-          ) : null}
-        </ul>
+        {/* end of collabsable */}
 
         {airportPackage || lastMinuteCost > 0 ? (
           <Total
@@ -332,7 +390,6 @@ const Total = ({
 
   return (
     <>
-      <span className="block w-full h-0.5 my-2 bg-[#CFCFCF]"></span>
       <p className="flex justify-between font-semibold">
         Total:{" "}
         <span>
@@ -440,7 +497,7 @@ const AdditionalPassengersRow = ({
           <p className="w-fit">
             Additional Passengers
             <span className="text-xs hidden 2xl:inline">
-              (+{currency} {costPerPAX} per PAX)
+              +{currency} {costPerPAX} Per PAX
             </span>
           </p>
           <TooltipProvider>
@@ -450,7 +507,7 @@ const AdditionalPassengersRow = ({
               </TooltipTrigger>
               <TooltipContent className="bg-white text-[#7B5A41] shadow-lg">
                 <p>
-                  +{currency} {costPerPAX} per PAX
+                  +{currency} {costPerPAX} Per PAX
                 </p>
               </TooltipContent>
             </Tooltip>
@@ -608,8 +665,7 @@ const LastMinuteRow = ({
   currency: string;
   lastMinuteCost: number;
 }) => {
-
-  const formatedCost = formatNumber(lastMinuteCost.toFixed(0))
+  const formatedCost = formatNumber(lastMinuteCost.toFixed(0));
   return (
     <li className="flex justify-between gap-2 items-center font-semibold text-[#62697D]">
       <p className="flex items-center gap-2">
@@ -620,5 +676,11 @@ const LastMinuteRow = ({
         {formatedCost}
       </p>
     </li>
+  );
+};
+
+const FormSeparator = () => {
+  return (
+    <span className="block w-full h-0.5 max-h-0.5 my-2 bg-[#CFCFCF]"></span>
   );
 };

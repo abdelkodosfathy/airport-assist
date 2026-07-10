@@ -1,18 +1,6 @@
 export default function MultiDay() {
   return (
     <>
-      {/* Multi-day checkbox */}
-      {/* <label className="flex items-center mb-2 mt-4 gap-4 cursor-pointer p-3 bg-[#FFFBEF] px-4 py-3 rounded-lg border border-[#7B5A414D] text-[#7B5A41] transition-colors">
-        <Checkbox
-          id="multiDay"
-          checked={isMultiDay}
-          onCheckedChange={(v) => setIsMultiDay(v === true)}
-          className="w-6 h-6 rounded-md shadow-none border-[#7B5A414D] bg-[#FFFBEF] data-[state=checked]:bg-[#7B5A41] data-[state=checked]:border-[#7B5A41]"
-        />
-        <span className="text-sm font-medium">
-          Will you use this service for multiple days?
-        </span>
-      </label> */}
       <MultiDaysToggle />
       <DaysList />
     </>
@@ -36,105 +24,6 @@ const MultiDaysToggle = () => {
   );
 };
 
-// const DaysList = () => {
-//   const isMultiDay = useTripStore((s) => s.isMultiDay);
-//   const wrapperRef = useRef<HTMLDivElement>(null);
-//   const isFirstRender = useRef(true);
-
-//   useEffect(() => {
-//     if (!wrapperRef.current) return;
-
-//     if (isFirstRender.current) {
-//       isFirstRender.current = false;
-//       if (!isMultiDay) {
-//         gsap.set(wrapperRef.current, { height: 0, opacity: 0 });
-//       }
-//       return;
-//     }
-
-//     if (isMultiDay) {
-//       gsap.to(wrapperRef.current, {
-//         height: "auto",
-//         opacity: 1,
-//         duration: 0.4,
-//         ease: "power2.out",
-//       });
-//     } else {
-//       gsap.to(wrapperRef.current, {
-//         height: 0,
-//         opacity: 0,
-//         duration: 0.35,
-//         ease: "power2.inOut",
-//       });
-//     }
-//   }, [isMultiDay]);
-
-//   return (
-//     <div ref={wrapperRef} className="">
-//       <DaysListContent />
-//     </div>
-//   );
-// };
-
-// const DaysListContent = memo(() => {
-//   const dateTime = useDateStore((s) => s.bookingDate);
-//   const dateTimeList = useTripStore((s) => s.dateTimeList);
-//   const setDateTimeList = useTripStore((s) => s.setDateTimeList);
-
-//   const handleAddRow = useCallback(() => {
-//     if (!dateTime) return;
-//     const exists = dateTimeList.some((d) => d.date === dateTime.date);
-//     if (exists) {
-//       toast.error("this date is already added", { position: "top-center" });
-//       return;
-//     }
-//     setDateTimeList((prev) => [
-//       ...prev,
-//       { ...dateTime, id: crypto.randomUUID() },
-//     ]);
-//   }, [dateTime, dateTimeList, setDateTimeList]);
-
-//   const handleDeleteRow = useCallback(
-//     (id: string) => {
-//       setDateTimeList((prev) => prev.filter((d) => d.id !== id));
-//     },
-//     [setDateTimeList],
-//   );
-
-//   return (
-//     <div>
-//       <div className="space-y-2">
-//         {dateTimeList.map((d) => (
-//           <DateTimeRow
-//             key={d.id}
-//             bookingDate={d}
-//             onDelete={() => handleDeleteRow(d.id)}
-//           />
-//         ))}
-//       </div>
-//       <div className="grid grid-cols-2 gap-2">
-//         <div className="relative space-y-2 col-span-1">
-//           <DatePickerInput
-//             className="bg-[#F4F4F4] border border-[#E0E0E0] rounded-lg h-full"
-//             inputClassName="px-10 h-11.25 bg-[#F4F4F4] border-none w-full rounded-lg"
-//           />
-//         </div>
-//         <div className="flex gap-2 col-span-1">
-//           <TimePickerInput
-//             className="w-full bg-[#F4F4F4] border border-[#E0E0E0] rounded-lg h-full"
-//             inputClassName="px-10 h-11.25 bg-[#F4F4F4] border-none w-full rounded-lg"
-//           />
-//           <Button
-//             onClick={handleAddRow}
-//             className="flex h-full bg-[#F4F4F4] border border-[#E0E0E0] rounded-lg items-center justify-center aspect-square cursor-pointer text-[#7A7A7A] hover:border-[#664F31] hover:bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)] hover:text-white duration-0"
-//           >
-//             <Plus />
-//           </Button>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// });
 const DaysList = () => {
   const isMultiDay = useTripStore((s) => s.isMultiDay);
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -220,14 +109,14 @@ const DaysListInputs = memo(() => {
   console.log(dateTime?.date);
 
   useEffect(() => {
-    if(!isMultiDay) return;
+    if (!isMultiDay) return;
     if ((dateTime?.date ?? "" !== "") && (dateTime?.time ?? "" !== "")) {
       addRow();
     }
   }, [dateTime]);
 
   return (
-    <div className="grid grid-cols-2 gap-2 my-2">
+    <div className="grid grid-cols-1 xs:grid-cols-2 gap-2 my-2">
       <div className="relative space-y-2 col-span-1">
         <DatePickerInput
           className="bg-[#F4F4F4] border border-[#E0E0E0] rounded-lg h-full"
@@ -240,22 +129,7 @@ const DaysListInputs = memo(() => {
           className="w-full bg-[#F4F4F4] border border-[#E0E0E0] rounded-lg h-full"
           inputClassName="px-10 h-11.25 bg-[#F4F4F4] border-none w-full rounded-lg"
         />
-        {/* <Button
-          disabled={!dateTime?.date || !dateTime?.time}
-          onClick={addRow}
-          className="flex h-full bg-[#F4F4F4] border border-[#E0E0E0] rounded-lg items-center justify-center aspect-square cursor-pointer text-[#7A7A7A] hover:border-[#664F31] hover:bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)] hover:text-white duration-0"
-        >
-          <Plus />
-        </Button> */}
       </div>
-
-      {/* <Button
-        variant={"outline"}
-        className="w-full col-span-2 h-11.25 cursor-pointer flex items-center justify-center gap-2 py-2.5 rounded-lg border border-dashed border-[#E0E0E0] text-[#ACACAC] text-sm hover:border-[#7B5A41] hover:text-[#7B5A41] transition-colors"
-      >
-        <Plus size={14} />
-        Add another day
-      </Button> */}
     </div>
   );
 });

@@ -17,6 +17,8 @@ import { formatNumber } from "@/lib/formatNumbers";
 import Link from "next/link";
 import InnerToast from "@/components/ui/InnerToast";
 import { useConvertCurrency } from "@/lib/hooks/useConvertCurrency";
+import MainButton from "@/components/MainButton";
+import { createBookingQuery } from "@/lib/createBookingQuery";
 
 const alertMessages = {
   arrival:
@@ -157,10 +159,13 @@ export default memo(function ServiceCard({
       }
     } else {
       // expand
+      const isDesktop = window.innerWidth >= 1024;
+
       gsap.to(imageWrapperRef.current, {
         width: "auto",
         opacity: 1,
-        marginLeft: "1rem", // gap-4 equivalent
+        marginLeft: isDesktop ? "1rem" : 0, // gap-4 equivalent
+
         duration: 0.45,
         ease: "power2.out",
       });
@@ -188,13 +193,19 @@ export default memo(function ServiceCard({
     }
   }, [isCollapsed]);
 
-  const packageCost = isLHR ? service.adult_cost + service.connection_fees : service.adult_cost ;
+  const packageCost = isLHR
+    ? service.adult_cost + service.connection_fees
+    : service.adult_cost;
   // const packageCost =  service.adult_cost + service.connection_fees;
 
   const { convert } = useConvertCurrency();
-  
-  const isFastTrackActive = useAirportStore((s) => s.airport?.is_fast_track_active);
-  const isGolfCartActive = useAirportStore((s) => s.airport?.is_golf_cart_active);
+
+  const isFastTrackActive = useAirportStore(
+    (s) => s.airport?.is_fast_track_active,
+  );
+  const isGolfCartActive = useAirportStore(
+    (s) => s.airport?.is_golf_cart_active,
+  );
 
   const fixedPackageData = packageFeatures[service.package.package_slug];
   const fixedPackageService =
@@ -206,17 +217,15 @@ export default memo(function ServiceCard({
     return true;
   });
 
-
-  
   const convertedCost = convert(packageCost);
   const formatedCost = formatNumber(Math.round(convertedCost));
 
   // for yellow alert box
-  const airportISO2 = useAirportStore((s) => s.airport?.city.iso2);
-  const airportCode = useAirportStore((s) => s.airport?.airport_code);
+  const airport = useAirportStore((s) => s.airport);
+  const airportISO2 = airport?.city.iso2;
+  const airportCode = airport?.airport_code
   const isUSA = airportISO2?.toLocaleLowerCase() === "us";
-  const isBOSorDFW =
-    airportCode === "BOS" || airportCode === "DFW";
+  const isBOSorDFW = airportCode === "BOS" || airportCode === "DFW";
 
   const getAlertMessage = () => {
     const slug = service.package.package_slug;
@@ -241,7 +250,7 @@ export default memo(function ServiceCard({
       case "vip":
         // in all USA's airprots
         if (
-          isUSA 
+          isUSA
           // &&  (isArrival || isDeparture)
         ) {
           return alertMessages["arrivalOrDeparture"];
@@ -252,14 +261,19 @@ export default memo(function ServiceCard({
 
   const alertMessage = getAlertMessage() || null;
 
+  const query = createBookingQuery({
+    airport: airport?.airport_name,
+    service: serviceType,
+    "package-name": service.package.package_name,
+  });
   return (
     <div className="*:font-[Manrope] mt-8 rounded-xl p-3 bg-[#F4F4F4] border border-[#E0E0E0]">
       {/* ── Top Row: always visible ── */}
-      <div className="flex">
+      <div className="flex flex-col-reverse lg:flex-row">
         {/* Left: radio + name + subtitle + divider + desc */}
-        <div className="flex-2 flex flex-col px-2 min-w-0">
+        <div className="flex-2 flex flex-col lg:px-2 min-w-0">
           {/* Header row inside left col */}
-          <div className="flex justify-between items-center">
+          <div className="mt-2 flex justify-between items-center">
             {/* Radio + name */}
             <div
               onClick={onSelect}
@@ -306,8 +320,8 @@ export default memo(function ServiceCard({
         {/* Right: image — width animates to 0 */}
         <div
           ref={imageWrapperRef}
-          className="flex-none overflow-hidden"
-          style={{ width: "auto", marginLeft: "1rem" }}
+          className="flex-none overflow-hidden ml-0 lg:ml-4"
+          // style={{ width: "auto" }}
         >
           <Image
             src={fixedPackageData.image}
@@ -323,7 +337,7 @@ export default memo(function ServiceCard({
       {/* ── Features (show more) ── */}
       <div
         ref={detailsRef}
-        className="grid grid-cols-2 gap-4 overflow-hidden"
+        className="grid sm:grid-cols-2 gap-4 overflow-hidden"
         style={{ height: 0, opacity: 0, marginTop: 0, marginBottom: 0 }}
       >
         {serviceType &&
@@ -370,21 +384,15 @@ export default memo(function ServiceCard({
             {expandFeatures ? "Hide info" : "Show More >"}
           </Button>
         ) : (
-          <Button
-            asChild
-            type="button"
-            variant="outline"
-            className="w-max cursor-pointer border-black text-black hover:border-[#664F31] hover:bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)] hover:text-white duration-0"
-          >
-            <Link href="/vip-meet-and-greet/passenger-details">
-              <p className="text-lg font-normal font-[Manrope]">Continue</p>
-            </Link>
-          </Button>
+          // <MainButton href="/vip-meet-and-greet/passenger-details">
+          <MainButton href={`/vip-meet-and-greet/passenger-details?${query}`}>
+            Continue
+          </MainButton>
         )}
       </div>
     </div>
   );
-})
+});
 
 // ── Radio ──────────────────────────────────────────────────────────
 interface RadioProps {

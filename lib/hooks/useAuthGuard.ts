@@ -1,4 +1,3 @@
-// // hooks/useAuthGuard.ts
 // "use client";
 
 // import { apiGet } from "@/lib/api/http";
@@ -12,23 +11,30 @@
 //   const [checking, setChecking] = useState(true);
 
 //   useEffect(() => {
-//     apiGet("/auth/me")
+//     // apiGet("/bookings")
+//     //   .then((res) => {
+//     //     login(res.data.user);
+//     //     setChecking(false);
+//     //   })
+//     //   .catch(() => {
+//     //     router.replace("/login");
+//     //   });
+//     apiGet("/account/get-user-info")
 //       .then((res) => {
-//         // Rehydrate the store with fresh user data
-//         const { user_id, user_type, email_verified_at, phone_verified_at } = res.data;
-//         login({ user_id, user_type, email_verified_at, phone_verified_at });
+//         login(res.data.user);
 //         setChecking(false);
 //       })
 //       .catch(() => {
-//         // Cookie is missing or expired — kick to login
 //         router.replace("/login");
 //       });
 //   }, []);
 
 //   return { checking };
 // }
-// hooks/useAuthGuard.ts
 
+// const getUserBookings = () => {
+
+// }
 "use client";
 
 import { apiGet } from "@/lib/api/http";
@@ -38,31 +44,27 @@ import { useEffect, useState } from "react";
 
 export function useAuthGuard() {
   const router = useRouter();
+
+  const user = useAuthStore((s) => s.user);
   const login = useAuthStore((s) => s.login);
-  const [checking, setChecking] = useState(true);
+  const logout = useAuthStore((s) => s.logout);
+
+  // لو فيه user مخزن، متعرضش Loading
+  const [checking, setChecking] = useState(!user);
 
   useEffect(() => {
-    apiGet("/bookings")
-      .then((res) => {
-        login(res.data.user);
-        setChecking(false);
-      })
-      .catch(() => {
-        router.replace("/login");
-      });
     apiGet("/account/get-user-info")
       .then((res) => {
         login(res.data.user);
-        setChecking(false);
       })
       .catch(() => {
+        logout();
         router.replace("/login");
+      })
+      .finally(() => {
+        setChecking(false);
       });
-  }, []);
+  }, [login, logout, router]);
 
   return { checking };
-}
-
-const getUserBookings = () => {
-  
 }

@@ -13,6 +13,9 @@ import InnerToast from "@/components/ui/InnerToast";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useEffect } from "react";
+import { Continue } from "../passenger-details/page";
+import OtherPassengersForm from "./other-passenger-form";
+import MainButton from "@/components/MainButton";
 
 const FlightSection = () => {
   const currentPackage = useAirportPackageStore(
@@ -48,21 +51,24 @@ const FlightSection = () => {
     <div className="flex-2 space-y-4 h-auto capitalize">
       <FlightForm />
       <PrimaryPassengerForm />
+      <OtherPassengersForm />
 
       {withChauffuer && includingCars && <CarsSection />}
       {withChauffuer && !includingCars && (
         <InnerToast text="We regret that chauffeur-driven cars are not available in this region at the moment. Kindly contact us and we will be happy to assist you.">
-          <Button
+          <MainButton className="mt-2" href="/contact-us">Contact Us</MainButton>
+          {/* <Button
             asChild
             variant={"outline"}
             className="mt-2 bg-transparent shadow-none cursor-pointer border border-[#7B5A41] text-[#7B5A41] hover:bg-transparent hover:text-[#7B5A41]"
           >
             <Link href="/contact-us">Contact Us</Link>
-          </Button>
+          </Button> */}
         </InnerToast>
       )}
 
       <UploadFilesSeciton />
+      <Continue href="/vip-meet-and-greet/billing-info" />
     </div>
   );
 };

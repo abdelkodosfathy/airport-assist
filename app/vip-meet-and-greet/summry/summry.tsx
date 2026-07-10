@@ -20,7 +20,7 @@ import StripeForm from "./stripe-form";
 import { SingleBooking } from "@/lib/types/booking";
 import { useState } from "react";
 // import ThankYou from "./thank-you/thank-you";
-import WaitingListContent from "./wait-list/WaitingListContent";
+// import WaitingListContent from "./wait-list/WaitingListContent";
 import StrokeBag from "@/components/custom icons/strokeBag";
 import FigmaMessage from "@/components/custom icons/adults copy";
 import {
@@ -95,10 +95,11 @@ export default function Summary(props: Props) {
   ) {
     openWaitListPopup(data.booking_uuid);
     console.log("opeeennn");
-    
+
     // return <WaitingListContent data={data} />;
   }
   const user = data.user;
+  const contacts = data.contact;
   const bookingDate = formatDateTime(data.booking_timestamp);
 
   console.log(data);
@@ -195,32 +196,34 @@ export default function Summary(props: Props) {
       <SuccessPopup /> {/* ← مش محتاج props خالص */}
       <WaitListPopup /> {/* ← مش محتاج props خالص */}
       <div>
-        <div className="flex gap-4">
+        <div className="flex flex-col lg:flex-row gap-4">
           {/* ── Left column ─────────────────────────────────────────── */}
           <div className="flex-2 space-y-4">
             {/* Contact Info */}
-            <div className=" px-10 py-6 w-full bg-white rounded-2xl shadow-md">
+            <div className=" p-5 md:px-10 md:py-6 w-full bg-white rounded-2xl shadow-md">
               <h2 className="text-lg font-semibold mb-4">
                 Contact Information
               </h2>
               <div className="text-[#4A5565] space-y-2">
                 <div className="flex gap-2 items-center">
                   <User />
-                  <p>{user.user_name}</p>
+                  <p>{contacts.first_name} {contacts.last_name}</p>
                 </div>
-                <div className="flex gap-4">
+                <div className="flex flex-col gap-2 md:flex-row md:gap-4">
                   <div className="flex gap-2 items-center">
                     <Mail />
-                    <p className="lowercase">{user.email}</p>
+                    <p className="lowercase">{contacts.email}</p>
                   </div>
                   <div className="flex gap-2 items-center">
                     <Phone />
-                    <p>{user.phone}</p>
+                    <p>{contacts.phone}</p>
                   </div>
                 </div>
               </div>
             </div>
-            <div className="px-10 py-6 w-full bg-white rounded-2xl shadow-md">
+
+            {/* trip details */}
+            <div className="p-5 md:px-10 md:py-6 w-full bg-white rounded-2xl shadow-md">
               <h2 className="text-lg font-semibold mb-4">
                 {data.airport.airport_name} - {data.service_type} -{" "}
                 {data.package.package_name}
@@ -234,7 +237,7 @@ export default function Summary(props: Props) {
                       key={i}
                       className="flex items-start gap-4 px-2 py-0.5 rounded-md hover:bg-gray-100 transition-colors"
                     >
-                      <span className="w-[220px] flex-shrink-0">
+                      <span className="md:w-[220px] flex-shrink-0">
                         {row.label}
                       </span>
                       <span className="flex-1">{row.value}</span>
@@ -243,6 +246,7 @@ export default function Summary(props: Props) {
                 })}
               </div>
             </div>
+
             {data.trip && (
               <Carpreef
                 car_name={data.trip.car_type.car_type_name}
@@ -255,13 +259,13 @@ export default function Summary(props: Props) {
             )}
 
             {/* Luggage assistance */}
-            <div className="px-10 py-6 w-full bg-white rounded-2xl shadow-md flex gap-2 items-center">
+            <div className="p-5 md:px-10 md:py-6 w-full bg-white rounded-2xl shadow-md flex gap-2 items-center">
               <StrokeBag />
               <p>Luggage assistance: Porter Services</p>
             </div>
 
             {/* Passenger file */}
-            <div className="px-10 py-6 w-full bg-white rounded-2xl shadow-md flex gap-2 items-center">
+            <div className="p-5 md:px-10 md:py-6 w-full bg-white rounded-2xl shadow-md flex gap-2 items-center">
               <FigmaMessage />
 
               <p>
@@ -272,29 +276,29 @@ export default function Summary(props: Props) {
             </div>
 
             {/* Payment breakdown */}
-            <div className="px-10 py-6 w-full bg-white rounded-2xl shadow-md space-y-2">
-              <div className="flex justify-between font-semibold">
+            <div className="p-5 md:px-10 md:py-6 w-full bg-white rounded-2xl shadow-md space-y-2">
+              <div className="flex justify-between font-semibold gap-4 md:gap-2">
                 <p>
                   {data.airport.airport_name} - {data.service_type} -{" "}
-                  {data.package.package_name}
+                  <span className="whitespace-nowrap">{data.package.package_name}</span>
                 </p>
-                <p>{formatNumber(convert(data.subtotal))}</p>
+                <p>{formatNumber(convert(data.subtotal).toFixed(2))}</p>
               </div>
 
               <div className="flex justify-between">
                 <p>VAT</p>
-                <p>{formatNumber(convert(data.tax_value))}</p>
+                <p>{formatNumber(convert(data.tax_value).toFixed(2))}</p>
               </div>
               <div className="flex justify-between">
                 <p className="font-semibold">Subtotal: </p>
                 <p className="font-semibold">
-                  {formatNumber(convert(subtotalPlusVAT))}
+                  {formatNumber(convert(subtotalPlusVAT).toFixed(2))}
                 </p>
               </div>
               {data.payment_fees > 0 && (
                 <div className="flex justify-between">
                   <p>Processing fee</p>
-                  <p>{formatNumber(convert(data.payment_fees))} </p>
+                  <p>{formatNumber(convert(data.payment_fees).toFixed(2))} </p>
                 </div>
               )}
               <Separator />
@@ -303,7 +307,7 @@ export default function Summary(props: Props) {
                 <p>Total:</p>
                 <p>
                   <span className="text-xs text-[#6A7282]">{currency} </span>
-                  {formatNumber(convert(totalPlusProccessingFee))}
+                  {formatNumber(convert(totalPlusProccessingFee).toFixed(2))}
                 </p>
               </div>
             </div>
@@ -313,7 +317,9 @@ export default function Summary(props: Props) {
           {data.booking_status !== "scheduled" &&
           data.booking_status !== "checking_availability" ? (
             <div className="h-full flex-1 space-y-4 sticky top-26">
-              <div className="bg-white rounded-2xl p-5 shadow-md">
+              {/* <div className="fixed h-max lg:h-full bottom-0 left-0 flex-1 space-y-4 lg:sticky lg:top-26"> */}
+
+              <div className="hidden lg:block bg-white rounded-2xl p-5 shadow-md">
                 <div className="font-[Manrope] flex items-center justify-between">
                   <p className="text-[18.75px]">Total</p>
                   <p className="font-bold font-[Arial]">
@@ -321,7 +327,9 @@ export default function Summary(props: Props) {
                       {currency}{" "}
                     </span>
                     {/* {data.total.toFixed(2)}{" "} */}
-                    {formatNumber(totalPlusProccessingFee.toFixed(2))}{" "}
+                    {formatNumber(
+                      convert(totalPlusProccessingFee).toFixed(2),
+                    )}{" "}
                   </p>
                 </div>
               </div>
@@ -357,12 +365,12 @@ const Carpreef = ({
   duration: string;
 }) => {
   return (
-    <div className="px-10 py-6 w-full bg-white rounded-2xl shadow-md">
+    <div className="p-5 md:px-10 md:py-6 w-full bg-white rounded-2xl shadow-md">
       {/* <div
       className="px-10 py-6 w-full bg-white rounded-2xl"
       style={{ boxShadow: "0px 11.48px 114.76px 0px #A7A7A73D" }}
     > */}
-      <div className="flex gap-12 mb-2">
+      <div className="md:flex gap-12 mb-2">
         <Image
           width={216}
           height={108.75}

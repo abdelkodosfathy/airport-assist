@@ -10,6 +10,7 @@ import { FlightNumberInput } from "./flight-number-input";
 import TimeRow from "./time-row";
 import FastTrackCheckBox from "./fast-track";
 import { useState } from "react";
+import { BagsInput } from "../bags-input";
 
 const ConnectionFlightForm = () => {
   const arrivalAirline = useFlightFormStore((state) => state.arrivalAirline);
@@ -41,9 +42,9 @@ const ConnectionFlightForm = () => {
   const setDepartureFlightNumber = useFlightFormStore(
     (state) => state.setDepartureFlightNumber,
   );
-  const setServiceDuration = useFlightFormStore(
-    (state) => state.setServiceDuration,
-  );
+  // const setServiceDuration = useFlightFormStore(
+  //   (state) => state.setServiceDuration,
+  // );
 
   const validationError = useFlightFormStore((s) => s.validationError);
 
@@ -130,6 +131,7 @@ const ConnectionFlightForm = () => {
       {fastTrackActive && (fastTrackCost ?? 0) > 0 ? (
         <FastTrackCheckBox />
       ) : null}
+      <BagsInput />
     </FormWrapper>
   );
 };

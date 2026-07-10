@@ -54,13 +54,13 @@ export default function ServicesLayout({
           />
 
           {/* Gradient overlay */}
-          <div
+          {/* <div
             className="absolute inset-0"
             style={{
               background:
                 "linear-gradient(14.45deg, rgba(2, 2, 2, 0.0546) -17.37%, rgba(11, 11, 11, 0.78) 21.48%)",
             }}
-          />
+          /> */}
         </div>
 
         {/* Hero content */}
@@ -68,11 +68,11 @@ export default function ServicesLayout({
           <p className="text-center mb-7.5 font-[Manrope] text-normal">
             {/* {storedServiceType === "arrival" ? "ARRIVAL TO" : "DEPARTURE FROM"}  */}
           </p>
-          <h1 className="font-[Manrope] font-light text-3xl leading-[130%] tracking-[8.25px] text-center mb-7.5">
+          <h1 className="font-[Manrope] font-light text-xl lg:text-3xl leading-[130%] tracking-[8.25px] text-center mb-7.5">
             {/* {airportName} */}
             Let's plan your trip
           </h1>
-          <div className="flex gap-20 justify-between">
+          <div className="flex gap-4 lg:gap-20 flex-col lg:flex-row justify-between">
             <p className="font-[Manrope] font-normal text-[18px] leading-[100%] tracking-[8.25px] text-center text-[rgb(200,200,200)]">
               {storedDate?.date}
             </p>

@@ -30,7 +30,7 @@ const AirportTransfare = () => {
 
         <div className="col-span-2">
           <h3 className="mb-2 font-semibold">Transfer Time</h3>
-          <div className="flex gap-4">
+          <div className="flex flex-col xs:flex-row gap-4">
             <div className="relative flex-1">
               <DatePickerInput
                 className="bg-[#F4F4F4] border border-[#E0E0E0] rounded-lg h-full"

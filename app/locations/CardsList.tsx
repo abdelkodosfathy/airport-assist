@@ -7,7 +7,41 @@ import { useEffect, useRef, useState } from "react";
 export default function CardsList() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [scrolled, setScrolled] = useState(false);
+  // useEffect(() => {
+  //   const el = scrollRef.current;
+  //   if (!el) return;
+
+  //   const onWheel = (e: WheelEvent) => {
+  //     e.preventDefault();
+
+  //     const scrollingRight = e.deltaY > 0 || e.deltaX > 0;
+  //     const scrollingLeft = e.deltaY < 0 || e.deltaX < 0;
+
+  //     // سكرول لليمين بس لو !scrolled
+  //     if (!scrolled && scrollingRight) {
+  //       el.scrollTo({
+  //         left: el.scrollWidth - el.clientWidth,
+  //         behavior: "smooth",
+  //       });
+  //       setScrolled(true);
+  //     }
+  //     // سكرول لليسار بس لو scrolled
+  //     else if (scrolled && scrollingLeft) {
+  //       el.scrollTo({
+  //         left: 0,
+  //         behavior: "smooth",
+  //       });
+  //       setScrolled(false);
+  //     }
+  //   };
+
+  //   el.addEventListener("wheel", onWheel, { passive: false });
+
+  //   return () => el.removeEventListener("wheel", onWheel);
+  // }, [scrolled]);
   useEffect(() => {
+    if (window.innerWidth < 1024) return;
+
     const el = scrollRef.current;
     if (!el) return;
 
@@ -17,16 +51,13 @@ export default function CardsList() {
       const scrollingRight = e.deltaY > 0 || e.deltaX > 0;
       const scrollingLeft = e.deltaY < 0 || e.deltaX < 0;
 
-      // سكرول لليمين بس لو !scrolled
       if (!scrolled && scrollingRight) {
         el.scrollTo({
           left: el.scrollWidth - el.clientWidth,
           behavior: "smooth",
         });
         setScrolled(true);
-      }
-      // سكرول لليسار بس لو scrolled
-      else if (scrolled && scrollingLeft) {
+      } else if (scrolled && scrollingLeft) {
         el.scrollTo({
           left: 0,
           behavior: "smooth",
@@ -41,9 +72,25 @@ export default function CardsList() {
   }, [scrolled]);
   return (
     <div className="flex flex-col gap-4">
-      <div
+      {/* <div
         ref={scrollRef}
         className="flex overflow-x-auto overflow-y-visible snap-x snap-mandatory scrollbar-none gap-4 pb-2 py-4 -my-4"
+      > */}
+      <div
+        ref={scrollRef}
+        className="
+          flex
+          gap-4
+          overflow-x-auto
+          overflow-y-visible
+          snap-x
+          snap-mandatory
+          scrollbar-none
+          px-4
+          pb-2
+          py-4
+          -my-4
+        "
       >
         {data.map((item, i) => (
           <DestinationCard key={i} {...item} />
@@ -62,17 +109,35 @@ interface CardProps {
 
 function DestinationCard({ title, content, img, price }: CardProps) {
   return (
+    // <Card
+    //   className="
+    //     snap-start
+    //     shrink-0
+    //     w-[calc(33%-12px)] xl:w-[calc(25%-12px)]
+    //     bg-white
+    //     rounded-2xl
+    //     p-0
+    //     transition-all
+    //     font-[Manrope]
+    //     duration-300
+    //   "
+    // >
     <Card
       className="
         snap-start
-        shrink-0 
-        w-[calc(33%-12px)] xl:w-[calc(25%-12px)] 
-        bg-white 
-        rounded-2xl 
+        shrink-0
+
+        w-full
+        sm:w-[calc(50%-8px)]
+        lg:w-[calc(33.333%-11px)]
+        xl:w-[calc(25%-12px)]
+
+        bg-white
+        rounded-2xl
         p-0
-        transition-all 
-        font-[Manrope] 
+        transition-all
         duration-300
+        font-[Manrope]
       "
     >
       {/* Inner wrapper with overflow-hidden for image */}

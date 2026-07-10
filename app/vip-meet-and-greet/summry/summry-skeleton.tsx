@@ -23,7 +23,7 @@ export default function SummarySkeleton() {
               <SkeletonBox className="h-5 w-5 rounded-full" />
               <SkeletonBox className="h-4 w-40" />
             </div>
-            <div className="flex gap-4">
+            <div className="flex flex-col gap-2 md:flex-row md:gap-4">
               <div className="flex gap-2 items-center">
                 <SkeletonBox className="h-5 w-5 rounded-full" />
                 <SkeletonBox className="h-4 w-48" />
@@ -79,7 +79,7 @@ export default function SummarySkeleton() {
       </div>
 
       {/* Right column */}
-      <div className="h-full flex-1 space-y-4 sticky top-26">
+      <div className="h-full flex-1 space-y-4 hidden lg:block sticky top-26">
         {/* Total pill skeleton */}
         <div className="bg-white rounded-2xl p-5 shadow-md flex items-center justify-between">
           <SkeletonBox className="h-5 w-12" />

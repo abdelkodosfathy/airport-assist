@@ -25,6 +25,7 @@ import {
 } from "@/components/ui/dialog";
 import { useCarStore } from "@/store/chauffeurStore";
 import { toast } from "sonner";
+import MainButton from "@/components/MainButton";
 
 interface SubmitButtonProps {
   isElitePackage?: boolean;
@@ -37,7 +38,9 @@ const SubmitButton = () => {
   const [showCarsSection, setShowCarsSection] = useState(false);
 
   const selectedPackage = useAirportPackageStore((s) => s.airportPackage);
-  const isElitePackage = selectedPackage?.package.package_slug === "elite" || selectedPackage?.package.package_slug === "signature";
+  const isElitePackage =
+    selectedPackage?.package.package_slug === "elite" ||
+    selectedPackage?.package.package_slug === "signature";
 
   function formatDateToISO(dateStr?: string): string {
     if (!dateStr) return "";
@@ -138,14 +141,17 @@ const SubmitButton = () => {
         "wheelchair_assistance",
         String(wheelchair_assistance ? 1 : 0),
       );
-      
+
       const parsed = Number(additional_hours);
       const hours = Number.isFinite(parsed) ? Math.max(parsed, 0) : 0;
       console.log(hours);
-      
+
       formData.append("additional_hours", String(hours));
 
-      if ((withTrip || package_slug === "elite_plus") && service_type !== "connection") {
+      if (
+        (withTrip || package_slug === "elite_plus") &&
+        service_type !== "connection"
+      ) {
         formData.append("with_trip", "1");
         formData.append("trip_type", "by_distance");
         formData.append("car_type_id", String(selectedCar?.car_type_id));
@@ -256,7 +262,7 @@ const SubmitButton = () => {
       }
       const response = await apiPostFormData("/bookings", formData);
       console.log(response);
-      
+
       if (response.status === 200) {
         router.replace(
           `/vip-meet-and-greet/summry?uuid=${response.data.booking_uuid}`,
@@ -271,7 +277,7 @@ const SubmitButton = () => {
       }
 
       console.error("Booking submission failedssssss:", error);
-      
+
       throw error;
     } finally {
       setLoading(false);
@@ -289,37 +295,33 @@ const SubmitButton = () => {
     }
   };
 
-  const selectedChauffuerBefore = selectedPackage?.package.package_slug !== "elite_plus" && selectedCar;
+  const selectedChauffuerBefore =
+    selectedPackage?.package.package_slug !== "elite_plus" && selectedCar;
 
   // إذا المستخدم اختار نعم، اعرض CarsSection
-  if (showCarsSection || selectedChauffuerBefore ) {
-  const disableSubmit = loading || !selectedCar?.car_type_id || !destination
+  if (showCarsSection || selectedChauffuerBefore) {
+    const disableSubmit = loading || !selectedCar?.car_type_id || !destination;
     return (
       <>
         <CarsSection isAdditional onCancel={() => setShowCarsSection(false)} />
         <div className="flex justify-between">
           {/* <Button
             type="button"
-            onClick={() => {
-              setShowCarsSection(false);
-            }}
-            disabled={loading}
-            variant="outline"
-            className="px-6 cursor-pointer border-black text-black hover:border-[#664F31] hover:bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)] hover:text-white duration-0"
-          >
-            <p className="text-lg font-normal font-[Manrope]">Back</p>
-          </Button> */}
-          <Button
-            type="button"
             onClick={handleValidateChauffuer}
             disabled={disableSubmit}
             variant="outline"
             className="w-max cursor-pointer border-black text-black hover:border-[#664F31] hover:bg-[linear-gradient(179.26deg,#664F31_0.64%,#DFB08D_223.79%)] hover:text-white duration-0"
-          >
+            >
             <p className="text-lg font-normal font-[Manrope]">
-              {loading ? "Submitting..." : "Proceed To Checkout"}
+            {loading ? "Submitting..." : "Proceed To Checkout"}
             </p>
-          </Button>
+            </Button> */}
+          <MainButton
+            onClick={handleValidateChauffuer}
+            disabled={disableSubmit}
+          >
+            {loading ? "Submitting..." : "Proceed To Checkout"}
+          </MainButton>
         </div>
       </>
     );
@@ -345,7 +347,10 @@ const SubmitButton = () => {
 
   return (
     <>
-      <Button
+      <MainButton onClick={handleButtonClick} disabled={loading}>
+        {loading ? "Submitting..." : "Proceed To Checkout"}
+      </MainButton>
+      {/* <Button
         type="button"
         onClick={handleButtonClick}
         disabled={loading}
@@ -355,7 +360,7 @@ const SubmitButton = () => {
         <p className="text-lg font-normal font-[Manrope]">
           {loading ? "Submitting..." : "Proceed To Checkout"}
         </p>
-      </Button>
+      </Button> */}
 
       {/* Modal Dialog - فقط للـ Elite Package */}
       {isElitePackage && (

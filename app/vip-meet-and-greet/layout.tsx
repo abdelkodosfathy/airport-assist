@@ -70,10 +70,10 @@ export default function ServicesLayout({
             {storedAirport?.airport_name}
           </h1>
           <div className="flex justify-between gap-20 max-w-150 mx-auto">
-            <p className="font-[Manrope] font-normal text-[18px] leading-[100%] tracking-[8.25px] text-center text-[rgb(200,200,200)]">
+            <p className="text-[18px] [text-shadow:0_0_6px_rgb(0,0,0)] leading-[100%] tracking-[8.25px] text-center text-[rgb(200,200,200)]">
               {storedDate?.date}
             </p>
-            <p className="font-[Manrope] font-normal text-[18px] leading-[100%] tracking-[8.25px] text-center text-[rgb(200,200,200)]">
+            <p className="text-[18px] [text-shadow:0_0_6px_rgb(0,0,0)] leading-[100%] tracking-[8.25px] text-center text-[rgb(200,200,200)]">
               {passengersText}
             </p>
           </div>

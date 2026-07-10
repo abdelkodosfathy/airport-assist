@@ -3,7 +3,7 @@ import { StaticImageData } from "next/image";
 
 export type PackageCardProps = {
   pkg: AirportPackage;
-  index: number;
+  index?: number;
   serviceImage: StaticImageData;
 };
 // ---- Service Item ----

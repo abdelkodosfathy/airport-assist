@@ -1,4 +1,3 @@
-// import { useCurrencyStore } from "@/store/currencyStore";
 import { API_BASE_URL } from "./config";
 
 export async function apiFetch(endpoint: string, options: RequestInit = {}) {

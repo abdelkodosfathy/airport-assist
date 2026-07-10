@@ -6,6 +6,7 @@ import serviceImage from "@/public/services-image.webp";
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import MainButton from "@/components/MainButton";
 
 export default function ServicesLayout() {
   const dataList: CardProps[] = [
@@ -227,9 +228,7 @@ const CTA = () => {
             <Link
               className="bg-transparent"
               href={"/chauffeur-services/billing-information/checkout"}
-            >
-              Enquire Now <ArrowUpRight />
-            </Link>
+            ></Link>
           </Button>
         </div>
       </div>
@@ -409,7 +408,7 @@ const Card = ({ title, content, dir, imagePosition }: CardProps) => {
         <Image
           src={serviceImage}
           alt="service name"
-          className={`w-95 h-66.25 absolute ${dir === "right"? "-right-60.25": "-left-60.25"} ${positionClass}`}
+          className={`w-95 h-66.25 absolute ${dir === "right" ? "-right-60.25" : "-left-60.25"} ${positionClass}`}
         />
       </div>
     </div>

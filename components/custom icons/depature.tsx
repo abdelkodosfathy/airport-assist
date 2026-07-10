@@ -2,12 +2,12 @@ import * as React from "react";
 
 const Depature: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
   <svg
-    {...props}
     xmlns="http://www.w3.org/2000/svg"
     width="23"
     height="19"
     fill="none"
     viewBox="0 0 640 512"
+    {...props}
   >
     <path
       fill="#7A7A7A"

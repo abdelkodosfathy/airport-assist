@@ -30,7 +30,7 @@ const FastTrackCheckBox = () => {
       >
         Include Fast Track Service{" "}
         <span>
-          (+{currencyMark} {convert(fastTrackCost ?? 0)}, Per PAX)
+          +{currencyMark} {convert(fastTrackCost ?? 0)}, Per PAX
         </span>
       </Label>
     </div>

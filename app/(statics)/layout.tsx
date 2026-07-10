@@ -5,24 +5,20 @@ import Header from "@/components/Header/Header";
 import Footer from "@/components/Footer";
 import Image, { StaticImageData } from "next/image";
 import { useSelectedLayoutSegment } from "next/navigation";
-import hero from "@/public/our-sercives-hero.jpg";
-import chaufferingHero from "@/public/chauffeuring.webp";
-import HeroTitle from "./HeroTitle";
+// import hero from "@/public/our-sercives-hero.jpg";
+import hero from "@/public/contact-us-hero.webp";
+// import chaufferingHero from "@/public/chauffeuring.webp";
 
-export default function Layout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function Layout({ children }: { children: React.ReactNode }) {
   const segment = useSelectedLayoutSegment();
 
   const imageMap: Record<string, StaticImageData> = {
-    "frequently-asked-questions": hero, // Replace with faqHero
+    // "frequently-asked-questions": hero, // Replace with faqHero
     "contact-us": hero, // Replace with contactHero
-    "chauffeuring": chaufferingHero, // Replace with chaufferingHero
-    "private-suite": hero, // Replace with privateSuiteHero
-    "vip-meet-and-greet": hero, // Replace with vipMeetHero
-    "hotel": hero, // Replace with hotelHero
+    // "chauffeuring": chaufferingHero, // Replace with chaufferingHero
+    // "private-suite": hero, // Replace with privateSuiteHero
+    // "vip-meet-and-greet": hero, // Replace with vipMeetHero
+    // "hotel": hero, // Replace with hotelHero
   };
 
   const currentImage = imageMap[segment ?? ""] ?? hero;
@@ -41,17 +37,21 @@ export default function Layout({
             priority
           />
 
-          <div
-            className="absolute inset-0"
-            style={{
-              background:
-                "linear-gradient(14.45deg, rgba(2, 2, 2, 0.0546) -17.37%, rgba(11, 11, 11, 0.78) 21.48%)",
-            }}
-          />
+         
         </div>
 
         <div className="relative z-10 h-full flex flex-col justify-center mx-auto">
-          <HeroTitle />
+          {/* <HeroTitle /> */}
+          <h1 className="uppercase font-normal text-3xl tracking-[8.25px] text-center mb-7.5">
+            {/* {titleMap[segment ?? ""] ?? ""} */}
+            Contact Us
+          </h1>
+
+          <p className="font-[Manrope] text-[15px] normal-case max-w-250 text-center tracking-[1.09] text-[rgb(200,200,200)]">
+            {/* {breadcrumbMap[segment ?? ""] ?? ""} */}
+            Our dedicated team is available to discuss all aspects of our
+            service.
+          </p>
         </div>
       </section>
 

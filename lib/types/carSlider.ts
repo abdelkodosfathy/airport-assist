@@ -9,6 +9,7 @@ export type CarSlider = {
   id: string;
   name: string;
   desc: string;
+  newShape?: boolean;
   slides: CarSlide[];
   passengers: number;
   luggage: number;

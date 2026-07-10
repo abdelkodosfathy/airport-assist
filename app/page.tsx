@@ -14,6 +14,8 @@ import Header from "@/components/Header/Header";
 import VerticalCausel from "@/components/sections/VerticalCausel";
 import BackToTop from "@/components/BackToTop";
 export default function HomePage() {
+
+
   return (
     <main className="font-[Manrope] max-w-screen capitalize">
       <Header />
@@ -29,7 +31,7 @@ export default function HomePage() {
           imgTwoName="Airport entrance in the night"
           imgOne="/sections/Airport by Invitation/Airport by Invitation_1.webp"
           imgTwo="/sections/Airport by Invitation/Airport by Invitation_2.webp"
-          />
+        />
         <AirportInvitation
           heading={`Airport \nConcierge`}
           content="With Airport Assist, travel effortlessly with personalised Meet & Greet, Fast-Track Security & Immigration, and seamless support from curbside to gate"

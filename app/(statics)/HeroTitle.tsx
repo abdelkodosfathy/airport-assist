@@ -17,7 +17,7 @@ export default function HeroTitle() {
   
   const breadcrumbMap: Record<string, string> = {
     "frequently-asked-questions": "Home / FAQ",
-    "contact-us": "Home / Contact Us",
+    "contact-us": "Our dedicated team is available to discuss all aspects of our service.",
     "chauffeuring": "An elevated chauffeur experience with refined space and exceptional comfort.",
     "private-suite": "For the discerning traveller, the Private Suite experience is the ultimate way to travel.",
     "vip-meet-and-greet": "From boarding to arrival, every moment is expertly managed for a seamless airport experience.",

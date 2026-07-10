@@ -3,6 +3,7 @@
 import { useCurrencyStore } from "@/store/currencyStore";
 // import { formatNumber } from "../formatNumbers";
 export function useConvertCurrency(fixedTo: number = 2) {
+  const currencyMark = useCurrencyStore((s) => s.currencyMark);
   const currency = useCurrencyStore((s) => s.currency);
   const rates = useCurrencyStore((s) => s.rates);
 
@@ -14,7 +15,7 @@ export function useConvertCurrency(fixedTo: number = 2) {
     return Number(converted.toFixed(fixedTo)); // 👈 يرجع number مش string
   };
 
-  return { convert, currency };
+  return { convert, currency, currencyMark };
 }
 
 // export function useConvertCurrency() {

@@ -367,7 +367,7 @@ const CheckoutForm = ({
         <Separator className="col-span-2" />
         {/* promotion code */}
         {/* <PromoCode onApply={onApplyPromo} /> ← مرر مباشرة */}
-        <Separator className="col-span-2" />
+        {/* <Separator className="col-span-2" /> */}
         <PromoCode
           onApply={onApplyPromo}
           error={promoError}

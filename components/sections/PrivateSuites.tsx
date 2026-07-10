@@ -212,37 +212,42 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import gsap from "gsap";
 import { ArrowUpRight } from "lucide-react";
+// import { useCurrencyStore } from "@/store/currencyStore";
+import { useConvertCurrency } from "@/lib/hooks/useConvertCurrency";
+import { formatNumber } from "@/lib/formatNumbers";
 
 type Destination = {
   title: string;
   content: string;
   img: string;
-  price: string;
+  price: number;
 };
 
 const data: Destination[] = [
   {
     title: "WINDSOR SUITE",
     content:
-      "Private, personal, and luxurious concierge assistance through Heathrow — seamless from curbside to gate.",
-    img: "/sections/private_suits/private_charles_do_gaulle.webp",
-    price: "£3,177",
+      "Private, personal, and luxurious concierge assistance through airport — seamless from curbside to gate.",
+    img: "/sections/tarmac-private-suites/meet.webp",
+    price: 3385,
   },
   {
-    title: "Paris-Charles de Gaulle Saloon",
+    title: "Saloon Charles de Gaulle",
     content:
-      "Private, personal, and luxurious concierge assistance through Heathrow — seamless from curbside to gate.",
-    img: "/sections/private_suits/private_charles_do_gaulle.webp",
+      "Private, personal, and luxurious concierge assistance through Paris — seamless from curbside to gate.",
+    img: "/sections/tarmac-private-suites/insideCar.webp",
+
     // img: "/sections/saloon.jpg",
-    price: "£3,177",
+    price: 4350,
   },
   {
-    title: "Paris-Charles de Gaulle Saloon",
+    title: "Paris-Charles de Gaulle",
     content:
       "Private, personal, and luxurious concierge assistance through Heathrow — seamless from curbside to gate.",
-    img: "/sections/private_suits/private_charles_do_gaulle.webp",
+    img: "/sections/tarmac-private-suites/room.webp",
+    // img: "/sections/private_suits/private_charles_do_gaulle.webp",
     // img: "/sections/suite.jpg",
-    price: "£3,177",
+    price: 3177,
   },
 ];
 
@@ -344,13 +349,12 @@ export default function PrivateSuites() {
       <div className="mx-auto w-full max-w-360  px-4 sm:px-6 md:px-8 lg:px-10 xl:px-26 pt-28 pb-16  flex flex-col lg:flex-row bg-[#1a1a1a] text-white overflow-hidden">
         {/* ------------ LEFT TEXT ------------ */}
         <div className="lg:w-1/2 relative">
-
           <h2 className="text-3xl leading-[128%] tracking-[10px] uppercase">
             <span className="block">TARMAC</span>
             PRIVATE SUITS
           </h2>
 
-          <p className="leading-8 text-[#959595] my-6 max-w-125">
+          <p className="leading-[150%] tracking-[9%] text-[15px] normal-case text-[#959595] my-6 max-w-100">
             Our most exclusive service, delivering the highest level of luxury
             airport assistance in over 500 destinations worldwide.
           </p>
@@ -409,6 +413,7 @@ export default function PrivateSuites() {
 type CardProps = Destination;
 
 function DestinationCard({ title, content, img, price }: CardProps) {
+  const { currencyMark, convert } = useConvertCurrency();
   return (
     <Card
       className="snap-start shrink-0 flex flex-row gap-0 
@@ -436,13 +441,13 @@ function DestinationCard({ title, content, img, price }: CardProps) {
             {title}
           </h3>
 
-          <p className="text-[#7a7a7a] font-[Manrope] text-[12px] leading-[150%] mt-3 max-w-90">
+          <p className="normal-case text-[#7a7a7a] font-[Manrope] text-[12px] leading-[150%] mt-3 max-w-90">
             {content}
           </p>
         </div>
 
         <p className="font-[Manrope] mt-auto mb-2 text-[#7B5A41] leading-[100%]text-[#7B5A41]">
-          From {price}
+          From {currencyMark} {formatNumber(convert(price))}
         </p>
 
         <Button

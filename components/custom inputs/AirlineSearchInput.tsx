@@ -360,7 +360,7 @@ export default function AirlineSearchInput({
             name="airline"
             onFocus={() => airlines.length > 0 && setOpen(true)}
             placeholder={placeholder}
-            className="flex-1 bg-transparent text-sm text-[#1A1A1A] placeholder:text-[#ACACAC] outline-none truncate"
+            className="flex-1 w-full bg-transparent text-sm text-[#1A1A1A] placeholder:text-[#ACACAC] outline-none truncate"
 
           />
 
@@ -381,6 +381,8 @@ export default function AirlineSearchInput({
         {/* Dropdown */}
         {open && airlines.length > 0 && (
           <ul
+          data-lenis-prevent
+          
             // ↓ THE FIX: prevent the list itself from stealing focus on mousedown
             onMouseDown={(e) => e.preventDefault()}
             className="absolute z-50 mt-1.5 w-full rounded-xl border border-[#E8E8E8] bg-white shadow-xl overflow-hidden"

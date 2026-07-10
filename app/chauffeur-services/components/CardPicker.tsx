@@ -51,7 +51,8 @@ function CardPicker() {
     );
   }
   return (
-    <div className="grid grid-cols-2 gap-3 max-w-5/10 xl:w-5/11 h-fit">
+    // <div className="grid grid-cols-2 gap-3 max-w-1/2 xl:w-5/11 h-fit">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 xl:w-5/11 h-fit">
       {data?.data.car_types.map((car, index) => (
         <CarCard
           includedMiles={18}

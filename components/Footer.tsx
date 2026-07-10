@@ -148,22 +148,22 @@ const Footer = () => {
                 </p>
                 <div className="flex flex-wrap items-center gap-2">
                   {/* <a target="blank" href="https://bbga.aero/"> */}
-                    <Image
-                      width={108}
-                      height={31}
-                      className=""
-                      src="/footer/bbga.webp"
-                      alt="BBGA"
-                    />
+                  <Image
+                    width={108}
+                    height={31}
+                    className=""
+                    src="/footer/bbga.webp"
+                    alt="BBGA"
+                  />
                   {/* </a> */}
                   {/* <a target="blank" href="https://www.ebaa.org/"> */}
-                    <Image
-                      width={115}
-                      height={31}
-                      className=""
-                      src="/footer/ebaa.webp"
-                      alt="BTA"
-                    />
+                  <Image
+                    width={115}
+                    height={31}
+                    className=""
+                    src="/footer/ebaa.webp"
+                    alt="BTA"
+                  />
                   {/* </a> */}
                   {/* <Image
                     width={69}
@@ -173,26 +173,28 @@ const Footer = () => {
                     alt="EBAA"
                   /> */}
                   {/* <a target="blank" href="https://www.thebta.org.uk/"> */}
-                    <Image
-                      width={180}
-                      height={31}
-                      className=""
-                      src="/footer/bta.webp"
-                      alt="BTA"
-                    />
+                  <Image
+                    width={180}
+                    height={31}
+                    className=""
+                    src="/footer/bta.webp"
+                    alt="BTA"
+                  />
                   {/* </a> */}
                 </div>
               </div>
 
               {/* طرق الدفع */}
               <div>
-                <p className="text-[rgb(138,131,124)] mt-4 normal-case">We do accept</p>
+                <p className="text-[rgb(138,131,124)] my-4 normal-case">
+                  We do accept
+                </p>
                 <div className="flex gap-2 items-center">
-                  <ApplePay/>
-                  <Visa/>
-                  <Amex/>
-                  <MasterCard/>
-                  <StripIcon/>
+                  {/* <ApplePay /> */}
+                  <Visa />
+                  <Amex />
+                  <MasterCard />
+                  {/* <StripIcon /> */}
                 </div>
               </div>
             </div>
@@ -212,8 +214,9 @@ const Footer = () => {
                 href="/terms-and-conditions"
                 className="hover:text-white transition-colors"
               >
-                Terms & Conditions |
-              </Link>{" "}
+                Terms & Conditions
+              </Link>
+              <span> | </span>
               <Link
                 className="hover:text-white transition-colors"
                 href={"/privacy-policy"}

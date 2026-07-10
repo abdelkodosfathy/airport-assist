@@ -123,7 +123,7 @@ export default function AirportInvitation({
           {/* {heading} */}
           {/* </h2> */}
 
-          <p className="mt-6 font-[Manrope] font-normal  text-[15px] leading-[150%] tracking-[9%] text-[#6D6D6D] max-w-130">
+          <p className="mt-6 normal-case text-[15px] leading-[150%] tracking-[9%] text-[#6D6D6D] max-w-116.5">
             {content}
           </p>
         </div>

@@ -6,18 +6,22 @@ import { Input } from "@/components/ui/input";
 import { useCurrencyStore } from "@/store/currencyStore";
 import { useAirportStore, useSingleAirportStore } from "@/store/vipInputsStore";
 import { usePrimaryPassengerStore } from "@/store/primaryPassengerStore";
+import { useConvertCurrency } from "@/lib/hooks/useConvertCurrency";
 
 type BagsInputProps = {
   max?: number;
 };
 
 export const BagsInput = ({ max = 99 }: BagsInputProps) => {
+
+  
   const airport = useSingleAirportStore((state) => state.singleAirport);
   const freeBags = airport?.number_of_free_bags ?? 0;
   const blockCost = airport?.paid_bags_block_cost ?? 0;
   const blockSize = airport?.paid_bags_block_size ?? 0;
-
-  const currency = useCurrencyStore((s) => s.currency);
+  
+  const { convert, currency } = useConvertCurrency();
+  // const currency = useCurrencyStore((s) => s.currency);
   // const currencyMark = useCurrencyStore((s) => s.currency);
 
   const bagsNumber = usePrimaryPassengerStore((state) => state.numberOfBags);
@@ -32,12 +36,13 @@ export const BagsInput = ({ max = 99 }: BagsInputProps) => {
 
     const extraBags = bags - freeBags;
     const blocks = Math.ceil(extraBags / blockSize);
+
     return blocks * blockCost;
   };
 
   const updateValue = (newValue: number) => {
     const safeValue = Math.max(0, Math.min(max, newValue));
-    const calculatedCost = calculateCost(safeValue);
+    // const calculatedCost = calculateCost(safeValue);
 
     // setCost(calculatedCost);
     setBagsNumber(safeValue);
@@ -48,7 +53,7 @@ export const BagsInput = ({ max = 99 }: BagsInputProps) => {
     <div className="flex flex-1 justify-between items-center col-span-2">
       <p className="font-semibold">
         Number Of Bags{" "}
-        {bagsNumber > 0 && (cost > 0 ? `(+${cost} ${currency})` : "(free)")}
+        {bagsNumber > 0 && (cost > 0 ? `(+${convert(cost)} ${currency})` : "(free)")}
       </p>
 
       <div className="flex gap-2 items-center">

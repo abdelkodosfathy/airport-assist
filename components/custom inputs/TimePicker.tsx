@@ -695,7 +695,7 @@ const TimePickerInput = ({
 
             {/* Scroll lists */}
             <div className="flex gap-2">
-              <div className="flex flex-col">
+              <div className="flex flex-col" data-lenis-prevent>
                 <div className="text-xs font-semibold text-gray-500 text-center mb-2">
                   Hour
                 </div>
@@ -744,7 +744,7 @@ const TimePickerInput = ({
                 </div>
               </div>
 
-              <div className="flex flex-col">
+              <div className="flex flex-col " data-lenis-prevent>
                 <div className="text-xs font-semibold text-gray-500 text-center mb-2">
                   Minute
                 </div>

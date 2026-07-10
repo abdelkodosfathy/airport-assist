@@ -70,7 +70,7 @@ const ChauffeurInputs = ({
       </div>
 
       {/* Date picker */}
-      <div className="col-span-1 sm:col-span-1 lg:col-span-3">
+      {/* <div className="col-span-1 sm:col-span-1 lg:col-span-3"> */}
         <DatePickerInput
           className="h-full"
           inputClassName={clsx(
@@ -80,12 +80,12 @@ const ChauffeurInputs = ({
           aria-invalid={!!errors.date}
           aria-describedby={errors.date ? "date-error" : undefined}
         />
-        {errors.date && (
+        {/* {errors.date && (
           <div id="date-error" role="alert">
             <ErrorMessage message={errors.date} />
           </div>
-        )}
-      </div>
+        )} */}
+      {/* </div> */}
 
       {/* Adults picker */}
       <div className="col-span-1 sm:col-span-1 lg:col-span-3">

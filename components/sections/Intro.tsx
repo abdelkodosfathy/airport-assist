@@ -10,7 +10,7 @@ const Intro = (props: Props) => {
       <div className="w-full max-w-360 lg:mx-auto flex flex-col lg:flex-row lg:items-center gap-10">
         {/* Left Text */}
         <div className="flex-2">
-          <h2 className="uppercase flex flex-col tracking-[0.3em] leading-[150%] text-2xl lg:text-3xl whitespace-normal justify-start">
+          <h2 className="uppercase flex flex-col tracking-[0.3em] leading-[150%] text-[1.25rem] lg:text-[1.875rem] whitespace-normal justify-start">
             <span className="">Airport Concierge</span>
             <span>Luxurious & tailored For you.</span>
           </h2>
@@ -19,7 +19,7 @@ const Intro = (props: Props) => {
         {/* Right Text */}
         <div className="flex-1 h-full">
           {/* <p className="font-[Manrope] font-normal max-w-90  mb-8"> */}
-          <p className="font-[Manrope] font-normal  max-w-90 text-[15px] leading-[150%] tracking-[9%] text-[#6D6D6D] mb-8">
+          <p className="max-w-100 text-[15px] leading-[150%] tracking-[9%] text-[#6D6D6D] mb-8 normal-case">
             Airport Assist’s Private Travel Division offers discreet, bespoke
             concierge travel services for VIP clients across the globe.
           </p>

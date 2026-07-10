@@ -88,8 +88,10 @@ export default function CarImageSlider({
 
   return (
     <div
-      className={`relative ml-none max-w-full md:max-w-fit mx-auto md:ml-8 lg:ml-none lg:absolute h-70 w-120  lg:h-80 lg:w-122  xl:h-95 xl:w-135 overflow-hidden border ${dark ? "border-none" : "border-[#E0E0E0]"}
-        z-10 ${left ? "right-0" : "lg:-left-8 xl:left-0"} top-1/2 lg:-translate-y-1/2 select-none`}
+      // className={`relative ml-none max-w-full md:max-w-fit mx-auto md:ml-8 lg:ml-none lg:absolute h-70 w-120  lg:h-80 lg:w-122  xl:h-95 xl:w-135 overflow-hidden border ${dark ? "border-none" : "border-[#E0E0E0]"}
+      //   z-10 ${left ? "right-0" : "lg:-left-8 xl:left-0"} top-1/2 lg:-translate-y-1/2 select-none`}
+      className={`${left ? "mx-auto mb-4 md:mb-0 md:mx-0 md:left-10 lg:left-auto" : "mx-auto md:mx-0  md:ml-auto lg:ml-none md:right-10 lg:right-auto"} relative max-w-9/10 md:max-w-fit  md:h-70 md:w-120  lg:h-80 lg:w-122  xl:h-94 xl:w-135.5 overflow-hidden border ${dark ? "border-none" : "border-[#E0E0E0]"}
+        z-10 select-none`}
       onClick={onClickGuard}
       // Mouse drag
       onMouseDown={(e) => onDragStart(e.clientX)}

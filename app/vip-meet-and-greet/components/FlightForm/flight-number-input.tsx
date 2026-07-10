@@ -48,7 +48,7 @@ export function FlightNumberInput({
         onChange={handleChange}
         placeholder={`${airlinePrefix || "EX"} 1234`}
         maxLength={7}
-        className={`bg-[#F4F4F4] ${className}`}
+        className={`bg-[#F4F4F4] ${className} shadow-xs`}
       />
     </div>
   );

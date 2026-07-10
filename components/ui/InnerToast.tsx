@@ -19,9 +19,6 @@ const InnerToast = ({
 }) => (
   <div
     className={`normal-case flex items-center gap-4 rounded-lg bg-[#FFFBEF] px-4 py-3 border border-[#7B5A414D] text-[#7B5A41] ${className}`}
-    style={{
-      textTransform: "none",
-    }}
   >
     {icon ? icon : <DefaultIcon />}
 

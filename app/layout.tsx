@@ -76,6 +76,7 @@ import Providers from "./providers";
 import { Toaster } from "sonner";
 import Whatsapp from "@/components/custom icons/whatsapp";
 import GTMPageView from "./GTM";
+import SmoothScroll from "./SmoothScroll";
 
 const manrope = Manrope({
   variable: "--font-manrope",
@@ -116,6 +117,8 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const isMac = navigator.platform.toUpperCase().includes("MAC");
+
   return (
     <html lang="en">
       <head>
@@ -141,6 +144,7 @@ export default function RootLayout({
       <body
         className={`capitalize ${manrope.variable} ${manrope.className} antialiased`}
       >
+        {!isMac && <SmoothScroll />}
         {/* GTM noscript */}
         <noscript>
           <iframe
@@ -150,24 +154,21 @@ export default function RootLayout({
             style={{ display: "none", visibility: "hidden" }}
           />
         </noscript>
-
         <Providers>
           <GTMPageView />
 
           {children}
         </Providers>
-
         {/* WhatsApp Button */}
         <a
           href="https://wa.me/442045177711?text=Hello%20I%20would%20like%20to%20book%20airport%20assistance"
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Chat on WhatsApp"
-          className="fixed bottom-5 right-5 z-50 text-white p-4 transition-all duration-300 hover:scale-110 w-max h-max focus:outline-none focus:ring-2 focus:ring-green-500 rounded-full"
+          className="fixed bottom-2 right-2 z-50 text-white p-4 transition-all duration-300 hover:scale-110 w-max h-max focus:outline-none focus:ring-2 focus:ring-green-500 rounded-full"
         >
           <Whatsapp className="w-12 h-12" />
         </a>
-
         <Toaster />
       </body>
     </html>

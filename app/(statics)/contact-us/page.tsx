@@ -1,18 +1,15 @@
 "use client";
-import customMail from "@/public/cutomMail.svg";
-import { Button } from "@/components/ui/button";
+// import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { ArrowRight } from "lucide-react";
-import Image from "next/image";
 import CustomPhoneInput from "@/components/ui/phone-input";
-import { ReactNode } from "react";
-import CMail from "@/components/custom icons/CMail";
-import CPhone from "@/components/custom icons/CPhone";
-import CWhatsapp from "@/components/custom icons/c-whatsapp";
-import CLocationPin from "@/components/custom icons/c-locationPin";
-import PhoneInput from "@/components/ui/valid-phone";
+// import { ReactNode } from "react";
+
+import { Mail, Phone } from "lucide-react";
+// import Whatsapp from "@/components/custom icons/whatsapp";
+import MainButton from "@/components/MainButton";
 
 export default function ContactUsPage() {
   return (
@@ -51,22 +48,12 @@ export default function ContactUsPage() {
               className="pl-4 pr-10 rounded-xl py-5.5 bg-[#F4F4F4] border border-[#E0E0E0]"
             />
           </div>
-          {/* <div className="space-y-2 col-span-1 mb-6">
-            <Label htmlFor="last-name" className="font-semibold text-[15px]">
-              Phone
-            </Label>
-            <PhoneInput
-              defaultCountry="us"
-              placeholder="0101 434 3413"
-              inputClassName="bg-[#F4F4F4] rounded-lg w-full h-full pl-4 pr-10  py-5.5 "
-            />
-          </div> */}
+         
           <div className="space-y-2 col-span-1 mb-6">
             <Label htmlFor="last-name" className="font-semibold text-[15px]">
               Phone
             </Label>
             <CustomPhoneInput />
-           
           </div>
           <div className="space-y-2 col-span-2 mb-6">
             <Label htmlFor="first-name" className="font-semibold text-[15px]">
@@ -78,7 +65,11 @@ export default function ContactUsPage() {
               className="p-7.5 rounded-xl bg-[#F4F4F4] border border-[#E0E0E0]"
             />
           </div>
-          <Button
+          <MainButton>
+          Supmit <ArrowRight />
+
+          </MainButton>
+          {/* <Button
             variant="outline"
             className="
               w-max
@@ -96,8 +87,7 @@ export default function ContactUsPage() {
               rounded-xl
             "
           >
-            Supmit <ArrowRight />
-          </Button>
+          </Button> */}
         </div>
       </div>
     </div>
@@ -115,51 +105,62 @@ const ContactDetails = () => {
         Our dedicated team are available to discuss all aspects of our service.
       </p>
 
-      <ul className="space-y-2 mt-2">
-        <ContactItem
-          title="Email"
-          icon={<CMail />}
-          content="contact@defichain.com"
-        />
-        <ContactItem
-          title="Phone"
-          icon={<CPhone />}
-          content="+44 20 7946 0958"
-        />
-        <ContactItem
-          title="Whatsapp"
-          icon={<CWhatsapp />}
-          content="+44 7700 900123"
-        />
-        <ContactItem
-          title="Address"
-          icon={<CLocationPin />}
-          content="221B Baker Street, Marylebone"
-        />
+     
+      <ul className="normal-case text-[#7a7a7a] space-y-2 mt-2">
+        <li className="flex gap-2 items-center ">
+          <div className="w-8 h-8 rounded-full bg-white shadow-sm grid place-items-center border border-[#E0E0E0]">
+            <Mail size={16} color="#a7a7a7" />
+          </div>
+          <p>Contact@airport-assist.com</p>
+        </li>
+        <li className="flex gap-2 items-center ">
+          <div className="w-8 h-8 rounded-full bg-white shadow-sm grid place-items-center border border-[#E0E0E0]">
+            <Phone size={16} color="#a7a7a7" />
+          </div>
+
+          <p>+44 20 4517 7711</p>
+        </li>
+        <li className="flex gap-2 items-center ">
+          <div className="w-8 h-8 rounded-full bg-white shadow-sm grid place-items-center border border-[#E0E0E0]">
+            <svg viewBox="0 0 24 24" fill="none" width={16} height={16}>
+              <path
+                d="M12 2a10 10 0 00-8.5 15.3L2 22l4.8-1.5A10 10 0 1012 2z"
+                stroke="#a7a7a7"
+                strokeWidth={1.6}
+              />
+              <path
+                d="M8.5 8.5c0 3 3 6 6 6 .8 0 1.3-.4 1.6-1l-1.8-1-1 .8c-1.2-.5-2.3-1.6-2.8-2.8l.8-1-1-1.8c-.6.3-1 .8-.8 1.8z"
+                fill="currentColor"
+              />
+            </svg>
+          </div>
+
+          <p>Contact us via WhatsApp</p>
+        </li>
       </ul>
     </div>
   );
 };
 
-const ContactItem = ({
-  title,
-  content,
-  icon,
-}: {
-  title: string;
-  content: string;
-  icon: ReactNode;
-}) => {
-  return (
-    <li className="flex items-center gap-2">
-      {/* <Image alt="mail" src={icon} className="w-11 h-11" /> */}
-      {icon}
-      <div>
-        <p className="font-[Manrope] text-[15px] font-normal leading-[22.61px] tracking-[-0.36px] text-[#62697D]">
-          {title}
-        </p>
-        <p>{content}</p>
-      </div>
-    </li>
-  );
-};
+// const ContactItem = ({
+//   title,
+//   content,
+//   icon,
+// }: {
+//   title: string;
+//   content: string;
+//   icon: ReactNode;
+// }) => {
+//   return (
+//     <li className="flex items-center gap-2">
+//       {/* <Image alt="mail" src={icon} className="w-11 h-11" /> */}
+//       {icon}
+//       <div>
+//         <p className="font-[Manrope] text-[15px] font-normal leading-[22.61px] tracking-[-0.36px] text-[#62697D]">
+//           {title}
+//         </p>
+//         <p>{content}</p>
+//       </div>
+//     </li>
+//   );
+// };

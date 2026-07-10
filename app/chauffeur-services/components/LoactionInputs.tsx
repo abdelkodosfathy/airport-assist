@@ -587,8 +587,8 @@ export function LocationInput({
 
         {open && suggestions.length > 0 && (
           <ul
-            className="absolute z-50 mt-1.5 w-full rounded-xl border border-[#E8E8E8] bg-white shadow-xl overflow-hidden"
-            style={{ maxHeight: 280, overflowY: "auto" }}
+            className="absolute max-h-65 overflow-y-auto z-50 mt-1.5 w-full rounded-xl border border-[#E8E8E8] bg-white shadow-xl overflow-hidden"
+            data-lenis-prevent
           >
             {suggestions.map((s, i) => (
               <li key={s.id}>

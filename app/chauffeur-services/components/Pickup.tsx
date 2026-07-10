@@ -24,7 +24,7 @@ const Pickup = () => {
       <TripTypeRow />
       <AlertRow />
       <div className="flex gap-4 "></div>
-      <div className="flex gap-4 ">
+      <div className="flex flex-col-reverse xl:flex-row gap-4 ">
         <PickupForm />
         <CardPicker />
       </div>
@@ -38,13 +38,13 @@ const AlertRow = () => {
 
   if (tripType === "one-way") {
     return (
-      <div className="max-w-6/11 w-full">
+      <div className="xl:max-w-6/11 w-full">
         <InnerToast text="Direct chauffeur transfer from point A to point B, with 15 minutes complimentary waiting time." />
       </div>
     );
   } else {
     return (
-      <div className="max-w-6/11 w-full">
+      <div className="xl:max-w-6/11 w-full">
         <InnerToast text="Please note: We can only service journeys that start or end in London.Our minimum booking duration is 4 hours." />
       </div>
     );
@@ -53,8 +53,9 @@ const AlertRow = () => {
 
 const PickupForm = () => {
   return (
-    <div className=" max-w-1/2 xl:max-w-6/11 h-full w-full flex flex-col gap-4">
-      <div className="shadow-md px-4.5 py-5 bg-white rounded-2xl ">
+    // <div className=" max-w-1/2 xl:max-w-6/11 h-full w-full flex flex-col gap-4">
+    <div className="xl:max-w-6/11 h-full w-full flex flex-col gap-4">
+      <div className="shadow-md p-5 bg-white rounded-2xl ">
         <div className="mb-2">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full ">
             <PickUpPoints />
@@ -103,7 +104,7 @@ const PassengersRow = () => {
   }, [car]);
 
   return (
-    <div className="grid grid-cols-2 gap-6 mt-3">
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-3">
       <NumberInput
         min={1}
         onIncrement={() => {

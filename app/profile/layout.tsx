@@ -51,13 +51,13 @@ export default function ServicesLayout({
           />
 
           {/* Gradient overlay */}
-          <div
+          {/* <div
             className="absolute inset-0"
             style={{
               background:
                 "linear-gradient(14.45deg, rgba(2, 2, 2, 0.0546) -17.37%, rgba(11, 11, 11, 0.78) 21.48%)",
             }}
-          />
+          /> */}
         </div>
 
         {/* Hero content */}
