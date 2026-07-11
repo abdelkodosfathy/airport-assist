@@ -1,8 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    mcpServer: true,
-  },
+  output: "export",
+
   images: {
     unoptimized: true,
     remotePatterns: [
